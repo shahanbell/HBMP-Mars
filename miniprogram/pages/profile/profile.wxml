@@ -1,0 +1,56 @@
+<view class="container">
+  <view class="userinfo">
+    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo" type="primary">授权获取个人信息</button>
+    <block wx:else>
+      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+    </block>
+  </view>
+</view>
+<view class="page__bd" wx:if="{{hasUserInfo}}">
+  <view class="weui-panel weui-panel_access">
+    <form bindsubmit="formSubmit" bindreset="formReset">
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">工号</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入工号" value="{{wechatUser.employeeId}}" bindblur="bindEmployeeIdChange" />
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">姓名</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入姓名" value="{{wechatUser.employeeName}}" bindblur="bindEmployeeNameChange" />
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">手机号</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入手机号" value="{{wechatUser.mobile}}" bindblur="bindMobileChange" />
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input weui-cell_vcode">
+          <view class="weui-cell__hd">
+            <view class="weui-label">验证码</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入验证码" bindblur="bindCheckCodeChange" />
+          </view>
+          <view class="weui-cell__ft">
+            <button id="bindSendCode" class="weui-vcode-btn" bindtap="bindSendCodeTap" disabled="{{!canSendCode}}">{{btnSendDisplay}}</button>
+          </view>
+        </view>
+      </view>
+      <view class="button-sp-area">
+        <button class="weui-btn" form-type="submit" type="primary" disabled="{{!canSubmit}}">授权</button>
+        <button class="weui-btn" form-type="reset">重置</button>
+      </view>
+    </form>
+  </view>
+</view>

@@ -1,0 +1,137 @@
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+  <view class="page__hd">
+    <view class="page__title">请假申请</view>
+  </view>
+  <view class="page__bd">
+    <form bindsubmit="formSubmit" bindreset="formReset">
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">申请人员</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入申请人员" value="{{employeeName}}" disabled="true" />
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input weui-cell_vcode">
+          <view class="weui-cell__hd">
+            <view class="weui-label">申请部门</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请选择申请部门" value="{{deptName}}" disabled="true" />
+          </view>
+          <view class="weui-cell__ft">
+            <view id="btnDeptSelect" class="weui-vcode-btn" bindtap="bindDeptSelect">…</view>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_switch">
+          <view class="weui-cell__bd">法定节假日前后请假</view>
+          <view class="weui-cell__ft">
+            <switch bindchange="bindFormTypeChange" />
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input weui-cell_vcode">
+          <view class="weui-cell__hd">
+            <view class="weui-label">请假假别</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请选择请假假别" value="{{formKindDesc}}" disabled="true" />
+          </view>
+          <view class="weui-cell__ft">
+            <view class="weui-vcode-btn" bindtap="bindLeaveKindSelect">…</view>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input weui-cell_vcode">
+          <view class="weui-cell__hd">
+            <view class="weui-label">请假班别</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请选择请假班别" value="{{workTypeDesc}}" disabled="true" />
+          </view>
+          <view class="weui-cell__ft">
+            <view class="weui-vcode-btn" bindtap="bindWorkTypeSelect">…</view>
+          </view>
+        </view>
+      </view>
+      <view class="weui-cells__title">请假时间</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">开始日期</view>
+          </view>
+          <view class="weui-cell__bd">
+            <picker mode="date" value="{{date1}}" start="2019-07-01" end="2023-06-30" bindchange="bindDate1Change">
+              <view class="weui-input">{{date1}}</view>
+            </picker>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">开始时间</view>
+          </view>
+          <view class="weui-cell__bd">
+            <picker mode="time" value="{{time1}}" bindchange="bindTime1Change">
+              <view class="weui-input">{{time1}}</view>
+            </picker>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">截止日期</view>
+          </view>
+          <view class="weui-cell__bd">
+            <picker mode="date" value="{{date2}}" start="2019-07-01" end="2023-06-30" bindchange="bindDate2Change">
+              <view class="weui-input">{{date2}}</view>
+            </picker>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">截止时间</view>
+          </view>
+          <view class="weui-cell__bd">
+            <picker mode="time" value="{{time2}}" bindchange="bindTime2Change">
+              <view class="weui-input">{{time2}}</view>
+            </picker>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">请假天数</view>
+          </view>
+          <view class="weui-cell__bd">
+            <slider show-value min="0" max="7" bindchange="bindLeaveDayChange" value="{{leaveDay}}" />
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">请假时数</view>
+          </view>
+          <view class="weui-cell__bd">
+            <slider show-value min="0" max="24" bindchange="bindLeaveHourChange" />
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">请假分钟</view>
+          </view>
+          <view class="weui-cell__bd">
+            <slider show-value min="0" max="60" step="10" bindchange="bindLeaveMinuteChange" />
+          </view>
+        </view>
+      </view>
+      <view class="weui-cells__title">请假原因</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell">
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" placeholder="请输入请假原因" style="height: 100rpx" bindblur="bindReasonChange" />
+          </view>
+        </view>
+      </view>
+      <view class="button-sp-area">
+        <button class="weui-btn" form-type="submit" type="primary">提交</button>
+        <button class="weui-btn" form-type="reset">重置</button>
+      </view>
+    </form>
+  </view>
+</view>

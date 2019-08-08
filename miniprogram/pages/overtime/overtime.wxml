@@ -1,0 +1,71 @@
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+  <view class="page__hd">
+    <view class="page__title">加班申请</view>
+  </view>
+  <view class="page__bd">
+    <form bindsubmit="formSubmit" bindreset="formReset">
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">申请人员</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入申请人员" value="{{employeeName}}" disabled="true" />
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input weui-cell_vcode">
+          <view class="weui-cell__hd">
+            <view class="weui-label">申请部门</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请选择申请部门" value="{{deptName}}" disabled="true" />
+          </view>
+          <view class="weui-cell__ft">
+            <view id="btnDeptSelect" class="weui-vcode-btn" bindtap="bindDeptSelect">…</view>
+          </view>
+        </view>
+      </view>
+      <view class="weui-cells__title">加班类别</view>
+      <view class="weui-cells weui-cells_after-title">
+        <radio-group bindchange="bindFormTypeChange">
+          <label class="weui-cell weui-check__label" wx:for="{{formTypes}}" wx:key="k">
+            <radio class="weui-check" value="{{item.k}}" checked="{{item.k==selectedType}}" />
+            <view class="weui-cell__bd">{{item.v}}</view>
+            <view class="weui-cell__ft weui-cell__ft_in-radio" wx:if="{{item.k==selectedType}}">
+              <icon class="weui-icon-radio" type="success_no_circle" size="16"></icon>
+            </view>
+          </label>
+        </radio-group>
+      </view>
+      <view class="weui-cells__title">加班明细</view>
+      <view class="weui-panel weui-panel_access" wx:for="{{detailList}}" wx:key="seq">
+        <view class="weui-panel__hd">
+          <view>加班明细{{item.seq}}</view>
+            <view class="weui-panel__hd button-warn" bindtap="bindRemoveDetailTap" data-index="{{index}}">删除</view>
+            <view class="weui-panel__hd button-default" bindtap="bindEditDetailTap" data-index="{{index}}">修改</view>
+          </view>
+
+        <view class="weui-panel__bd">
+          <view class="weui-form-preview__bd">
+            <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">{{item.date1}}</view>
+              <view class="weui-form-preview__value">{{item.hour}}小时</view>
+            </view>
+          </view>
+          <view class="weui-form-preview__bd">
+            <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">工作内容</view>
+              <view class="weui-form-preview__value">{{item.content}}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="button-sp-area">
+        <button class="weui-btn" bindtap="bindAddDetailTap">添加明细</button>
+      </view>
+      <view class="button-sp-area">
+        <button class="weui-btn" form-type="submit" type="primary" disabled="{{!canSubmit}}">提交</button>
+      </view>
+    </form>
+  </view>
+</view>

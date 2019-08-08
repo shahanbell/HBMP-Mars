@@ -1,0 +1,24 @@
+<!--miniprogram/pages/deptSelect/deptSelect.wxml-->
+<view class="page">
+  <view class="page__hd">
+    <view class="page__title">部门选择</view>
+  </view>
+  <view class="page__bd">
+    <view class="weui-cells weui-cells_after-title">
+      <radio-group bindchange="bindDeptSelected">
+        <label class="weui-cell weui-check__label" wx:for="{{dataList}}" wx:key="{{organizationUnit.id}}">
+          <radio class="weui-check " value="{{item.organizationUnit.id}}" checked="{{item.organizationUnit.id==selectedKey}}" />
+          <view class="weui-cell__hd ">
+            <view class="weui-label ">{{item.organizationUnit.id}}</view>
+          </view>
+          <view class="weui-cell__bd">
+            <view class="weui-label">{{item.organizationUnit.organizationUnitName}}</view>
+          </view>
+          <view class="weui-cell__ft weui-cell__ft_in-radio" wx:if="{{item.organizationUnit.id==selectedKey}}">
+            <icon class="weui-icon-radio" type="success_no_circle" size="16"></icon>
+          </view>
+        </label>
+      </radio-group>
+    </view>
+  </view>
+</view>

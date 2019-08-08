@@ -1,0 +1,92 @@
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+  <view class="page__hd">
+    <view class="page__title">工作任务</view>
+  </view>
+  <view class="page__bd">
+    <form bindsubmit="formSubmit" bindreset="formReset">
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">负责人员</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入负责人员" value="{{employeeName}}" disabled="true" />
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input weui-cell_vcode">
+          <view class="weui-cell__hd">
+            <view class="weui-label">所在部门</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请选择所在部门" value="{{deptName}}" disabled="true" />
+          </view>
+          <view class="weui-cell__ft">
+            <view id="btnDeptSelect" class="weui-vcode-btn" bindtap="bindDeptSelect">…</view>
+          </view>
+        </view>
+      </view>
+      <view class="weui-cells__title">任务概况</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">任务名称</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="10个字以内" value="{{name}}" bindblur="bindNameChange" />
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">开始日期</view>
+          </view>
+          <view class="weui-cell__bd">
+            <picker mode="date" value="{{plannedStartDate}}" start="2019-07-01" end="2023-06-30" bindchange="bindPlannedStartDateChange">
+              <view class="weui-input">{{plannedStartDate}}</view>
+            </picker>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">开始时间</view>
+          </view>
+          <view class="weui-cell__bd">
+            <picker mode="time" value="{{plannedStartTime}}" bindchange="bindPlannedStartTimeChange">
+              <view class="weui-input">{{plannedStartTime}}</view>
+            </picker>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">完成日期</view>
+          </view>
+          <view class="weui-cell__bd">
+            <picker mode="date" value="{{plannedFinishDate}}" start="2019-07-01" end="2023-06-30" bindchange="bindPlannedFinishDateChange">
+              <view class="weui-input">{{plannedFinishDate}}</view>
+            </picker>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">完成日期</view>
+          </view>
+          <view class="weui-cell__bd">
+            <picker mode="time" value="{{plannedFinishTime}}" bindchange="bindPlannedFinishTimeChange">
+              <view class="weui-input">{{plannedFinishTime}}</view>
+            </picker>
+          </view>
+        </view>
+      </view>
+      <view class="weui-cells__title">任务描述</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell">
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" placeholder="请输入任务描述" style="height: 100rpx" bindblur="bindContentChange" value="{{description}}" />
+          </view>
+        </view>
+      </view>
+      <view class="button-sp-area">
+        <button class="weui-btn" form-type="submit" type="primary">添加</button>
+      </view>
+    </form>
+  </view>
+</view>

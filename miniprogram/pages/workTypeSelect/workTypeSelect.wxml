@@ -1,0 +1,19 @@
+<!--miniprogram/pages/deptSelect/deptSelect.wxml-->
+<view class="page">
+  <view class="page__hd">
+    <view class="page__title">班别选择</view>
+  </view>
+  <view class="page__bd">
+    <view class="weui-cells weui-cells_after-title">
+      <radio-group bindchange="bindDeptSelected">
+        <label class="weui-cell weui-check__label" wx:for="{{dataList}}" wx:key="{{k}}">
+          <radio class="weui-check" value="{{item.k}}" checked="{{item.organizationUnit.id==selectedKey}}" />
+          <view class="weui-cell__bd">{{item.v}}</view>
+          <view class="weui-cell__ft weui-cell__ft_in-radio" wx:if="{{item.k==selectedKey}}">
+            <icon class="weui-icon-radio" type="success_no_circle" size="16"></icon>
+          </view>
+        </label>
+      </radio-group>
+    </view>
+  </view>
+</view>
