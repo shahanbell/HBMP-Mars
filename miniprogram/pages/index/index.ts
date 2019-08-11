@@ -17,7 +17,7 @@ Page({
     menu: [
       { id: 'menu01', name: '请假', imgUrl: '../../images/outline_date_range_blue_24dp.png', url: '/pages/leave/leave' },
       { id: 'menu02', name: '加班', imgUrl: '../../images/outline_work_outline_orange_24dp.png', url: '/pages/overtime/overtime' },
-      { id: 'menu03', name: '出差', imgUrl: 'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640', url: '/pages/form/form' },
+      { id: 'menu03', name: '出差', imgUrl: 'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640', url: '/pages/pie/index' },
       { id: 'menu04', name: '厂商', imgUrl: 'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640', url: '/pages/form/form' },
       { id: 'menu05', name: '请购', imgUrl: 'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640', url: '/pages/form/form' },
       { id: 'menu06', name: '采购', imgUrl: 'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640', url: '/pages/form/form' }

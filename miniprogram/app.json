@@ -2,15 +2,15 @@
   "pages": [
     "pages/index/index",
     "pages/task/task",
-    "pages/swiper/swiper",
+    "pages/task/taskdetail",
+    "pages/echart/echart",
     "pages/leave/leave",
     "pages/leave/leaveKindSelect",
     "pages/profile/profile",
     "pages/deptSelect/deptSelect",
     "pages/workTypeSelect/workTypeSelect",
     "pages/overtime/overtime",
-    "pages/overtime/overdetail",
-    "pages/task/taskdetail"
+    "pages/overtime/overdetail"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -22,26 +22,26 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "首页",
+        "text": "Home",
         "iconPath": "images/baseline_home_black_24dp.png",
         "selectedIconPath": "images/baseline_home_green_24dp.png",
         "iconColor": "#fff"
       },
       {
         "pagePath": "pages/task/task",
-        "text": "任务",
+        "text": "Task",
         "iconPath": "images/baseline_reorder_black_24dp.png",
         "selectedIconPath": "images/baseline_reorder_green_24dp.png"
       },
       {
-        "pagePath": "pages/swiper/swiper",
-        "text": "滚动",
+        "pagePath": "pages/echart/echart",
+        "text": "KPI",
         "iconPath": "images/baseline_card_travel_black_24dp.png",
         "selectedIconPath": "images/baseline_card_travel_black_24dp.png"
       },
       {
         "pagePath": "pages/profile/profile",
-        "text": "我的",
+        "text": "Me",
         "iconPath": "images/baseline_account_box_black_24dp.png",
         "selectedIconPath": "images/baseline_account_box_green_24dp.png"
       }
