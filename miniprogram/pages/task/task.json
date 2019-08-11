@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "我的OKR",
+  "navigationBarTitleText": "我的任务清单",
   "usingComponents": {
     "calendar": "../../component/calendar/index"
   }

@@ -10,7 +10,7 @@
             <view class="weui-label">负责人员</view>
           </view>
           <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请输入负责人员" value="{{employeeName}}" disabled="true" />
+            <input class="weui-input" placeholder="请输入负责人员" value="{{leader}}" disabled="true" />
           </view>
         </view>
         <view class="weui-cell weui-cell_input weui-cell_vcode">
@@ -37,7 +37,7 @@
         </view>
         <view class="weui-cell weui-cell_input">
           <view class="weui-cell__hd">
-            <view class="weui-label">开始日期</view>
+            <view class="weui-label">计划开始</view>
           </view>
           <view class="weui-cell__bd">
             <picker mode="date" value="{{plannedStartDate}}" start="2019-07-01" end="2023-06-30" bindchange="bindPlannedStartDateChange">
@@ -57,7 +57,7 @@
         </view>
         <view class="weui-cell weui-cell_input">
           <view class="weui-cell__hd">
-            <view class="weui-label">完成日期</view>
+            <view class="weui-label">计划完成</view>
           </view>
           <view class="weui-cell__bd">
             <picker mode="date" value="{{plannedFinishDate}}" start="2019-07-01" end="2023-06-30" bindchange="bindPlannedFinishDateChange">
@@ -67,7 +67,7 @@
         </view>
         <view class="weui-cell weui-cell_input">
           <view class="weui-cell__hd">
-            <view class="weui-label">完成日期</view>
+            <view class="weui-label">完成时间</view>
           </view>
           <view class="weui-cell__bd">
             <picker mode="time" value="{{plannedFinishTime}}" bindchange="bindPlannedFinishTimeChange">
@@ -84,8 +84,57 @@
           </view>
         </view>
       </view>
-      <view class="button-sp-area">
-        <button class="weui-btn" form-type="submit" type="primary">添加</button>
+      <view wx:if="{{!isNew}}">
+        <view class="weui-cells__title">任务进度</view>
+        <view class="weui-cells weui-cells_after-title">
+          <view class="weui-cell weui-cell_input">
+            <view class="weui-cell__hd">
+              <view class="weui-label">实际开始</view>
+            </view>
+            <view class="weui-cell__bd">
+              <picker mode="date" value="{{nowDate}}" start="2019-07-01" end="2023-06-30" bindchange="bindActualStartDateChange">
+                <view class="weui-input">{{actualStartDate}}</view>
+              </picker>
+            </view>
+          </view>
+          <view class="weui-cell weui-cell_input">
+            <view class="weui-cell__hd">
+              <view class="weui-label">开始时间</view>
+            </view>
+            <view class="weui-cell__bd">
+              <picker mode="time" value="{{nowTime}}" bindchange="bindActualStartTimeChange">
+                <view class="weui-input">{{actualStartTime}}</view>
+              </picker>
+            </view>
+          </view>
+          <view class="weui-cell weui-cell_input">
+            <view class="weui-cell__hd">
+              <view class="weui-label">实际完成</view>
+            </view>
+            <view class="weui-cell__bd">
+              <picker mode="date" value="{{nowDate}}" start="2019-07-01" end="2023-06-30" bindchange="bindActualFinishDateChange">
+                <view class="weui-input">{{actualFinishDate}}</view>
+              </picker>
+            </view>
+          </view>
+          <view class="weui-cell weui-cell_input">
+            <view class="weui-cell__hd">
+              <view class="weui-label">完成时间</view>
+            </view>
+            <view class="weui-cell__bd">
+              <picker mode="time" value="{{nowTime}}" bindchange="bindActualFinishTimeChange">
+                <view class="weui-input">{{actualFinishTime}}</view>
+              </picker>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="button-sp-area" wx:if="{{isNew}}">
+        <button class="weui-btn" form-type="submit" type="primary">提交</button>
+      </view>
+      <view class="button-sp-area" wx:if="{{!isNew}}">
+        <button class="weui-btn" form-type="submit" type="primary">保存</button>
+        <button class="weui-btn" bindtap='bindRemoveDetailTap' type="warn" disabled="{{!canDelete}}">删除</button>
       </view>
     </form>
   </view>

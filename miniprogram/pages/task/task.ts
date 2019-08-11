@@ -1,4 +1,5 @@
-import { IMyApp } from '../../app'
+import { IMyApp } from '../../app';
+import { formatDate } from '../../utils/util';
 
 const app = getApp<IMyApp>()
 let d = new Date()
@@ -9,10 +10,11 @@ Page({
       defaultDay: d.toISOString().substring(0, 10)
     },
     dataList: [],
-    employeeId: null,
-    employeeName: null,
+    startDays: [] as Date[],
     deptId: null,
     deptName: null,
+    leaderId: null,
+    leader: null,
     canSubmit: false
   },
   onLoad() {
@@ -24,8 +26,8 @@ Page({
     }, 2000)
     if (app.globalData.authorized) {
       this.setData!({
-        employeeId: app.globalData.employeeId,
-        employeeName: app.globalData.employeeName
+        leaderId: app.globalData.employeeId,
+        leader: app.globalData.employeeName
       })
     }
     if (app.globalData.defaultDeptId) {
@@ -44,6 +46,29 @@ Page({
       // 待办圆圈标记设置（如圆圈标记已签到日期），该设置与点标记设置互斥
       circle: true // 待办
     });
+    if (this.data.startDays.length > 0) {
+      let days = [] as Date[]
+      this.data.startDays.forEach((o: string, index: number) => {
+        days.push(formatDate(o))
+      })
+      this.calendar.setTodoLabels({
+        days: days
+      })
+    } else {
+      // 注册回调函数
+      this.afterLoadDataCallback = (res) => {
+        let days = [] as Date[]
+        res.LS.forEach((o: string, index: number) => {
+          days.push(formatDate(o));
+        })
+        this.calendar.setTodoLabels({
+          days: days
+        })
+      }
+    }
+  },
+  onShow() {
+
   },
   afterTapDay(e) {
     console.log(e)
@@ -54,17 +79,17 @@ Page({
       url: './taskdetail',
       events: {
         returnDetail: function (res) {
-          this.loadData();
+          _this.loadData();
         }
       },
       success(res) {
         res.eventChannel.emit('openDetail', {
           data:
           {
-            employeeId: _this.data.employeeId,
-            employeeName: _this.data.employeeName,
             deptId: _this.data.deptId,
-            deptName: _this.data.deptName
+            deptName: _this.data.deptName,
+            leaderId: _this.data.leaderId,
+            leader: _this.data.leader
           }, isNew: true
         })
       }
@@ -73,62 +98,38 @@ Page({
   bindEditDetailTap(e) {
     let _this = this
     let index = e.currentTarget.dataset.index
+    console.log(index)
     wx.navigateTo({
-      url: './overdetail',
+      url: './taskdetail',
       events: {
         returnDetail: function (res) {
-          let details = _this.data.detailList
-          details.splice(index, 1)
-          details.push(res.data)
-          details.forEach((o, i) => {
-            o.seq = i + 1
-          })
-          _this.setData!({
-            detailList: details,
-            canSubmit: true
-          })
+          _this.loadData();
         }
       },
       success(res) {
-        let currentObject = _this.data.detailList[index]
+        let currentObject = _this.data.dataList[index];
+        //console.log(currentObject)
         res.eventChannel.emit('openDetail', {
           data:
           {
-            employeeId: currentObject.employeeId,
-            employeeName: currentObject.employeeName,
-            deptId: currentObject.deptId,
-            deptName: currentObject.deptName,
-            lunch: currentObject.lunch,
-            dinner: currentObject.dinner,
-            date1: currentObject.date1,
-            time1: currentObject.time1,
-            time2: currentObject.time2,
-            hour: currentObject.hour,
-            content: currentObject.content
+            deptId: _this.data.deptId,
+            deptName: _this.data.deptName,
+            id: currentObject.id,
+            name: currentObject.name,
+            description: currentObject.description,
+            leaderId: currentObject.leaderId,
+            leader: currentObject.leader,
+            plannedStartDate: currentObject.plannedStartDate,
+            plannedStartTime: currentObject.plannedStartTime,
+            plannedFinishDate: currentObject.plannedFinishDate,
+            plannedFinishTime: currentObject.plannedFinishTime,
+            actualStartDate: currentObject.actualStartDate,
+            actualStartTime: currentObject.actualStartTime,
+            actualFinishDate: currentObject.actualFinishDate,
+            actualFinishTime: currentObject.actualFinishTime,
+            location: currentObject.location
           }, isNew: false
         })
-      }
-    })
-  },
-  bindScanTap(e) {
-    wx.getSetting({
-      success(res) {
-        if (!res.authSetting['scope.camera']) {
-          wx.authorize({
-            scope: 'scope.camera',
-            success() {
-              // 用户已经同意小程序使用Camera
-              console.log('用户已经同意小程序使用Camera')
-            }
-          })
-        } else {
-          wx.scanCode({
-            onlyFromCamera: true,
-            success(res) {
-              console.log(res)
-            }
-          })
-        }
       }
     })
   },
@@ -147,13 +148,16 @@ Page({
       success: res => {
         //console.log(res.data)
         this.setData!({
-          dataList: res.data.data
+          dataList: res.data.data,
+          startDays: res.data.LS
         })
+        if (this.afterLoadDataCallback) {
+          this.afterLoadDataCallback(res.data)
+        }
       },
       fail: fail => {
         console.log(fail)
       }
     })
   }
-
 })

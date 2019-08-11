@@ -33,5 +33,27 @@ Page({
     this.setData!({
       duration: e.detail.value
     })
+  },
+  bindScanTap(e) {
+    wx.getSetting({
+      success(res) {
+        if (!res.authSetting['scope.camera']) {
+          wx.authorize({
+            scope: 'scope.camera',
+            success() {
+              // 用户已经同意小程序使用Camera
+              console.log('用户已经同意小程序使用Camera')
+            }
+          })
+        } else {
+          wx.scanCode({
+            onlyFromCamera: true,
+            success(res) {
+              console.log(res)
+            }
+          })
+        }
+      }
+    })
   }
 })

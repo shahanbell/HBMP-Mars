@@ -1,4 +1,4 @@
-@import './iconfont//iconfont.wxss';
+@import '../../style/iconfont.wxss';
 
 .b {
     display: flex;
@@ -39,7 +39,7 @@
 }
 
 .pink-color {
-    color: #000000;
+    color: #88d2ac;
 }
 
 .white-color {
@@ -103,7 +103,7 @@
 }
 
 .normal-day-color {
-    color: #88d2ac;
+    color: #000000;
 }
 
 .day-choosed-color {
