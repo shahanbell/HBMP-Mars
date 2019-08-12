@@ -50,12 +50,12 @@ function initChart(canvas, width, height) {
 Page({
   data: {
     ec: {
-
+      onInit: initChart
     }
   }, onReady() {
 
   },
   echartInit(e) {
-    initChart(e.detail.canvas, e.detail.width, e.detail.height);
+    //initChart(e.detail.canvas, e.detail.width, e.detail.height);
   }
 })
