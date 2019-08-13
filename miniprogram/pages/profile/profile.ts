@@ -43,7 +43,7 @@ Page({
     })
     //授权后存储openid
     wx.request({
-      url: app.globalData.restAdd + '/WeChatOpen/api/prg26c450ac24f4/wechatuser',
+      url: app.globalData.restAdd + '/WeChatOpen/api/prg9f247ab6d5e4/wechatuser',
       data: {
         openid: app.globalData.openId,
         nickName: app.globalData.userInfo.nickName
@@ -113,7 +113,7 @@ Page({
       }, 60000)
       // 获取校验码
       wx.request({
-        url: app.globalData.restAdd + '/WeChatOpen/api/prg26c450ac24f4/checkcode',
+        url: app.globalData.restAdd + '/WeChatOpen/api/prg9f247ab6d5e4/checkcode',
         data: {
           openid: app.globalData.openId,
           sessionkey: app.globalData.sessionKey,
@@ -145,7 +145,7 @@ Page({
   formSubmit(e) {
     //更新用户状态
     wx.request({
-      url: app.globalData.restAdd + '/WeChatOpen/api/prg26c450ac24f4/wechatuser/' + app.globalData.openId + '?sessionkey=' + app.globalData.sessionKey + '&checkcode=' + this.data.checkCode,
+      url: app.globalData.restAdd + '/WeChatOpen/api/prg9f247ab6d5e4/wechatuser/' + app.globalData.openId + '?sessionkey=' + app.globalData.sessionKey + '&checkcode=' + this.data.checkCode,
       data: {
         openid: app.globalData.openId,
         nickName: app.globalData.userInfo.nickName,

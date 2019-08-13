@@ -135,7 +135,7 @@ Page({
   },
   loadData() {
     wx.request({
-      url: app.globalData.restAdd + '/WeChatOpen/api/prg26c450ac24f4/jobtask',
+      url: app.globalData.restAdd + '/WeChatOpen/api/prg9f247ab6d5e4/jobtask',
       data: {
         openid: app.globalData.openId,
         sessionkey: app.globalData.sessionKey,
