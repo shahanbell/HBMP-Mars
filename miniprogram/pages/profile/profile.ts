@@ -37,9 +37,11 @@ Page({
   },
   getUserInfo(e) {
     app.globalData.userInfo = e.detail.userInfo
+    let mobile = 'wechatUser.mobile';
     this.setData!({
       userInfo: e.detail.userInfo,
-      hasUserInfo: true
+      hasUserInfo: true,
+      [mobile]: e.detail.userInfo.mobile
     })
     //授权后存储openid
     wx.request({
@@ -53,7 +55,7 @@ Page({
       },
       method: 'POST',
       success: res => {
-        console.log(res)
+        //console.log(res)
       },
       fail: fail => {
         console.log(fail)
@@ -158,10 +160,17 @@ Page({
       },
       method: 'PUT',
       success: res => {
+        //console.log(res)
+        if (res.data.code == '200') {
+          app.globalData.authorized = res.data.authorized
+          app.globalData.employeeId = res.data.employeeId
+          app.globalData.employeeName = res.data.employeeName
+        } else {
+          app.globalData.authorized = false
+        }
         this.setData!({
           canSubmit: false
         })
-        app.globalData.authorized = true
         wx.setStorageSync('wechatUser', this.data.wechatUser)
         wx.showModal({
           title: '系统消息',

@@ -1,61 +1,76 @@
 import * as echarts from '../../component/ec-canvas/echarts';
 
-function initChart(canvas, width, height) {
-  const chart = echarts.init(canvas, null, {
-    width: width,
-    height: height
-  });
-  canvas.setChart(chart);
-  var option = {
-    backgroundColor: "#ffffff",
-    color: ["#37A2DA", "#32C5E9", "#67E0E3", "#91F2DE", "#FFDB5C", "#FF9F7F"],
-    series: [{
-      label: {
-        normal: {
-          fontSize: 14
-        }
-      },
-      type: 'pie',
-      center: ['50%', '50%'],
-      radius: [0, '60%'],
-      data: [{
-        value: 55,
-        name: '北京'
-      }, {
-        value: 20,
-        name: '武汉'
-      }, {
-        value: 10,
-        name: '杭州'
-      }, {
-        value: 20,
-        name: '广州'
-      }, {
-        value: 38,
-        name: '上海'
-      },
-      ],
-      itemStyle: {
-        emphasis: {
-          shadowBlur: 10,
-          shadowOffsetX: 0,
-          shadowColor: 'rgba(0, 2, 2, 0.3)'
-        }
+
+
+const option = {
+  title: {
+    text: '8月销售金额达成(万元)'
+  },
+  color: ["#37A2DA", "#32C5E9", "#67E0E3"],
+  series: [{
+    name: '业务指标',
+    type: 'gauge',
+    min: 0,
+    max: 0,
+    detail: {
+      formatter: '0%'
+    },
+    axisLine: {
+      show: true,
+      lineStyle: {
+        width: 30,
+        shadowBlur: 0,
+        color: [
+          [0.6, '#88d2ac'],
+          [0.8, '#37a2da'],
+          [1.0, '#fd666d']
+        ]
       }
-    }]
-  };
-  chart.setOption(option);
-  return chart;
+    },
+    data: []
+
+  }]
+
 }
+
 Page({
   data: {
     ec: {
-      onInit: initChart
-    }
-  }, onReady() {
+      lazyLoad: true
+    },
+    chartTitle: '销售金额达成率'
+  },
+  onLoad() {
+    this.ecComponent = this.selectComponent('#mychart')
+    this.ecInit()//获取数据
+    setTimeout(() => {
+      this.loadData()
+    }, 5000);
+  },
+  onReady() {
 
   },
-  echartInit(e) {
-    //initChart(e.detail.canvas, e.detail.width, e.detail.height);
+  ecInit() {
+    this.ecComponent.init((canvas, width, height) => {
+      // 在这里初始化图表
+      const chart = echarts.init(canvas, null, {
+        width: width,
+        height: height
+      });
+      chart.showLoading();
+      chart.setOption(option)
+      // 注册chart对象
+      this.chart = chart;
+      // 返回 chart 实例
+      return chart;
+    });
+  },
+  loadData() {
+    if (this.chart) {
+      this.chart.hideLoading();
+      this.chart.setOption({ series: [{ max: 2000, data: [{ value: 120, name: '达成率' }] }] })
+    } else {
+      console.log('!this.chart')
+    }
   }
 })

@@ -1,3 +1,10 @@
-<view class="echart-container">
-  <ec-canvas id="mychart-dom-pie" canvas-id="mychart-pie" ec="{{ ec }}"></ec-canvas>
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+  <view class="page__hd">
+    <view class="page__title"></view>
+  </view>
+  <view class="page__bd">
+    <view class="echart-container">
+      <ec-canvas id="mychart" canvas-id="mychart-gauge" ec="{{ ec }}"></ec-canvas>
+    </view>
+  </view>
 </view>

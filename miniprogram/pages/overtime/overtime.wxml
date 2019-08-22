@@ -40,11 +40,11 @@
       <view class="weui-cells__title">加班明细</view>
       <view class="weui-panel weui-panel_access" wx:for="{{detailList}}" wx:key="seq">
         <view class="weui-panel__hd">
-          <view>加班明细{{item.seq}}</view>
-            <view class="weui-panel__hd button-warn" bindtap="bindRemoveDetailTap" data-index="{{index}}">删除</view>
-            <view class="weui-panel__hd button-default" bindtap="bindEditDetailTap" data-index="{{index}}">修改</view>
+          <view>明细{{item.seq}}
+            <view class="button-warn" bindtap="bindRemoveDetailTap" data-index="{{index}}">删除</view>
+            <view class="button-default" bindtap="bindEditDetailTap" data-index="{{index}}">修改</view>
           </view>
-
+        </view>
         <view class="weui-panel__bd">
           <view class="weui-form-preview__bd">
             <view class="weui-form-preview__item">
