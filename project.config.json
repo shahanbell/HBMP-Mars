@@ -5,7 +5,7 @@
 	},
 	"miniprogramRoot": "miniprogram/",
 	"compileType": "miniprogram",
-	"libVersion": "2.8.0",
+	"libVersion": "2.8.1",
 	"projectname": "micro-app",
 	"scripts": {
 		"beforeCompile": "npm run tsc",

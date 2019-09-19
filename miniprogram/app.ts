@@ -27,7 +27,7 @@ App<IMyApp>({
       success: _res => {
         // 发送 _res.code 到后台换取 openId, sessionKey, unionId
         wx.request({
-          url: this.globalData.restAdd + '/WeChatOpen/api/prg9f247ab6d5e4/session',
+          url: this.globalData.restAdd + '/Hanbell-WCO/api/prg9f247ab6d5e4/session',
           data: {
             code: _res.code
           },
@@ -104,8 +104,8 @@ App<IMyApp>({
     console.log("Quit MicroPrg");
   },
   globalData: {
-    //restAdd:'https://jrs.hanbell.com.cn',
-    restAdd: 'https://i2.hanbell.com.cn',
+    restAdd:'https://jrs.hanbell.com.cn',
+    //restAdd: 'https://i2.hanbell.com.cn',
     restId: '1505912014724',
     restToken: '0ec858293fccfad55575e26b0ce31177',
     restAuth: 'appid=1505912014724&token=0ec858293fccfad55575e26b0ce31177'
