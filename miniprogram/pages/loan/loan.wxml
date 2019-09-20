@@ -1,0 +1,154 @@
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+  <view class="page__hd">
+    <view class="page__title">借支申请</view>
+  </view>
+  <view class="page__bd">
+    <form bindsubmit="formSubmit" bindreset="formReset">
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input weui-cell_vcode">
+          <view class="weui-cell__hd">
+            <view class="weui-label">公司别</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请选择申请公司" value="{{company}}" disabled="true"></input>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">借支日期</view>
+          </view>
+          <view class="weui-cell__bd">
+            <picker mode="date" value="{{loanDate}}" start="2019-07-01" end="2023-06-30" bindchange="bindLoanDateChange">
+              <view class="weui-input">{{loanDate}}</view>
+            </picker>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">申请人员</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入申请人员" value="{{employeeName}}" disabled="true"></input>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input weui-cell_vcode">
+          <view class="weui-cell__hd">
+            <view class="weui-label">申请部门</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请选择申请部门" value="{{deptName}}" disabled="true"></input>
+          </view>
+          <view class="weui-cell__ft">
+            <view id="btnDeptSelect" class="weui-vcode-btn" bindtap="bindDeptSelect">…</view>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input weui-cell_vcode">
+          <view class="weui-cell__hd">
+            <view class="weui-label">借支性质</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请选择借支性质" value="{{loanPropertyDesc}}" disabled="true" />
+          </view>
+          <view class="weui-cell__ft">
+            <view class="weui-vcode-btn" bindtap="bindLoanProperty">…</view>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input weui-cell_vcode">
+          <view class="weui-cell__hd">
+            <view class="weui-label">预算科目</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请选择预算科目" value="{{preAccno}}" disabled="true"></input>
+          </view>
+          <view class="weui-cell__ft">
+            <view class="weui-vcode-btn" bindtap="bindBudgetacc">…</view>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input weui-cell_vcode">
+          <view class="weui-cell__hd">
+            <view class="weui-label">币别</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请选择币别" value="{{coinDesc}}" disabled="true"></input>
+          </view>
+          <view class="weui-cell__ft">
+            <view class="weui-vcode-btn" bindtap="bindCoin">…</view>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">预计付款日</view>
+          </view>
+          <view class="weui-cell__bd">
+            <picker mode="date" value="{{prePayDate}}" start="2019-07-01" end="2023-06-30" bindchange="bindPrePayDateChange">
+              <view class="weui-input">{{prePayDate}}</view>
+            </picker>
+          </view>
+        </view>
+      </view>
+      <view class="weui-cells__title">费用明细</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">交通费</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input name = "trafficfee" class="weui-input" value ="{{trafficfee}}" bindinput='getmoney' data-iname='trafficfee' type='digit'></input>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">住宿费</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input name = "accommodation" class="weui-input" value ="{{accommodation}}" bindinput='getmoney' data-iname='accommodation' type='digit'></input>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">招待费</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input name = "entertain" class="weui-input"  value ="{{entertain}}" bindinput='getmoney' data-iname='entertain' type='digit'></input>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">出差补贴</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input name ="allowance" class="weui-input" value ="{{allowance}}"  bindinput='getmoney' data-iname='allowance' type='digit'></input>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">其他费用</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input name = "other" class="weui-input" value ="{{other}}" bindinput='getmoney' data-iname='other' type='digit' focus='focus'></input>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">借款总额</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input name = "loanTotal" class="weui-input"  value ="{{loanTotal}}" placeholder="请输入借款总额" disabled="true"></input>
+          </view>
+        </view>
+      </view>
+      <view class="weui-cells__title">借支理由</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell">
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" placeholder="请输入借支理由" style="height: 100rpx" bindblur="bindReasonChange"></textarea>
+          </view>
+        </view>
+      </view>
+      <view class="button-sp-area">
+        <button class="weui-btn" form-type="submit" type="primary">提交</button>
+        <button class="weui-btn" form-type="reset">重置</button>
+      </view>
+    </form>
+  </view>
+</view>

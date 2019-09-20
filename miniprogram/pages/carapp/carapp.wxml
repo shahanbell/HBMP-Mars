@@ -1,0 +1,126 @@
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+  <view class="page__hd">
+    <view class="page__title">派车申请</view>
+  </view>
+  <view class="page__bd">
+    <form bindsubmit="formSubmit" bindreset="formReset">
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">申请人员</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入申请人员" value="{{employeeName}}" disabled="true"></input>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input weui-cell_vcode">
+          <view class="weui-cell__hd">
+            <view class="weui-label">申请部门</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请选择申请部门" value="{{deptName}}" disabled="true"></input>
+          </view>
+          <view class="weui-cell__ft">
+            <view id="btnDeptSelect" class="weui-vcode-btn" bindtap="bindDeptSelect">…</view>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">申请日期</view>
+          </view>
+          <view class="weui-cell__bd">
+            <picker mode="date" value="{{sqrqDate}}" start="2019-07-01" end="2023-06-30" bindchange="bindsqrqDateChange">
+              <view class="weui-input">{{sqrqDate}}</view>
+            </picker>
+          </view>
+        </view>
+        
+        <view class="weui-cell weui-cell_input weui-cell_vcode">
+          <view class="weui-cell__hd">
+            <view class="weui-label">车辆性质</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请选择车辆性质" value="{{clxzDesc}}" disabled="true" />
+          </view>
+          <view class="weui-cell__ft">
+            <view class="weui-vcode-btn" bindtap="bindClzx">…</view>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">私车驾驶员</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input name = "privatedriver" class="weui-input" placeholder="请输入驾驶员"  bindinput="bindUserInput" value="{{privatedriver}}"></input>
+          </view>
+           <view class="weui-cell__ft">
+            <view id="btnUserSelect" class="weui-vcode-btn" bindtap="bindUserSelect">…</view>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">私车车牌号</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input name = "privatecarno" class="weui-input" placeholder="请输入车牌号"  ></input>
+          </view>
+        </view>
+          <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">联系方式</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input name = "telcontact" class="weui-input" placeholder="请输入手机号"  ></input>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input weui-cell_vcode">
+          <view class="weui-cell__hd">
+            <view class="weui-label">用车原因</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请选择用车原因" value="{{purposeDesc}}" disabled="true"></input>
+          </view>
+          <view class="weui-cell__ft">
+            <view class="weui-vcode-btn" bindtap="bindPurpose">…</view>
+          </view>
+        </view>
+      </view>
+      <view class="weui-cells__title">用车明细</view>
+     <view class="weui-panel weui-panel_access" wx:for="{{detailList}}" wx:key="seq">
+        <view class="weui-panel__hd">
+          <view>明细{{item.seq}}
+            <view class="button-warn" bindtap="bindRemoveDetailTap" data-index="{{index}}">删除</view>
+            <view class="button-default" bindtap="bindEditDetailTap" data-index="{{index}}">修改</view>
+          </view>
+        </view>
+        <view class="weui-panel__bd">
+          <view class="weui-form-preview__bd">
+            <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">{{item.ycrq}}</view>
+               <view class="weui-form-preview__value">{{item.sy}}</view>
+            </view>
+          </view>
+          <view class="weui-form-preview__bd">
+            <view class="weui-form-preview__item">
+            <view class="weui-form-preview__label">出发地</view>
+              <view class="weui-form-preview__value">{{item.address1}}</view>
+            </view>
+          </view>
+           <view class="weui-form-preview__bd">
+            <view class="weui-form-preview__item">
+           <view class="weui-form-preview__label">目的地</view>
+              <view class="weui-form-preview__value">{{item.address2}}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="button-sp-area">
+        <button class="weui-btn" bindtap="bindAddDetailTap">添加明细</button>
+      </view>
+      <view class="button-sp-area">
+        <button class="weui-btn" form-type="submit" type="primary">提交</button>
+        <button class="weui-btn" form-type="reset">重置</button>
+      </view>
+    </form>
+  </view>
+</view>

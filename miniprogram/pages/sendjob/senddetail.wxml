@@ -1,0 +1,99 @@
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+  <view class="page__hd">
+    <view class="page__title">派工明细</view>
+  </view>
+  <view class="page__bd">
+    <form bindsubmit="formSubmit" bindreset="formReset">
+      <view class="weui-cells weui-cells_after-title">
+
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">派工码</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入派工码" value="{{assignmentcode}}" />
+          </view>
+        </view>
+
+
+      </view>
+
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">约定完修日</view>
+          </view>
+          <view class="weui-cell__bd">
+            <picker mode="date" value="{{date1}}" start="2019-07-01" end="2023-06-30" bindchange="bindDate1Change">
+              <view class="weui-input">{{date1}}</view>
+            </picker>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">预交日期</view>
+          </view>
+          <view class="weui-cell__bd">
+            <picker mode="date" value="{{date2}}" start="2019-07-01" end="2023-06-30" bindchange="bindDate2Change">
+              <view class="weui-input">{{date2}}</view>
+            </picker>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">预计维修日</view>
+          </view>
+          <view class="weui-cell__bd">
+            <picker mode="date" value="{{date3}}" start="2019-07-01" end="2023-06-30" bindchange="bindDate3Change">
+              <view class="weui-input">{{date3}}</view>
+            </picker>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">预计完修日</view>
+          </view>
+          <view class="weui-cell__bd">
+            <picker mode="date" value="{{date4}}" start="2019-07-01" end="2023-06-30" bindchange="bindDate4Change">
+              <view class="weui-input">{{date4}}</view>
+            </picker>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">站别编号</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入站别编号" value="{{stationname}}" disabled="true" />
+          </view>
+          <view class="weui-cell__ft">
+            <view class="weui-vcode-btn" bindtap="bindStation">…</view>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">主要维修人员</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入主要维修人员" bindinput="sltwordInput" value="{{repairmanname}}" />
+          </view>
+          <view class="weui-cell__ft">
+            <view class="weui-vcode-btn" bindtap="bindRepairman">…</view>
+          </view>
+        </view>
+        <view class="weui-cell">
+          <view class="weui-cell__bd">
+            <textarea name="repairmanname2" class="weui-textarea" placeholder="请选择维修人员" style="height: 100rpx" value="{{repairmanname2}}" disabled="true" ></textarea>
+          </view>
+        </view>
+
+      </view>
+
+
+      <view class="button-sp-area">
+        <button class="weui-btn" form-type="submit" type="primary">添加</button>
+      </view>
+
+    </form>
+  </view>
+</view>

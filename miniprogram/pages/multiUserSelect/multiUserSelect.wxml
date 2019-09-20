@@ -1,0 +1,24 @@
+<!--miniprogram/pages/userSelect/userSelect.wxml-->
+<view class="page">
+  <view class="page__hd">
+    <view class="page__title">员工选择</view>
+  </view>
+  <view class="page__bd">
+    <view class="weui-cells weui-cells_after-title">
+      <radio-group bindchange="bindUserSelected">
+        <label class="weui-cell weui-check__label" wx:for="{{dataList}}" wx:key="{{item.id}}">
+          <radio class="weui-check " value="{{item.id}}" checked="{{item.id==selectedKey}}" />
+          <view class="weui-cell__hd ">
+            <view class="weui-label ">{{item.id}}</view>
+          </view>
+          <view class="weui-cell__bd">
+            <view class="weui-label">{{item.userName}}</view>
+          </view>
+          <view class="weui-cell__ft weui-cell__ft_in-radio" wx:if="{{item.id==selectedKey}}">
+            <icon class="weui-icon-radio" type="success_no_circle" size="16"></icon>
+          </view>
+        </label>
+      </radio-group>
+    </view>
+  </view>
+</view>

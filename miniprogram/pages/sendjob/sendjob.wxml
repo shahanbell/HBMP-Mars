@@ -1,0 +1,182 @@
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+  <view class="page__hd">
+    <view class="page__title">派工单</view>
+  </view>
+  <view class="page__bd">
+    <form bindsubmit="formSubmit" bindreset="formReset">
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">叫修单别</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入叫修单别" value="{{repairKindname}}" disabled="true" />
+          </view>
+          <view class="weui-cell__ft">
+            <view class="weui-vcode-btn" bindtap="bindRepairKind">…</view>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">叫修单号</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入叫修单号" bindinput="bindRepairnoChange" value="{{repairno}}"  />
+          </view>
+          <view class="weui-cell__ft">
+            <view class="weui-vcode-btn" bindtap="bindRepta">…</view>
+          </view>
+        </view>
+      </view>
+
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">单据日期</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入单据日期" value="{{ta003}}" disabled="true" />
+          </view>
+        </view>
+
+          <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">客户编号</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入客户编号" value="{{customer}}" disabled="true" />
+          </view>
+        </view>
+                <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">接单人员</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入接单人员" value="{{ta009}}" disabled="true" />
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">产品品号</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入产品品号" value="{{ta005}}" disabled="true" />
+          </view>
+ 
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">产品品名</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入产品品名" value="{{ta006}}" disabled="true" />
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">产品规格</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入产品规格" value="{{ta007}}" disabled="true" />
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">产品序号</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入产品序号" value="{{ta013}}" disabled="true" />
+          </view>
+
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">产品机型编号</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入产品机型编号" value="{{ta500}}" disabled="true" />
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">产品别</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入产品别" value="{{ta197}}" disabled="true" />
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">区域别</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入区域别" value="{{ta198}}" disabled="true" />
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">问题代号</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入问题代号" value="{{ta071}}" disabled="true" />
+          </view>
+        </view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell">
+        <view class="weui-label">问题描述</view>
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" placeholder="请输入问题描述" value="{{ta010}}"style="height: 100rpx" bindblur="bindReasonChange" />
+          </view>
+        </view>
+      </view>
+
+
+      <view class="weui-cells__title">派工明细</view>
+      <view class="weui-panel weui-panel_access" wx:for="{{detailList}}" wx:key="seq">
+        <view class="weui-panel__hd">
+          <view>派工明细{{item.seq}}
+            <view class="button-warn" bindtap="bindRemoveDetailTap" data-index="{{index}}">删除</view>
+            <view class="button-default" bindtap="bindEditDetailTap" data-index="{{index}}">修改</view>
+          </view>
+        </view>
+        <view class="weui-panel__bd">
+          <view class="weui-form-preview__bd">
+            <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">约定完修日</view>
+              <view class="weui-form-preview__value">{{item.date1}}</view>
+            </view>
+          </view>
+          <view class="weui-form-preview__bd">
+            <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">预交日期</view>
+              <view class="weui-form-preview__value">{{item.date2}}</view>
+            </view>
+          </view>
+          <view class="weui-form-preview__bd">
+            <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">站别编号</view>
+              <view class="weui-form-preview__value">{{item.stationname}}</view>
+            </view>
+          </view>
+          <view class="weui-form-preview__bd">
+            <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">主要维修人员</view>
+              <view class="weui-form-preview__value">{{item.repairmanname}}</view>
+            </view>
+          </view>
+          <view class="weui-form-preview__bd">
+            <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">维修人员</view>
+              <view class="weui-form-preview__value">{{item.repairmanname2}}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="button-sp-area">
+        <button class="weui-btn" bindtap="bindAddDetailTap">添加明细</button>
+      </view>
+      <view class="button-sp-area">
+        <button class="weui-btn" form-type="submit" type="primary" disabled="{{!canSubmit}}">提交</button>
+      </view>
+    </form>
+  </view>
+</view>

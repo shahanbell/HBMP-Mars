@@ -20,7 +20,19 @@ Page({
       { id: 'menu03', name: '出差', imgUrl: 'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640', url: '/pages/pie/index' },
       { id: 'menu04', name: '厂商', imgUrl: 'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640', url: '/pages/form/form' },
       { id: 'menu05', name: '请购', imgUrl: 'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640', url: '/pages/form/form' },
-      { id: 'menu06', name: '采购', imgUrl: 'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640', url: '/pages/form/form' }
+      { id: 'menu06', name: '采购', imgUrl: 'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640', url: '/pages/form/form' },
+      {
+        id: 'menu07', name: '借支', imgUrl: '../../images/loan.png',
+        url: '/pages/loan/loan'
+      },
+      {
+        id: 'menu08', name: '派车', imgUrl: '../../images/car.png',
+        url: '/pages/carapp/carapp'
+      } ,
+      {
+        id: 'menu08', name: '派工', imgUrl: 'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640',
+        url: '/pages/sendjob/sendjob'
+      }
     ],
     indicatorDots: false,
     autoplay: true,
