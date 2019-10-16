@@ -1,0 +1,24 @@
+<!--miniprogram/pages/deptSelect/deptSelect.wxml-->
+<view class="page">
+  <view class="page__hd">
+    <view class="page__title">叫修单别</view>
+  </view>
+  <view class="page__bd">
+    <view class="weui-cells weui-cells_after-title">
+      <radio-group bindchange="bindSelected">
+        <label class="weui-cell weui-check__label" wx:for="{{dataList}}" wx:key="k">
+          <radio class="weui-check " value="{{item.mq001}}" checked="{{item.mq001==selectedKey}}" />
+          <view class="weui-cell__hd ">
+            <view class="weui-label ">{{item.mq001}}</view>
+          </view>
+          <view class="weui-cell__bd">
+            <view class="weui-label">{{item.mq002}}</view>
+          </view>
+          <view class="weui-cell__ft weui-cell__ft_in-radio" wx:if="{{item.mq001==selectedKey}}">
+            <icon class="weui-icon-radio" type="success_no_circle" size="16"></icon>
+          </view>
+        </label>
+      </radio-group>
+    </view>
+  </view>
+</view>

@@ -15,6 +15,7 @@ export interface IMyApp {
     employeeId?: string,
     employeeName?: string,
     defaultCompany?: string,
+    defaultCompanyName?: string,
     defaultDeptId?: string,
     defaultDeptName?: string
   }
@@ -55,8 +56,9 @@ App<IMyApp>({
                 },
                 method: 'GET',
                 success: res => {
-                  //console.log(res.data)
+                  console.log("User信息：" + res.data)
                   this.globalData.defaultCompany = res.data.company,
+                    this.globalData.defaultCompanyName = res.data.companyName,
                     this.globalData.defaultDeptId = res.data.deptno,
                     this.globalData.defaultDeptName = res.data.deptname
                 },

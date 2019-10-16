@@ -10,7 +10,20 @@
     "pages/deptSelect/deptSelect",
     "pages/workTypeSelect/workTypeSelect",
     "pages/overtime/overtime",
-    "pages/overtime/overdetail"
+    "pages/overtime/overdetail",
+    "pages/loan/loan",
+    "pages/loan/loanPropertySelect",
+    "pages/budgetacc/budgetacc",
+    "pages/coin/coin",
+    "pages/carapp/carapp",
+    "pages/carapp/carType",
+    "pages/carapp/purpose",
+    "pages/carapp/carappdetail",
+    "pages/userSelect/userSelect",
+    "pages/sendjob/sendjob",
+    "pages/sendjob/repairKind",
+    "pages/multiUserSelect/multiUserSelect",
+    "pages/sendjob/stationKind"
   ],
   "window": {
     "backgroundTextStyle": "light",
