@@ -15,8 +15,8 @@ Page({
     this.requestData(option);
   },
   requestData(options?: any) {
-    //restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/efgp/leavekind'
-    restUrl = 'http://172.16.80.99:8480/Hanbell-JRS/api/crm/repma/f;/s/0/10'
+    restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/crm/repma/f;/s/0/10'
+    //restUrl = 'http://172.16.80.99:8480/Hanbell-JRS/api/crm/repma/f;/s/0/10'
     console.log(restUrl)
     wx.request({
       url: restUrl,

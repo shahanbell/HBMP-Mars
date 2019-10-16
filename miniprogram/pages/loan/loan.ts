@@ -154,7 +154,7 @@ Page({
               coinDesc: res.k + '-' + res.v
             })
           }
-        }
+        } 
       },
       success(res) {
         console.log(res)
@@ -270,8 +270,8 @@ Page({
               title: 'Sending'
             })
             wx.request({
-              //url: app.globalData.restAdd + '/Hanbell-JRS/api/efgp/hkcw017/wechat?' + app.globalData.restAuth,
-              url: 'http://172.16.80.99:8480' + '/Hanbell-JRS/api/efgp/hzcw017/wechat?' + app.globalData.restAuth,
+              url: app.globalData.restAdd + '/Hanbell-JRS/api/efgp/hkcw017/wechat?' + app.globalData.restAuth,
+              //url: 'http://172.16.80.99:8480' + '/Hanbell-JRS/api/efgp/hzcw017/wechat?' + app.globalData.restAuth,
               data: {
                 company: _this.data.company,
                 loanUser: _this.data.employeeId,

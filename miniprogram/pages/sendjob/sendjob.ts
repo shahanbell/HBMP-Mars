@@ -110,9 +110,9 @@ Page({
       return
    }
     wx.request({
-      // url: app.globalData.restAdd + '/Hanbell-JRS/api/erp/budgetcenter/f;budgetCenterPK.facno=' + app.globalData.defaultCompany + ';budgetCenterPK.deptid=' + app.globalData.defaultDeptId + '/s/0/10/',
-  
-      url: 'http://172.16.80.99:8480/Hanbell-JRS/api/crm/repta/f;rEPTAPK.ta001=' + this.data.repairKind +';rEPTAPK.ta002='+this.data.repairno+'/s/0/10/'
+ 
+	  url: app.globalData.restAdd + '/Hanbell-JRS/api/crm/repta/f;rEPTAPK.ta001=' + this.data.repairKind +';rEPTAPK.ta002='+this.data.repairno+'/s/0/10/'
+      //url: 'http://172.16.80.99:8480/Hanbell-JRS/api/crm/repta/f;rEPTAPK.ta001=' + this.data.repairKind +';rEPTAPK.ta002='+this.data.repairno+'/s/0/10/'
         data: {
         appid: app.globalData.restId,
         token: app.globalData.restToken
@@ -292,8 +292,8 @@ Page({
             })
             console.log(_this.data)
             wx.request({
-              //url: app.globalData.restAdd + '/Hanbell-JRS/api/efgp/hkgl034/wechat?' + //app.globalData.restAuth,
-              url:'http://172.16.80.99:8480/Hanbell-JRS/api/crm/reppw/wechat?' +app.globalData.restAuth,
+              url: app.globalData.restAdd + '/Hanbell-JRS/api/crm/reppw/wechat?' + app.globalData.restAuth,
+              //url:'http://172.16.80.99:8480/Hanbell-JRS/api/crm/reppw/wechat?' +app.globalData.restAuth,
 
               data: {
                 repairKindname: _this.data.repairKindname,

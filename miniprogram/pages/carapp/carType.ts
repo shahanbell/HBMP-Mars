@@ -15,8 +15,8 @@ Page({
     this.requestData(option);
   },
   requestData(options?: any) {
-    //restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/efgp/hkgl037/carType'
-    restUrl = 'http://172.16.80.99:8480' + '/Hanbell-JRS/api/efgp/hkgl037/carType'
+    restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/efgp/hkgl037/carType'
+    //restUrl = 'http://172.16.80.99:8480' + '/Hanbell-JRS/api/efgp/hkgl037/carType'
     console.log(restUrl)
     wx.request({
       url: restUrl,

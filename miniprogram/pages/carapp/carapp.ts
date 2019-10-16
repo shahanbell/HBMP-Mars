@@ -280,8 +280,8 @@ Page({
             console.log(_this.data)
             console.log(e)
             wx.request({
-              //url: app.globalData.restAdd + '/Hanbell-JRS/api/efgp/hkcw017/wechat?' + app.globalData.restAuth,
-              url: 'http://172.16.80.99:8480' + '/Hanbell-JRS/api/efgp/hkgl037/wechat?' + app.globalData.restAuth,
+              url: app.globalData.restAdd + '/Hanbell-JRS/api/efgp/hkcw017/wechat?' + app.globalData.restAuth,
+              //url: 'http://172.16.80.99:8480' + '/Hanbell-JRS/api/efgp/hkgl037/wechat?' + app.globalData.restAuth,
               data: {
                 employeeId: _this.data.employeeId,
                 employeeName: _this.data.employeeName,
