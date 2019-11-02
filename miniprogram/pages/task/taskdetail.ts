@@ -168,7 +168,7 @@ Page({
                 status: 'N'
               }
               //存储
-              let url = app.globalData.restAdd + '/WeChatOpen/api/prg9f247ab6d5e4/jobtask?openid=' + app.globalData.openId + '&sessionkey=' + app.globalData.sessionKey;
+              let url = app.globalData.restAdd + '/Hanbell-WCO/api/prg9f247ab6d5e4/jobtask?openid=' + app.globalData.openId + '&sessionkey=' + app.globalData.sessionKey;
               wx.request({
                 url: url,
                 data: currentObject,
@@ -216,7 +216,7 @@ Page({
                 status: status
               }
               //存储
-              let url = app.globalData.restAdd + '/WeChatOpen/api/prg9f247ab6d5e4/jobtask/' + _this.data.id + '?openid=' + app.globalData.openId + '&sessionkey=' + app.globalData.sessionKey;
+              let url = app.globalData.restAdd + '/Hanbell-WCO/api/prg9f247ab6d5e4/jobtask/' + _this.data.id + '?openid=' + app.globalData.openId + '&sessionkey=' + app.globalData.sessionKey;
               wx.request({
                 url: url,
                 data: currentObject,
@@ -268,7 +268,7 @@ Page({
               title: 'Deleting'
             })
             //删除
-            let url = app.globalData.restAdd + '/WeChatOpen/api/prg9f247ab6d5e4/jobtask/' + _this.data.id + '?openid=' + app.globalData.openId + '&sessionkey=' + app.globalData.sessionKey;
+            let url = app.globalData.restAdd + '/Hanbell-WCO/api/prg9f247ab6d5e4/jobtask/' + _this.data.id + '?openid=' + app.globalData.openId + '&sessionkey=' + app.globalData.sessionKey;
             wx.request({
               url: url,
               header: {

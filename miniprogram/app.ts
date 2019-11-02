@@ -56,7 +56,7 @@ App<IMyApp>({
                 },
                 method: 'GET',
                 success: res => {
-                  console.log("User信息：" + res.data)
+                  //console.log("User信息：" + res.data)
                   this.globalData.defaultCompany = res.data.company,
                     this.globalData.defaultCompanyName = res.data.companyName,
                     this.globalData.defaultDeptId = res.data.deptno,

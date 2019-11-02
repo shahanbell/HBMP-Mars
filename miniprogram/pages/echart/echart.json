@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "ECHARTS",
+  "navigationBarTitleText": "绩效功能即将上线",
   "usingComponents": {
     "ec-canvas": "../../component/ec-canvas/ec-canvas"
   }

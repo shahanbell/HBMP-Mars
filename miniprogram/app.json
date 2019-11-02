@@ -28,7 +28,7 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "时间旅行",
+    "navigationBarTitleText": "敬业汉钟",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
@@ -42,19 +42,19 @@
       },
       {
         "pagePath": "pages/task/task",
-        "text": "Task",
+        "text": "任务",
         "iconPath": "images/baseline_reorder_black_24dp.png",
         "selectedIconPath": "images/baseline_reorder_green_24dp.png"
       },
       {
         "pagePath": "pages/echart/echart",
-        "text": "KPI",
+        "text": "绩效",
         "iconPath": "images/baseline_card_travel_black_24dp.png",
         "selectedIconPath": "images/baseline_card_travel_black_24dp.png"
       },
       {
         "pagePath": "pages/profile/profile",
-        "text": "Me",
+        "text": "我",
         "iconPath": "images/baseline_account_box_black_24dp.png",
         "selectedIconPath": "images/baseline_account_box_green_24dp.png"
       }
