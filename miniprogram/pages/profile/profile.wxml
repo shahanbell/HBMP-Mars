@@ -16,7 +16,7 @@
             <view class="weui-label">工号</view>
           </view>
           <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请输入工号" value="{{wechatUser.employeeId}}" bindblur="bindEmployeeIdChange" />
+            <input class="weui-input" placeholder="请输入工号" value="{{wechatUser.employeeId}}" bindinput="bindEmployeeIdChange" />
           </view>
         </view>
         <view class="weui-cell weui-cell_input">
@@ -24,7 +24,7 @@
             <view class="weui-label">姓名</view>
           </view>
           <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请输入姓名" value="{{wechatUser.employeeName}}" bindblur="bindEmployeeNameChange" />
+            <input class="weui-input" placeholder="请输入姓名" value="{{wechatUser.employeeName}}" bindinput="bindEmployeeNameChange" />
           </view>
         </view>
         <view class="weui-cell weui-cell_input">
@@ -32,7 +32,7 @@
             <view class="weui-label">手机号</view>
           </view>
           <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请输入手机号" value="{{wechatUser.mobile}}" bindblur="bindMobileChange" />
+            <input class="weui-input" placeholder="请输入手机号" value="{{wechatUser.mobile}}" bindinput="bindMobileChange" />
           </view>
         </view>
         <view class="weui-cell weui-cell_input weui-cell_vcode">
@@ -40,7 +40,7 @@
             <view class="weui-label">验证码</view>
           </view>
           <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请输入验证码" bindblur="bindCheckCodeChange" />
+            <input class="weui-input" placeholder="请输入验证码" bindinput="bindCheckCodeChange" />
           </view>
           <view class="weui-cell__ft">
             <button id="bindSendCode" class="weui-vcode-btn" bindtap="bindSendCodeTap" disabled="{{!canSendCode}}">{{btnSendDisplay}}</button>
