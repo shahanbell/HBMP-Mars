@@ -15,8 +15,8 @@ Page({
     this.requestData(option);
   },
   requestData(options?: any) {
-    restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/efgp/worktype'
-    //console.log(restUrl)
+    restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/efgp/bizdestination'
+    console.log(restUrl)
     wx.request({
       url: restUrl,
       data: {
@@ -37,7 +37,7 @@ Page({
       }
     })
   },
-  bindDeptSelected(e) {
+  bindSelected(e) {
     this.setData!({
       selectedKey: e.detail.value
     })
@@ -57,7 +57,7 @@ Page({
         success(res) {
           if (res.confirm) {
             eventChannel = that.getOpenerEventChannel()
-            eventChannel.emit('returnproductItnbr', that.data.selectedObject)
+            eventChannel.emit('returnDestinationSelect', that.data.selectedObject)
             wx.navigateBack({
               delta: 1
             })

@@ -13,14 +13,18 @@ Page({
     deptId: null,
     deptName: null,
     customer: '',
+    cusna: '',
     ta009: '',
+    receiver: '',
     ta005: '',
     ta006: '',
     ta007: '',
     ta013: '',
     ta500: '',
     ta197: '',
+    productna: '',
     ta198: '',
+    areana: '',
     ta071: '',
     ta010: '',
     ta003: '',
@@ -111,7 +115,7 @@ Page({
    }
     wx.request({
  
-	  url: app.globalData.restAdd + '/Hanbell-JRS/api/crm/repta/f;rEPTAPK.ta001=' + this.data.repairKind +';rEPTAPK.ta002='+this.data.repairno+'/s/0/10/'
+	    url: app.globalData.restAdd + '/Hanbell-JRS/api/crm/repta/f;rEPTAPK.ta001=' + this.data.repairKind +';rEPTAPK.ta002='+this.data.repairno+'/s/0/10/'
       //url: 'http://172.16.80.99:8480/Hanbell-JRS/api/crm/repta/f;rEPTAPK.ta001=' + this.data.repairKind +';rEPTAPK.ta002='+this.data.repairno+'/s/0/10/'
         data: {
         appid: app.globalData.restId,
@@ -130,16 +134,21 @@ Page({
           })
           return
      }
+     console.log(res.data);
         this.setData!({
-          customer: res.data[0].customer
+          customer: res.data[0].customer,
+          cusna: res.data[0].crmgg.gg003,
           ta009: res.data[0].ta009,
+          receiver: res.data[0].receiver.mv002,
           ta005: res.data[0].ta005,
           ta006: res.data[0].ta006,
           ta007: res.data[0].ta007,
           ta013: res.data[0].ta013,
           ta500: res.data[0].ta500,
           ta197: res.data[0].ta197,
+          productna: res.data[0].productna.el002,
           ta198: res.data[0].ta198,
+          areana: res.data[0].areana.bg002,
           ta071: res.data[0].ta071,
           ta010: res.data[0].ta010,
           ta003: res.data[0].ta003

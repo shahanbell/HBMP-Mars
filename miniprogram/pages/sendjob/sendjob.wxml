@@ -43,7 +43,7 @@
             <view class="weui-label">客户编号</view>
           </view>
           <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请输入客户编号" value="{{customer}}" disabled="true" />
+            <input class="weui-input" placeholder="请输入客户编号" value="{{customer}}-{{cusna}}" disabled="true" />
           </view>
         </view>
                 <view class="weui-cell weui-cell_input">
@@ -51,7 +51,7 @@
             <view class="weui-label">接单人员</view>
           </view>
           <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请输入接单人员" value="{{ta009}}" disabled="true" />
+            <input class="weui-input" placeholder="请输入接单人员" value="{{ta009}}-{{receiver}}" disabled="true" />
           </view>
         </view>
         <view class="weui-cell weui-cell_input">
@@ -101,7 +101,7 @@
             <view class="weui-label">产品别</view>
           </view>
           <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请输入产品别" value="{{ta197}}" disabled="true" />
+            <input class="weui-input" placeholder="请输入产品别" value="{{ta197}}-{{productna}}" disabled="true" />
           </view>
         </view>
         <view class="weui-cell weui-cell_input">
@@ -109,7 +109,7 @@
             <view class="weui-label">区域别</view>
           </view>
           <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请输入区域别" value="{{ta198}}" disabled="true" />
+            <input class="weui-input" placeholder="请输入区域别" value="{{ta198}}-{{areana}}" disabled="true" />
           </view>
         </view>
         <view class="weui-cell weui-cell_input">

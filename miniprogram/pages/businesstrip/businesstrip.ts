@@ -2,22 +2,27 @@ import { IMyApp } from '../../app'
 
 const app = getApp<IMyApp>()
 let d = new Date()
-let userInput =''
 Page({
   data: {
     detailList: [] as any,
+    company: null,
     hasOpenId: false,
     employeeId: null,
     employeeName: null,
     deptId: null,
     deptName: null,
-    sqrqDate: d.toISOString().substring(0, 10),
-    clxz: '1',
-    clxzDesc: '1-公务车',
-    privatedriver:'',
-    telcontact: '',
-    purpose: '',
-    purposeDesc: '',
+    applyDate: d.toISOString().substring(0, 10),
+    businessProperty: '1',
+    businessPropertyDesc: '业务推展',
+    vehicle: '3',
+    vehicleDesc: "高铁",
+    destination: '1',
+    destinationDesc: '中国大陆',
+    dayBegin: d.toISOString().substring(0, 10),
+    dayEnd: '',
+    daysTotal: 0.00 as number,
+    reason: '',
+    total: 0.00 as number,
     checkArray: [
       {
         name: "trafficfee",
@@ -50,7 +55,6 @@ Page({
         deptName: app.globalData.defaultDeptId + '-' + app.globalData.defaultDeptName,
         company: app.globalData.defaultCompany + '-' + app.globalData.defaultCompanyName
       })
-
     }
   },
   bindDeptSelect(e) {
@@ -72,16 +76,16 @@ Page({
       }
     })
   },
-  bindClzx(e) {
+  bindBusinessProperty(e) {
     let that = this
     wx.navigateTo({
-      url: './carType',
+      url: './businessProperty',
       events: {
-        returncarTypeSelect: function (res) {
+        returnBusinessPropertySelect: function (res) {
           if (res) {
             that.setData!({
-              clxz: res.k,
-              clxzDesc: res.k + '-' + res.v
+              businessProperty: res.k,
+              businessPropertyDesc: res.v
             })
           }
         }
@@ -91,18 +95,17 @@ Page({
       }
     })
   },
-  bindUserInput(e){
-    userInput = e.detail.value
-  },
-  bindUserSelect(e){
+  bindVehicle(e) {
     let that = this
     wx.navigateTo({
-      url: '../userSelect/userSelect?userInfo='+userInput,
+      url: './vehicle',
       events: {
-        returnUserSelect: function (res) {
+        returnVehicleSelect: function (res) {
           if (res) {
+            console.log(res)
             that.setData!({
-              privatedriver: res.k + '-' + res.v
+              vehicle: res.k,
+              vehicleDesc: res.v
             })
           }
         }
@@ -111,35 +114,59 @@ Page({
         console.log(res)
       }
     })
+  },
+  bindDestination(e) {
+    let that = this
+    wx.navigateTo({
+      url: './destination',
+      events: {
+        returnDestinationSelect: function (res) {
+          if (res) {
+            console.log(res)
+            that.setData!({
+              destination: res.k,
+              destinationDesc: res.v
+            })
+          }
+        }
+      },
+      success(res) {
+        console.log(res)
+      }
+    })
+  },
+  bindApplyDateChange(e) {
+    this.setData!({
+      applyDate: e.detail.value,
+    })
+  },
+  bindDayBeginChange(e) {
+    this.setData!({
+      dayBegin: e.detail.value
+    })
+    
+    let total = this.caculaterDays(this.data.dayBegin, this.data.dayEnd);
+    this.setData({
+      daysTotal: total
+    });
+  },
+  bindDayEndChange(e) {
+    this.setData!({
+      dayEnd: e.detail.value
+    })
+    let total = this.caculaterDays(this.data.dayBegin, this.data.dayEnd);
+    this.setData({
+      daysTotal: total
+    });
+  },
 
-  },
-  bindPurpose(e) {
-    let that = this
-    wx.navigateTo({
-      url: './purpose',
-      events: {
-        returnPurposeSelect: function (res) {
-          if (res) {
-            that.setData!({
-              purpose: res.k,
-              purposeDesc: res.k + '-' + res.v
-            })
-          }
-        }
-      },
-      success(res) {
-        console.log(res)
-      }
-    })
-  },
   bindAddDetailTap(e) {
     let _this = this
     wx.navigateTo({
-      url: './carappdetail',
+      url: './businesstripdetail',
       events: {
         returnDetail: function (res) {
-          console.log(res.data);
-          console.log(_this.data.detailList);
+          //console.log(_this.data.detailList);
           let details = _this.data.detailList
           details.push(res.data)
           details.forEach((o, i) => {
@@ -156,9 +183,7 @@ Page({
           data:
           {
             employeeId: _this.data.employeeId,
-            employeeName: _this.data.employeeName,
-            deptId: _this.data.deptId,
-            deptName: _this.data.deptName
+            employeeName: _this.data.employeeId + "-" + _this.data.employeeName
           }, isNew: true
         })
       }
@@ -168,7 +193,7 @@ Page({
     let _this = this
     let index = e.currentTarget.dataset.index
     wx.navigateTo({
-      url: './carappdetail',
+      url: './businesstripdetail',
       events: {
         returnDetail: function (res) {
           let details = _this.data.detailList
@@ -190,18 +215,12 @@ Page({
           {
             employeeId: currentObject.employeeId,
             employeeName: currentObject.employeeName,
-            deptId: currentObject.deptId,
-            deptName: currentObject.deptName,
-            ycrq: currentObject.ycrq,
-            kr: currentObject.kr,
-            contact: currentObject.contact,
-            cfsf: currentObject.cfsf,
-            cfcs: currentObject.cfcs,
-            address1: currentObject.address1,
-            mdsf: currentObject.mdsf,
-            mdcs: currentObject.mdcs,
-            address2: currentObject.address2,
-            sy: currentObject.sy
+            bizDate: currentObject.bizDate,
+            bizTime1: currentObject.bizTime1,
+            bizTime2: currentObject.bizTime2,
+            bizObject: currentObject.bizObject,
+            bizAddress: currentObject.bizAddress,
+            bizContent: currentObject.bizContent
           }, isNew: false
         })
       }
@@ -225,7 +244,7 @@ Page({
     })
   },
   formSubmit(e) {
-
+    console.log(e);
     let canSubmit = true
     let errmsg = ''
     if (!app.globalData.authorized) {
@@ -240,32 +259,15 @@ Page({
       canSubmit = false
       errmsg += "请填写申请部门\r\n"
     }
-    if (this.data.clxzDesc == '') {
-      canSubmit = false
-      errmsg += "请选择车辆性质\r\n"
-    }
-    if (this.data.clxz == "2") {
-      if (e.detail.value.privatedriver == "") {
-        errmsg += "请填写私车驾驶员\r\n"
-        canSubmit = false
-      }
-      if (e.detail.value.privatecarno == "") {
-        errmsg += "请填写私车车牌号\r\n"
-        canSubmit = false
-      }
-    }
-    if (this.data.purposeDesc == '') {
-      canSubmit = false
-      errmsg += "请选择用车原因\r\n"
-    }
-    let t = this.data.sqrqDate
+
+    let t = this.data.dayEnd
     if (t == '') {
       canSubmit = false
-      errmsg += "请填写申请日期\r\n"
+      errmsg += "请填写截止日期\r\n"
     }
-    if (!this.data.detailList) {
+    if (this.data.daysTotal == '' || this.data.daysTotal == '0') {
       canSubmit = false
-      errmsg += "请填写明细资料\r\n"
+      errmsg += "请填写出差天数\r\n"
     }
     if (canSubmit) {
       let _this = this
@@ -277,24 +279,23 @@ Page({
             wx.showLoading({
               title: 'Sending'
             })
-            console.log(_this.data)
-            console.log(e)
             wx.request({
-              url: app.globalData.restAdd + '/Hanbell-JRS/api/efgp/hkgl037/wechat?' + app.globalData.restAuth,
-              //url: 'http://172.16.80.99:8480' + '/Hanbell-JRS/api/efgp/hkgl037/wechat?' + app.globalData.restAuth,
+              url: app.globalData.restAdd + '/Hanbell-JRS/api/efgp/hzgl004/wechat?' + app.globalData.restAuth,
+              //url: 'http://172.16.80.99:8480' + '/Hanbell-JRS/api/efgp/hzgl004/wechat?' + app.globalData.restAuth,
               data: {
-                employeeId: _this.data.employeeId,
-                employeeName: _this.data.employeeName,
-                deptId: _this.data.deptId,
-                deptName: _this.data.deptName,
-                sqrqDate: _this.data.sqrqDate,
-                clxz: _this.data.clxz,
-                clxzDesc: _this.data.clxzDesc,
-                privatedriver: e.detail.value.privatedriver,
-                privatecarno: e.detail.value.privatecarno,
-                purpose: _this.data.purpose,
-                purposeDesc: _this.data.purposeDesc,
-                telcontact: e.detail.value.telcontact,
+                company: _this.data.company,
+                applyUser: _this.data.employeeId,
+                applyDate: _this.data.applyDate,
+                applyDept: _this.data.deptId,
+                formType: _this.data.businessProperty,
+                formTypeDesc: _this.data.businessPropertyDesc,
+                vehicle: _this.data.vehicle,
+                vehicleDesc: _this.data.vehicleDesc,
+                destination: _this.data.destination,
+                destinationDesc: _this.data.destinationDesc,
+                startDate: e.detail.value.dayBegin,
+                endDate: e.detail.value.dayEnd,
+                days: e.detail.value.daysTotal,
                 detailList: _this.data.detailList
               },
               header: {
@@ -334,5 +335,27 @@ Page({
   formReset() {
     //console.log('form发生了reset事件');
   }
-
+  ,
+  caculaterDays(date1, date2) {
+    if(date1 == "" || date2 == ""){
+      return ;
+    }
+    let daysTotal
+    let today = new Date();//取今天的日期
+    //5天日期管控
+    let d2 = new Date(date2);//出差日期
+    let days = (Date.parse(today) - Date.parse(d2)) / (1000 * 60 * 60 * 24);
+    if (days > 5) {
+      wx.showModal({
+        title: '系统提示',
+        content: "出差日期截止超过5天不可以申请",
+        showCancel: false
+      })
+      return false;
+    }
+    let d1 = new Date(date1);//出差时间（起）
+    days = (Date.parse(d2) - Date.parse(d1)) / (1000 * 60 * 60 * 24);
+    daysTotal = days + 1;
+    return daysTotal;
+  }
 })
