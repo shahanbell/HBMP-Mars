@@ -1,0 +1,80 @@
+<!--pages/businesstrip/businesstripdetail.wxml-->
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+  <view class="page__hd">
+    <view class="page__title">出差明细</view>
+  </view>
+  <view class="page__bd">
+    <form bindsubmit="formSubmit" bindreset="formReset">
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input weui-cell_vcode">
+          <view class="weui-cell__hd">
+            <view class="weui-label">出差人员</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input name="employeeName" class="weui-input" value="{{employeeName}}" disabled="true" />
+          </view>
+          <view class="weui-cell__ft">
+            <view id="btnDeptSelect" class="weui-vcode-btn" bindtap="bindUserSelect">…</view>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">出差日期</view>
+          </view>
+          <view class="weui-cell__bd">
+            <picker name ="bizDate" mode="date" value="{{bizDate}}" start="2019-07-01" end="2023-06-30" bindchange="bindBizDateChange">
+              <view class="weui-input">{{bizDate}}</view>
+            </picker>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">开始时间</view>
+          </view>
+          <view class="weui-cell__bd">
+            <picker mode="time" value="{{bizTime1}}" bindchange="bindTime1Change">
+              <view class="weui-input">{{bizTime1}}</view>
+            </picker>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">截止时间</view>
+          </view>
+          <view class="weui-cell__bd">
+            <picker mode="time" value="{{bizTime2}}" bindchange="bindTime2Change">
+              <view class="weui-input">{{bizTime2}}</view>
+            </picker>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">客户名称</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input name="bizObject" class="weui-input" value="{{bizObject}}" />
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">出差地址</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input name="bizAddress" class="weui-input" value="{{bizAddress}}" />
+          </view>
+        </view>
+      </view>
+      <view class="weui-cells__title">具体安排</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell">
+          <view class="weui-cell__bd">
+            <textarea name="bizContent" class="weui-textarea" placeholder="请输入具体安排内容" style="height: 100rpx" bindblur="bindBizContentChange" value="{{bizContent}}" />
+          </view>
+        </view>
+      </view>
+      <view class="button-sp-area">
+        <button class="weui-btn" form-type="submit" type="primary">添加</button>
+      </view>
+    </form>
+  </view>
+</view>

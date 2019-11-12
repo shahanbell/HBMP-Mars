@@ -17,17 +17,17 @@ Page({
     menu: [
       { id: 'menu01', name: '请假', imgUrl: '../../images/leave.png', url: '/pages/leave/leave' },
       { id: 'menu02', name: '加班', imgUrl: '../../images/overtime.png', url: '/pages/overtime/overtime' },
-      { id: 'menu03', name: '出差', imgUrl: '../../images/business.png', url: '/pages/pie/index' },
+      { id: 'menu03', name: '出差', imgUrl: '../../images/business.png', url: '/pages/businesstrip/businesstrip' },
       {
-        id: 'menu08', name: '派车', imgUrl: '../../images/car.png',
+        id: 'menu04', name: '派车', imgUrl: '../../images/car.png',
         url: '/pages/carapp/carapp'
       }, 
       {
-        id: 'menu07', name: '借支', imgUrl: '../../images/loan.png',
+        id: 'menu05', name: '借支', imgUrl: '../../images/loan.png',
         url: '/pages/loan/loan'
       },
       {
-        id: 'menu08', name: '派工', imgUrl: '../../images/sendjob.png',
+        id: 'menu06', name: '派工', imgUrl: '../../images/sendjob.png',
         url: '/pages/sendjob/sendjob'
       }
     ],
