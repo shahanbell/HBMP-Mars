@@ -53,6 +53,14 @@
             <view class="weui-vcode-btn" bindtap="bindBusinessProperty">…</view>
           </view>
         </view>
+               <view class="weui-cell weui-cell_input weui-cell_vcode">
+          <view class="weui-cell__hd">
+            <view class="weui-label">其他性质</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input name = "otherType" class="weui-input" placeholder="请填写其他性质" value="{{otherType}}" />
+          </view>
+        </view>
         <view class="weui-cell weui-cell_input weui-cell_vcode">
           <view class="weui-cell__hd">
             <view class="weui-label">交通工具</view>
@@ -62,6 +70,14 @@
           </view>
           <view class="weui-cell__ft">
             <view class="weui-vcode-btn" bindtap="bindVehicle">…</view>
+          </view>
+        </view>
+               <view class="weui-cell weui-cell_input weui-cell_vcode">
+          <view class="weui-cell__hd">
+            <view class="weui-label">其他交通</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input name = "otherVehicle" class="weui-input" placeholder="请填写其他交通工具" value="{{otherVehicle}}" ></input>
           </view>
         </view>
         <view class="weui-cell weui-cell_input weui-cell_vcode">

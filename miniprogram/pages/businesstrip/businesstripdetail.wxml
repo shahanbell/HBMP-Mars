@@ -11,7 +11,7 @@
             <view class="weui-label">出差人员</view>
           </view>
           <view class="weui-cell__bd">
-            <input name="employeeName" class="weui-input" value="{{employeeName}}" disabled="true" />
+            <input name="bizEmployeeName" class="weui-input" value="{{bizEmployeeName}}" disabled="true" />
           </view>
           <view class="weui-cell__ft">
             <view id="btnDeptSelect" class="weui-vcode-btn" bindtap="bindUserSelect">…</view>

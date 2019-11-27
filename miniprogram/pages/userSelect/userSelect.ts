@@ -11,12 +11,13 @@ Page({
     pageSize: 20 as number,
     dataList: [],
     selectedKey: null,
-    selectedObject: {}
+    selectedObject: {},
+    keyword: null
   },
   onLoad(option) {
-    this.requestDeptSelect(option);
+    this.requestUserSelect(option);
   },
-  requestDeptSelect(options?: any) {
+  requestUserSelect(options?: any) {
     restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/efgp/users'
     if (options.userInfo) {
       let reg = /^[\u3220-\uFA29]+$/;
@@ -50,6 +51,17 @@ Page({
         console.log(fail)
       }
     })
+  },
+  sltwordInput(e) {
+    this.setData!({
+      keyword: e.detail.value
+    })
+  },
+  budUserQuery() {
+    console.log("查找");
+    let word = this.data.keyword;
+    this.requestUserSelect({'userInfo':word});
+    
   },
   bindUserSelected(e) {
     console.log(e)
