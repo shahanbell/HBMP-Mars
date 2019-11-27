@@ -5,6 +5,15 @@
   </view>
   <view class="page__bd">
     <view class="weui-cells weui-cells_after-title">
+     <view class="weui-cell weui-cell_input weui-cell_vcode">
+
+        <view class="weui-cell__bd">
+          <input bindinput="sltwordInput" class="weui-input" placeholder="请输入查询内容" />
+        </view>
+        <view class="weui-cell__ft">
+          <view class="weui-vcode-btn" bindtap="budUserQuery">查询</view>
+        </view>
+      </view>
       <radio-group bindchange="bindUserSelected">
         <label class="weui-cell weui-check__label" wx:for="{{dataList}}" wx:key="{{item.id}}">
           <radio class="weui-check " value="{{item.id}}" checked="{{item.id==selectedKey}}" />

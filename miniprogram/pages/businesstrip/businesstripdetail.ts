@@ -5,8 +5,8 @@ let eventChannel
 let d = new Date()
 Page({
   data: {
-    employeeId: null,
-    employeeName: null,
+    bizEmployee: null,
+    bizEmployeeName: null,
     bizDate: d.toISOString().substring(0, 10),
     bizTime1: "08:00",
     bizTime2: "17:10",
@@ -43,14 +43,14 @@ Page({
     eventChannel.on('openDetail', (res) => {
       if (res.isNew) {
         this.setData!({
-          employeeId: res.data.employeeId,
-          employeeName: res.data.employeeName,
+          bizEmployee: res.data.bizEmployee,
+          bizEmployeeName: res.data.bizEmployeeName,
           isNew: res.isNew
         })
       } else {
         this.setData!({
-          employeeId: res.data.employeeId,
-          employeeName: res.data.employeeName,
+          bizEmployee: res.data.bizEmployee,
+          bizEmployeeName: res.data.bizEmployeeName,
           bizDate: res.data.bizDate,
           bizTime1: res.data.bizTime1,
           bizTime2: res.data.bizTime2,
@@ -112,8 +112,8 @@ Page({
     });
     if (canSubmit) {
       let newObject = {
-        employeeId: this.data.employeeId,
-        employeeName: this.data.employeeName,
+        bizEmployee: this.data.bizEmployee,
+        bizEmployeeName: this.data.bizEmployeeName,
         bizDate: this.data.bizDate,
         bizTime1: this.data.bizTime1,
         bizTime2: this.data.bizTime2,

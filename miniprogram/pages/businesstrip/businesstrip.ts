@@ -14,22 +14,17 @@ Page({
     applyDate: d.toISOString().substring(0, 10),
     businessProperty: '1',
     businessPropertyDesc: '业务推展',
+    otherType:'',
     vehicle: '3',
     vehicleDesc: "高铁",
+    otherVehicle:'',
     destination: '1',
     destinationDesc: '中国大陆',
     dayBegin: d.toISOString().substring(0, 10),
     dayEnd: '',
     daysTotal: 0.00 as number,
     reason: '',
-    total: 0.00 as number,
-    checkArray: [
-      {
-        name: "trafficfee",
-        value: 0,
-        notempty: { key: true, msg: "不能为空" },
-        isnumber: { key: true, msg: "数字!" }
-      }]
+    total: 0.00 as number
   },
   onLoad() {
     wx.showLoading({
@@ -182,8 +177,8 @@ Page({
         res.eventChannel.emit('openDetail', {
           data:
           {
-            employeeId: _this.data.employeeId,
-            employeeName: _this.data.employeeId + "-" + _this.data.employeeName
+            bizEmployee: _this.data.employeeId,
+            bizEmployeeName: _this.data.employeeName
           }, isNew: true
         })
       }
@@ -213,8 +208,8 @@ Page({
         res.eventChannel.emit('openDetail', {
           data:
           {
-            employeeId: currentObject.employeeId,
-            employeeName: currentObject.employeeName,
+            bizEmployee: currentObject.bizEmployee,
+            bizEmployeeName: currentObject.bizEmployeeName,
             bizDate: currentObject.bizDate,
             bizTime1: currentObject.bizTime1,
             bizTime2: currentObject.bizTime2,
@@ -289,8 +284,10 @@ Page({
                 applyDept: _this.data.deptId,
                 formType: _this.data.businessProperty,
                 formTypeDesc: _this.data.businessPropertyDesc,
+                otherType:e.detail.value.otherType,
                 vehicle: _this.data.vehicle,
                 vehicleDesc: _this.data.vehicleDesc,
+                otherVehicle: e.detail.value.otherVehicle,
                 destination: _this.data.destination,
                 destinationDesc: _this.data.destinationDesc,
                 startDate: e.detail.value.dayBegin,
