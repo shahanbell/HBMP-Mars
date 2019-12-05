@@ -87,8 +87,8 @@ Page({
     }
     if (canSubmit) {
       wx.request({
-        url: app.globalData.restAdd + '/Hanbell-WCO/api/wco/dineinfo/verify?' + app.globalData.restAuth,
-        // url: 'http://localhost:8480' + '/Hanbell-WCO/api/wco/dineinfo/verify?' + app.globalData.restAuth,
+        url: app.globalData.restAdd + '/Hanbell-WCO/api/wco/dineinfo/inspect?' + app.globalData.restAuth,
+        // url: 'http://localhost:8480' + '/Hanbell-WCO/api/wco/dineinfo/inspect?' + app.globalData.restAuth,
         data: {
           userid: this.data.userid,
           dinedate: new Date(this.data.dinedate.replace(/-/g, '/')),
@@ -115,8 +115,8 @@ Page({
                 })
                 if (res.confirm) {
                   wx.request({
-                    url: app.globalData.restAdd + '/Hanbell-WCO/api/wco/dineinfo/create?' + app.globalData.restAuth,
-                    // url: 'http://localhost:8480' + '/Hanbell-WCO/api/wco/dineinfo/create?' + app.globalData.restAuth,
+                    url: app.globalData.restAdd + '/Hanbell-WCO/api/wco/dineinfo?' + app.globalData.restAuth,
+                    // url: 'http://localhost:8480' + '/Hanbell-WCO/api/wco/dineinfo?' + app.globalData.restAuth,
                     data: {
                       userid: _this.data.userid,
                       username: _this.data.username,
