@@ -1,0 +1,49 @@
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+  <view class="page__hd">
+    <view class="page__title" s>发起报餐</view>
+  </view>
+  <view class="page__bd">
+    <form bindsubmit="formSubmit" bindreset="formReset">
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">报餐地点</view>
+          </view>
+          <view class="weui-cell">
+            <radio-group class="radio-group" bindchange="radioAdressChange">
+              <radio value="总部" bindtap='radio' checked="true">总部</radio>
+              <text decode="{{true}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>
+              <radio value="一厂" bindtap='radio'>一厂</radio>
+            </radio-group>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">报餐日期</view>
+          </view>
+          <view class="weui-cell__bd">
+            <picker mode="date" value="{{dinedate}}" start="{{startdate}}" end="2023-06-30" bindchange="bindDineDateChange">
+              <view class="weui-input">{{dinedate}}</view>
+            </picker>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">报餐项目</view>
+          </view>
+          <view class="weui-cell">
+            <checkbox-group class="radio-group" bindchange="checkboxChange" >
+              <checkbox value="lunch"  >午餐</checkbox>
+              <text decode="{{true}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>
+              <checkbox value="dinner" >晚餐</checkbox>
+            </checkbox-group>
+          </view>
+        </view>
+      </view>
+      <view class="button-sp-area">
+        <button class="weui-btn" form-type="submit" type="primary">提交</button>
+        <button class="weui-btn" form-type="reset">重置</button>
+      </view>
+    </form>
+  </view>
+</view>

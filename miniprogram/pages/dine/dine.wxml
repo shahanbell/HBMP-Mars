@@ -1,0 +1,39 @@
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+  <view style="background-color:#E8E8E8; ">
+    <form bindsubmit="formSubmit" bindreset="formReset">
+      <view class="weui-panel weui-panel_access" wx:for="{{dinelist}}">
+        <view class="weui-panel__hd">
+          <view>报餐消息{{index+1}}({{item.address}})
+            <view class="button-warn" bindtap="bindRemoveDine" data-index="{{item.id}}" wx:if="{{ item.status==='N' }}">
+              取消预约</view>
+          </view>
+        </view>
+        <view class="weui-panel__bd">
+          <view class="weui-form-preview__bd">
+            <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">报餐时间：</view>
+              <view class="weui-form-preview__value">{{item.dinedate}}</view>
+            </view>
+          </view>
+          <view class="weui-form-preview__bd">
+            <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">报餐项目：</view>
+              <checkbox-group class="radio-group">
+                <checkbox checked="{{item.lunch}}" disabled="true">午餐</checkbox>
+                <checkbox checked="{{item.dinner}}" disabled="true">晚餐</checkbox>
+              </checkbox-group>
+            </view>
+          </view>
+          <view class="weui-form-preview__bd" wx:if="{{ item.status==='N' }}" style="text-align: center;color : #A8A8A8">
+            待通知（未生效）</view>
+          <view class="weui-form-preview__bd" wx:if="{{ item.status==='V' }}" style="text-align: center;color : green">
+            已通知（生效中）</view>
+        </view>
+      </view>
+    </form>
+    <view class="weui-panel weui-panel_access" style="height:70px;" wx:if="{{dinelist.length>=3}}"></view>
+  </view>
+  <view class="button-position-absolute">
+    <button type="myType" bindtap="bindDinenew" class="weui-btn" hover-class="hover-btn">发起报餐</button>
+  </view>
+</view>

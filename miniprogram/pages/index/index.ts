@@ -29,6 +29,10 @@ Page({
       {
         id: 'menu06', name: '派工', imgUrl: '../../images/sendjob.png',
         url: '/pages/sendjob/sendjob'
+      },
+      {
+        id: 'menu08', name: '报餐', imgUrl: '../../images/dine.png',
+        url: '/pages/dine/dine'
       }
     ],
     indicatorDots: false,
