@@ -23,7 +23,8 @@
     "pages/sendjob/sendjob",
     "pages/sendjob/repairKind",
     "pages/multiUserSelect/multiUserSelect",
-    "pages/sendjob/stationKind"
+    "pages/sendjob/stationKind",
+    "pages/dine/dine"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -61,5 +62,5 @@
     ]
   },
   "sitemapLocation": "sitemap.json",
-  "style":"v2"
+  "style": "v2"
 }
