@@ -25,9 +25,10 @@ Page({
     //带出集合
     console.log("执行第二次查询")
     wx.request({
-      //app.globalData.restAdd +
-      url: app.globalData.restAdd+'/Hanbell-WCO/api/wco/dineinfo/findDineInfoList?userid=' + app.globalData.employeeId
-        + "&" + app.globalData.restAuth,
+      url: app.globalData.restAdd + '/Hanbell-WCO/api/wco/dineinfo/list/' + app.globalData.employeeId
+        + "?" + app.globalData.restAuth,
+      // url: 'http://localhost:8480' +'/Hanbell-WCO/api/wco/dineinfo/list/' + app.globalData.employeeId
+      //   + "?" + app.globalData.restAuth,
       header: {
         'content-type': 'application/json'
       },
@@ -86,12 +87,12 @@ Page({
               title: 'Sending'
             })
             wx.request({
-              //app.globalData.restAdd +
-              url: app.globalData.restAdd +'/Hanbell-WCO/api/wco/dineinfo/removeForStatus?id=' + id + "&" + app.globalData.restAuth,
+              url: app.globalData.restAdd  +'/Hanbell-WCO/api/wco/dineinfo/updates/' + id + "?" + app.globalData.restAuth,
+              // url: 'http://localhost:8480' +'/Hanbell-WCO/api/wco/dineinfo/updates/' + id + "?" + app.globalData.restAuth,
               header: {
                 'content-type': 'application/json'
               },
-              method: 'POST',
+              method: 'PUT',
               success: res => {
                 wx.hideLoading()
                 if (getCurrentPages().length != 0) {
