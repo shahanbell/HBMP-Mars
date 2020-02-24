@@ -176,11 +176,15 @@ Page({
         },
         method: 'PUT',
         success: res => {
-          //console.log(res)
+          console.log(res)
           if (res.data.code == '200') {
             app.globalData.authorized = res.data.authorized
             app.globalData.employeeId = res.data.employeeId
             app.globalData.employeeName = res.data.employeeName
+            app.globalData.defaultDeptId = res.data.deptno
+            app.globalData.defaultDeptName = res.data.deptName
+            app.globalData.defaultCompany = res.data.company
+            app.globalData.defaultCompanyName = res.data.companyName
           } else {
             app.globalData.authorized = false
           }
@@ -193,9 +197,11 @@ Page({
             content: res.data.msg,
             showCancel: false,
             success(res) {
-              wx.switchTab({
-                url: '/pages/index/index'
-              })
+              if (app.globalData.authorized = true) {
+                wx.switchTab({
+                  url: '/pages/index/index'
+                })
+              }
             }
           })
         },

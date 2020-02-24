@@ -52,6 +52,24 @@ Page({
       })
     }
   },
+  bindCompanySelect(e) {
+    let that = this
+    wx.navigateTo({
+      url: '../companySelect/companySelect?company=' + app.globalData.defaultCompany,
+      events: {
+        returnCompanySelect: function (res) {
+          if (res) {
+            that.setData!({
+              company: res.k + '-' + res.v
+            })
+          }
+        }
+      },
+      success(res) {
+        console.log(res)
+      }
+    })
+  },
   bindDeptSelect(e) {
     let that = this
     wx.navigateTo({
