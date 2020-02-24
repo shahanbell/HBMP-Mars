@@ -100,7 +100,7 @@ Page({
     let canSubmit = true
     let errmsg = ''
     let checkobj = e.detail.value;
-    console.log(checkobj);
+    // console.log(checkobj);
     this.data.checkArray.forEach((value, idx, array) => {
       // val: 当前值
       // idx：当前index
@@ -121,7 +121,7 @@ Page({
         bizAddress: e.detail.value.bizAddress,
         bizContent: e.detail.value.bizContent
       }
-      console.log(newObject)
+      // console.log(newObject)
       eventChannel = this.getOpenerEventChannel()
       eventChannel.emit('returnDetail', { data: newObject, isNew: this.data.isNew })
       wx.navigateBack({
