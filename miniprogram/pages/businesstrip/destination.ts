@@ -16,7 +16,7 @@ Page({
   },
   requestData(options?: any) {
     restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/efgp/bizdestination'
-    console.log(restUrl)
+    // console.log(restUrl)
     wx.request({
       url: restUrl,
       data: {

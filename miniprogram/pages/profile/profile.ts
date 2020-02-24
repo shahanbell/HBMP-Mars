@@ -41,7 +41,7 @@ Page({
     this.setData!({
       userInfo: e.detail.userInfo,
       hasUserInfo: true,
-      [mobile]: e.detail.userInfo.mobile
+      // [mobile]: e.detail.userInfo.mobile
     })
     //授权后存储openid
     wx.request({
@@ -126,7 +126,7 @@ Page({
         },
         method: 'GET',
         success: res => {
-          //console.log(res.data)
+          // console.log(res.data)
           this.setData!({
             canSubmit: true,
             canSendCode: false
@@ -176,7 +176,7 @@ Page({
         },
         method: 'PUT',
         success: res => {
-          console.log(res)
+          // console.log(res)
           if (res.data.code == '200') {
             app.globalData.authorized = res.data.authorized
             app.globalData.employeeId = res.data.employeeId
