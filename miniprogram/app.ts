@@ -17,7 +17,8 @@ export interface IMyApp {
     defaultCompany?: string,
     defaultCompanyName?: string,
     defaultDeptId?: string,
-    defaultDeptName?: string
+    defaultDeptName?: string,
+    auth?: Array[string],
   }
 }
 
@@ -66,6 +67,32 @@ App<IMyApp>({
                   console.log(fail)
                 }
               })
+
+              wx.request({
+                //测试地址
+                // url: 'http://localhost:8480/Hanbell-WCO/api/prg9f247ab6d5e4/AuthValidation',
+                //正式地址
+                url: this.globalData.restAdd +'/Hanbell-WCO/api/prg9f247ab6d5e4/AuthValidation',
+                data: {
+                  employeeid: this.globalData.employeeId,
+                },
+                header: {
+                  'content-type': 'application/json'
+                },
+                method: 'GET',
+                success: res => {
+                  var data = res.data;
+                  this.globalData.auth = data;
+                },
+                fail: fail => {
+                  wx.showModal({
+                    title: '系统提示',
+                    content: "权限获取失败，请联系管理员",
+                    showCancel: false
+                  })
+                }
+              })
+
             }
             if (this.sessionInfoReadyCallback) {
               this.sessionInfoReadyCallback(res.data)

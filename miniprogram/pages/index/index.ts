@@ -14,27 +14,7 @@ Page({
       'https://images.unsplash.com/photo-1551214012-84f95e060dee?w=640',
       'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640'
     ],
-    menu: [
-      { id: 'menu01', name: '请假', imgUrl: '../../images/leave.png', url: '/pages/leave/leave' },
-      { id: 'menu02', name: '加班', imgUrl: '../../images/overtime.png', url: '/pages/overtime/overtime' },
-      { id: 'menu03', name: '出差', imgUrl: '../../images/business.png', url: '/pages/businesstrip/businesstrip' },
-      {
-        id: 'menu04', name: '派车', imgUrl: '../../images/car.png',
-        url: '/pages/carapp/carapp'
-      }, 
-      {
-        id: 'menu05', name: '借支', imgUrl: '../../images/loan.png',
-        url: '/pages/loan/loan'
-      },
-      {
-        id: 'menu06', name: '派工', imgUrl: '../../images/sendjob.png',
-        url: '/pages/sendjob/sendjob'
-      },
-      {
-        id: 'menu08', name: '报餐', imgUrl: '../../images/dine.png',
-        url: '/pages/dine/dine'
-      }
-    ],
+    menu: [],
     indicatorDots: false,
     autoplay: true,
     interval: 5000,
@@ -76,6 +56,34 @@ Page({
         })
       }
     }
+
+    if (app.globalData.auth) {
+      var arr=Authotities();
+      this.setData!({
+        menu: arr
+      })
+    } else {
+      app.sessionInfoReadyCallback = (data) => {
+        var arr = Authotities();
+        this.setData!({
+          menu: arr
+        })
+      }
+    }
+    function Authotities() {
+      let list = app.globalData.auth;
+      let array = [];
+      var pages = getCurrentPages()
+      var currentPage = pages[pages.length - 1]
+      var routepage = currentPage.route;
+      list.forEach((val, idx, arr) => {
+        if (val.pageroute == routepage) {
+          array.push(val);
+        }
+      })
+    return array;
+    }
+
   },
   onShow() {
     if (!this.data.hasUserInfo && app.globalData.userInfo) {
