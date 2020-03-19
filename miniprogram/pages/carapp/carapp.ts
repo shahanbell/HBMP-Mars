@@ -2,7 +2,7 @@ import { IMyApp } from '../../app'
 
 const app = getApp<IMyApp>()
 let d = new Date()
-let userInput =''
+let userInput = ''
 Page({
   data: {
     detailList: [] as any,
@@ -14,10 +14,11 @@ Page({
     sqrqDate: d.toISOString().substring(0, 10),
     clxz: '1',
     clxzDesc: '1-公务车',
-    privatedriver:'',
+    privatedriver: '',
     telcontact: '',
     purpose: '',
     purposeDesc: '',
+    hmark1: '',
     checkArray: [
       {
         name: "trafficfee",
@@ -91,13 +92,13 @@ Page({
       }
     })
   },
-  bindUserInput(e){
+  bindUserInput(e) {
     userInput = e.detail.value
   },
-  bindUserSelect(e){
+  bindUserSelect(e) {
     let that = this
     wx.navigateTo({
-      url: '../userSelect/userSelect?userInfo='+userInput,
+      url: '../userSelect/userSelect?userInfo=' + userInput,
       events: {
         returnUserSelect: function (res) {
           if (res) {
@@ -258,6 +259,12 @@ Page({
       canSubmit = false
       errmsg += "请选择用车原因\r\n"
     }
+
+    if (this.data.purpose == "13" && e.detail.value.hmark1 == "") {
+      errmsg += "其他用车请输入备注说明\r\n"
+      canSubmit = false
+    }
+
     let t = this.data.sqrqDate
     if (t == '') {
       canSubmit = false
@@ -295,6 +302,7 @@ Page({
                 purpose: _this.data.purpose,
                 purposeDesc: _this.data.purposeDesc,
                 telcontact: e.detail.value.telcontact,
+                hmark1: e.detail.value.hmark1,
                 detailList: _this.data.detailList
               },
               header: {
