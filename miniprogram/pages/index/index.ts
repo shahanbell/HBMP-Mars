@@ -58,19 +58,19 @@ Page({
     }
 
     if (app.globalData.auth) {
-      var arr=Authotities();
+      var arr=Authorities();
       this.setData!({
         menu: arr
       })
     } else {
       app.sessionInfoReadyCallback = (data) => {
-        var arr = Authotities();
+        var arr = Authorities();
         this.setData!({
           menu: arr
         })
       }
     }
-    function Authotities() {
+    function Authorities() {
       let list = app.globalData.auth;
       let array = [];
       var pages = getCurrentPages()

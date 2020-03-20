@@ -45,11 +45,11 @@ Page({
     })
     //授权后存储openid
     wx.request({
-      url: app.globalData.restAdd + '/Hanbell-WCO/api/prg9f247ab6d5e4/wechatuser',
-      data: {
-        openid: app.globalData.openId,
-        nickName: app.globalData.userInfo.nickName
-      },
+      url: 'http://localhost:8480/Hanbell-WCO/api/prg9f247ab6d5e4/wechatuser',
+        data: {
+          openId: app.globalData.openId,
+          nickName: app.globalData.userInfo.nickName
+        },
       header: {
         'content-type': 'application/json'
       },
