@@ -1,12 +1,12 @@
 {
   "pages": [
-    "pages/profile/profile",
     "pages/index/index",
     "pages/task/task",
     "pages/task/taskdetail",
     "pages/echart/echart",
     "pages/leave/leave",
     "pages/leave/leaveKindSelect",
+    "pages/profile/profile",
     "pages/companySelect/companySelect",
     "pages/deptSelect/deptSelect",
     "pages/workTypeSelect/workTypeSelect",

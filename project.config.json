@@ -20,7 +20,7 @@
 		"minified": true,
 		"newFeature": true,
 		"coverView": true,
-		"nodeModules": true,
+		"nodeModules": false,
 		"autoAudits": false,
 		"checkInvalidKey": true,
 		"checkSiteMap": true,
@@ -29,8 +29,7 @@
 			"ignore": [],
 			"disablePlugins": [],
 			"outputPath": ""
-		},
-		"bundle": true
+		}
 	},
 	"appid": "wxaeb50a87e7bce793",
 	"simulatorType": "wechat",
