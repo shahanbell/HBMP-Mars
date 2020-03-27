@@ -16,7 +16,7 @@ Page({
   },
   requestData(options?: any) {
     restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/efgp/bizkind'
-    console.log(restUrl)
+    // console.log(restUrl)
     wx.request({
       url: restUrl,
       data: {
@@ -48,7 +48,7 @@ Page({
         })
       }
     })
-    //console.log(this.data.selectedObject)
+    // console.log(this.data.selectedObject)
     if (this.data.selectedObject) {
       let that = this
       wx.showModal({
