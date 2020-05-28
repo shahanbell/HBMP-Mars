@@ -25,7 +25,10 @@
     "pages/sendjob/repairKind",
     "pages/multiUserSelect/multiUserSelect",
     "pages/sendjob/stationKind",
-    "pages/dine/dine"
+    "pages/dine/dine",
+    "pages/customercomplaint/customercomplaint",
+    "pages/customercomplaint/selectSearch",
+    "pages/customercomplaint/select"
   ],
   "window": {
     "backgroundTextStyle": "light",
