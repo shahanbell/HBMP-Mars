@@ -15,16 +15,17 @@
           <view class="weui-cell__ft">
             <view class="weui-vcode-btn" bindtap="bindRepairKind">…</view>
           </view>
-        </view>
+        </view>  
+
         <view class="weui-cell weui-cell_input">
           <view class="weui-cell__hd">
             <view class="weui-label">叫修单号</view>
           </view>
           <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请输入叫修单号" bindinput="bindRepairnoChange" value="{{repairno}}"  />
+            <input class="weui-input" placeholder="请输入叫修单号" value="{{repairno}}"  disabled="true" />
           </view>
           <view class="weui-cell__ft">
-            <view class="weui-vcode-btn" bindtap="bindRepta">…</view>
+            <view class="weui-vcode-btn" bindtap="bindRepairnoChange">…</view>
           </view>
         </view>
       </view>

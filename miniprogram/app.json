@@ -27,8 +27,8 @@
     "pages/sendjob/stationKind",
     "pages/dine/dine",
     "pages/customercomplaint/customercomplaint",
-    "pages/customercomplaint/selectSearch",
-    "pages/customercomplaint/select"
+    "pages/customercomplaint/select",
+    "pages/customercomplaint/selectSearch"
   ],
   "window": {
     "backgroundTextStyle": "light",

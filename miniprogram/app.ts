@@ -23,6 +23,8 @@ export interface IMyApp {
 }
 
 App<IMyApp>({
+
+  
   onLaunch() {
     // 登录
     wx.login({
@@ -38,7 +40,6 @@ App<IMyApp>({
           },
           method: 'GET',
           success: res => {
-            //console.log(res.data)
             this.globalData.openId = res.data.openId
             this.globalData.sessionKey = res.data.sessionKey
             this.globalData.hasOpenId = true
@@ -72,7 +73,7 @@ App<IMyApp>({
                 //测试地址
                 // url: 'http://localhost:8480/Hanbell-WCO/api/prg9f247ab6d5e4/AuthValidation',
                 //正式地址
-                url: this.globalData.restAdd +'/Hanbell-WCO/api/prg9f247ab6d5e4/AuthValidation',
+                url: this.globalData.restAdd + '/Hanbell-WCO/api/prg9f247ab6d5e4/AuthValidation',
                 data: {
                   employeeid: this.globalData.employeeId,
                 },
@@ -83,6 +84,10 @@ App<IMyApp>({
                 success: res => {
                   var data = res.data;
                   this.globalData.auth = data;
+                  if (this.userInfoReadyCallback) {
+                      
+                    this.userInfoReadyCallback(data);
+                  }
                 },
                 fail: fail => {
                   wx.showModal({
@@ -135,8 +140,9 @@ App<IMyApp>({
   globalData: {
     //restAdd:'https://jrs.hanbell.com.cn',
     restAdd: 'https://i2.hanbell.com.cn',
+    // restAdd1: 'http://localhost:8480',
     restId: '1505912014724',
     restToken: '0ec858293fccfad55575e26b0ce31177',
     restAuth: 'appid=1505912014724&token=0ec858293fccfad55575e26b0ce31177'
-  }
+  },
 })

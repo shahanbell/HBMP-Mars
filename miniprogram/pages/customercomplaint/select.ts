@@ -51,8 +51,8 @@ Page({
           wx.request({
             url: app.globalData.restAdd + o.url,
             data: {
-              // appid: app.globalData.restId,
-              // token: app.globalData.restToken
+              appid: app.globalData.restId,
+              token: app.globalData.restToken
             }
             header: {
               'content-type': 'application/json'
@@ -100,5 +100,6 @@ Page({
         }
       })
     }
+    
   }
 })
