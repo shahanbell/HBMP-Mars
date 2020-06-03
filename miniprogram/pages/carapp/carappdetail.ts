@@ -11,7 +11,7 @@ Page({
     deptId: null,
     deptName: null,
     ycrq: d.toISOString().substring(0, 10),
-    kr:'',
+    kr: '',
     contact: '',
     cfsf: "",
     cfcs: "",
@@ -19,7 +19,8 @@ Page({
     mdsf: "",
     mdcs: "",
     address2: "",
-    sy:''
+    sy: '',
+    keyuser: '',
   },
   onLoad() {
     wx.showLoading({
@@ -58,14 +59,64 @@ Page({
       }
     })
   },
-  bindDeptSelect(e) {
+  sltwordInput(e) {
+    this.setData!({
+      keyuser: e.detail.value
+    })
+  },
+
+  btnUserSelect(e) {
     let _this = this
     wx.navigateTo({
-      url: '../deptSelect/deptSelect?employeeid=' + app.globalData.employeeId,
+      url: '../userSelect/userSelect?userInfo=' + this.data.keyuser,
+      events: {
+        returnUserSelect: function (res) {
+          if (res) {
+            _this.setData!({
+              employeeId: res.k,
+              employeeName: res.v
+
+            })
+            //带出所在部门
+            wx.request({
+              url: app.globalData.restAdd + '/Hanbell-JRS/api/efgp/functions/f;users.id=' + _this.data
+                .employeeId + '/s/0/10/',
+              data: {
+                appid: app.globalData.restId,
+                token: app.globalData.restToken
+              },
+              header: {
+                'content-type': 'application/json'
+              },
+              method: 'GET',
+              success: result => {
+                console.log(result);
+                _this.setData!({
+                  deptName: result.data[0].organizationUnit.id + "-" + result.data[0].organizationUnit.organizationUnitName
+                })
+              },
+              fail: fail => {
+                console.log(fail)
+              }
+            })
+
+          }
+        }
+      },
+      success(res) {
+        console.log(res)
+
+      }
+    })
+  },
+  bindDeptSelect(e) {
+    let that = this
+    wx.navigateTo({
+      url: '../deptSelect/deptSelect?employeeid=' + this.data.employeeId,
       events: {
         returnDeptSelect: function (res) {
           if (res) {
-            _this.setData!({
+            that.setData!({
               deptId: res.k,
               deptName: res.k + '-' + res.v
             })
@@ -77,22 +128,13 @@ Page({
       }
     })
   },
-  bindLunchChange(e) {
-    this.setData!({
-      lunch: e.detail.value
-    })
-  },
-  bindDinnerChange(e) {
-    this.setData!({
-      dinner: e.detail.value
-    })
-  },
+
   bindYcrqChange(e) {
     this.setData!({
       ycrq: e.detail.value
     })
   },
-  
+
   bindOvertimeChange(e) {
     this.setData!({
       hour: e.detail.value

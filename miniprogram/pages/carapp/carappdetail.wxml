@@ -10,18 +10,21 @@
             <view class="weui-label">同车人员</view>
           </view>
           <view class="weui-cell__bd">
-            <input class="weui-input" value="{{employeeName}}" disabled="true" />
+            <input class="weui-input" bindinput="sltwordInput" value="{{employeeName}}" />
           </view>
           <view class="weui-cell__ft">
-            <view id="btnDeptSelect" class="weui-vcode-btn" bindtap="bindUserSelect">…</view>
+            <view id="btnUserSelect" class="weui-vcode-btn" bindtap="btnUserSelect">…</view>
           </view>
         </view>
-        <view class="weui-cell weui-cell_input">
+        <view class="weui-cell weui-cell_input weui-cell_vcode">
           <view class="weui-cell__hd">
-            <view class="weui-label">所在部门</view>
+            <view class="weui-label">申请部门</view>
           </view>
           <view class="weui-cell__bd">
-            <input class="weui-input" value="{{deptName}}" disabled="true" />
+            <input class="weui-input" placeholder="请选择申请部门" value="{{deptName}}" disabled="true"></input>
+          </view>
+          <view class="weui-cell__ft">
+            <view id="btnDeptSelect" class="weui-vcode-btn" bindtap="bindDeptSelect">…</view>
           </view>
         </view>
         <view class="weui-cell weui-cell_input">
@@ -29,7 +32,7 @@
             <view class="weui-label">客人</view>
           </view>
           <view class="weui-cell__bd">
-            <input name = 'kr' class="weui-input"  value="{{kr}}" />
+            <input name='kr' class="weui-input" value="{{kr}}" />
           </view>
         </view>
         <view class="weui-cell weui-cell_input">
@@ -37,7 +40,7 @@
             <view class="weui-label">联系方式</view>
           </view>
           <view class="weui-cell__bd">
-            <input name= "contact" class="weui-input"  value="{{contact}}"  />
+            <input name="contact" class="weui-input" value="{{contact}}" />
           </view>
         </view>
         <view class="weui-cell weui-cell_input">
@@ -50,52 +53,52 @@
             </picker>
           </view>
         </view>
-         <view class="weui-cell weui-cell_input">
+        <view class="weui-cell weui-cell_input">
           <view class="weui-cell__hd">
             <view class="weui-label">出发省份</view>
           </view>
           <view class="weui-cell__bd">
-            <input name ="cfsf" class="weui-input"   value="{{cfsf}}"/>
+            <input name="cfsf" class="weui-input" value="{{cfsf}}" />
           </view>
         </view>
-         <view class="weui-cell weui-cell_input">
+        <view class="weui-cell weui-cell_input">
           <view class="weui-cell__hd">
             <view class="weui-label">出发城市</view>
           </view>
           <view class="weui-cell__bd">
-            <input name = "cfcs" class="weui-input"  value="{{cfcs}}"/>
+            <input name="cfcs" class="weui-input" value="{{cfcs}}" />
           </view>
         </view>
-         <view class="weui-cell weui-cell_input">
+        <view class="weui-cell weui-cell_input">
           <view class="weui-cell__hd">
-            <view  class="weui-label">详细地址(始)</view>
+            <view class="weui-label">详细地址(始)</view>
           </view>
           <view class="weui-cell__bd">
-            <input name ="address1" class="weui-input"   value="{{address1}}"/>
+            <input name="address1" class="weui-input" value="{{address1}}" />
           </view>
         </view>
-<view class="weui-cell weui-cell_input">
+        <view class="weui-cell weui-cell_input">
           <view class="weui-cell__hd">
             <view class="weui-label">目的省份</view>
           </view>
           <view class="weui-cell__bd">
-            <input name = "mdsf" class="weui-input"  value="{{mdsf}}"/>
+            <input name="mdsf" class="weui-input" value="{{mdsf}}" />
           </view>
         </view>
-         <view class="weui-cell weui-cell_input">
+        <view class="weui-cell weui-cell_input">
           <view class="weui-cell__hd">
             <view class="weui-label">目的城市</view>
           </view>
           <view class="weui-cell__bd">
-            <input name = "mdcs" class="weui-input"  value="{{mdcs}}"/>
+            <input name="mdcs" class="weui-input" value="{{mdcs}}" />
           </view>
         </view>
-         <view class="weui-cell weui-cell_input">
+        <view class="weui-cell weui-cell_input">
           <view class="weui-cell__hd">
-            <view  class="weui-label">详细地址(终)</view>
+            <view class="weui-label">详细地址(终)</view>
           </view>
           <view class="weui-cell__bd">
-            <input name= "address2" class="weui-input"   value="{{address2}}"/>
+            <input name="address2" class="weui-input" value="{{address2}}" />
           </view>
         </view>
       </view>
@@ -103,7 +106,7 @@
       <view class="weui-cells weui-cells_after-title">
         <view class="weui-cell">
           <view class="weui-cell__bd">
-            <textarea name = "reason" class="weui-textarea" placeholder="请输入派车事由" style="height: 100rpx" bindblur="bindSyChange" value="{{sy}}" />
+            <textarea name="reason" class="weui-textarea" placeholder="请输入派车事由" style="height: 100rpx" bindblur="bindSyChange" value="{{sy}}" />
           </view>
         </view>
       </view>

@@ -34,7 +34,7 @@
             </picker>
           </view>
         </view>
-        
+
         <view class="weui-cell weui-cell_input weui-cell_vcode">
           <view class="weui-cell__hd">
             <view class="weui-label">车辆性质</view>
@@ -51,9 +51,9 @@
             <view class="weui-label">私车驾驶员</view>
           </view>
           <view class="weui-cell__bd">
-            <input name = "privatedriver" class="weui-input" placeholder="请开窗选取驾驶员"  bindinput="bindUserInput" value="{{privatedriver}}"></input>
+            <input name="privatedriver" class="weui-input" placeholder="请开窗选取驾驶员" bindinput="bindUserInput" value="{{privatedriver}}"></input>
           </view>
-           <view class="weui-cell__ft">
+          <view class="weui-cell__ft">
             <view id="btnUserSelect" class="weui-vcode-btn" bindtap="bindUserSelect">…</view>
           </view>
         </view>
@@ -62,15 +62,15 @@
             <view class="weui-label">私车车牌号</view>
           </view>
           <view class="weui-cell__bd">
-            <input name = "privatecarno" class="weui-input" placeholder="请输入车牌号"  ></input>
+            <input name="privatecarno" class="weui-input" placeholder="请输入车牌号"></input>
           </view>
         </view>
-          <view class="weui-cell weui-cell_input">
+        <view class="weui-cell weui-cell_input">
           <view class="weui-cell__hd">
             <view class="weui-label">联系方式</view>
           </view>
           <view class="weui-cell__bd">
-            <input name = "telcontact" class="weui-input" placeholder="请输入手机号"  ></input>
+            <input name="telcontact" class="weui-input" placeholder="请输入手机号"></input>
           </view>
         </view>
         <view class="weui-cell weui-cell_input weui-cell_vcode">
@@ -84,9 +84,17 @@
             <view class="weui-vcode-btn" bindtap="bindPurpose">…</view>
           </view>
         </view>
+         <view class="weui-cell weui-cell_input weui-cell_vcode">
+          <view class="weui-cell__hd">
+            <view class="weui-label">备注说明</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input name="hmark1" class="weui-input" placeholder="请填写其他原因" value="{{hmark1}}" />
+          </view>
+        </view>
       </view>
       <view class="weui-cells__title">用车明细</view>
-     <view class="weui-panel weui-panel_access" wx:for="{{detailList}}" wx:key="seq">
+      <view class="weui-panel weui-panel_access" wx:for="{{detailList}}" wx:key="seq">
         <view class="weui-panel__hd">
           <view>明细{{item.seq}}
             <view class="button-warn" bindtap="bindRemoveDetailTap" data-index="{{index}}">删除</view>
@@ -97,18 +105,18 @@
           <view class="weui-form-preview__bd">
             <view class="weui-form-preview__item">
               <view class="weui-form-preview__label">{{item.ycrq}}</view>
-               <view class="weui-form-preview__value">{{item.sy}}</view>
+              <view class="weui-form-preview__value">{{item.sy}}</view>
             </view>
           </view>
           <view class="weui-form-preview__bd">
             <view class="weui-form-preview__item">
-            <view class="weui-form-preview__label">出发地</view>
+              <view class="weui-form-preview__label">出发地</view>
               <view class="weui-form-preview__value">{{item.address1}}</view>
             </view>
           </view>
-           <view class="weui-form-preview__bd">
+          <view class="weui-form-preview__bd">
             <view class="weui-form-preview__item">
-           <view class="weui-form-preview__label">目的地</view>
+              <view class="weui-form-preview__label">目的地</view>
               <view class="weui-form-preview__value">{{item.address2}}</view>
             </view>
           </view>
@@ -118,7 +126,7 @@
         <button class="weui-btn" bindtap="bindAddDetailTap">添加明细</button>
       </view>
       <view class="button-sp-area">
-        <button class="weui-btn" form-type="submit" type="primary"  disabled="{{!canSubmit}}">提交</button>
+        <button class="weui-btn" form-type="submit" type="primary" disabled="{{!canSubmit}}">提交</button>
         <button class="weui-btn" form-type="reset">重置</button>
       </view>
     </form>
