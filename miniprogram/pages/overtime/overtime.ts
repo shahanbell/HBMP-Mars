@@ -216,8 +216,12 @@ Page({
                 })
               },
               fail: fail => {
-                wx.hideLoading()
-                console.log(fail)
+                wx.hideLoading();
+                wx.showModal({
+                  title: '系统提示',
+                  content: "请联系管理员:" + fail,
+                  showCancel: false
+                })
               }
             })
           }

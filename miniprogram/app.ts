@@ -17,11 +17,14 @@ export interface IMyApp {
     defaultCompany?: string,
     defaultCompanyName?: string,
     defaultDeptId?: string,
-    defaultDeptName?: string
+    defaultDeptName?: string,
+    auth?: Array[string],
   }
 }
 
 App<IMyApp>({
+
+  
   onLaunch() {
     // 登录
     wx.login({
@@ -37,7 +40,6 @@ App<IMyApp>({
           },
           method: 'GET',
           success: res => {
-            //console.log(res.data)
             this.globalData.openId = res.data.openId
             this.globalData.sessionKey = res.data.sessionKey
             this.globalData.hasOpenId = true
@@ -66,6 +68,36 @@ App<IMyApp>({
                   console.log(fail)
                 }
               })
+
+              wx.request({
+                //测试地址
+                // url: 'http://localhost:8480/Hanbell-WCO/api/prg9f247ab6d5e4/AuthValidation',
+                //正式地址
+                url: this.globalData.restAdd + '/Hanbell-WCO/api/prg9f247ab6d5e4/AuthValidation',
+                data: {
+                  employeeid: this.globalData.employeeId,
+                },
+                header: {
+                  'content-type': 'application/json'
+                },
+                method: 'GET',
+                success: res => {
+                  var data = res.data;
+                  this.globalData.auth = data;
+                  if (this.userInfoReadyCallback) {
+                      
+                    this.userInfoReadyCallback(data);
+                  }
+                },
+                fail: fail => {
+                  wx.showModal({
+                    title: '系统提示',
+                    content: "权限获取失败，请联系管理员",
+                    showCancel: false
+                  })
+                }
+              })
+
             }
             if (this.sessionInfoReadyCallback) {
               this.sessionInfoReadyCallback(res.data)
@@ -108,8 +140,9 @@ App<IMyApp>({
   globalData: {
     //restAdd:'https://jrs.hanbell.com.cn',
     restAdd: 'https://i2.hanbell.com.cn',
+    // restAdd1: 'http://localhost:8480',
     restId: '1505912014724',
     restToken: '0ec858293fccfad55575e26b0ce31177',
     restAuth: 'appid=1505912014724&token=0ec858293fccfad55575e26b0ce31177'
-  }
+  },
 })

@@ -5,16 +5,16 @@ let d = new Date()
 Page({
   data: {
     selectedType: '1',
-    repairKind: '1',
+    repairKind: '',
     repairKindname: '请选择',
     detailList: [] as any,
     employeeId: null,
     employeeName: null,
     deptId: null,
     deptName: null,
-    customer: '',
+    customer: '',//客户编号和客户内容
     cusna: '',
-    ta009: '',
+    ta009: '',//接单人员
     receiver: '',
     ta005: '',
     ta006: '',
@@ -87,80 +87,10 @@ Page({
       }
     })
   },
-  bindRepta(e) {
-    // let that = this
-    // wx.navigateTo({
-    //   url: './customerno',
-    //   events: {
-    //     returnCustomerno: function (res) {
-    //       if (res) {
-    //         that.setData!({
-    //           customerno: res.k,
-    //           customername: res.k + '-' + res.v
-    //         })
-    //       }
-    //     }
-    //   },
-    //   success(res) {
-    //     console.log(res)
-    //   }
-    // })
-    if (this.data.repairno==''){
-      wx.showToast({
-        title: '请输入叫修单号',
-        icon: 'none',
-        duration: 2000
-      })
-      return
-   }
-    wx.request({
- 
-	    url: app.globalData.restAdd + '/Hanbell-JRS/api/crm/repta/f;rEPTAPK.ta001=' + this.data.repairKind +';rEPTAPK.ta002='+this.data.repairno+'/s/0/10/'
-      //url: 'http://172.16.80.99:8480/Hanbell-JRS/api/crm/repta/f;rEPTAPK.ta001=' + this.data.repairKind +';rEPTAPK.ta002='+this.data.repairno+'/s/0/10/'
-        data: {
-        appid: app.globalData.restId,
-        token: app.globalData.restToken
-      },
-      header: {
-        'content-type': 'application/json'
-      },
-      method: 'GET',
-      success: res => {
-        if (res.data.length==0){
-          wx.showToast({
-            title: '查无资料',
-            icon: 'none',
-            duration: 2000
-          })
-          return
-     }
-     console.log(res.data);
-        this.setData!({
-          customer: res.data[0].customer,
-          cusna: res.data[0].crmgg.gg003,
-          ta009: res.data[0].ta009,
-          receiver: res.data[0].receiver.mv002,
-          ta005: res.data[0].ta005,
-          ta006: res.data[0].ta006,
-          ta007: res.data[0].ta007,
-          ta013: res.data[0].ta013,
-          ta500: res.data[0].ta500,
-          ta197: res.data[0].ta197,
-          productna: res.data[0].productna.el002,
-          ta198: res.data[0].ta198,
-          areana: res.data[0].areana.bg002,
-          ta071: res.data[0].ta071,
-          ta010: res.data[0].ta010,
-          ta003: res.data[0].ta003
-        })
-      },
-      fail: fail => {
-        console.log(fail)
-      }
-    })
-  },
   bindReceivingpersonnel(e) {
     let that = this
+    console.log("appid: app.globalData.restId,==" + app.globalData.restId)
+    console.log(" app.globalData.restToken==" + app.globalData.restToken)
     wx.navigateTo({
       url: '../receivingpersonnel/receivingpersonnel',
       events: {
@@ -174,7 +104,7 @@ Page({
         }
       },
       success(res) {
-        console.log(res)
+       
       }
     })
   },
@@ -185,9 +115,49 @@ Page({
     })
   },
   bindRepairnoChange(e) {
-    this.setData!({
-      repairno: e.detail.value
-    })
+    let that = this
+    if (that.data.repairKind != '' && that.data.repairKind !=null){
+  wx.navigateTo({
+    url: '../customercomplaint/selectSearch?type=' + 'repairno&&id=' + this.data.repairKind,
+    events: {
+      returnRepairnoSelect: function (res) {
+        if (res) {
+          that.setData!({
+            // 叫修单号，单据日期，客户编号, 接单人员, 产品品号，产品品名，产品规格，产品序号, 机型, 产品别，区域别, 问题代号，问题描述
+            // TA002, TA003, TA004, TA009, TA005, TA006, TA007, TA013, TA500, TA197, TA198, TA071, TA010
+            customer: res.ta004,  //客户
+            cusna: res.cusna,
+            ta009: res.ta009, //接单人员
+            receiver: res.receiver,
+            ta005: res.ta005,
+            ta006: res.ta006,
+            ta007: res.ta007,
+            ta013: res.ta013,
+            ta500: res.ta500,
+            ta197: res.ta197,
+            productna: res.productna,
+            ta198: res.ta198,
+            areana: res.areana,
+            ta071: res.ta071,
+            ta010: res.ta010,
+            ta003: res.value,
+            repairno: res.key
+          })
+        }
+      }
+    },
+    success(res) {
+      console.log(res)
+    }
+  })
+    }else{
+      wx.showModal({
+        title: '系统提示',
+        content: "请先选择叫修单别",
+        showCancel: false
+      })
+
+}
   },
   bindAddDetailTap(e) {
     let _this = this
@@ -270,6 +240,7 @@ Page({
       detailList: details
     })
   },
+
   formSubmit(e) {
     let canSubmit = true
     let errmsg = ''
@@ -322,7 +293,7 @@ Page({
                   showCancel: false,
                   success(res) {
                     wx.switchTab({
-                     // url: "/pages/index/index"
+                     url: "/pages/index/index"
                     })
                   }
                 })
