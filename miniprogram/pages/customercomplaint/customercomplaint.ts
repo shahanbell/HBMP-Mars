@@ -45,7 +45,15 @@ Page({
     phoneArea: '',
     phoneCountry1: '',
     phoneArea1: '',
+    currency: '',
+    companyName: '',
+    invoiceAdress1: '',
+    invoiceAdress2:'',
+    invoiceMail:'',
+    unifyNum: '',
     dealer: '',
+    warrantyStart:'',
+    warrantyEnd:'',
   },
   onLoad() {
     wx.showLoading({
@@ -93,30 +101,35 @@ Page({
   },
 
   bindCustomerCodeSelect(e) {
-    console.info("11");
     let that = this
     wx.navigateTo({
       url: '../customercomplaint/selectSearch?type=' + 'customerCode',
       events: {
         returnCustomerCodeSelect: function (res) {
           if (res) {
-            console.info("==" + JSON.stringify(res))
+            //公司简称，来电者,公司电话国码，公司电话区码，行动电话国码，行动电话区码，经销商
             that.setData!({
               customerCodeId: res.key,
               customerCodeName: res.value,
-              caller: res.caller,
-              callerUnit: res.callerUnit,
-              callViewName: res.callerUnit,
-              callerPhone: res.phoneCountry1,
-              phoneCountry: res.phoneCountry,
-              phoneArea: res.phoneArea,
-              phoneCountry1: res.phoneCountry1,
-              phoneArea1: res.phoneArea1,
-              dealer: res.dealer,
+              caller: res.value2,
+              callerUnit: res.value1,
+              callViewName: res.value,
+              callerPhone: res.value7,
+              phoneCountry: res.value3,
+              phoneArea: res.value4,
+              phoneCountry1: res.value5,
+              phoneArea1: res.value6,
+              dealer: res.value13,
+              currency: res.value8,
+              companyName: res.value9,
+              invoiceAdress1: res.value10,
+              invoiceAdress2: res.value11,
+              invoiceMail: res.value12,
+              unifyNum: res.value13,
             })
-            if (that.data.caller != '' && that.data.caller != null) {
+            if (res.value2 != '' && res.value2!=null) {
               that.setData!({
-                callViewName: res.callerUnit + ' - ' + res.caller
+                callViewName: res.value + ' - ' + res.value2
               })
             }
           }
@@ -306,6 +319,8 @@ Page({
               productQuality: res.value,
               product_name: res.value1,
               productStandard: res.value2,
+              warrantyStart: res.value3,
+              warrantyEnd: res.value4,
             })
           }
         }
@@ -338,10 +353,9 @@ Page({
   },
   bindReasonChange(e) {
     let that = this
-    console.info("e.detail.value" + e.detail.value)
-      that.setData!({
-        reason: e.detail.value
-      })
+    that.setData!({
+      reason: e.detail.value
+    })
   },
 
 
@@ -407,7 +421,6 @@ Page({
     }
 
     if (canSubmit) {
-      console.info("_this.data.incidentProvinceId3=" + this.data.incidentProvinceId);
       let _this = this
       wx.showModal({
         title: '系统提示',
@@ -446,7 +459,15 @@ Page({
                 productNumberId: _this.data.productNumberId,
                 problemTypeName: _this.data.problemTypeName,
                 incidentCityId: _this.data.incidentCityId,
-                machineTypeId: _this.data.machineTypeId
+                machineTypeId: _this.data.machineTypeId,
+                currency: _this.data.currency,
+                companyName: _this.data.companyName,
+                invoiceAdress1: _this.data.invoiceAdress1,
+                invoiceAdress2: _this.data.invoiceAdress2,
+                invoiceMail: _this.data.invoiceMail,
+                unifyNum: _this.data.unifyNum,
+                warrantyStart: _this.data.warrantyStart,
+                warrantyEnd: _this.data.warrantyEnd,
               },
               header: {
                 'content-type': 'application/json'
@@ -454,7 +475,6 @@ Page({
               method: 'POST',
               success: res => {
                 wx.hideLoading()
-                console.info(JSON.stringify(res))
                 wx.showModal({
                   title: '系统消息',
                   content: res.data.msg,
