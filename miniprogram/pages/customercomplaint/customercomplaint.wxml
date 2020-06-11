@@ -1,6 +1,6 @@
 <view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
   <view class="page__hd">
-    <view class="page__title">请假申请</view>
+    <view class="page__title">客诉单</view>
   </view>
   <view class="page__bd">
     <form bindsubmit="formSubmit" bindreset="formReset">
