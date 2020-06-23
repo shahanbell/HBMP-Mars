@@ -1,7 +1,7 @@
 <!--miniprogram/pages/deptSelect/deptSelect.wxml-->
 <view class="page">
   <view class="page__hd">
-    <view class="page__title">叫修单别</view>
+    <view class="page__title">站别编号</view>
   </view>
   <view class="page__bd">
     <view class="weui-cells weui-cells_after-title">

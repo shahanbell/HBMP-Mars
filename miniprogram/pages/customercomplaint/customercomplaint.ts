@@ -6,10 +6,10 @@ let d = new Date()
 Page({
   data: {
     dataList: [] as any,
-    employeeId: null,
-    employeeName: null,
-    deptId: null,
-    deptName: null,
+    employeeId: '',
+    employeeName: '',
+    deptId: '',
+    deptName: '',
     complaintTypeId: '',
     complaintTypeName: '',
     customerCodeId: '',
@@ -431,7 +431,7 @@ Page({
               title: 'Sending'
             })
             wx.request({
-              url: app.globalData.restAdd + '/Hanbell-JRS/api/crm/serbq/wechat/createSERBQFromWechat',
+              url: app.globalData.restAdd + '/Hanbell-JRS/api/crm/serbq/wechat/create?' + app.globalData.restAuth,
               data: {
                 employeeId: _this.data.employeeId,
                 deptId: _this.data.deptId,
@@ -468,6 +468,8 @@ Page({
                 unifyNum: _this.data.unifyNum,
                 warrantyStart: _this.data.warrantyStart,
                 warrantyEnd: _this.data.warrantyEnd,
+                sessionkey: app.globalData.sessionKey,
+                openId: app.globalData.openId
               },
               header: {
                 'content-type': 'application/json'

@@ -24,15 +24,16 @@ Page({
       { key: 'incidentCity', value: '事发市', url: '/Hanbell-JRS/api/crm/dcs/wechat/incidentCity', eventName: 'returnIncidentCitySelect' },
       { key: 'productNumber', value: '产品序号', url: '/Hanbell-JRS/api/crm/repmi/wechat/productNumber', eventName: 'returnProductNumberSelect' },
       { key: 'repairno', value: '叫修单号', url: '/Hanbell-JRS/api/crm/repta/wechat/repair', eventName: 'returnRepairnoSelect' },
+      { key: 'warehouse', value: '仓库', url: '/Hanbell-JRS/api/crm/warmj/wechat/warehouse', eventName: 'returnWarehouseSelect' },
+      { key: 'deliverydept', value: '发货部门', url: '/Hanbell-JRS/api/crm/cmsme/wechat/deliverydept', eventName: 'returnDeliverydeptSelect' },
     ]
-  },
+  }, 
   onLoad(option) {
     var type = option.type;
-
     this.data.typeList.forEach((o, i) => {
       if (o.key == type) {
         this.setData!({
-          showWin: '请选择' + o.value,
+          showWin: o.value,
           eventName: o.eventName
         })
         if ('' != o.url) {
@@ -51,7 +52,7 @@ Page({
   },
   requestdata(options?: any) {
     wx.request({
-      url: app.globalData.restAdd1+ this.data.url + '?searchWord=' + this.data.keyword,
+      url: app.globalData.restAdd+ this.data.url + '?searchWord=' + this.data.keyword,
       data: {
         appid: app.globalData.restId,
         token: app.globalData.restToken

@@ -43,12 +43,14 @@ Page({
         employeeId: app.globalData.employeeId,
         employeeName: app.globalData.employeeName
       })
+    
     }
     if (app.globalData.defaultDeptId) {
       this.setData!({
         deptId: app.globalData.defaultDeptId,
         deptName: app.globalData.defaultDeptId + '-' + app.globalData.defaultDeptName
       })
+     
     }
   },
 
@@ -164,7 +166,7 @@ Page({
     wx.navigateTo({
       url: './senddetail',
       events: {
-        returnDetail: function (res) {
+        returnSendjobDetail: function (res) {
           let details = _this.data.detailList
           details.push(res.data)
           details.forEach((o, i) => {
@@ -244,18 +246,18 @@ Page({
   formSubmit(e) {
     let canSubmit = true
     let errmsg = ''
-    if (!app.globalData.authorized) {
-      canSubmit = false
-      errmsg += '账号未授权\r\n'
-    }
-    if (!this.data.employeeId || this.data.employeeId == '') {
-      canSubmit = false
-      errmsg += '请填写申请人员\r\n'
-    }
-    if (!this.data.deptId || this.data.deptId == '') {
-      canSubmit = false
-      errmsg += "请填写申请部门\r\n"
-    }
+    // if (!app.globalData.authorized) {
+    //   canSubmit = false
+    //   errmsg += '账号未授权\r\n'
+    // }
+    // if (!this.data.employeeId || this.data.employeeId == '') {
+    //   canSubmit = false
+    //   errmsg += '请填写申请人员\r\n'
+    // }
+    // if (!this.data.deptId || this.data.deptId == '') {
+    //   canSubmit = false
+    //   errmsg += "请填写申请部门\r\n"
+    // }
     if (!this.data.detailList) {
       canSubmit = false
       errmsg += "请填写明细资料\r\n"
@@ -274,7 +276,6 @@ Page({
             wx.request({
               url: app.globalData.restAdd + '/Hanbell-JRS/api/crm/reppw/wechat?' + app.globalData.restAuth,
               //url:'http://172.16.80.99:8480/Hanbell-JRS/api/crm/reppw/wechat?' +app.globalData.restAuth,
-
               data: {
                 repairKindname: _this.data.repairKindname,
                 repairno: _this.data.repairno,

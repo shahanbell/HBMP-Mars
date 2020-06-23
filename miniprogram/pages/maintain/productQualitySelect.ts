@@ -1,56 +1,72 @@
 import { IMyApp } from '../../app'
 
 const app = getApp<IMyApp>()
-let restUrl: string;
+
 let eventChannel;
+
 Page({
   data: {
     offset: 0 as number,
     pageSize: 20 as number,
     dataList: [],
     selectedKey: null,
-    selectedObject: {}
+    selectedObject: {},
+    keyword: '',
+    eventName: '',
+    showWin: '',
+    loadingHidden: false,
+    url: '',
   },
-  onLoad(option) {
-    this.requestData(option);
+  onLoad() {
+    this.requestdata();
   },
-  requestData(options?: any) {
-    restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/crm/repmq/f;mq003=a1/s/0/10'
+  requestdata(options?: any) {
     wx.request({
-      url: restUrl,
+      url: app.globalData.restAdd + '/Hanbell-JRS/api/crm/repmi/wechat/productQuality?searchWord=' + this.data.keyword,
       data: {
         appid: app.globalData.restId,
         token: app.globalData.restToken
-      }
+      },
       header: {
         'content-type': 'application/json'
       },
       method: 'GET',
       success: res => {
-
         this.setData!({
-          dataList: res.data
+          dataList: res.data.data,
+          loadingHidden: true,
         })
       },
       fail: fail => {
-        console.log(fail)
+        console.log("JSON==" + JSON.stringify(fail))
       }
     })
   },
-  bindSelected(e) {
+  sltwordInput(e) {
+    this.setData!({
+      keyword: e.detail.value
+    })
+  },
+  budDataQuery() {
+    this.setData!({
+      loadingHidden: false,
+    })
+    let word = this.data.keyword;
+    this.requestdata({ 'keyword': word });
+  },
+
+  bindDataSelected(e) {
     console.log(e)
     this.setData!({
       selectedKey: e.detail.value
     })
     this.data.dataList.forEach((o, i) => {
-      console.log(o)
-      if (o.mq001 == e.detail.value) {
+      if (o.key == e.detail.value) {
         this.setData!({
-          selectedObject: { k: o.mq001, v: o.mq002 }
+          selectedObject: o
         })
       }
     })
-    //console.log(this.data.selectedObject)
     if (this.data.selectedObject) {
       let that = this
       wx.showModal({
@@ -59,7 +75,7 @@ Page({
         success(res) {
           if (res.confirm) {
             eventChannel = that.getOpenerEventChannel()
-            eventChannel.emit('returnRepairKind', that.data.selectedObject)
+            eventChannel.emit('returnProductQualitySelect', that.data.selectedObject)
             wx.navigateBack({
               delta: 1
             })
