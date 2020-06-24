@@ -67,6 +67,10 @@ Page({
         })
       }
     })
+
+
+
+    
   },
   bindDeptSelect(e) {
     let _this = this
@@ -107,25 +111,24 @@ Page({
   bindRepairman(e) {
     let _this = this
     wx.navigateTo({
-      url: '../userSelect/userSelect?userInfo='+this.data.keyuser,
+      url: '../customercomplaint/select?type=' + 'repairman&id=' + this.data.stationid,
       events: {
-        returnUserSelect: function (res) {
+        returnRepairmanSelect: function (res) {
           if (res) {
             console.log(res)
             _this.setData!({
-              repairmanid: res.k,
-              repairmanname: res.k + '-' + res.v
+              repairmanid: res.key,
+              repairmanname: res.key + '-' + res.value
             })
             if (_this.data.repairmanname2 == ""){
               _this.setData!({
-                repairmanname2: res.k + '-' + res.v
+                repairmanname2: res.key + '-' + res.value
               })
-            } else if (_this.data.repairmanname2.indexOf(res.k)<0){
+            } else if (_this.data.repairmanname2.indexOf(res.key)<0){
               _this.setData!({
-                repairmanname2: _this.data.repairmanname2 +";"+res.k + '-' + res.v
+                repairmanname2: _this.data.repairmanname2 + ";" + res.key + '-' + res.value
               })
             }
-
           }
         }
       },
@@ -169,8 +172,6 @@ Page({
     })
   },
   formSubmit(e) {
-    console.log("TIJIAO")
-    console.log(this.data.repairmanname)
     let canSubmit = true
     let errmsg = ''
     if (!this.data.stationname ||this.data.stationname == '') {
@@ -198,7 +199,7 @@ Page({
         repairmanname2: this.data.repairmanname2
       }
       eventChannel = this.getOpenerEventChannel()
-      eventChannel.emit('returnDetail', { data: newObject, isNew: this.data.isNew })
+      eventChannel.emit('returnSendjobDetail', { data: newObject, isNew: this.data.isNew })
       wx.navigateBack({
         delta: 1
       })

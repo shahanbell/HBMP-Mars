@@ -121,6 +121,7 @@
             <input class="weui-input" placeholder="请输入问题代号" value="{{ta071}}" disabled="true" />
           </view>
         </view>
+        
       <view class="weui-cells weui-cells_after-title">
         <view class="weui-cell">
         <view class="weui-label">问题描述</view>
@@ -133,12 +134,14 @@
 
       <view class="weui-cells__title">派工明细</view>
       <view class="weui-panel weui-panel_access" wx:for="{{detailList}}" wx:key="seq">
+      
         <view class="weui-panel__hd">
           <view>派工明细{{item.seq}}
             <view class="button-warn" bindtap="bindRemoveDetailTap" data-index="{{index}}">删除</view>
             <view class="button-default" bindtap="bindEditDetailTap" data-index="{{index}}">修改</view>
           </view>
         </view>
+
         <view class="weui-panel__bd">
           <view class="weui-form-preview__bd">
             <view class="weui-form-preview__item">
@@ -146,30 +149,35 @@
               <view class="weui-form-preview__value">{{item.date1}}</view>
             </view>
           </view>
+
           <view class="weui-form-preview__bd">
             <view class="weui-form-preview__item">
               <view class="weui-form-preview__label">预交日期</view>
               <view class="weui-form-preview__value">{{item.date2}}</view>
             </view>
           </view>
+
           <view class="weui-form-preview__bd">
             <view class="weui-form-preview__item">
               <view class="weui-form-preview__label">站别编号</view>
               <view class="weui-form-preview__value">{{item.stationname}}</view>
             </view>
           </view>
+
           <view class="weui-form-preview__bd">
             <view class="weui-form-preview__item">
               <view class="weui-form-preview__label">主要维修人员</view>
               <view class="weui-form-preview__value">{{item.repairmanname}}</view>
             </view>
           </view>
+
           <view class="weui-form-preview__bd">
             <view class="weui-form-preview__item">
               <view class="weui-form-preview__label">维修人员</view>
               <view class="weui-form-preview__value">{{item.repairmanname2}}</view>
             </view>
           </view>
+
         </view>
       </view>
       <view class="button-sp-area">

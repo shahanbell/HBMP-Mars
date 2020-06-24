@@ -139,8 +139,8 @@ App<IMyApp>({
   },
   globalData: {
     //restAdd:'https://jrs.hanbell.com.cn',
-    restAdd: 'https://i2.hanbell.com.cn',
-    // restAdd1: 'http://localhost:8480',
+     restAdd: 'https://i2.hanbell.com.cn',
+    // restAdd: 'http://localhost:8480',
     restId: '1505912014724',
     restToken: '0ec858293fccfad55575e26b0ce31177',
     restAuth: 'appid=1505912014724&token=0ec858293fccfad55575e26b0ce31177'

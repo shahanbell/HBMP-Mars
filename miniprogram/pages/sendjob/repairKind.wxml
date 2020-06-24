@@ -6,7 +6,7 @@
   <view class="page__bd">
     <view class="weui-cells weui-cells_after-title">
       <radio-group bindchange="bindSelected">
-        <label class="weui-cell weui-check__label" wx:for="{{dataList}}" wx:key="k">
+        <label class="weui-cell weui-check__label" wx:for="{{dataList}}" wx:key="mq001">
           <radio class="weui-check " value="{{item.mq001}}" checked="{{item.mq001==selectedKey}}" />
           <view class="weui-cell__hd ">
             <view class="weui-label ">{{item.mq001}}</view>

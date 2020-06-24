@@ -31,7 +31,7 @@ Page({
       success: res => {
 
         this.setData!({
-          dataList: res.data
+          dataList: res.data.data
         })
       },
       fail: fail => {
