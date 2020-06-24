@@ -22,7 +22,7 @@ Page({
   },
   requestdata(options?: any) {
     wx.request({
-      url: app.globalData.restAdd + '/Hanbell-JRS/api/crm/repmi/wechat/productQuality?searchWord=' + this.data.keyword,
+      url: app.globalData.restAdd + '/Hanbell-JRS/api/crm/repmi/productQuality?searchWord=' + this.data.keyword,
       data: {
         appid: app.globalData.restId,
         token: app.globalData.restToken

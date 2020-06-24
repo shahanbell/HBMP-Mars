@@ -431,7 +431,7 @@ Page({
               title: 'Sending'
             })
             wx.request({
-              url: app.globalData.restAdd + '/Hanbell-JRS/api/crm/serbq/wechat/create?' + app.globalData.restAuth,
+              url: app.globalData.restAdd + '/Hanbell-JRS/api/crm/serbq/create?' + app.globalData.restAuth,
               data: {
                 employeeId: _this.data.employeeId,
                 deptId: _this.data.deptId,

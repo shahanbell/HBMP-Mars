@@ -382,7 +382,7 @@ Page({
               title: 'Sending'
             })
             wx.request({
-              url: app.globalData.restAdd + '/Hanbell-JRS/api/crm/reptc/wechat/createMaintain?' + app.globalData.restAuth,
+              url: app.globalData.restAdd + '/Hanbell-JRS/api/crm/reptc/createMaintain?' + app.globalData.restAuth,
               data: {
                 maintainTypeId: _this.data.maintainTypeId,
                 repairKindId: _this.data.repairKindId,
