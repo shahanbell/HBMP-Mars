@@ -1,4 +1,3 @@
-//overdetail.ts
 import { IMyApp } from '../../app'
 import { formatTime } from '../../utils/util'
 
@@ -12,8 +11,8 @@ Page({
     id: -1 as number,
     name: '',
     description: '',
-    leaderId: null,
-    leader: null,
+    executorId: null,
+    executor: null,
     plannedStartDate: d.toISOString().substring(0, 10),
     plannedStartTime: formatTime(d.toISOString()).substring(0, 5),
     plannedFinishDate: d.toISOString().substring(0, 10),
@@ -41,8 +40,8 @@ Page({
         this.setData!({
           deptId: res.data.deptId,
           deptName: res.data.deptName,
-          leaderId: res.data.leaderId,
-          leader: res.data.leader,
+          executorId: res.data.executorId,
+          executor: res.data.executor,
           isNew: res.isNew
         })
       } else {
@@ -52,8 +51,8 @@ Page({
           id: res.data.id,
           name: res.data.name,
           description: res.data.description,
-          leaderId: res.data.leaderId,
-          leader: res.data.leader,
+          executorId: res.data.executorId,
+          executor: res.data.executor,
           plannedStartDate: res.data.plannedStartDate,
           plannedStartTime: res.data.plannedStartTime,
           plannedFinishDate: res.data.plannedFinishDate,
@@ -155,8 +154,8 @@ Page({
               let currentObject = {
                 name: _this.data.name,
                 description: _this.data.description,
-                leaderId: _this.data.leaderId,
-                leader: _this.data.leader,
+                executorId: _this.data.executorId,
+                executor: _this.data.executor,
                 plannedStartDate: _this.data.plannedStartDate,
                 plannedStartTime: _this.data.plannedStartTime,
                 plannedFinishDate: _this.data.plannedFinishDate,
@@ -202,8 +201,8 @@ Page({
                 id: _this.data.id,
                 name: _this.data.name,
                 description: _this.data.description,
-                leaderId: _this.data.leaderId,
-                leader: _this.data.leader,
+                executorId: _this.data.executorId,
+                executor: _this.data.executor,
                 plannedStartDate: _this.data.plannedStartDate,
                 plannedStartTime: _this.data.plannedStartTime,
                 plannedFinishDate: _this.data.plannedFinishDate,

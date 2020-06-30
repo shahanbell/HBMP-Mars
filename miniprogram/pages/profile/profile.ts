@@ -47,7 +47,7 @@ Page({
     wx.request({
       url: app.globalData.restAdd + '/Hanbell-WCO/api/prg9f247ab6d5e4/wechatuser',
       data: {
-        openid: app.globalData.openId,
+        openId: app.globalData.openId,
         nickName: app.globalData.userInfo.nickName
       },
       header: {

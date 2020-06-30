@@ -11,10 +11,10 @@ Page({
     },
     dataList: [],
     startDays: [] as Date[],
-    deptId: null,
-    deptName: null,
-    leaderId: null,
-    leader: null,
+    deptId: "" as string,
+    deptName: "" as string,
+    executorId: "" as string,
+    executor: "" as string,
     canSubmit: false
   },
   onLoad() {
@@ -26,8 +26,8 @@ Page({
     }, 2000)
     if (app.globalData.authorized) {
       this.setData!({
-        leaderId: app.globalData.employeeId,
-        leader: app.globalData.employeeName
+        executorId: app.globalData.employeeId,
+        executor: app.globalData.employeeName
       })
     }
     if (app.globalData.defaultDeptId) {
@@ -46,10 +46,10 @@ Page({
       // 待办圆圈标记设置（如圆圈标记已签到日期），该设置与点标记设置互斥
       circle: true // 待办
     });
-    if (this.data.startDays.length > 0) {
+    if (this.data.dataList.length > 0) {
       let days = [] as Date[]
-      this.data.startDays.forEach((o: string, index: number) => {
-        days.push(formatDate(o))
+      this.data.dataList.forEach((o: any, index: number) => {
+        days.push(formatDate(o.plannedStartDate))
       })
       this.calendar.setTodoLabels({
         days: days
@@ -57,9 +57,10 @@ Page({
     } else {
       // 注册回调函数
       this.afterLoadDataCallback = (res) => {
+        // console.log("执行注册回调函数")
         let days = [] as Date[]
-        res.LS.forEach((o: string, index: number) => {
-          days.push(formatDate(o));
+        this.data.dataList.forEach((o: any, index: number) => {
+          days.push(formatDate(o.plannedStartDate))
         })
         this.calendar.setTodoLabels({
           days: days
@@ -88,8 +89,8 @@ Page({
           {
             deptId: _this.data.deptId,
             deptName: _this.data.deptName,
-            leaderId: _this.data.leaderId,
-            leader: _this.data.leader
+            executorId: _this.data.executorId,
+            executor: _this.data.executor
           }, isNew: true
         })
       }
@@ -98,7 +99,7 @@ Page({
   bindEditDetailTap(e) {
     let _this = this
     let index = e.currentTarget.dataset.index
-    console.log(index)
+    // console.log(index)
     wx.navigateTo({
       url: './taskdetail',
       events: {
@@ -117,8 +118,8 @@ Page({
             id: currentObject.id,
             name: currentObject.name,
             description: currentObject.description,
-            leaderId: currentObject.leaderId,
-            leader: currentObject.leader,
+            executorId: currentObject.executorId,
+            executor: currentObject.executor,
             plannedStartDate: currentObject.plannedStartDate,
             plannedStartTime: currentObject.plannedStartTime,
             plannedFinishDate: currentObject.plannedFinishDate,
@@ -135,21 +136,27 @@ Page({
   },
   loadData() {
     wx.request({
-      url: app.globalData.restAdd + '/Hanbell-WCO/api/prg9f247ab6d5e4/jobtask',
+      url: app.globalData.restAdd + '/Hanbell-JRS/api/eap/task/executor',
       data: {
-        openid: app.globalData.openId,
-        sessionkey: app.globalData.sessionKey,
-        employeeid: app.globalData.employeeId
-      }
+        executorid: app.globalData.employeeId,
+        appid: app.globalData.restId,
+        token: app.globalData.restToken,
+      },
       header: {
         'content-type': 'application/json'
       },
       method: 'GET',
       success: res => {
-        //console.log(res.data)
+        let tasks = res.data.data;
+        if (tasks.length > 0) {
+          console.log("utcDate重设日期")
+          tasks.forEach((o: any, index: number) => {
+            //o.plannedStartDate = utcDate(o.plannedStartDate)
+          })
+        }
         this.setData!({
-          dataList: res.data.data,
-          startDays: res.data.LS
+          dataList: tasks,
+          startDays: []
         })
         if (this.afterLoadDataCallback) {
           this.afterLoadDataCallback(res.data)
