@@ -14,8 +14,7 @@
             <input class="weui-input" placeholder="" value="{{employeeName}}" disabled="true" />
           </view>
         </view>
-
-      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell weui-cell_input">
           <view class="weui-cell__hd">
             <view class="weui-label">申请部门</view>
           </view>
@@ -23,7 +22,6 @@
             <input class="weui-input" placeholder="" value="{{deptName}}" disabled="true" />
           </view>
         </view>
-
         <view class="weui-cell weui-cell_input weui-cell_vcode">
           <view class="weui-cell__hd">
             <view class="weui-label">客诉类型</view>
@@ -35,7 +33,6 @@
             <view class="weui-vcode-btn" bindtap="bindComplaintTypeSelect">…</view>
           </view>
         </view>
-
         <view class="weui-cell weui-cell_input weui-cell_vcode">
           <view class="weui-cell__hd">
             <view class="weui-label">客户代号</view>
@@ -47,7 +44,6 @@
             <view class="weui-vcode-btn" bindtap="bindCustomerCodeSelect">…</view>
           </view>
         </view>
-
         <view class="weui-cell weui-cell_input">
           <view class="weui-cell__hd">
             <view class="weui-label">来电者</view>
@@ -56,7 +52,6 @@
             <input class="weui-input" placeholder="" value="{{callViewName}}" disabled="true" />
           </view>
         </view>
-
         <view class="weui-cell weui-cell_input weui-cell_vcode">
           <view class="weui-cell__hd">
             <view class="weui-label">品号类别</view>
@@ -68,19 +63,33 @@
             <view class="weui-vcode-btn" bindtap="bindProductTypeSelect">…</view>
           </view>
         </view>
-
-        <view class="weui-cell weui-cell_input weui-cell_vcode">
+        <view class="weui-cell weui-cell_input">
           <view class="weui-cell__hd">
-            <view class="weui-label">机型</view>
+            <view class="weui-label">问题分类</view>
           </view>
           <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请选择机型" value="{{machineTypeName}}" disabled="true" />
+            <input class="weui-input" placeholder="请选择问题分类" value="{{problemTypeName}}" disabled="true" />
           </view>
           <view class="weui-cell__ft">
-            <view class="weui-vcode-btn" bindtap="bindMachineTypeSelect">…</view>
+            <view class="weui-vcode-btn" bindtap="bindProblemTypeSelect">…</view>
           </view>
         </view>
-
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">紧急度</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="" value="{{emergencyDrgreeId}}" disabled="true" />
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">紧急名称</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="" value="{{emergencyDrgreeName}}" disabled="true" />
+          </view>
+        </view>
         <view class="weui-cell weui-cell_input weui-cell_vcode">
           <view class="weui-cell__hd">
             <view class="weui-label">区域别</view>
@@ -92,7 +101,6 @@
             <view class="weui-vcode-btn" bindtap="bindAreaSelect">…</view>
           </view>
         </view>
-
         <view class="weui-cell weui-cell_input weui-cell_vcode">
           <view class="weui-cell__hd">
             <view class="weui-label">产品别</view>
@@ -104,49 +112,6 @@
             <view class="weui-vcode-btn" bindtap="bindProductSelect">…</view>
           </view>
         </view>
-
-        <view class="weui-cell weui-cell_input weui-cell_vcode">
-          <view class="weui-cell__hd">
-            <view class="weui-label">单别</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请选择单别" value="{{formName}}" disabled="true" />
-          </view>
-          <view class="weui-cell__ft">
-            <view class="weui-vcode-btn" bindtap="bindFormSelect">…</view>
-          </view>
-        </view>
-
-        <view class="weui-cell weui-cell_input weui-cell_vcode">
-          <view class="weui-cell__hd">
-            <view class="weui-label">问题分类</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请选择问题分类" value="{{problemTypeName}}" disabled="true" />
-          </view>
-          <view class="weui-cell__ft">
-            <view class="weui-vcode-btn" bindtap="bindProblemTypeSelect">…</view>
-          </view>
-        </view>
-
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">紧急度</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="" value="{{emergencyDrgreeId}}" disabled="true" />
-          </view>
-        </view>
-
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">紧急名称</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="" value="{{emergencyDrgreeName}}" disabled="true" />
-          </view>
-        </view>
-
         <view class="weui-cell weui-cell_input weui-cell_vcode">
           <view class="weui-cell__hd">
             <view class="weui-label">事发省</view>
@@ -158,7 +123,6 @@
             <view class="weui-vcode-btn" bindtap="bindIncidentProvinceSelect">…</view>
           </view>
         </view>
-
         <view class="weui-cell weui-cell_input weui-cell_vcode">
           <view class="weui-cell__hd">
             <view class="weui-label">事发市</view>
@@ -170,50 +134,7 @@
             <view class="weui-vcode-btn" bindtap="bindIncidentCitySelect">…</view>
           </view>
         </view>
-
-        <view class="weui-cell weui-cell_input weui-cell_vcode">
-          <view class="weui-cell__hd">
-            <view class="weui-label">产品序号</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请选择产品序号" value="{{productNumberId}}" disabled="true" />
-          </view>
-          <view class="weui-cell__ft">
-            <view class="weui-vcode-btn" bindtap="bindProductNumberSelect">…</view>
-          </view>
-        </view>
-
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">产品品号</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="" value="{{productQuality}}" disabled="true" />
-          </view>
-        </view>
-
-
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">产品品名</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="" value="{{product_name}}" disabled="true" />
-          </view>
-        </view>
-
-
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">产品规格</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="" value="{{productStandard}}" disabled="true" />
-          </view>
-        </view>
-        
       </view>
-
       <view class="weui-cells__title">问题描述</view>
       <view class="weui-cells weui-cells_after-title">
         <view class="weui-cell">
@@ -222,9 +143,63 @@
           </view>
         </view>
       </view>
+      <view class="weui-cells__title">叫修明细</view>
+      <view class="weui-panel weui-panel_access" wx:for="{{detailList}}" wx:key="seq">
+        <view class="weui-panel__hd">
+          <view>叫修明细{{item.seq}}
+            <view class="button-warn" bindtap="bindRemoveDetailTap" data-index="{{index}}">删除</view>
+            <view class="button-default" bindtap="bindEditDetailTap" data-index="{{index}}">修改</view>
+          </view>
+        </view>
+
+        <view class="weui-panel__bd">
+          <view class="weui-form-preview__bd">
+            <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">单别</view>
+              <view class="weui-form-preview__value">{{item.formName}}</view>
+            </view>
+          </view>
+
+          <view class="weui-form-preview__bd">
+            <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">机型</view>
+              <view class="weui-form-preview__value">{{item.machineTypeName}}</view>
+            </view>
+          </view>
+
+          <view class="weui-form-preview__bd">
+            <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">产品序号</view>
+              <view class="weui-form-preview__value">{{item.productNumberId}}</view>
+            </view>
+          </view>
+
+          <view class="weui-form-preview__bd">
+            <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">产品品号</view>
+              <view class="weui-form-preview__value">{{item.productQuality}}</view>
+            </view>
+          </view>
+
+          <view class="weui-form-preview__bd">
+            <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">产品品名</view>
+              <view class="weui-form-preview__value">{{item.product_name}}</view>
+            </view>
+          </view>
+
+          <view class="weui-form-preview__bd">
+            <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">产品规格</view>
+              <view class="weui-form-preview__value">{{item.productStandard}}</view>
+            </view>
+          </view>
+
+        </view>
+      </view>
       <view class="button-sp-area">
+        <button class="weui-btn" bindtap="bindAddDetailTap">添加明细</button>
         <button class="weui-btn" form-type="submit" type="primary">提交</button>
-        <button class="weui-btn" form-type="reset">重置</button>
       </view>
     </form>
   </view>

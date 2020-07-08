@@ -1,0 +1,72 @@
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+  <view class="page__hd">
+    <view class="page__title">叫修明细</view>
+  </view>
+  <view class="page__bd">
+    <form bindsubmit="formSubmit" bindreset="formReset">
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">单别</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请选择单别" value="{{formName}}" disabled="true" />
+          </view>
+          <view class="weui-cell__ft">
+            <view class="weui-vcode-btn" bindtap="bindFormSelect">…</view>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">机型</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请选择机型" value="{{machineTypeName}}" disabled="true" />
+          </view>
+          <view class="weui-cell__ft">
+            <view class="weui-vcode-btn" bindtap="bindMachineTypeSelect">…</view>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">产品序号</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="请选择产品序号" value="{{productNumberId}}" disabled="true" />
+          </view>
+          <view class="weui-cell__ft">
+            <view class="weui-vcode-btn" bindtap="bindProductNumberSelect">…</view>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">产品品号</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="" value="{{productQuality}}" disabled="true" />
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">产品品名</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="" value="{{product_name}}" disabled="true" />
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">产品规格</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="" value="{{productStandard}}" disabled="true" />
+          </view>
+        </view>
+      </view>
+      <view class="button-sp-area">
+        <button class="weui-btn" form-type="submit" type="primary">添加</button>
+      </view>
+
+    </form>
+  </view>
+</view>
