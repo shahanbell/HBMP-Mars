@@ -15,7 +15,7 @@ Page({
     this.requestData(option);
   },
   requestData(options?: any) {
-    restUrl = app.globalData.restAdd +'/Hanbell-JRS/api/crm/repma/f;/s/0/20'
+    restUrl = app.globalData.restAdd +'/Hanbell-JRS/api/crm/repma/f;/s/0/100'
     //restUrl = 'http://172.16.80.99:8480/Hanbell-JRS/api/crm/repma/f;/s/0/20'
     console.log(restUrl)
     wx.request({

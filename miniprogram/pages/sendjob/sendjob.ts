@@ -91,8 +91,6 @@ Page({
   },
   bindReceivingpersonnel(e) {
     let that = this
-    console.log("appid: app.globalData.restId,==" + app.globalData.restId)
-    console.log(" app.globalData.restToken==" + app.globalData.restToken)
     wx.navigateTo({
       url: '../receivingpersonnel/receivingpersonnel',
       events: {
@@ -197,7 +195,7 @@ Page({
     wx.navigateTo({
       url: './senddetail',
       events: {
-        returnDetail: function (res) {
+        returnSendjobDetail: function (res) {
           let details = _this.data.detailList
           details.splice(index, 1)
           details.push(res.data)
@@ -279,6 +277,8 @@ Page({
               data: {
                 repairKindname: _this.data.repairKindname,
                 repairno: _this.data.repairno,
+                sessionkey: app.globalData.sessionKey,
+                openId: app.globalData.openId,
                 detailList: _this.data.detailList
               },
               header: {

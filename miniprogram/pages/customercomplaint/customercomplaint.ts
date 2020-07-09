@@ -5,7 +5,7 @@ const app = getApp<IMyApp>()
 let d = new Date()
 Page({
   data: {
-    dataList: [] as any,
+    detailList: [] as any,
     employeeId: '',
     employeeName: '',
     deptId: '',
@@ -160,36 +160,6 @@ Page({
       }
     })
   },
-
-  bindMachineTypeSelect(e) {
-    let that = this
-    if (that.data.productTypeId != '' && that.data.productTypeId != null) {
-      wx.navigateTo({
-        url: '../customercomplaint/selectSearch?type=' + 'machineType&&id=' + that.data.productTypeId,
-        events: {
-          returnMachineTypeSelect: function (res) {
-            if (res) {
-              that.setData!({
-                machineTypeId: res.key,
-                machineTypeName: res.value
-              })
-            }
-          }
-        },
-        success(res) {
-          console.log(res)
-        }
-      })
-    } else {
-      wx.showModal({
-        title: '系统提示',
-        content: "请先选择品号类型",
-        showCancel: false
-      })
-    }
-
-  },
-
   bindAreaSelect(e) {
     let that = this
     wx.navigateTo({
@@ -228,56 +198,7 @@ Page({
       }
     })
   },
-
-  bindFormSelect(e) {
-    let that = this
-    wx.navigateTo({
-      url: '../customercomplaint/select?type=' + 'form',
-      events: {
-        returnFormSelect: function (res) {
-          if (res) {
-            that.setData!({
-              formId: res.key,
-              formName: res.value
-            })
-          }
-        }
-      },
-      success(res) {
-        console.log(res)
-      }
-    })
-  },
-
-  bindProblemTypeSelect(e) {
-    let that = this
-    if (that.data.productTypeId != '' && that.data.productTypeId != null) {
-      wx.navigateTo({
-        url: '../customercomplaint/selectSearch?type=' + 'problemType&&id=' + this.data.productTypeId,
-        events: {
-          returnProblemTypeSelect: function (res) {
-            if (res) {
-              that.setData!({
-                problemTypeId: res.key,
-                problemTypeName: res.value,
-                emergencyDrgreeId: res.value1,
-                emergencyDrgreeName: res.value2
-              })
-            }
-          }
-        },
-        success(res) {
-          console.log(res)
-        }
-      })
-    } else {
-      wx.showModal({
-        title: '系统提示',
-        content: "请先选择品号类型",
-        showCancel: false
-      })
-    }
-  },
+  
 
   bindIncidentCitySelect(e) {
     let that = this
@@ -331,6 +252,29 @@ Page({
     })
   },
 
+  //问题类型
+  bindProblemTypeSelect(e) {
+    let that = this
+    wx.navigateTo({
+      url: './selectSearch?type=' + 'problemType&&id=' + this.data.productTypeId,
+      events: {
+        returnProblemTypeSelect: function (res) {
+          if (res) {
+            that.setData!({
+              problemTypeId: res.key,
+              problemTypeName: res.value,
+              emergencyDrgreeId: res.value1,
+              emergencyDrgreeName: res.value2
+            })
+          }
+        }
+      },
+      success(res) {
+        console.log(res)
+      }
+    })
+  },
+
   bindProductSelect(e) {
     let that = this
     wx.navigateTo({
@@ -355,6 +299,108 @@ Page({
     let that = this
     that.setData!({
       reason: e.detail.value
+    })
+  },
+
+  bindAddDetailTap(e) {
+    let _this = this
+    wx.navigateTo({
+      url: './complaintdetail?prodecttypeid='+_this.data.productTypeId,
+      events: {
+        returnDetail: function (res) {
+          let details = _this.data.detailList
+          details.push(res.data)
+          details.forEach((o, i) => {
+            o.seq = i + 1
+          })
+          _this.setData({
+            detailList: details,
+            canSubmit: true
+          })
+        }
+      },
+      success(res) {
+        res.eventChannel.emit('openDetail', {
+          data:
+          {
+            employeeId: _this.data.employeeId,
+            employeeName: _this.data.employeeName,
+            deptId: _this.data.deptId,
+            deptName: _this.data.deptName
+          }, isNew: true
+        })
+      }
+    })
+  },
+
+  bindEditDetailTap(e) {
+    let _this = this
+    let index = e.currentTarget.dataset.index
+    wx.navigateTo({
+      url: './complaintdetail?prodecttypeid=' + _this.data.productTypeId,
+      events: {
+        returnDetail: function (res) {
+          let details = _this.data.detailList
+          details.forEach((o, i) => {
+            if (i == index){
+                o.employeeId = res.data.employeeId,
+                o.employeeName = res.data.employeeName,
+                o.deptId = res.data.deptId,
+                o.deptName = res.data.deptName,
+                o.formId = res.data.formId,
+                o.formName = res.data.formName,
+                o.machineTypeId = res.data.machineTypeId,
+                o.machineTypeName = res.data.machineTypeName,
+                o.productNumberId = res.data.productNumberId,
+                o.productQuality = res.data.productQuality,
+                o.product_name = res.data.product_name,
+                o.productStandard = res.data.productStandard,
+                o.warrantyStart = res.data.warrantyStart,
+                o.warrantyEnd = res.data.warrantyEnd
+            }
+            o.seq= i + 1;
+          })
+          _this.setData!({
+            detailList: details,
+            canSubmit: true
+          })
+        }
+      },
+      success(res) {
+        let currentObject = _this.data.detailList[index]
+        res.eventChannel.emit('openDetail', {
+          data:
+          {
+            employeeId: currentObject.employeeId,
+            employeeName: currentObject.employeeName,
+            deptId: currentObject.deptId,
+            deptName: currentObject.deptName,
+            seq: -1,
+            formId: currentObject.formId,
+            formName: currentObject.formName,
+            machineTypeId: currentObject.machineTypeId,
+            machineTypeName: currentObject.machineTypeName,
+            productNumberId: currentObject.productNumberId,
+            productQuality: currentObject.productQuality,
+            product_name: currentObject.product_name,
+            productStandard: currentObject.productStandard,
+            warrantyStart: currentObject.warrantyStart,
+            warrantyEnd: currentObject.warrantyEnd,
+          }, isNew: false
+        })
+      }
+    })
+  },
+  
+  bindRemoveDetailTap(e) {
+    let details = this.data.detailList
+    let index = e.currentTarget.dataset.index
+    details.splice(index, 1)
+    details.forEach((o, i) => {
+      o.seq = i + 1
+    })
+    this.setData!({
+      detailList: details
     })
   },
 
@@ -386,10 +432,6 @@ Page({
       canSubmit = false
       errmsg += "请选择品号类别\r\n"
     }
-    if (!this.data.machineTypeId || this.data.machineTypeId == '') {
-      canSubmit = false
-      errmsg += "请选择机型\r\n"
-    }
     if (!this.data.areaId || this.data.areaId == '') {
       canSubmit = false
       errmsg += "请选择区域别\r\n"
@@ -398,28 +440,11 @@ Page({
       canSubmit = false
       errmsg += "请选择产品别\r\n"
     }
-    if (!this.data.formId || this.data.formId == '') {
-      canSubmit = false
-      errmsg += "请选择单别\r\n"
-    }
-
-    if (!this.data.problemTypeId || this.data.problemTypeId == '') {
-      canSubmit = false
-      errmsg += "请选择问题分类\r\n"
-    }
     if (!this.data.incidentProvinceId || this.data.incidentProvinceId == '') {
       canSubmit = false
       errmsg += "请选择事发省\r\n"
     }
-    if (!this.data.productNumberId || this.data.productNumberId == '') {
-      canSubmit = false
-      errmsg += "请选择产品序号\r\n"
-    }
-    if (!this.data.reason || this.data.reason == '') {
-      canSubmit = false
-      errmsg += "请填写问题描述\r\n"
-    }
-
+  
     if (canSubmit) {
       let _this = this
       wx.showModal({
@@ -435,13 +460,12 @@ Page({
               data: {
                 employeeId: _this.data.employeeId,
                 deptId: _this.data.deptId,
-                complaintTypeId: _this.data.complaintTypeId,
-                customerCodeId: _this.data.customerCodeId,
                 productTypeId: _this.data.productTypeId,
-                emergencyDrgree: _this.data.emergencyDrgreeId,
+                complaintTypeId: _this.data.complaintTypeId,
+                complaintTypeName: _this.data.complaintTypeName,
+                customerCodeId: _this.data.customerCodeId,
                 caller: _this.data.caller,
                 callerUnit: _this.data.callerUnit,
-                problemTypeId: _this.data.problemTypeId,
                 reason: _this.data.reason,
                 callerPhone: _this.data.callerPhone,
                 phoneCountry: _this.data.phoneCountry,
@@ -451,25 +475,20 @@ Page({
                 dealer: _this.data.dealer,
                 productId: _this.data.productId,
                 areaId: _this.data.areaId,
-                incidentProvinceId: _this.data.incidentProvinceId,
-                formId: _this.data.formId,
-                productQuality: _this.data.productQuality,
-                product_name: _this.data.product_name,
-                productStandard: _this.data.productStandard,
-                productNumberId: _this.data.productNumberId,
-                problemTypeName: _this.data.problemTypeName,
+                incidentProvinceId: _this.data.incidentProvinceId, 
                 incidentCityId: _this.data.incidentCityId,
-                machineTypeId: _this.data.machineTypeId,
                 currency: _this.data.currency,
                 companyName: _this.data.companyName,
                 invoiceAdress1: _this.data.invoiceAdress1,
                 invoiceAdress2: _this.data.invoiceAdress2,
                 invoiceMail: _this.data.invoiceMail,
                 unifyNum: _this.data.unifyNum,
-                warrantyStart: _this.data.warrantyStart,
-                warrantyEnd: _this.data.warrantyEnd,
                 sessionkey: app.globalData.sessionKey,
-                openId: app.globalData.openId
+                openId: app.globalData.openId,
+                emergencyDrgreeId: _this.data.emergencyDrgreeId,
+                problemTypeId: _this.data.problemTypeId,
+                problemTypeName: _this.data.problemTypeName,
+                sercadetails: _this.data.detailList
               },
               header: {
                 'content-type': 'application/json'
