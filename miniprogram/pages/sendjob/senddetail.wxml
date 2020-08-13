@@ -75,7 +75,7 @@
             <view class="weui-label">主要维修人员</view>
           </view>
           <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请输入主要维修人员" bindinput="sltwordInput" value="{{repairmanname}}" />
+            <input class="weui-input" placeholder="请输入主要维修人员" disabled="true" value="{{repairmanname}}" />
           </view>
           <view class="weui-cell__ft">
             <view class="weui-vcode-btn" bindtap="bindRepairman">…</view>
