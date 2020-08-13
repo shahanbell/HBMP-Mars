@@ -67,10 +67,6 @@ Page({
         })
       }
     })
-
-
-
-    
   },
   bindDeptSelect(e) {
     let _this = this
@@ -116,13 +112,12 @@ Page({
         returnRepairmanSelect: function (res) {
           if (res) {
             console.log(res)
-            _this.setData!({
-              repairmanid: res.key,
-              repairmanname: res.key + '-' + res.value
-            })
+         
             if (_this.data.repairmanname2 == ""){
               _this.setData!({
-                repairmanname2: res.key + '-' + res.value
+                repairmanname2: res.key + '-' + res.value,
+                repairmanid: res.key,
+                repairmanname: res.key + '-' + res.value
               })
             } else if (_this.data.repairmanname2.indexOf(res.key)<0){
               _this.setData!({
@@ -134,7 +129,6 @@ Page({
       },
     })
   },
-
   bindDate1Change(e) {
     this.setData!({
       date1: e.detail.value
@@ -163,12 +157,6 @@ Page({
   bindRepairmanname2Change(e) {
     this.setData!({
       repairmanname2: e.detail.value
-    })
-  },
-
-  sltwordInput(e) {
-    this.setData!({
-      keyuser: e.detail.value
     })
   },
   formSubmit(e) {
