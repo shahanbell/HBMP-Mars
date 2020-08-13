@@ -1,0 +1,37 @@
+<view class="page">
+  <view class="page__hd">
+    <view class="page__title">维修单号</view>
+  </view>
+  <view class="page__bd">
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell weui-cell_input weui-cell_vcode">
+        <loading hidden="{{loadingHidden}}">
+          加载中...
+        </loading>
+        <view class="weui-cell__bd">
+          <input bindinput="sltwordInput" class="weui-input" placeholder="请选择预算科目" bindinput="changeSearchWord"/>
+        </view>
+        <view class="weui-cell__ft">
+          <view class="weui-vcode-btn" bindtap="budgetaccQuery">查询</view>
+        </view>
+      </view>
+      <radio-group bindchange="bindDataSelected">
+        <label class="weui-cell weui-check__label" wx:for="{{dataList}}" wx:key="{{item.key}}">
+          <radio class="weui-check " value="{{item.key}}" checked="{{item.key==selectedKey}}" />
+          <view class="weui-cell__hd ">
+            <view class="weui-label ">{{item.maintainType}}</view>
+          </view>
+          <view class="weui-cell__bd">
+            <view class="weui-label">{{item.maintainNumberName}}</view>
+          </view>
+
+       
+           <view class="weui-cell__bd" wx:if="{{item.maintainSerial!=''}}">
+            <view class="weui-label">{{item.maintainSerial}}</view>
+         </view>
+
+        </label>
+      </radio-group>
+    </view>
+  </view>
+</view>

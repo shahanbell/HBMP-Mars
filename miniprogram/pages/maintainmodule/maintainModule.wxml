@@ -1,0 +1,7 @@
+<block wx:for="{{menu}}" wx:key="id">
+    <navigator id="{{item.id}}" url="{{item.url}}" class="weui-grid" hover-class="weui-grid_active">
+      <image class="weui-grid__icon" src="{{item.imgUrl}}" model="scaleToFill"></image>
+      <text class="weui-grid__label">{{item.name}}</text>
+    </navigator>
+  </block>
+
