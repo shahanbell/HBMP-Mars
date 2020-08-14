@@ -20,7 +20,7 @@
 		"minified": true,
 		"newFeature": true,
 		"coverView": true,
-		"nodeModules": false,
+		"nodeModules": true,
 		"autoAudits": false,
 		"checkInvalidKey": true,
 		"checkSiteMap": true,
@@ -29,7 +29,8 @@
 			"ignore": [],
 			"disablePlugins": [],
 			"outputPath": ""
-		}
+		},
+		"bundle": true
 	},
 	"appid": "wxaeb50a87e7bce793",
 	"simulatorType": "wechat",
@@ -50,13 +51,39 @@
 		"game": {
 			"list": []
 		},
+		"gamePlugin": {
+			"current": -1,
+			"list": []
+		},
 		"miniprogram": {
-			"current": 0,
+			"current": -1,
 			"list": [
 				{
 					"id": -1,
-					"name": "pages/loan/loan",
-					"pathName": "pages/loan/loan",
+					"name": "pages/maintainmodule/mataindescribe/maintaindescribe",
+					"pathName": "pages/maintainmodule/mataindescribe/maintaindescribe",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/maintainmodule/mataindescribe/changeDate",
+					"pathName": "pages/maintainmodule/mataindescribe/changeDate",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/index/index",
+					"pathName": "pages/index/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/profile/t1",
+					"pathName": "pages/profile/t1",
+					"query": "",
 					"scene": null
 				}
 			]
