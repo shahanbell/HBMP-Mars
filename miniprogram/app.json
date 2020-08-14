@@ -1,13 +1,13 @@
 {
   "usingComponents": {
-    "van-field": "../miniprogram/ventComponent/field/index",
-    "van-dropdown-menu": "../miniprogram/ventComponent/dropdown-menu/index",
-    "van-dropdown-item": "../miniprogram/ventComponent/dropdown-item/index",
-    "van-button": "../miniprogram/ventComponent/button/index",
-    "van-icon": "../miniprogram/ventComponent/icon/index",
-    "van-image": "../miniprogram/ventComponent/image/index",
-    "van-cell": "../miniprogram/ventComponent/cell/index",
-    "van-cell-group": "../miniprogram/ventComponent/cell-group/index"
+    "van-field": "../miniprogram/component/vant/field/index",
+    "van-dropdown-menu": "../miniprogram/component/vant/dropdown-menu/index",
+    "van-dropdown-item": "../miniprogram/component/vant/dropdown-item/index",
+    "van-button": "../miniprogram/component/vant/button/index",
+    "van-icon": "../miniprogram/component/vant/icon/index",
+    "van-image": "../miniprogram/component/vant/image/index",
+    "van-cell": "../miniprogram/component/vant/cell/index",
+    "van-cell-group": "../miniprogram/component/vant/cell-group/index"
   },
   "pages": [
     "pages/index/index",
