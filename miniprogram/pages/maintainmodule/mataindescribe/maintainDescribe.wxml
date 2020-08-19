@@ -45,9 +45,9 @@
   </view>
   
 </view>
-<view class='main'>
-  <van-button plain hairline type="info" color="green" size="small" bindtap="eject">
-    <view class="view" style="font-size:10pt">实际处理描述</view>
+<view class='main' wx:if="{{selectValue=='3'}}">
+  <van-button plain hairline type="info" color="green" size="normal" bindtap="eject">
+    <view class="view" style="font-size:12pt">实际处理描述</view>
   </van-button>
 </view>
 
@@ -71,7 +71,7 @@
     </view>
   </view>
   <view class='wishName'>
-    <input bindinput='wish_put' placeholder='请输入内容' class='wish_put' value="{{maintainDescribe}}"></input>
+    <textarea bindinput='wish_put' placeholder='请输入内容' class='wish_put' value="{{maintainDescribe}}"></textarea>
   </view>
   <view class='wishbnt'>
     <button class='wishbnt_bt' bindtap='ok'>确定</button>

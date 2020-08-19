@@ -157,7 +157,7 @@ Page({
   },
   bindMatainFormSelect() {
     var that = this
-    var url = './maintainNumberselect?maintaintype=CQFW&type=1';
+    var url = './maintainNumberselect?maintaintype=' + that.data.maintainTypeId+'&type=1';
     if (that.data.problemView == true) {
       wx.showModal({
         title: '系统提示',
@@ -168,7 +168,7 @@ Page({
         success: res => {
           if (res.confirm == true) {
             //确认
-            url = './maintainNumberselect?maintaintype=CQFW&type=0';
+            url = './maintainNumberselect?maintaintype=' + that.data.maintainTypeId +'&type=0';
             wx.navigateTo({
               url: url,
               events: {
