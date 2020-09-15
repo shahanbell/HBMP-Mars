@@ -141,6 +141,8 @@ App<IMyApp>({
     //restAdd:'https://jrs.hanbell.com.cn',
      restAdd: 'https://i2.hanbell.com.cn',
     // restAdd: 'http://localhost:8480',
+    //URL转码
+    weChatCallBack: 'https%3a%2f%2fi2.hanbell.com.cn%2fHanbell-WCO%2fAuthCallBackServlet',
     restId: '1505912014724',
     restToken: '0ec858293fccfad55575e26b0ce31177',
     restAuth: 'appid=1505912014724&token=0ec858293fccfad55575e26b0ce31177'

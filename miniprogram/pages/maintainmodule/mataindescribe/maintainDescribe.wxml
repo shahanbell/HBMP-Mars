@@ -51,6 +51,12 @@
   </van-button>
 </view>
 
+<view class='main' wx:if="{{selectValue=='3'}}">
+  <van-button plain hairline type="info" color="green" size="normal" bindtap="queryIp">
+    <view class="view" style="font-size:12pt">满意度二维码</view>
+  </van-button>
+</view>
+
 <view style="height 20rpx:"></view>
 <view class='main'>
   <view id="circle" bindtap="commit">
@@ -58,18 +64,15 @@
     <view class='dateview'>{{dateview}}</view>
   </view>
 </view>
-
-
 <!-- 备注弹窗 -->
 <view class="model" catchtouchmove='preventTouchMove' wx:if='{{showModal}}'></view>
 <view class="modalDlg" catchtouchmove='preventTouchMove' wx:if='{{showModal}}'>
-  <view class='windowRow'>
-    <text class='userTitle'>实际处理描述
-  </text>
-    <view class='back' bindtap='back'>
-      返回
-    </view>
-  </view>
+
+  <van-button plain hairline type="info" color="green" size="normal" bindtap="eject">
+    <view class="view" style="font-size:12pt">实际处理描述</view>
+  </van-button>
+
+
   <view class='wishName'>
     <textarea bindinput='wish_put' placeholder='请输入内容' class='wish_put' value="{{maintainDescribe}}"></textarea>
   </view>
@@ -77,3 +80,9 @@
     <button class='wishbnt_bt' bindtap='ok'>确定</button>
   </view>
 </view>
+
+
+<modal title="满意度调查二维码" hidden="{{modalHidden}}" bindconfirm="modalConfirm" bindcancel="modalCandel">
+
+  <canvas style="width: 550rpx;height: 550rpx;margin:auto;" canvas-id="logoQRCode"/>
+  </modal>
