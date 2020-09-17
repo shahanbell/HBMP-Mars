@@ -1,0 +1,200 @@
+<!--pages/businesstrip/businesstripdetail.wxml-->
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+
+<!-- 触发时才显示的组件 -->
+
+<van-popup
+    show="{{ show.eqpSelectorPopup }}"
+    z-index='1000'
+    position="right"
+    round
+    custom-style="height: 95%;width: 95%;"
+    bind:close="closeEqpSelectorPopup"
+>
+
+<van-cell-group>
+
+<van-cell-group>
+
+<van-search
+  id="proSearchBar"
+  value="{{ searchBarDta }}"
+  shape="round"
+  placeholder="请输入搜索关键词"
+  bind:search="onEqpSearchStart"
+  use-action-slot
+  use-right-icon-slot
+>
+
+    <van-icon class="searchRightIcon" slot="right-icon" name="scan" color="blue" size="20px" bind:click="startScanCode"/>
+
+</van-search>
+
+</van-cell-group>
+
+  <view class="scrollTest" id="eqpListTest">
+
+    <scroll-view id="eqpList" class="scrollWrap" scroll-y="true" refresher-enabled="true" refresher-triggered="{{refreshTrigger}}" bindrefresherrefresh="pullDownTest" bindscrolltolower="loadMore" scroll-top="{{eqpListScrollTop}}" scroll-into-view="{{eqpIntoViewTest}}" style='height:{{eqpListHeight}}px;'>
+      <view class="eqpListWrap">
+      </view>
+      <my-noData wx:if="{{orderList.length<1&&!loading}}" nodata="{{nodataType}}"></my-noData>
+      <view class="orderList" wx:for="{{orderList}}" wx:key="index" data-item="{{item}}" bindtap='eqpCardSelect' id='eqpListIndex_{{index}}'>
+        <view class="shop">
+          <view class="shop_name">
+            品号:{{item.shop}}
+          </view>
+          <text class="state {{item.origin=='TaoBao' ? 'state_taobao' : item.origin=='PinDuoDuo' ? 'state_pdd' : item.origin=='JDCOM' ? 'state_jd' : ''}}">{{item.orderstate}}</text>
+        </view>
+        <view class="proInfo">
+          <image class="proInfo_img" src='{{item.pictureurl==""?defaultImg:item.pictureurl}}' mode='widthFix' lazy-load='true' binderror="errorFn" data-errorimg="{{index}}"></image>
+          <view class="proInfo_right">
+            <view class="proInfo_text">
+              <view class="proInfo_text_title">
+                <text wx:if="{{item.origin==='TaoBao'}}" class="iconfont icon-tianmaot"></text>
+                <text wx:elif="{{item.origin==='PinDuoDuo'}}" class="iconfont icon-pin"></text>
+                <text wx:elif="{{item.origin==='JDCOM'}}" class="iconfont icon-JD"></text>
+                {{item.couponname}}
+              </view>
+              <text class="iconfont icon-qianjinjiantou"></text>
+            </view>
+            <view class="proInfo_text">
+              <view class="proInfo_text_dtt">{{item.orderdtt}}</view> 
+              <text class="proInfo_text_acount">×{{item.productcount}}</text>
+            </view>
+          </view>
+        </view>
+        <view class="orderNum">
+          <view>资产编号:{{item.ordernum}}({{item.type}})</view>
+          <view>使用人:<text>{{item.payamount}}</text></view>
+        </view>
+ 
+      </view>
+ 
+      <!-- <view class="no-more" wx:if="{{isNoMoreData}}">------------ 已经到底了 ------------</view> -->
+      <view class="eqpListLoading">
+        <van-loading color="#1989fa" size="24px" wx:if="{{eqpListLoading}}">加载中...</van-loading>
+      </view>
+    </scroll-view>
+
+  </view>
+
+
+<view class="eqpSelectorButtonBlock">
+  <van-button round color="#DCDCDC" size="small" custom-style="color:#696969;width:80px;" bind:click="onEqpSelResetClick" >重置</van-button>
+  <van-button round type="info" size="small" custom-style="margin-left:30px;width:80px;" bind:click="onEqpSelBackClick" >返回</van-button>
+</view>
+
+
+</van-cell-group>
+</van-popup>
+
+<!-- 出发时才显示的组件 -->
+<view class="scrollTest" id="eqpListTest2">
+<view class="eqpListWrap">
+      </view>
+<view class="orderList" wx:for="{{orderList}}" wx:key="index" data-item="{{item}}" bindtap='eqpCardSelect' id='eqpListIndex_{{index}}'>
+        <view class="shop">
+          <view class="shop_name">
+            报修单号:{{item.shop}}
+          </view>
+          <text class="state {{item.origin=='TaoBao' ? 'state_taobao' : item.origin=='PinDuoDuo' ? 'state_pdd' : item.origin=='JDCOM' ? 'state_jd' : ''}}">{{item.orderstate}}</text>
+        </view>
+        <view class="proInfo">
+          <image class="proInfo_img" src='{{item.pictureurl==""?defaultImg:item.pictureurl}}' mode='widthFix' lazy-load='true' binderror="errorFn" data-errorimg="{{index}}"></image>
+          <view class="proInfo_right">
+            <view class="proInfo_text">
+              <view class="proInfo_text_title">
+                <text wx:if="{{item.origin==='TaoBao'}}" class="iconfont icon-tianmaot"></text>
+                <text wx:elif="{{item.origin==='PinDuoDuo'}}" class="iconfont icon-pin"></text>
+                <text wx:elif="{{item.origin==='JDCOM'}}" class="iconfont icon-JD"></text>
+                {{item.couponname}}
+              </view>
+              <text class="iconfont icon-qianjinjiantou"></text>
+            </view>
+            <view class="proInfo_text">
+              <view class="proInfo_text_dtt">{{item.orderdtt}}</view> 
+              <text class="proInfo_text_acount">×{{item.productcount}}</text>
+            </view>
+          </view>
+        </view>
+        <view class="orderNum">
+          <view>资产编号:{{item.ordernum}}</view>
+          <view>报修人:<text>{{item.payamount}}</text></view>
+        </view>
+ 
+      </view>
+ </view>
+
+<view class="page__hd">
+    <view class="proTitle">计划维修方式及故障类型</view>
+</view>
+
+<van-cell-group>
+
+  <van-field
+    label="故障类型"
+    value="{{ hitchTypeName }}"
+    data-name="hitchTypeName"
+    bind:change="bindData"
+    right-icon="arrow-down"
+    bindtap='onTroubleCellTap'
+    readonly
+  />
+
+<van-cell-group>
+  <van-cell title="维修方式说明" use-label-slot>
+      <view hidden="{{!(show.troubleSelectorPopup || textareaDisabled)}}" slot="label" style="height: 6rem;"></view>
+      <textarea hidden="{{show.troubleSelectorPopup || textareaDisabled}}" slot="label" class="weui-textarea" placeholder="请输入问题的正文内容。" maxlength="500" placeholder-style="color:#b3b3b3;font-size:14px;" style="height: 6rem;font-size:16px;color:black;" value="{{repairMethod}}" bindinput="handleContentInput" />
+      <view slot="label" class="weui-textarea-counter">{{contentCount}}/500</view>
+  </van-cell>
+</van-cell-group>
+
+
+
+
+</van-cell-group>
+
+<van-popup
+    show="{{ show.troubleSelectorPopup }}"
+    position="bottom"
+    bind:close="closeTroubleSelectorPopup"
+>
+
+  <van-picker
+    show-toolbar
+    title="故障类型"
+    columns="{{ hitchTypeList }}"
+    value-key="hitchTypeName"
+    bind:change="onHitchPickerChange"
+    bind:confirm="onHitchPickerConfirm"
+    bind:cancel="onHitchPickerCancel"
+  />
+
+</van-popup>
+
+<van-popup
+    show="{{ show.dateFilterPopup }}"
+    position="bottom"
+    bind:close="closeDateFilterPopup"
+>
+
+  <van-datetime-picker
+  type="datetime"
+  id = "picker1"
+  value="{{currentDate}}"
+  bind:cancel="onDateFilterCancel"
+  bind:confirm="onDateFilterConfirm"
+  bind:input="onDateFilterInput"
+  min-date="{{minDate}}"
+  max-date="{{currentDate}}"
+  formatter="{{formatter}}"
+  />
+
+</van-popup>
+
+<view class="submitWrap_fix">
+<van-button type="info" icon="passed" form-type="submit" style="width:100%;position:fixed;bottom:0px;" bind:click="eqpRepairFormSubmit" block>提交</van-button>
+</view>
+<van-dialog id="van-dialog"/>
+
+</view>

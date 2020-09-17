@@ -1,0 +1,34 @@
+<!--miniprogram/component/eqpRepairBacklogList/eqpRepairBacklogList.wxml-->
+<view id="start" class='startView'></view>
+<view>
+  <scroll-view class="scrollWrap" scroll-y="true" style='height:{{winHeight}}px;'>
+  <view class="eqpairBacklogListWrap">
+  </view>
+  <van-empty wx:if="{{repairBacklogList.length<1}}" description="无待办事项"/>
+    <view class="repairBacklogList" wx:for="{{repairBacklogList}}" wx:key="index" data-item="{{item}}" bindtap='backlogCardSelect' id='repairBacklogListIndex_{{index}}'>
+      <view class="shop">
+        <view class="shop_name">
+          报修单号:{{item.pId}}
+        </view>
+        <view class="shop_name">
+          <van-tag round wx:if="{{item.isRead=='N'}}" type="primary">未读</van-tag>
+          <van-tag round wx:if="{{item.isRead=='Y'}}" type="success">已读</van-tag>
+        </view>
+      </view>
+      <view class="proInfo">
+        <view class="shop_name">
+          报修人:{{item.userNo}}
+        </view>
+        <view class="shop_name">
+          故障发生时间:{{item.creDate}}
+        </view>
+      </view>
+      <view class="auditContect">
+        <view></view>
+        <view class="shop_name">
+          当前状态:<text class="state_taobao">{{item.contenct}}</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

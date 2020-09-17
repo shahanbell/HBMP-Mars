@@ -1,0 +1,228 @@
+<!--pages/businesstrip/businesstripdetail.wxml-->
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+
+<van-steps
+  steps="{{ steps }}"
+  active="{{ repairStepActive }}"
+  active-icon="success"
+  active-color="#38f"
+  style="width:100%;position:fixed;top:0px;border-bottom: 2rpx solid #eee;z-index: 999;"
+/>
+
+<view class="topWrap_fix">
+</view>
+
+<view class="page__hd">
+    <view class="proTitle">基本资料</view>
+</view>
+
+
+<van-cell-group>
+
+  <van-field
+    label="报修人"
+    value="{{ repairUserName }}"
+    data-name="repairUserName"
+    bind:change="bindData"
+    readonly
+  />
+
+      <van-field
+        label = "设备编号"
+        value="{{ assetno }}"
+        data-name="assetno"
+        bind:change="bindData"
+        bindtap='onEqpSelectorTap'
+        readonly
+      />
+
+    <van-field
+    label="设备名称"
+    value="{{ itemdsc }}"
+    data-name="itemdsc"
+    bind:change="bindData"
+    readonly
+  />
+
+  <van-field
+    label="设备品号"
+    value="{{ itemno }}"
+    data-name="itemno"
+    bind:change="bindData"
+    readonly
+  />
+
+  <van-field
+    label="存放地址"
+    value="{{ assetPosition }}"
+    data-name="assetPosition"
+    bind:change="bindData"
+    readonly
+  />
+
+</van-cell-group>
+
+<view class="page__hd">
+    <view class="proTitle">故障描述</view>
+</view>
+
+<van-cell-group>
+
+  <van-field
+    label="故障来源"
+    value="{{ troubleFrom }}"
+    data-name="troubleFrom"
+    bind:change="bindData"
+    readonly
+  />
+
+  <van-field
+    label="故障紧急度"
+    value="{{ hitchUrgency }}"
+    data-name="hitchUrgency"
+    bind:change="bindData"
+    readonly
+  />
+
+  <van-field
+    label="发生时间"
+    value="{{ formdate }}"
+    data-name="formdate"
+    bind:change="bindData"
+    readonly
+  />
+
+  <van-field
+    label="到达时间"
+    value="{{ serviceArriveTime }}"
+    data-name="serviceArriveTime"
+    bind:change="bindData"
+    readonly
+  />
+
+  <van-field
+    label="完成时间"
+    value="{{ completeTime }}"
+    data-name="completeTime"
+    bind:change="bindData"
+    readonly
+  />
+
+  <van-field
+    label="维修人"
+    value="{{serviceusername}}"
+    data-name="serviceusername"
+    bind:change="bindData"
+    right-icon="phone"
+    readonly
+  />
+
+<van-cell-group>
+    <van-cell title="故障部位详细情况" border="{{false}}" use-label-slot></van-cell>
+    <view class='textarea_pro' data-show="troubleDetailInfo">
+        <view wx:if="{{!showTextArea.troubleDetailInfo}}" 
+        class='areaTest' 
+        style='color:{{troubleDetailInfo==""?"#999":"#2b2b2b"}}; word-break:break-all; white-space:pre-line;'>
+            <view wx:if="{{troubleDetailInfo==''}}" style='color:#b3b3b3;font-size:14px;'>无。</view>{{troubleDetailInfo}}
+        </view>
+        <view class="textarea-counter">{{troubleDetailInfo.length}}/200</view>
+    </view>
+</van-cell-group>
+
+  <!-- <van-cell-group>
+
+  <van-cell title="故障部位详细情况" border="{{false}}" use-label-slot>
+  </van-cell>
+
+  <van-field
+    custom-style="height:5.5rem;"
+    value="{{ troubleDetailInfo }}"
+    data-name="troubleDetailInfo"
+    type="textarea"
+    placeholder="无。"
+    autosize
+    readonly
+  />
+
+  </van-cell-group> -->
+
+  <van-cell title="设备图片" use-label-slot>
+  
+
+    <view slot="label" class='ui_uploader_cell'>
+        <!-- 根据已选择的图片临时路径数组展示图片-->
+        <view class='ui_uploader_item' wx:for="{{uploaderList}}" wx:key="{{index}}">
+            <!-- 删除-->
+            <!-- <icon class='ui_uploader_item_icon' bindtap='clearImg' data-index="{{index}}" type="clear" size="20" color="red"/> -->
+            <!-- 图片-->
+            <image bindtap='showImg' data-index="{{index}}" src='{{item}}'></image>
+        </view>
+        <!-- 上传按钮+框 -->
+        <view class='ui_uploader' bindtap='upload' wx:if="{{showUpload}}"></view>
+    </view>
+
+  </van-cell>
+
+</van-cell-group>
+
+<van-popup
+    show="{{ show.troubleSelectorPopup }}"
+    position="bottom"
+    bind:close="closeTroubleSelectorPopup"
+>
+
+  <van-picker
+    show-toolbar
+    title="故障来源"
+    columns="{{ troubleTypeCol }}"
+    bind:change="onTroublePickerChange"
+    bind:confirm="onTroublePickerConfirm"
+    bind:cancel="onTroublePickerCancel"
+  />
+
+</van-popup>
+
+<van-popup
+    show="{{ show.dateFilterPopup }}"
+    position="bottom"
+    bind:close="closeDateFilterPopup"
+>
+
+  <van-datetime-picker
+  type="datetime"
+  id = "picker1"
+  value="{{currentDate}}"
+  bind:cancel="onDateFilterCancel"
+  bind:confirm="onDateFilterConfirm"
+  bind:input="onDateFilterInput"
+  min-date="{{minDate}}"
+  max-date="{{currentDate}}"
+  formatter="{{formatter}}"
+  />
+
+</van-popup>
+
+<view class="submitWrap_fix">
+</view>
+
+<van-cell-group>
+  <van-cell border="{{ true }}" style="width:100%;position:fixed;bottom:0px;border-top: 2rpx solid #eee;z-index: 999;">
+  <view>
+    <van-button round wx:if="{{showBtn.deleteBtn}}" color="#DCDCDC" size="small" custom-style="color:#696969;" bind:click="onDeleteBtnClick" >作废</van-button>
+    <van-button round wx:if="{{showBtn.auditInfoBtn}}" type="info" size="small" custom-style="margin-left:10px;" bind:click="">查看审批流程</van-button>
+    <van-button round wx:if="{{showBtn.arrivalCheckBtn}}" disabled="{{disableCheckBtn}}" type="info" size="small" custom-style="margin-left:10px;" bind:click="onCheckBtnClick">维修员到达</van-button>
+    <van-button round wx:if="{{showBtn.finishCheckBtn}}"  type="info" size="small" custom-style="margin-left:10px;" bind:click="onFinishBtnClick">确认维修完成</van-button>
+    <van-button round wx:if="{{showBtn.startAuditBtn}}" type="info" size="small" custom-style="margin-left:10px;" bind:click="onAuditBtnClick">发起维修验收</van-button>
+    <van-button round wx:if="{{showBtn.responseDutyBtn}}" type="info" size="small" custom-style="margin-left:10px;" bind:click="onDutyResBtnClick">责任回复</van-button>
+    <van-button round wx:if="{{showBtn.approveAuditBtn}}" type="info" size="small" custom-style="margin-left:10px;" bind:click="onApproveBtnClick">课长审核</van-button>
+    <van-button round wx:if="{{showBtn.examAuditBtn}}" type="info" size="small" custom-style="margin-left:10px;" bind:click="onApproveBtnClick">经理审核</van-button>
+  </view>
+  </van-cell>
+</van-cell-group>
+
+<!-- <van-button type="info" icon="passed" form-type="submit" style="width:100%;position:fixed;bottom:0px;" bind:click="eqpRepairFormSubmit" block>提交</van-button> -->
+
+<van-dialog id="van-dialog"/>
+
+
+</view>

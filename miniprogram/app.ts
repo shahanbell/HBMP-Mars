@@ -19,6 +19,9 @@ export interface IMyApp {
     defaultDeptId?: string,
     defaultDeptName?: string,
     auth?: Array[string],
+    screenHeight?: number,
+    statusBarHeight?: number,
+    windowHeight?: number,
   }
 }
 
@@ -131,6 +134,14 @@ App<IMyApp>({
             url: '/pages/profile/profile'
           })
         }
+      }
+    })
+    //获取手机屏幕,状态栏的高度
+    wx.getSystemInfo({
+      success: res => {
+        this.globalData.screenHeight = res.screenHeight
+        this.globalData.statusBarHeight = res.statusBarHeight
+        this.globalData.windowHeight = res.windowHeight
       }
     })
   },

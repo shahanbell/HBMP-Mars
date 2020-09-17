@@ -1,0 +1,33 @@
+/* miniprogram/component/eqpRepairBacklogList/eqpRepairBacklogList.wxss */
+.eqpairBacklogListWrap{
+  width: 100%;
+  height: 20rpx;
+}
+
+.repairBacklogList{
+  width: 95%;
+  height: 246rpx;
+  border-radius:16rpx;
+  background-color: rgb(255, 255, 255); 
+  margin-bottom: 20rpx;
+  margin-left:auto;
+  margin-right:auto;
+  padding: 30rpx 24rpx 0 24rpx;
+  box-sizing: border-box;
+  }
+
+  .auditContect{
+    display: flex;
+    justify-content: space-between;
+    font-size: 24rpx;
+    color: #333; 
+    line-height: 82rpx;
+    border-top: 2rpx solid #eee;
+    white-space: nowrap;
+    }
+
+  .auditContect text{
+    position: relative;
+    font-size: 26rpx;
+    color: #FF4B0A;
+  }

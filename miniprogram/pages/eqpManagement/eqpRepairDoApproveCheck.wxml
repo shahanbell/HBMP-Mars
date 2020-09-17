@@ -1,0 +1,354 @@
+<!--pages/businesstrip/businesstripdetail.wxml-->
+<view class="pagePro" style="height:100%;" xmlns:wx="http://www.w3.org/1999/xhtml">
+
+	<!-- 触发时才显示的组件 -->
+
+	<van-popup id="spareSelectPopup" show="{{ show.eqpSelectorPopup }}" z-index='1000' position="right" round custom-style="height: 95%;width: 95%;" bind:close="closeEqpSelectorPopup">
+
+		<van-cell-group>
+
+			<van-cell-group>
+
+                    <van-search id="proSearchBar" value="{{ searchBarDta }}" shape="round" placeholder="请输入搜索关键词" bind:search="onEqpSearchStart" use-action-slot use-right-icon-slot>
+
+					    <van-icon class="searchRightIcon" slot="right-icon" name="scan" color="blue" size="20px" bind:click="startScanCode" />
+
+				    </van-search>
+
+			</van-cell-group>
+
+
+            <view class="scrollTest" id="eqpListTest">
+
+            <scroll-view id="eqpList2" class="scrollWrap" scroll-y="true" style='height:{{eqpListHeight}}px;'>
+					<view class="eqpListWrap">
+					</view>
+					<my-noData wx:if="{{spareList.length<1&&!loading}}" nodata="{{nodataType}}"></my-noData>
+					<view class="spareList" wx:for="{{spareList}}" wx:key="index" data-item="{{item}}" bindtap='eqpCardSelect' id='spareListIndex_{{index}}'>
+						<view class="shop">
+							<view class="shop_name">
+								备件品号:{{item.spareNo}}
+							</view>
+							<!-- <text class="state {{item.origin=='TaoBao' ? 'state_taobao' : item.origin=='PinDuoDuo' ? 'state_pdd' : item.origin=='JDCOM' ? 'state_jd' : ''}}">{{item.orderstate}}</text> -->
+						</view>
+						<view class="proInfo">
+							<image class="proInfo_img" src='{{item.pictureurl==""?defaultImg:item.pictureurl}}' mode='widthFix' lazy-load='true' binderror="errorFn" data-errorimg="{{index}}"></image>
+							<view class="proInfo_right">
+								<view class="proInfo_text">
+									<view class="proInfo_text_title">
+										<text wx:if="{{item.origin==='TaoBao'}}" class="iconfont icon-tianmaot"></text>
+										<text wx:elif="{{item.origin==='PinDuoDuo'}}" class="iconfont icon-pin"></text>
+										<text wx:elif="{{item.origin==='JDCOM'}}" class="iconfont icon-JD"></text>
+										{{item.itemDisplayName}}
+									</view>
+									<text class="iconfont icon-qianjinjiantou"></text>
+								</view>
+								<view class="proInfo_text">
+									<view class="proInfo_text_dtt">{{item.spareDesc}}</view>
+                                    <!-- <view style="display : flex ; flex-flow : row;">
+                                        <van-icon name="arrow-left" custom-style="padding-right:5px"/>
+                                        <input class="spareInfo_text_acount" value="{{item.qty}}" type="number" />
+                                        <van-icon name="arrow"  custom-style="padding-left:5px"/>
+                                    </view> -->
+									<text class="proInfo_text_acount">×1</text>
+								</view>
+                                <view class="proInfo_text">
+									<view class="proInfo_text_dtt">备件编号:{{item.spareNum}}</view>
+								</view>
+							</view>
+						</view>
+						<view class="orderNum">
+							<view>单价:<text class="totalCost">{{item.uPrice}}元</text></view>
+							<view>使用人:<text>{{item.spareUserName}}</text></view>
+						</view>
+
+					</view>
+
+				</scroll-view>
+            </view>
+
+
+			<view class="eqpSelectorButtonBlock">
+				<van-button round color="#DCDCDC" size="small" custom-style="color:#696969;width:80px;" bind:click="onEqpSelResetClick">重置</van-button>
+				<van-button round type="info" size="small" custom-style="margin-left:30px;width:80px;" bind:click="onEqpSelBackClick">返回</van-button>
+			</view>
+
+
+		</van-cell-group>
+	</van-popup>
+
+
+	<van-popup id="hitchDutySelectPopup" show="{{ show.hitchDutySelectorPopup }}" z-index='1000' position="right" round custom-style="height: 95%;width: 95%;" bind:close="closeHitchDutySelectorPopup">
+
+		<van-cell-group>
+
+			<van-cell-group>
+
+                    <van-search id="proSearchBar" value="{{ searchBarDta }}" shape="round" placeholder="请输入搜索关键词" bind:search="onHitchDutySearchStart" use-action-slot use-right-icon-slot>
+
+					    <van-icon class="searchRightIcon" slot="right-icon" name="scan" color="blue" size="20px" bind:click="startScanCode" />
+
+				    </van-search>
+
+			</van-cell-group>
+
+            <view class="scrollTest" id="eqpListTest">
+
+            <scroll-view id="eqpList2" class="scrollWrap" scroll-y="true" style='height:{{eqpListHeight}}px;'>
+					<view class="eqpListWrap">
+					</view>
+					<my-noData wx:if="{{hitchDutyList.length<1&&!loading}}" nodata="{{nodataType}}"></my-noData>
+					<view class="hitchDutyList" wx:for="{{hitchDutyList}}" wx:key="index" data-item="{{item}}" bindtap='hitchDutyCardSelect' id='hitchDutyListIndex_{{index}}'>
+						<view class="shop">
+							<view class="shop_name">
+								工号:{{item.userId}}
+							</view>
+							<view class="shop_name">
+								部门:{{item.deptNo}}-{{item.dept}}
+							</view>
+							<!-- <text class="state {{item.origin=='TaoBao' ? 'state_taobao' : item.origin=='PinDuoDuo' ? 'state_pdd' : item.origin=='JDCOM' ? 'state_jd' : ''}}">{{item.orderstate}}</text> -->
+						</view>
+						<view class="proInfo">
+							<view class="shop_name">
+								姓名:{{item.userName}}
+							</view>
+							<view class="shop_name">
+								邮箱:{{item.email}}
+							</view>
+						</view>
+						<view class="orderNum">
+							<view></view>
+							<view>联系电话:<text>{{item.phone}}</text></view>
+						</view>
+
+					</view>
+
+				</scroll-view>
+            </view>
+
+
+			<view class="eqpSelectorButtonBlock">
+				<van-button round color="#DCDCDC" size="small" custom-style="color:#696969;width:80px;" bind:click="onHitchDutySelResetClick">清空</van-button>
+				<van-button round type="info" size="small" custom-style="margin-left:30px;width:80px;" bind:click="onHitchDutySelBackClick">返回</van-button>
+			</view>
+
+
+		</van-cell-group>
+	</van-popup>
+
+	<!-- 触发时才显示的组件 -->
+
+	<van-tabs active="{{ auditTabActive }}" bind:change="onChange" z-index='100' sticky>
+		<van-tab title="故障维修审批单">
+
+<!-- <scroll-view id="eqpList" class="scrollWrap" scroll-y="true" style='height:{{eqpListHeight}}px'> -->
+				<!-- <view class="scrollTest" id="eqpListTest2"> -->
+					<view class="eqpListWrap">
+					</view>
+					<view class="orderList" wx:for="{{eqpRepairInfoList}}" wx:key="index" data-item="{{item}}" id='eqpListIndex_{{index}}'>
+						<view class="shop">
+							<view class="shop_name">
+								报修单号:{{item.formId}}
+							</view>
+							<View class="shop_name">维修人:{{item.serviceUserName}}</View>
+						</view>
+						<view class="proInfo">
+							<image class="proInfo_img" src='{{item.pictureurl==""?defaultImg:item.pictureurl}}' mode='widthFix' lazy-load='true' binderror="errorFn" data-errorimg="{{index}}"></image>
+							<view class="proInfo_right">
+								<view class="proInfo_text">
+									<view class="proInfo_text_title">
+										{{item.displayType}}:{{item.assetDesc}}
+									</view>
+									<text class="proInfo_text_acount">×{{item.productcount}}</text>
+								</view>
+								<view class="proInfo_text">
+									<view class="proInfo_text_dtt">资产编号:{{item.assetFormId}}</view>
+								</view>
+							</view>
+						</view>
+						<view class="orderNum">
+							<view>故障发生时间:{{item.creDate}}</view>
+							<view>报修人:<text>{{item.repairUserName}}</text></view>
+						</view>
+						<view class="orderNum">
+							<view>维修到达时间:{{item.serviceArriveTime}}</view>
+							<view>联络时间:<text>{{item.contactTime}}小时</text></view>
+						</view>
+						<view class="orderNum">
+							<view>维修完成时间:{{item.completeTime}}</view>
+							<view>维修时间:<text>{{item.repairTime}}小时</text></view>
+						</view>
+
+					</view>
+				<!-- </view> -->
+
+        <view class="eqpListWrap">
+				</view>
+
+				<van-field label="审批人" value="{{ approveUserName }}" data-name="approveUserName" use-button-slot readonly >
+        </van-field>
+
+        <!-- <van-field label="审批结果" value="{{ auditContenctObj.contenctDesc }}" data-name="contenctDesc" bind:change="bindData" right-icon="arrow-down" bindtap='onAuditContenctCellTap' readonly /> -->
+
+				<van-cell title="审批结果">
+					<van-radio-group
+						value="{{ auditContenctType }}"
+						name="stockTypeRadio"
+						bind:change="onContenctChange"
+						style="display:flex;flex-flow:row nowarp;justify-content:flex-end;"
+					>
+						<van-radio name="合格" style="margin-right:40rpx;">合格</van-radio>
+						<van-radio name="不合格">不合格</van-radio>
+					</van-radio-group>
+				</van-cell>
+
+        <van-cell-group>
+            <van-cell title="审批意见" border="{{false}}" use-label-slot></van-cell>
+            <view class='textarea_pro' data-show="auditNote" bindtap="ifshowArea">
+                <textarea wx:if="{{showTextArea.auditNote}}" 
+                class='areaInput' bindblur="ifshowArea" data-show="auditNote" value="{{auditNote}}" 
+                maxlength="200" 
+                placeholder="请输入问题的正文内容" 
+                placeholder-style="color:#b3b3b3;font-size:14px;" 
+                auto-focus="true" 
+                bindinput="textAreaProInput"/>
+                <view wx:if="{{!showTextArea.auditNote}}" 
+                class='areaTest' 
+                style='color:{{auditNote==""?"#999":"#2b2b2b"}}; word-break:break-all; white-space:pre-line;'>
+                    <view wx:if="{{auditNote==''}}" style='color:#b3b3b3;font-size:14px;'>请输入问题的正文内容</view>{{auditNote}}
+                </view>
+                <view class="textarea-counter">{{auditNote.length}}/200</view>
+            </view>
+        </van-cell-group>
+
+
+  </van-tab>
+
+
+  <van-tab title="审批流程明细">
+
+	            <!-- <view class="scrollTest" id="eqpListTest"> -->
+
+            <!-- <scroll-view id="eqpList2" class="scrollWrap" scroll-y="true" style='height:{{eqpListHeight}}px;'> -->
+					<view class="eqpListWrap">
+					</view>
+					<van-empty wx:if="{{repairHisList.length<1}}" description="无审批流程"/>
+					<view class="hitchDutyList" wx:for="{{repairHisList}}" wx:key="index" data-item="{{item}}" bindtap='repairHisCardSelect' id='repairHisListIndex_{{index}}'>
+						<view class="shop">
+							<view class="shop_name">
+								报修单号:{{item.pId}}
+							</view>
+							
+							<view class="shop_name">
+							</view>
+						</view>
+						<view class="proInfo">
+							<view class="shop_name">
+								审批人:{{item.userNo}}
+							</view>
+							<view class="shop_name">
+								审批时间:{{item.creDate}}
+							</view>
+						</view>
+						<view class="auditContect">
+							<view></view>
+							<view class="shop_name">
+								审批结果:<text class="state_taobao">{{item.contenct}}</text>
+							</view>
+						</view>
+
+					</view>
+
+				<!-- </scroll-view> -->
+        <!-- </view> -->
+  </van-tab>
+
+<view class="submitWrap_fix">
+	<van-button type="info" icon="passed" form-type="submit" style="width:100%;position:fixed;bottom:0px;z-index:100" bind:click="auditApproveFormSubmit" block>提交</van-button>
+</view>
+
+</van-tabs>
+
+
+<van-popup
+    show="{{ show.contenctSelectorPopup }}"
+    position="bottom"
+    bind:close="closeContenctSelectorPopup"
+>
+
+  <van-picker
+    show-toolbar
+    title="审批结果"
+    columns="{{  auditContenctList }}"
+    value-key="contenctDesc"
+    bind:change="onContenctPickerChange"
+    bind:confirm="onContenctPickerConfirm"
+    bind:cancel="onContenctPickerCancel"
+  />
+
+</van-popup>
+
+<van-popup
+    show="{{ show.hitchSort01SelectorPopup }}"
+    position="bottom"
+    bind:close="closeHitchSort01SelectorPopup"
+>
+
+  <van-picker
+    show-toolbar
+    title="故障类型"
+    columns="{{ hitchSort01List }}"
+    value-key="troubleName"
+    bind:change="onHitchSort01PickerChange"
+    bind:confirm="onHitchSort01PickerConfirm"
+    bind:cancel="onHitchSort01PickerCancel"
+  />
+
+</van-popup>
+
+<van-popup
+    show="{{ show.hitchTypeSelectorPopup }}"
+    position="bottom"
+    bind:close="closeHitchTypeSelectorPopup"
+>
+
+  <van-picker
+    show-toolbar
+    title="故障类型"
+    columns="{{ hitchTypeList }}"
+    value-key="hitchTypeName"
+    bind:change="onHitchTypePickerChange"
+    bind:confirm="onHitchTypePickerConfirm"
+    bind:cancel="onHitchTypePickerCancel"
+  />
+
+</van-popup>
+
+<van-popup
+    show="{{ show.dateFilterPopup }}"
+    position="bottom"
+    bind:close="closeDateFilterPopup"
+>
+
+  <van-datetime-picker
+  type="datetime"
+  id = "picker1"
+  value="{{currentDate}}"
+  bind:cancel="onDateFilterCancel"
+  bind:confirm="onDateFilterConfirm"
+  bind:input="onDateFilterInput"
+  min-date="{{minDate}}"
+  max-date="{{currentDate}}"
+  formatter="{{formatter}}"
+  />
+
+</van-popup>
+
+
+<!-- <cover-view class="cover-view">
+<button class="auditSubmitBtn" hover-class="auditSubmitBtn_hover" bindtap='onBtnTapTest' >提交</button>
+</cover-view> -->
+
+<van-dialog id="van-dialog"/>
+
+</view>

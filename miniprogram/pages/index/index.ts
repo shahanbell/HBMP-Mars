@@ -21,6 +21,7 @@ Page({
       { id: 'menu04', name: '派车', imgUrl: '../../images/car.png', url: '/pages/carapp/carapp', parentid: -1 },
       { id: 'menu05', name: '借支', imgUrl: '../../images/loan.png', url: '/pages/loan/loan', parentid: -1 },
       { id: 'menu08', name: '报餐', imgUrl: '../../images/baocan.png', url: '/pages/dine/dine', parentid: -1 },
+      { id: 'menu09', name: '设备管理', imgUrl: '../../images/eqpManagement.png', url: '/pages/eqpManagement/eqpManageIndex', parentid: -1 },
     ],
     indicatorDots: false,
     autoplay: true,
