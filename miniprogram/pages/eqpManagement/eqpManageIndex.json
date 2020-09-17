@@ -1,0 +1,7 @@
+{
+  "style": "v1",
+  "usingComponents": {
+    "eqpDocList": "../../component/eqpDocList/eqpDocList",
+    "eqpRepairBacklogList": "../../component/eqpRepairBacklogList/eqpRepairBacklogList"
+  }
+}

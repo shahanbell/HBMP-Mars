@@ -1,0 +1,334 @@
+<!--pages/businesstrip/businesstripdetail.wxml-->
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+
+<!-- 触发时才显示的组件 -->
+
+<van-popup
+    show="{{ show.eqpSelectorPopup }}"
+    z-index='1000'
+    position="right"
+    round
+    custom-style="height: 95%;width: 95%;"
+    bind:close="closeEqpSelectorPopup"
+>
+
+<van-cell-group>
+
+<van-cell-group>
+
+<van-search
+  id="proSearchBar"
+  value="{{ searchBarDta }}"
+  shape="round"
+  placeholder="请输入搜索关键词"
+  bind:search="onEqpSearchStart"
+  use-action-slot
+  use-right-icon-slot
+>
+
+    <van-icon class="searchRightIcon" slot="right-icon" name="scan" color="blue" size="20px" bind:click="startScanCode"/>
+
+</van-search>
+
+</van-cell-group>
+
+  <view class="scrollTest" id="eqpListTest">
+
+    <scroll-view id="eqpList" class="scrollWrap" scroll-y="true" bindscrolltolower="loadMore" scroll-top="{{eqpListScrollTop}}" scroll-into-view="{{eqpIntoViewTest}}" style='height:{{eqpListHeight}}px;'>
+      <view class="eqpListWrap">
+      </view>
+      <my-noData wx:if="{{orderList.length<1&&!loading}}" nodata="{{nodataType}}"></my-noData>
+      <view class="orderList" wx:for="{{orderList}}" wx:key="index" data-item="{{item}}" bindtap='eqpCardSelect' id='eqpListIndex_{{index}}'>
+        <view class="shop">
+          <view class="shop_name">
+            品号:{{item.shop}}
+          </view>
+          <text class="state {{item.origin=='TaoBao' ? 'state_taobao' : item.origin=='PinDuoDuo' ? 'state_pdd' : item.origin=='JDCOM' ? 'state_jd' : ''}}">{{item.orderstate}}</text>
+        </view>
+        <view class="proInfo">
+          <image class="proInfo_img" src='{{item.pictureurl==""?defaultImg:item.pictureurl}}' mode='widthFix' lazy-load='true' binderror="errorFn" data-errorimg="{{index}}"></image>
+          <view class="proInfo_right">
+            <view class="proInfo_text">
+              <view class="proInfo_text_title">
+                <!-- <text wx:if="{{item.origin==='TaoBao'}}" class="iconfont icon-tianmaot"></text>
+                <text wx:elif="{{item.origin==='PinDuoDuo'}}" class="iconfont icon-pin"></text>
+                <text wx:elif="{{item.origin==='JDCOM'}}" class="iconfont icon-JD"></text> -->
+                {{item.couponname}}
+              </view>
+              <text class="iconfont icon-qianjinjiantou"></text>
+            </view>
+            <view class="proInfo_text">
+              <view class="proInfo_text_dtt">{{item.orderdtt}}</view> 
+              <text class="proInfo_text_acount">×{{item.productcount}}</text>
+            </view>
+          </view>
+        </view>
+        <view class="orderNum">
+          <view>资产编号:{{item.ordernum}}</view>
+          <view>使用人:<text>{{item.payamount}}</text></view>
+        </view>
+ 
+      </view>
+ 
+      <!-- <view class="no-more" wx:if="{{isNoMoreData}}">------------ 已经到底了 ------------</view> -->
+      <view class="eqpListLoading">
+        <van-loading color="#1989fa" size="24px" wx:if="{{eqpListLoading}}">加载中...</van-loading>
+      </view>
+    </scroll-view>
+
+  </view>
+
+
+<view class="eqpSelectorButtonBlock">
+  <van-button round color="#DCDCDC" size="small" custom-style="color:#696969;width:80px;" bind:click="onEqpSelResetClick" >重置</van-button>
+  <van-button round type="info" size="small" custom-style="margin-left:30px;width:80px;" bind:click="onEqpSelBackClick" >返回</van-button>
+</view>
+
+
+</van-cell-group>
+</van-popup>
+
+<!-- 出发时才显示的组件 -->
+
+<view class="page__hd">
+    <view class="proTitle">基本资料</view>
+</view>
+
+<van-cell-group>
+
+  <van-field
+    label="报修人"
+    value="{{ repairUserName }}"
+    data-name="repairUserName"
+    bind:change="bindData"
+  />
+
+   <van-cell-group>
+      <van-field
+        value="{{ assetno }}"
+        data-name="assetno"
+        bind:change="bindData"
+        bindtap='onEqpSelectorTap'
+        center
+        clearable
+        placeholder="点此选择或直接扫码"
+        border="{{ false }}"
+        use-button-slot
+        readonly
+      >
+        <view slot="label">
+          <span class="van-cell-text">设备编号</span>
+          <van-tag wx:if="{{ show.queryInfo }}" type="danger" style="margin-left: 5px;">!</van-tag>
+        </view>
+        <van-button slot="button" size="small" type="info" catchtap="startScanCode">扫码</van-button>
+      </van-field>
+  </van-cell-group>
+
+    <van-field
+    label="设备名称"
+    value="{{ itemdsc }}"
+    data-name="itemdsc"
+    bind:change="bindData"
+  />
+
+  <van-field
+    label="设备品号"
+    value="{{ itemno }}"
+    data-name="itemno"
+    bind:change="bindData"
+  />
+
+    <van-field
+    label="存放地址"
+    value="{{ assetPosition }}"
+    data-name="assetPosition"
+    bind:change="bindData"
+  />
+
+</van-cell-group>
+
+<view class="page__hd">
+    <view class="proTitle">故障描述</view>
+</view>
+
+<van-cell-group>
+
+  <van-field
+    label="故障来源"
+    value="{{ troubleDesc }}"
+    data-name="troubleDesc"
+    bind:change="bindData"
+    right-icon="arrow-down"
+    bindtap='onTroubleCellTap'
+    readonly
+  />
+
+  <van-field
+    label="故障紧急度"
+    value="{{ hitchUrgencyDesc }}"
+    data-name="hitchUrgencyDesc"
+    bind:change="bindData"
+    right-icon="arrow-down"
+    bindtap='onHitchUrgencyCellTap'
+    readonly
+  />
+
+  <van-field
+    label="发生时间"
+    value="{{ formdate }}"
+    data-name="formdate"
+    bind:change="bindData"
+    right-icon="arrow-down"
+    bindtap='onFormDateCellTap'
+    readonly
+  />
+
+  <!-- <picker bindchange="bindServiceUserPickerChange" value="{{serviceuserPickerIndex}}" range="{{serviceUserList}}" range-key="userInfo" data-id='{{serviceUserList[index].userId}}'>
+      <van-field
+    label="维修人"
+    value="{{ serviceusername }}"
+    right-icon="arrow-down"
+    readonly
+    />
+  </picker> -->
+
+  <van-field
+    label="维修人"
+    value="{{serviceusername}}"
+    data-name="serviceusername"
+    bind:change="bindData"
+    right-icon="arrow-down"
+    bindtap='onServiceUserCellTap'
+    readonly
+  />
+
+<van-cell-group>
+    <van-cell title="故障部位详细情况" border="{{false}}" use-label-slot></van-cell>
+    <view class='textarea_pro' data-show="troubleDetailInfo" bindtap="ifshowArea">
+        <textarea wx:if="{{showTextArea.troubleDetailInfo}}" 
+        class='areaInput' bindblur="ifshowArea" data-show="troubleDetailInfo" value="{{troubleDetailInfo}}" 
+        maxlength="200" 
+        placeholder="请输入问题的正文内容" 
+        placeholder-style="color:#b3b3b3;font-size:14px;" 
+        auto-focus="true" 
+        bindinput="textAreaProInput"/>
+        <view wx:if="{{!showTextArea.troubleDetailInfo}}" 
+        class='areaTest' 
+        style='color:{{troubleDetailInfo==""?"#999":"#2b2b2b"}}; word-break:break-all; white-space:pre-line;'>
+            <view wx:if="{{troubleDetailInfo==''}}" style='color:#b3b3b3;font-size:14px;'>请输入问题的正文内容</view>{{troubleDetailInfo}}
+        </view>
+        <view class="textarea-counter">{{troubleDetailInfo.length}}/200</view>
+    </view>
+</van-cell-group>
+
+
+<!-- <van-cell-group>
+  <van-cell title="故障部位详细情况" use-label-slot>
+      <view hidden="{{!(show.eqpSelectorPopup || textareaDisabled)}}" slot="label" style="height: 6rem;"></view>
+      <textarea hidden="{{show.eqpSelectorPopup || textareaDisabled}}" slot="label" class="weui-textarea" placeholder="请输入问题的正文内容。" maxlength="500" placeholder-style="color:#b3b3b3;font-size:14px;" style="height: 6rem;font-size:16px;color:black;" value="{{troubleDetailInfo}}" bindinput="handleContentInput" />
+      <view slot="label" class="weui-textarea-counter">{{contentCount}}/500</view>
+  </van-cell>
+</van-cell-group> -->
+
+
+  
+
+  <van-cell title="图片上传" use-label-slot>
+  
+
+    <view slot="label" class='ui_uploader_cell'>
+        <!-- 根据已选择的图片临时路径数组展示图片-->
+        <view class='ui_uploader_item' wx:for="{{uploaderList}}" wx:key="{{index}}">
+            <!-- 删除-->
+            <icon class='ui_uploader_item_icon' bindtap='clearImg' data-index="{{index}}" type="clear" size="20" color="red"/>
+            <!-- 图片-->
+            <image bindtap='showImg' data-index="{{index}}" src='{{item}}'></image>
+        </view>
+        <!-- 上传按钮+框 -->
+        <view class='ui_uploader' bindtap='upload' wx:if="{{showUpload}}"></view>
+    </view>
+
+  </van-cell>
+
+</van-cell-group>
+
+<van-popup
+    show="{{ show.troubleSelectorPopup }}"
+    position="bottom"
+    bind:close="closeTroubleSelectorPopup"
+>
+
+  <van-picker
+    show-toolbar
+    title="故障来源"
+    columns="{{ troubleReasonList }}"
+    value-key="troubleDesc"
+    bind:change="onTroublePickerChange"
+    bind:confirm="onTroublePickerConfirm"
+    bind:cancel="onTroublePickerCancel"
+  />
+
+</van-popup>
+
+<van-popup
+    show="{{ show.dateFilterPopup }}"
+    position="bottom"
+    bind:close="closeDateFilterPopup"
+>
+
+  <van-datetime-picker
+  type="datetime"
+  id = "picker1"
+  value="{{currentDate}}"
+  bind:cancel="onDateFilterCancel"
+  bind:confirm="onDateFilterConfirm"
+  bind:input="onDateFilterInput"
+  min-date="{{minDate}}"
+  max-date="{{currentDate}}"
+  formatter="{{formatter}}"
+  />
+
+</van-popup>
+
+<van-popup
+    show="{{ show.serviceUserSelectorPopup }}"
+    position="bottom"
+    bind:close="closeServiceUserSelectorPopup"
+>
+
+  <van-picker
+    show-toolbar
+    title="维修人"
+    columns="{{ serviceUserList }}"
+    value-key="userInfo"
+    bind:change="onServiceUserPickerChange"
+    bind:confirm="onServiceUserPickerConfirm"
+    bind:cancel="onServiceUserPickerCancel"
+  />
+
+</van-popup>
+
+<van-popup
+    show="{{ show.hitchUrgencySelectorPopup }}"
+    position="bottom"
+    bind:close="closeHitchUrgencySelectorPopup"
+>
+
+  <van-picker
+    show-toolbar
+    title="故障紧急度"
+    columns="{{ hitchUrgencyList }}"
+    value-key="hitchUrgencyDesc"
+    bind:change="onHitchUrgencyPickerChange"
+    bind:confirm="onHitchUrgencyPickerConfirm"
+    bind:cancel="onHitchUrgencyPickerCancel"
+  />
+
+</van-popup>
+
+<view class="submitWrap_fix">
+<van-button type="info" icon="passed" form-type="submit" style="width:100%;position:fixed;bottom:0px;" bind:click="eqpRepairFormSubmit" block>提交</van-button>
+</view>
+<van-dialog id="van-dialog"/>
+
+</view>
