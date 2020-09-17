@@ -1,5 +1,5 @@
-import { IMyApp } from '../../app'
-
+import { IMyApp } from '../../app';
+import * as drawQrcode  from '../../../utils/weapp.qrcode.min.js';
 const app = getApp<IMyApp>()
 let restUrl: string;
 let eventChannel;
@@ -14,6 +14,7 @@ Page({
     problemView: false,
     showModal: false,
     circle: '',
+    modalHidden: true,
     selectValue: 1,
     dateview: '',
     addressView: '',
@@ -33,7 +34,7 @@ Page({
     maintainTypeId: '',
     punchDate: '',
     punchDateView: '',
-    loadingHidden:false
+    loadingHidden: false
   },
 
   onLoad(option) {
@@ -41,13 +42,13 @@ Page({
     wx.getStorage({
       key: 'pageData',
       success: function (res) {
-          
+
         var myData = res.data;//读取key值为myData的缓存数据
-        if (JSON.stringify(myData)=='{}'){
+        if (JSON.stringify(myData) == '{}') {
           that.setData({
             selectValue: 1
           })
-        }else{
+        } else {
           that.setData({
             maintainTypeId: myData.maintainTypeId,
             maintainNumberId: myData.maintainNumberId,
@@ -121,7 +122,100 @@ Page({
         console.log(fail)
       }
     });
+  },
 
+  utf16to8(str) {
+    var out, i, len, c;
+    out = "";
+    len = str.length;
+    for (i = 0; i < len; i++) {
+      c = str.charCodeAt(i);
+      if ((c >= 0x0001) && (c <= 0x007F)) {
+        out += str.charAt(i);
+      } else if (c > 0x07FF) {
+        out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+        out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      } else {
+        out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      }
+    }
+    return out;
+  },
+
+
+  queryIp: function (res) {
+    var that = this;
+    if (that.data.maintainTypeId == '' || that.data.maintainNumberId == '' || that.data.customerName == '') {
+      wx.showModal({
+        title: '系统提示',
+        content: "请先绑定表单",
+        showCancel: false
+      });
+      return;
+    }
+    var txt = "maintainDescribe_" + that.data.maintainTypeId + "_" + that.data.maintainNumberId + "_" + app.globalData.employeeId + "_" + app.globalData.employeeName + "_" + that.data.customerName;
+    var state = that.utf16to8(txt);
+    var qrcode_width = 300;
+    var qrcode_typeNumber = 7;
+    var qrcode_background = "#FFFFFF";
+    var qrcode_foreground = "#000000";
+    var qrcode_url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx197c3762bc4258f0&redirect_uri=" + app.globalData.weChatCallBack+"&response_type=code&scope=snsapi_userinfo&state=" + state + "&#wechat_redirect";
+    var qrcode_url_length = qrcode_url.length;
+    if (qrcode_url_length < 64) {
+      qrcode_typeNumber = 7;
+    }
+    else if (qrcode_url_length >= 64 && qrcode_url_length < 119) {
+      qrcode_typeNumber = 10;
+    }
+    else if (qrcode_url_length >= 119 && qrcode_url_length < 129) {
+      qrcode_typeNumber = 15;
+    }
+    else if (qrcode_url_length >= 129 && qrcode_url_length < 382) {
+      qrcode_typeNumber = 20;
+    }
+    else {
+      qrcode_typeNumber = 27;
+    }
+    if (qrcode_url) {
+      drawQrcode({
+        width: 256,
+        height: 256,
+        x: 20,
+        y: 20,
+        canvasId: 'logoQRCode',
+        typeNumber: qrcode_typeNumber,
+        text: qrcode_url,
+        background: qrcode_background,
+        foreground: qrcode_foreground,
+        correctLevel: 2,
+      });
+      that.setData({
+        modalHidden: false
+      });
+    }
+    else {
+      wx.showToast({
+        title: "请输入字符串，可以是网址、文本等",
+        icon: "none",
+        duration: 1000
+      });
+    }
+  },
+
+  modalCandel: function () {
+    // do something
+    this.setData({
+      modalHidden: true
+    })
+  },
+
+  modalConfirm: function () {
+    // do something
+    this.setData({
+      modalHidden: true
+    })
   },
 
   onSwitch2Change(detail) {
@@ -157,7 +251,7 @@ Page({
   },
   bindMatainFormSelect() {
     var that = this
-    var url = './maintainNumberselect?maintaintype=CQFW&type=1';
+    var url = './maintainNumberselect?maintaintype=' + that.data.maintainTypeId + '&type=1';
     if (that.data.problemView == true) {
       wx.showModal({
         title: '系统提示',
@@ -168,7 +262,7 @@ Page({
         success: res => {
           if (res.confirm == true) {
             //确认
-            url = './maintainNumberselect?maintaintype=CQFW&type=0';
+            url = './maintainNumberselect?maintaintype=' + that.data.maintainTypeId + '&type=0';
             wx.navigateTo({
               url: url,
               events: {
@@ -191,7 +285,7 @@ Page({
                 }
               },
             })
-          } else{
+          } else {
             wx.navigateTo({
               url: url,
               events: {
@@ -214,7 +308,7 @@ Page({
                 }
               },
             })
-          }        
+          }
         },
       })
     } else {
@@ -244,17 +338,17 @@ Page({
   },
   commit() {
     var that = this;
-    var ifCommit=true;
+    var ifCommit = true;
     var msg = '';
     if (that.data.addressView == '' || that.data.addressNameView == '') {
       msg = '请先选择位置'
-      ifCommit=false;
+      ifCommit = false;
     }
     if (that.data.maintainNumberId == '') {
       msg += '请先绑定维修单';
-        ifCommit=false;
+      ifCommit = false;
     }
-    if (that.data.selectValue == 3 && that.data.maintainDescribe==''){
+    if (that.data.selectValue == 3 && that.data.maintainDescribe == '') {
       msg += '描述不能为空';
       ifCommit = false;
     }
@@ -297,7 +391,7 @@ Page({
         productName: _this.data.productName,
         punchDate: year + "/" + month + "/" + day + " " + this.data.dateview,
         addressView: _this.data.addressView,
-        addressNameView:_this.data.addressNameView,
+        addressNameView: _this.data.addressNameView,
         roadStartDate: _this.data.roadStartDate,
         arrivalDate: _this.data.arrivalDate,
         leaveDate: _this.data.leaveDate,
@@ -320,7 +414,7 @@ Page({
         confirmText: '确定',
         success(res) {
           that.setData({
-            loadingHidden : false
+            loadingHidden: false
           })
           if (res.confirm == true) {
             wx.request({
@@ -390,12 +484,12 @@ Page({
                 wx.hideLoading()
               }
             })
-          }else{
+          } else {
             that.setData({
               loadingHidden: true
             })
           }
-         }
+        }
       })
     } else {
       wx.showModal({
@@ -460,15 +554,15 @@ Page({
             var e = Math.cos(x1 - x2);
             var v = a * b + c * d * e;
             var distance = 6371.0 * Math.acos(v) * Math.PI / 180;
-            var rounddistance=Math.round(distance * 1000);
-            if (rounddistance>70){
+            var rounddistance = Math.round(distance * 1000);
+            if (rounddistance > 70) {
               _this.setData({
                 addressView: '',
-                addressNameView:'',
+                addressNameView: '',
               })
               wx.showModal({
                 title: '系统提示',
-                content: '选择位置与当前位置为' + rounddistance +',不得超过70米',
+                content: '选择位置与当前位置为' + rounddistance + ',不得超过70米',
               })
             }
           },
