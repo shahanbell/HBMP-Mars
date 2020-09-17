@@ -419,9 +419,9 @@ upload: function(e) {
 
     getSpareListInfo: function(res){
       let _this = this;
-      var restUrl = app.globalData.restAdd + '/Hanbell-WCO/api/shbeam/equipmentrepair/getRepairSpareList';
-      //var restUrl = app.globalData.restLocalAdd + '/Hanbell-WCO/api/shbeam/equipmentrepair/getRepairUserList';
-      //var restUrl = 'http://325810l80q.qicp.vip' + '/Hanbell-WCO/api/shbeam/assetcardtest';
+      var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/getRepairSpareList';
+      //var restUrl = app.globalData.restLocalAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/getRepairUserList';
+      //var restUrl = 'http://325810l80q.qicp.vip' + '/Hanbell-JRS/api/shbeam/assetcardtest';
       // if (options.employeeid) {
       //     restUrl += '/f;users.id=' + options.employeeid + '/s';
       // }
@@ -511,10 +511,10 @@ upload: function(e) {
       if(res==null || res=='')
         return;
       var _this = this;
-      // restUrl = app.globalData.restAdd + '/Hanbell-WCO/api/shbeam/assetcardtest';
-      var restUrl = app.globalData.restAdd + '/Hanbell-WCO/api/shbeam/equipmentrepair/getHitchDutyList';
-      //var restUrl = app.globalData.restLocalAdd + '/Hanbell-WCO/api/shbeam/equipmentrepair/getRepairUserList';
-      //var restUrl = 'http://325810l80q.qicp.vip' + '/Hanbell-WCO/api/shbeam/assetcardtest';
+      // restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/assetcardtest';
+      var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/getHitchDutyList';
+      //var restUrl = app.globalData.restLocalAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/getRepairUserList';
+      //var restUrl = 'http://325810l80q.qicp.vip' + '/Hanbell-JRS/api/shbeam/assetcardtest';
       // if (options.employeeid) {
       //     restUrl += '/f;users.id=' + options.employeeid + '/s';
       // }
@@ -864,8 +864,8 @@ upload: function(e) {
             mask: true
           });
           wx.request({
-            url: app.globalData.restAdd + '/Hanbell-WCO/api/shbeam/equipmentrepair/' + apiTemp + '?' + app.globalData.restAuth,
-            //url: 'http://325810l80q.qicp.vip' + '/Hanbell-WCO/api/shbeam/equipmentinventory/insertStockInfo4MicroApp?' + app.globalData.restAuth,
+            url: app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/' + apiTemp + '?' + app.globalData.restAuth,
+            //url: 'http://325810l80q.qicp.vip' + '/Hanbell-JRS/api/shbeam/equipmentinventory/insertStockInfo4MicroApp?' + app.globalData.restAuth,
             data: {
               id: that.data.docId,
               formid: that.data.docFormid,
@@ -983,7 +983,7 @@ upload: function(e) {
           var obj = res.data;
 
           wx.request({
-            url: app.globalData.restAdd + '/Hanbell-WCO/api/shbeam/equipmentrepair/uploadEqpRepairPic',
+            url: app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/uploadEqpRepairPic',
             method: 'POST',
             data: {
               company: 'C',
@@ -1264,9 +1264,9 @@ upload: function(e) {
 
   getRepairApproveInitDta: function (userId,docId) {
     var _this = this;
-    // restUrl = app.globalData.restAdd + '/Hanbell-WCO/api/shbeam/assetcardtest';
-    var restUrl = app.globalData.restAdd + '/Hanbell-WCO/api/shbeam/equipmentrepair/getRepairApproveInitDta';
-    //var restUrl = 'http://325810l80q.qicp.vip' + '/Hanbell-WCO/api/shbeam/assetcardtest';
+    // restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/assetcardtest';
+    var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/getRepairApproveInitDta';
+    //var restUrl = 'http://325810l80q.qicp.vip' + '/Hanbell-JRS/api/shbeam/assetcardtest';
     // if (options.employeeid) {
     //     restUrl += '/f;users.id=' + options.employeeid + '/s';
     // }
