@@ -480,10 +480,10 @@ Component({
 
     getRepairDocListInfo: function (res) {
       var _this = this;
-      // restUrl = app.globalData.restAdd + '/Hanbell-WCO/api/shbeam/assetcardtest';
-      //var restUrl = 'http://localhost:8480' + '/Hanbell-WCO/api/shbeam/equipmentrepair/getRepairDocList';
-      var restUrl = app.globalData.restAdd + '/Hanbell-WCO/api/shbeam/equipmentrepair/getRepairDocList';
-      //var restUrl = 'http://325810l80q.qicp.vip' + '/Hanbell-WCO/api/shbeam/assetcardtest';
+      // restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/assetcardtest';
+      //var restUrl = 'http://localhost:8480' + '/Hanbell-JRS/api/shbeam/equipmentrepair/getRepairDocList';
+      var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/getRepairDocList';
+      //var restUrl = 'http://325810l80q.qicp.vip' + '/Hanbell-JRS/api/shbeam/assetcardtest';
       // if (options.employeeid) {
       //     restUrl += '/f;users.id=' + options.employeeid + '/s';
       // }

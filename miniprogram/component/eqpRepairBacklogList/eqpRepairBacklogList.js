@@ -29,7 +29,7 @@ Component({
     getRepairBacklogList: function (res) {
       var _this = this;
       var repairBacklogList = null;
-      var restUrl = app.globalData.restAdd + '/Hanbell-WCO/api/shbeam/equipmentrepair/getRepairBacklogList';
+      var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/getRepairBacklogList';
       if(app.globalData.defaultDeptId.indexOf("1W3") >= 0){
         restUrl += '/f;serviceuser=' + res;
       }

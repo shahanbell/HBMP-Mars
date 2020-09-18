@@ -163,7 +163,7 @@ Page({
 
   getRepairBacklogInfo: function (res) {
     var _this = this;
-    var restUrl = app.globalData.restAdd + '/Hanbell-WCO/api/shbeam/equipmentrepair/getRepairBacklogInfo';
+    var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/getRepairBacklogInfo';
     if(app.globalData.defaultDeptId.indexOf("1W3") >= 0){
       restUrl += '/f;serviceuser=' + res;
     }
