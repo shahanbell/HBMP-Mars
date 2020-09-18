@@ -954,7 +954,7 @@ upload: function(e) {
               measure:that.data.measure,
               sparecost:that.data.spareCost,
               repaircost:that.data.repairCost,
-              laborcost:that.data.laborCost,
+              laborcosts:that.data.laborCost,
               remark: JSON.stringify(that.data.spareUsedList)
             },
             header: {
@@ -1548,7 +1548,7 @@ upload: function(e) {
             repairProcess:eqpRepairInfo.repairprocess == null ? '' : eqpRepairInfo.repairprocess,
             measure:eqpRepairInfo.measure == null ? '' : eqpRepairInfo.measure,
             repairCost:eqpRepairInfo.repaircost == null ? '0' : eqpRepairInfo.repaircost,
-            laborCost:eqpRepairInfo.laborcost == null ? '0' : eqpRepairInfo.laborcost,
+            laborCost:eqpRepairInfo.laborcosts == null ? '0' : eqpRepairInfo.laborcosts,
             rStatus: eqpRepairInfo.rstatus == null ? '' : eqpRepairInfo.rstatus,
             hitchSort01Obj: hitchSort01ObjTemp,
 
