@@ -1,6 +1,7 @@
 //app.ts
 export interface IMyApp {
   userInfoReadyCallback?(res: wx.UserInfo): void
+  authInfoReadyCallback?(res:{}): void
   sessionInfoReadyCallback?(data: {}): void
   globalData: {
     restAdd?: string,
@@ -84,9 +85,8 @@ App<IMyApp>({
                 success: res => {
                   var data = res.data;
                   this.globalData.auth = data;
-                  if (this.userInfoReadyCallback) {
-                      
-                    this.userInfoReadyCallback(data);
+                  if (this.authInfoReadyCallback) {
+                    this.authInfoReadyCallback(data);
                   }
                 },
                 fail: fail => {
@@ -133,7 +133,8 @@ App<IMyApp>({
         }
       }
     })
-    //获取手机屏幕,状态栏的高度
+
+     //获取手机屏幕,状态栏的高度
     wx.getSystemInfo({
       success: res => {
         this.globalData.screenHeight = res.screenHeight
