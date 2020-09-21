@@ -21,7 +21,6 @@ Page({
       { id: 'menu04', name: '派车', imgUrl: '../../images/car.png', url: '/pages/carapp/carapp', parentid: -1 },
       { id: 'menu05', name: '借支', imgUrl: '../../images/loan.png', url: '/pages/loan/loan', parentid: -1 },
       { id: 'menu08', name: '报餐', imgUrl: '../../images/baocan.png', url: '/pages/dine/dine', parentid: -1 },
-      { id: 'menu09', name: '设备管理', imgUrl: '../../images/eqpManagement.png', url: '/pages/eqpManagement/eqpManageIndex', parentid: -1 },
     ],
     indicatorDots: false,
     autoplay: true,
@@ -33,22 +32,25 @@ Page({
       this.setData!({
         hasUserInfo: true
       })
-    } else if (this.data.canIUse) {
+    } else if (this.data.canIUse || app.globalData.auth.length == undefined) {
       // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
       // 所以此处加入 app 方法，可以在 app.ts 中 callback 以防止这种情况
       app.userInfoReadyCallback = (res) => {
+        this.setData!({
+          hasUserInfo: true
+        })
+      }
+      app.authInfoReadyCallback = (date) => {
         let list = this.data.menu;
-        for (let entry of res) {
+        for (let entry of date) {
           list.push(entry); // 1, "string", false
         }
         this.setData!({
-          hasUserInfo: true,
           menu: list
         })
-        // app.updateAuth(res);
-        // app.globaldata.auth = res;
       }
-    } else {
+    } 
+    else {
       // 在没有 open-type=getUserInfo 版本的兼容处理
       wx.getUserInfo({
         success: res => {
@@ -71,7 +73,6 @@ Page({
         })
       }
     }
-
   },
   onShow() {
     if (!this.data.hasUserInfo && app.globalData.userInfo) {

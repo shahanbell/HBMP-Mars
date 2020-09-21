@@ -1,6 +1,7 @@
 //app.ts
 export interface IMyApp {
   userInfoReadyCallback?(res: wx.UserInfo): void
+  authInfoReadyCallback?(res:{}): void
   sessionInfoReadyCallback?(data: {}): void
   globalData: {
     restAdd?: string,
@@ -19,9 +20,6 @@ export interface IMyApp {
     defaultDeptId?: string,
     defaultDeptName?: string,
     auth?: Array[string],
-    screenHeight?: number,
-    statusBarHeight?: number,
-    windowHeight?: number,
   }
 }
 
@@ -87,9 +85,8 @@ App<IMyApp>({
                 success: res => {
                   var data = res.data;
                   this.globalData.auth = data;
-                  if (this.userInfoReadyCallback) {
-                      
-                    this.userInfoReadyCallback(data);
+                  if (this.authInfoReadyCallback) {
+                    this.authInfoReadyCallback(data);
                   }
                 },
                 fail: fail => {
@@ -134,14 +131,6 @@ App<IMyApp>({
             url: '/pages/profile/profile'
           })
         }
-      }
-    })
-    //获取手机屏幕,状态栏的高度
-    wx.getSystemInfo({
-      success: res => {
-        this.globalData.screenHeight = res.screenHeight
-        this.globalData.statusBarHeight = res.statusBarHeight
-        this.globalData.windowHeight = res.windowHeight
       }
     })
   },
