@@ -1,3 +1,5 @@
+import * as moment from 'moment.min';
+
 export function formatDate(d: string): any {
   var date = new Date(d);
   const year = date.getFullYear()
@@ -23,8 +25,8 @@ const formatNumber = (n: number) => {
 }
 
 export function getCurrentDate(d: String): any {
-  var myDate = new Date(d.substring(0,19));
-  myDate = myDate.setDate(myDate.getDate()+1);
+  var myDate = new Date(d.substring(0, 19));
+  myDate = myDate.setDate(myDate.getDate() + 1);
   myDate = new Date(myDate);
   const year = myDate.getFullYear(); //年
   const month = myDate.getMonth() + 1; //月
@@ -56,4 +58,27 @@ export function getCurrentDate(d: String): any {
   }
   var str = year + "/" + month + "/" + day + "  " + week;
   return str;
+}
+
+export function getLocalDate({ localFormat = 'YYYY-MM-DD' } = {}) {
+  return moment().format(localFormat);
+}
+
+export function getLocalTime({ localFormat = 'HH:mm' } = {}) {
+  return moment().format(localFormat);
+}
+
+export function utc2Local(value: any, { length = 20, utcFormat = 'YYYY-MM-DDTHH:mm:ssZ', localFormat = 'YYYY-MM-DD' } = {}) {
+  if (localFormat) {
+    return moment(value.substring(0, length), utcFormat).format(localFormat);
+  } else {
+    return moment(value.substring(0, length), utcFormat);
+  }
+}
+
+export function local2UTC(date: Date | string, format?: string) {
+  if (format) {
+    return moment.utc(moment(date, format)).format();
+  }
+  return moment.utc(date).format();
 }

@@ -1,9 +1,10 @@
 import { IMyApp } from '../../app'
-import { formatTime } from '../../utils/util'
+import * as util from '../../utils/util'
 
 const app = getApp<IMyApp>()
 let eventChannel
-let d = new Date()
+let ld = util.getLocalDate()
+let lt = util.getLocalTime()
 Page({
   data: {
     deptId: null,
@@ -13,10 +14,10 @@ Page({
     description: '',
     executorId: null,
     executor: null,
-    plannedStartDate: d.toISOString().substring(0, 10),
-    plannedStartTime: formatTime(d.toISOString()).substring(0, 5),
-    plannedFinishDate: d.toISOString().substring(0, 10),
-    plannedFinishTime: formatTime(d.toISOString()).substring(0, 5),
+    plannedStartDate: ld,
+    plannedStartTime: lt,
+    plannedFinishDate: ld,
+    plannedFinishTime: lt,
     actualStartDate: '',
     actualStartTime: '',
     actualFinishDate: '',
@@ -24,8 +25,8 @@ Page({
     location: '',
     isNew: false,
     canDelete: false,
-    nowDate: d.toISOString().substring(0, 10),
-    nowTime: formatTime(d.toISOString()).substring(0, 5)
+    nowDate: ld,
+    nowTime: lt,
   },
   onLoad() {
     wx.showLoading({
@@ -83,7 +84,7 @@ Page({
         }
       },
       success(res) {
-        console.log(res)
+        // console.log(res)
       }
     })
   },
@@ -156,18 +157,18 @@ Page({
                 description: _this.data.description,
                 executorId: _this.data.executorId,
                 executor: _this.data.executor,
-                plannedStartDate: _this.data.plannedStartDate,
-                plannedStartTime: _this.data.plannedStartTime,
-                plannedFinishDate: _this.data.plannedFinishDate,
-                plannedFinishTime: _this.data.plannedFinishTime,
-                actualStartDate: '',
-                actualStartTime: '',
-                actualFinishDate: '',
-                actualFinishTime: '',
+                plannedStartDate: util.local2UTC(_this.data.plannedStartDate),
+                plannedStartTime: util.local2UTC(_this.data.plannedStartTime, 'HH:mm'),
+                plannedFinishDate: util.local2UTC(_this.data.plannedFinishDate),
+                plannedFinishTime: util.local2UTC(_this.data.plannedFinishTime, 'HH:mm'),
+                actualStartDate: null,
+                actualStartTime: null,
+                actualFinishDate: null,
+                actualFinishTime: null,
                 status: 'N'
               }
               //存储
-              let url = app.globalData.restAdd + '/Hanbell-WCO/api/prg9f247ab6d5e4/jobtask?openid=' + app.globalData.openId + '&sessionkey=' + app.globalData.sessionKey;
+              let url = app.globalData.restAdd + '/Hanbell-JRS/api/eap/task?' + app.globalData.restAuth;
               wx.request({
                 url: url,
                 data: currentObject,
@@ -176,7 +177,7 @@ Page({
                 },
                 method: 'POST',
                 success: res => {
-                  //console.log(res)
+                  // console.log(res)
                   wx.hideLoading()
                   wx.showModal({
                     title: '系统消息',
@@ -196,26 +197,26 @@ Page({
                 }
               })
             } else {
-              let status = _this.data.actualFinishDate != '' ? 'V' : 'N'
+              let status = _this.data.actualFinishDate && _this.data.actualFinishTime ? 'V' : 'N'
               let currentObject = {
                 id: _this.data.id,
                 name: _this.data.name,
                 description: _this.data.description,
                 executorId: _this.data.executorId,
                 executor: _this.data.executor,
-                plannedStartDate: _this.data.plannedStartDate,
-                plannedStartTime: _this.data.plannedStartTime,
-                plannedFinishDate: _this.data.plannedFinishDate,
-                plannedFinishTime: _this.data.plannedFinishTime,
-                actualStartDate: _this.data.actualStartDate,
-                actualStartTime: _this.data.actualStartTime,
-                actualFinishDate: _this.data.actualFinishDate,
-                actualFinishTime: _this.data.actualFinishTime,
+                plannedStartDate: util.local2UTC(_this.data.plannedStartDate),
+                plannedStartTime: util.local2UTC(_this.data.plannedStartTime, 'HH:mm'),
+                plannedFinishDate: util.local2UTC(_this.data.plannedFinishDate),
+                plannedFinishTime: util.local2UTC(_this.data.plannedFinishTime, 'HH:mm'),
+                actualStartDate: _this.data.actualStartDate ? util.local2UTC(_this.data.actualStartDate) : null,
+                actualStartTime: _this.data.actualStartTime ? util.local2UTC(_this.data.actualStartTime, 'HH:mm') : null,
+                actualFinishDate: _this.data.actualFinishDate ? util.local2UTC(_this.data.actualFinishDate) : null,
+                actualFinishTime: _this.data.actualFinishTime ? util.local2UTC(_this.data.actualFinishTime, 'HH:mm') : null,
                 location: _this.data.location,
                 status: status
               }
               //存储
-              let url = app.globalData.restAdd + '/Hanbell-WCO/api/prg9f247ab6d5e4/jobtask/' + _this.data.id + '?openid=' + app.globalData.openId + '&sessionkey=' + app.globalData.sessionKey;
+              let url = app.globalData.restAdd + '/Hanbell-JRS/api/eap/task/' + _this.data.id + '?' + app.globalData.restAuth;
               wx.request({
                 url: url,
                 data: currentObject,

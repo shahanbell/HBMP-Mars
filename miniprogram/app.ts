@@ -18,7 +18,7 @@ export interface IMyApp {
     defaultCompanyName?: string,
     defaultDeptId?: string,
     defaultDeptName?: string,
-    auth?: Array[string],
+    auth?: Array<string>[],
     screenHeight?: number,
     statusBarHeight?: number,
     windowHeight?: number,
@@ -61,7 +61,7 @@ App<IMyApp>({
                 },
                 method: 'GET',
                 success: res => {
-                  //console.log("User信息：" + res.data)
+                  // console.log("User信息：" + res.data)
                   this.globalData.defaultCompany = res.data.company,
                     this.globalData.defaultCompanyName = res.data.companyName,
                     this.globalData.defaultDeptId = res.data.deptno,
@@ -73,9 +73,6 @@ App<IMyApp>({
               })
 
               wx.request({
-                //测试地址
-                // url: 'http://localhost:8480/Hanbell-WCO/api/prg9f247ab6d5e4/AuthValidation',
-                //正式地址
                 url: this.globalData.restAdd + '/Hanbell-WCO/api/prg9f247ab6d5e4/AuthValidation',
                 data: {
                   employeeid: this.globalData.employeeId,
@@ -129,7 +126,7 @@ App<IMyApp>({
             }
           })
         } else {
-          //还未授权
+          // 还未授权
           wx.switchTab({
             url: '/pages/profile/profile'
           })
@@ -149,7 +146,7 @@ App<IMyApp>({
     console.log("Quit MicroPrg");
   },
   globalData: {
-    //restAdd:'https://jrs.hanbell.com.cn',
+    // restAdd:'https://jrs.hanbell.com.cn',
      restAdd: 'https://i2.hanbell.com.cn',
     // restAdd: 'http://localhost:8480',
     //URL转码

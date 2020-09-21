@@ -1,5 +1,6 @@
 import { IMyApp } from '../../app';
-import { formatDate } from '../../utils/util';
+import { utc2Local } from '../../utils/util';
+import { local2UTC } from '../../utils/util';
 
 const app = getApp<IMyApp>()
 let d = new Date()
@@ -49,7 +50,7 @@ Page({
     if (this.data.dataList.length > 0) {
       let days = [] as Date[]
       this.data.dataList.forEach((o: any, index: number) => {
-        days.push(formatDate(o.plannedStartDate))
+        days.push(o.plannedStartDate)
       })
       this.calendar.setTodoLabels({
         days: days
@@ -60,7 +61,7 @@ Page({
         // console.log("执行注册回调函数")
         let days = [] as Date[]
         this.data.dataList.forEach((o: any, index: number) => {
-          days.push(formatDate(o.plannedStartDate))
+          days.push(o.plannedStartDate)
         })
         this.calendar.setTodoLabels({
           days: days
@@ -136,9 +137,11 @@ Page({
   },
   loadData() {
     wx.request({
-      url: app.globalData.restAdd + '/Hanbell-JRS/api/eap/task/executor',
+      url: app.globalData.restAdd + '/Hanbell-JRS/api/eap/task/executor/' + app.globalData.employeeId,
       data: {
-        executorid: app.globalData.employeeId,
+        status: 'N',
+        offset: 0,
+        pageSize: 50,
         appid: app.globalData.restId,
         token: app.globalData.restToken,
       },
@@ -148,10 +151,16 @@ Page({
       method: 'GET',
       success: res => {
         let tasks = res.data.data;
-        if (tasks.length > 0) {
-          console.log("utcDate重设日期")
+        if (tasks) {
           tasks.forEach((o: any, index: number) => {
-            //o.plannedStartDate = utcDate(o.plannedStartDate)
+            o.plannedStartDate = o.plannedStartDate ? utc2Local(o.plannedStartDate) : null
+            o.plannedStartTime = o.plannedStartTime ? utc2Local(o.plannedStartTime, { localFormat: 'HH:mm' }) : null
+            o.plannedFinishDate = o.plannedFinishDate ? utc2Local(o.plannedFinishDate) : null
+            o.plannedFinishTime = o.plannedFinishTime ? utc2Local(o.plannedFinishTime, { localFormat: 'HH:mm' }) : null
+            o.actualStartDate = o.actualStartDate ? utc2Local(o.actualStartDate) : null
+            o.actualStartTime = o.actualStartTime ? utc2Local(o.actualStartTime, { localFormat: 'HH:mm' }) : null
+            o.actualFinishDate = o.actualFinishDate ? utc2Local(o.actualFinishDate) : null
+            o.actualFinishTime = o.actualFinishTime ? utc2Local(o.actualFinishTime, { localFormat: 'HH:mm' }) : null
           })
         }
         this.setData!({

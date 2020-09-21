@@ -15,12 +15,11 @@ Page({
       'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640'
     ],
     menu: [
-      { id: 'menu01', name: '请假', imgUrl: '../../images/leave.png', url: '/pages/leave/leave', parentid: -1 },
-      { id: 'menu02', name: '加班', imgUrl: '../../images/overtime.png', url: '/pages/overtime/overtime', parentid: -1 },
-      { id: 'menu03', name: '出差', imgUrl: '../../images/business.png', url: '/pages/businesstrip/businesstrip', parentid: -1 },
-      { id: 'menu04', name: '派车', imgUrl: '../../images/car.png', url: '/pages/carapp/carapp', parentid: -1 },
-      { id: 'menu05', name: '借支', imgUrl: '../../images/loan.png', url: '/pages/loan/loan', parentid: -1 },
-      { id: 'menu08', name: '报餐', imgUrl: '../../images/baocan.png', url: '/pages/dine/dine', parentid: -1 },
+      { id: 'menu01', name: '请假', imgUrl: '../../images/leave.png', url: '../../efgp/pages/leave/leave', parentid: -1 },
+      { id: 'menu02', name: '加班', imgUrl: '../../images/overtime.png', url: '../../efgp/pages/overtime/overtime', parentid: -1 },
+      { id: 'menu03', name: '出差', imgUrl: '../../images/business.png', url: '../../efgp/pages/businesstrip/businesstrip', parentid: -1 },
+      { id: 'menu04', name: '派车', imgUrl: '../../images/car.png', url: '../../efgp/pages/carapp/carapp', parentid: -1 },
+      { id: 'menu05', name: '借支', imgUrl: '../../images/loan.png', url: '../../efgp/pages/loan/loan', parentid: -1 },
       { id: 'menu09', name: '设备管理', imgUrl: '../../images/eqpManagement.png', url: '/pages/eqpManagement/eqpManageIndex', parentid: -1 },
     ],
     indicatorDots: false,

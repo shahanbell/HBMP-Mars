@@ -37,28 +37,17 @@
     "pages/task/task",
     "pages/task/taskdetail",
     "pages/echart/echart",
-    "pages/leave/leave",
-    "pages/leave/leaveKindSelect",
     "pages/profile/profile",
     "pages/companySelect/companySelect",
     "pages/deptSelect/deptSelect",
     "pages/workTypeSelect/workTypeSelect",
-    "pages/overtime/overtime",
-    "pages/overtime/overdetail",
-    "pages/loan/loan",
-    "pages/loan/loanPropertySelect",
     "pages/budgetacc/budgetacc",
     "pages/coin/coin",
-    "pages/carapp/carapp",
-    "pages/carapp/carType",
-    "pages/carapp/purpose",
-    "pages/carapp/carappdetail",
     "pages/userSelect/userSelect",
     "pages/sendjob/sendjob",
     "pages/sendjob/repairKind",
     "pages/multiUserSelect/multiUserSelect",
     "pages/sendjob/stationKind",
-    "pages/dine/dine",
     "pages/customercomplaint/customercomplaint",
     "pages/customercomplaint/select",
     "pages/customercomplaint/selectSearch",
@@ -74,6 +63,23 @@
     "pages/eqpManagement/eqpRepairApprove",
     "pages/eqpManagement/eqpRepairDoApproveCheck",
     "pages/eqpManagement/eqpRepairDutyResponse"
+  ],
+  "subpackages": [
+    {
+      "root": "efgp",
+      "pages": [
+        "pages/leave/leave",
+        "pages/overtime/overtime",
+        "pages/businesstrip/businesstrip",
+        "pages/carapp/carapp",
+        "pages/carapp/carType",
+        "pages/carapp/purpose",
+        "pages/carapp/carappdetail",
+        "pages/loan/loan",
+        "pages/loan/loanPropertySelect",
+        "pages/dine/dine"
+      ]
+    }
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -111,7 +117,6 @@
     ]
   },
   "sitemapLocation": "sitemap.json",
-  "style": "v2",
   "permission": {
     "scope.userLocation": {
       "desc": "你的位置信息将用于小程序位置接口的效果展示"
