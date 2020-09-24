@@ -219,7 +219,11 @@ Page({
       detailList: details
     })
   },
-
+  bindsqrqDateChange(e){
+    this.setData({
+      sqrqDate:e.detail.value
+    });
+  },
   bindReasonChange(e) {
     this.setData!({
       reason: e.detail.value

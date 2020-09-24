@@ -4,145 +4,140 @@
   </view>
   <view class="page__bd">
     <form bindsubmit="formSubmit" bindreset="formReset">
-      <view class="weui-cells weui-cells_after-title">
-
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">申请人员</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="" value="{{employeeName}}" disabled="true" />
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">申请部门</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="" value="{{deptName}}" disabled="true" />
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input weui-cell_vcode">
-          <view class="weui-cell__hd">
-            <view class="weui-label">客诉类型</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请选择客诉类型" value="{{complaintTypeName}}" disabled="true" />
-          </view>
-          <view class="weui-cell__ft">
-            <view class="weui-vcode-btn" bindtap="bindComplaintTypeSelect">…</view>
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input weui-cell_vcode">
-          <view class="weui-cell__hd">
-            <view class="weui-label">客户代号</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请选择客户代号" value="{{customerCodeName}}" disabled="true" />
-          </view>
-          <view class="weui-cell__ft">
-            <view class="weui-vcode-btn" bindtap="bindCustomerCodeSelect">…</view>
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">来电者</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="" value="{{callViewName}}" disabled="true" />
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input weui-cell_vcode">
-          <view class="weui-cell__hd">
-            <view class="weui-label">品号类别</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请选择品号类别" value="{{productTypeName}}" disabled="true" />
-          </view>
-          <view class="weui-cell__ft">
-            <view class="weui-vcode-btn" bindtap="bindProductTypeSelect">…</view>
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">问题分类</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请选择问题分类" value="{{problemTypeName}}" disabled="true" />
-          </view>
-          <view class="weui-cell__ft">
-            <view class="weui-vcode-btn" bindtap="bindProblemTypeSelect">…</view>
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">紧急度</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="" value="{{emergencyDrgreeId}}" disabled="true" />
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">紧急名称</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="" value="{{emergencyDrgreeName}}" disabled="true" />
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input weui-cell_vcode">
-          <view class="weui-cell__hd">
-            <view class="weui-label">区域别</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请选择区域别" value="{{areaName}}" disabled="true" />
-          </view>
-          <view class="weui-cell__ft">
-            <view class="weui-vcode-btn" bindtap="bindAreaSelect">…</view>
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input weui-cell_vcode">
-          <view class="weui-cell__hd">
-            <view class="weui-label">产品别</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请选择产品别" value="{{productName}}" disabled="true" />
-          </view>
-          <view class="weui-cell__ft">
-            <view class="weui-vcode-btn" bindtap="bindProductSelect">…</view>
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input weui-cell_vcode">
-          <view class="weui-cell__hd">
-            <view class="weui-label">事发省</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请选择事发省" value="{{incidentProvinceName}}" disabled="true" />
-          </view>
-          <view class="weui-cell__ft">
-            <view class="weui-vcode-btn" bindtap="bindIncidentProvinceSelect">…</view>
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input weui-cell_vcode">
-          <view class="weui-cell__hd">
-            <view class="weui-label">事发市</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请选择事发市" value="{{incidentCityName}}" disabled="true" />
-          </view>
-          <view class="weui-cell__ft">
-            <view class="weui-vcode-btn" bindtap="bindIncidentCitySelect">…</view>
-          </view>
-        </view>
-      </view>
+      <van-cell-group>
+          <van-field
+            label = "申请人员"
+            value="{{ employeeName }}"
+            placeholder=""
+            required
+          />
+      </van-cell-group>
+      <van-cell-group>
+        <van-field
+          label="申请部门"
+          value="{{ deptName }}"
+          required
+          placeholder=""
+        />
+      </van-cell-group>
+      <van-cell-group>
+        <van-field
+          label="客诉类型"
+          value="{{ complaintTypeName }}"
+          required
+          icon="search"
+          placeholder="请选择客诉类型"
+          bind:click-icon="bindComplaintTypeSelect"
+          bindtap="bindComplaintTypeSelect"
+        />
+      </van-cell-group>
+      <van-cell-group>
+        <van-field
+          label="客户代号"
+          value="{{ customerCodeName }}"
+          required
+          icon="search"
+          placeholder="请选择客户代号"
+          bind:click-icon="bindCustomerCodeSelect"
+          bindtap="bindCustomerCodeSelect"
+        />
+      </van-cell-group>
+      <van-cell-group>
+        <van-field
+          label="来电者"
+          value="{{ callViewName }}"
+          required
+        />
+      </van-cell-group>
+      <van-cell-group>
+        <van-field
+          label="品号类别"
+          value="{{ productTypeName }}"
+          required
+          icon="search"
+          placeholder="请选择品号类别"
+          bind:click-icon="bindProductTypeSelect"
+          bindtap="bindProductTypeSelect"
+        />
+      </van-cell-group>
+      <van-cell-group>
+        <van-field
+          label="问题分类"
+          value="{{ problemTypeName }}"
+          required
+          icon="search"
+          placeholder="请选择问题分类"
+          bind:click-icon="bindProblemTypeSelect"
+          bindtap="bindProblemTypeSelect"
+        />
+      </van-cell-group>
+      <van-cell-group>
+        <van-field
+          label="紧急度"
+          value="{{ emergencyDrgreeId }}"
+          disabled="true"
+        />
+      </van-cell-group>
+      <van-cell-group>
+        <van-field
+          label="紧急名称"
+          value="{{ emergencyDrgreeName }}"
+          disabled="true"
+        />
+      </van-cell-group>
+      <van-cell-group>
+        <van-field
+          label="区域别"
+          value="{{ areaName }}"
+          required
+          icon="search"
+          placeholder="请选择区域别"
+          bind:click-icon="bindAreaSelect"
+          bindtap="bindAreaSelect"
+        />
+      </van-cell-group>
+      <van-cell-group>
+        <van-field
+          label="产品别"
+          value="{{ productName }}"
+          required
+          icon="search"
+          placeholder="请选择产品别"
+          bind:click-icon="bindProductSelect"
+          bindtap="bindProductSelect"
+        />
+      </van-cell-group>
+      <van-cell-group>
+        <van-field
+          label="事发省"
+          value="{{ incidentProvinceName }}"
+          required
+          icon="search"
+          placeholder="请选择事发省"
+          bind:click-icon="bindIncidentProvinceSelect"
+          bindtap="bindIncidentProvinceSelect"
+        />
+      </van-cell-group>
+      <van-cell-group>
+        <van-field
+          label="事发市"
+          value="{{ incidentCityName }}"
+          required
+          icon="search"
+          placeholder="请选择事发市"
+          bind:click-icon="bindIncidentCitySelect"
+          bindtap="bindIncidentCitySelect"
+        />
+      </van-cell-group>
       <view class="weui-cells__title">问题描述</view>
-      <view class="weui-cells weui-cells_after-title">
-        <view class="weui-cell">
-          <view class="weui-cell__bd">
-            <textarea class="weui-textarea" placeholder="请输入问题描述" style="height: 100rpx" bindblur="bindReasonChange" />
-          </view>
-        </view>
-      </view>
+      <van-cell-group>
+        <van-field custom-style="height:100px"
+          type="textarea"
+          placeholder="请输入问题描述"
+          bindblur="bindReasonChange"
+          autosize
+        />
+      </van-cell-group>
       <view class="weui-cells__title">叫修明细</view>
       <view class="weui-panel weui-panel_access" wx:for="{{detailList}}" wx:key="seq">
         <view class="weui-panel__hd">
@@ -197,10 +192,10 @@
 
         </view>
       </view>
-      <view class="button-sp-area">
-        <button class="weui-btn" bindtap="bindAddDetailTap">添加明细</button>
-        <button class="weui-btn" form-type="submit" type="primary">提交</button>
+      <view style="text-align:center;margin-bottom:12px">
+        <van-button icon="plus" color="#0396FF" bindtap="bindAddDetailTap" type="primary">添加明细</van-button>
       </view>
+      <van-button custom-class="submitbtn" type="info" icon="passed" form-type="submit">提交</van-button>
     </form>
   </view>
 </view>

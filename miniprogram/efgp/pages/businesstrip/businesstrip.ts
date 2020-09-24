@@ -253,7 +253,7 @@ Page({
 
   bindReasonChange(e) {
     this.setData!({
-      reason: e.detail.value
+      reason: e.detail
     })
   },
   formSubmit(e) {

@@ -4,69 +4,63 @@
   </view>
   <view class="page__bd">
     <form bindsubmit="formSubmit" bindreset="formReset">
-      <view class="weui-cells weui-cells_after-title">
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">单别</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请选择单别" value="{{formName}}" disabled="true" />
-          </view>
-          <view class="weui-cell__ft">
-            <view class="weui-vcode-btn" bindtap="bindFormSelect">…</view>
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">机型</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请选择机型" value="{{machineTypeName}}" disabled="true" />
-          </view>
-          <view class="weui-cell__ft">
-            <view class="weui-vcode-btn" bindtap="bindMachineTypeSelect">…</view>
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">产品序号</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请选择产品序号" value="{{productNumberId}}" disabled="true" />
-          </view>
-          <view class="weui-cell__ft">
-            <view class="weui-vcode-btn" bindtap="bindProductNumberSelect">…</view>
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">产品品号</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="" value="{{productQuality}}" disabled="true" />
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">产品品名</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="" value="{{product_name}}" disabled="true" />
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">产品规格</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="" value="{{productStandard}}" disabled="true" />
-          </view>
-        </view>
+      <van-cell-group>
+        <van-field
+          label="单别"
+          value="{{ formName }}"
+          required
+          icon="search"
+          placeholder="请选择单别"
+          bind:click-icon="bindFormSelect"
+          bindtap="bindFormSelect"
+        />
+      </van-cell-group>
+      <van-cell-group>
+        <van-field
+          label="机型"
+          value="{{ machineTypeName }}"
+          required
+          icon="search"
+          placeholder="请选择机型"
+          bind:click-icon="bindMachineTypeSelect"
+          bindtap="bindMachineTypeSelect"
+        />
+      </van-cell-group>
+      <van-cell-group>
+        <van-field
+          label="产品序号"
+          value="{{ productNumberId }}"
+          required
+          icon="search"
+          placeholder="请选择产品序号"
+          bind:click-icon="bindProductNumberSelect"
+          bindtap="bindProductNumberSelect"
+        />
+      </van-cell-group>
+      <van-cell-group>
+        <van-field
+          label="产品品号"
+          value="{{ productQuality }}"
+          required
+        />
+      </van-cell-group>
+      <van-cell-group>
+        <van-field
+          label="产品品名"
+          value="{{ product_name }}"
+          required
+        />
+      </van-cell-group>
+      <van-cell-group>
+        <van-field
+          label="产品规格"
+          value="{{ productStandard }}"
+          required
+        />
+      </van-cell-group>
+      <view style="text-align:center;margin-top:12px">
+        <van-button color="#0396FF" round form-type="submit" type="primary">添加</van-button>
       </view>
-      <view class="button-sp-area">
-        <button class="weui-btn" form-type="submit" type="primary">添加</button>
-      </view>
-
     </form>
   </view>
 </view>

@@ -418,7 +418,7 @@ Page({
           })
           if (res.confirm == true) {
             wx.request({
-              url: url
+              url: url,
               data: data,
               header: {
                 'content-type': 'application/json'

@@ -4,114 +4,111 @@
   </view>
   <view class="page__bd">
     <form bindsubmit="formSubmit" bindreset="formReset">
-      <view class="weui-cells weui-cells_after-title">
-        <view class="weui-cell weui-cell_input weui-cell_vcode">
-          <view class="weui-cell__hd">
-            <view class="weui-label">同车人员</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" bindinput="sltwordInput" value="{{employeeName}}" />
-          </view>
-          <view class="weui-cell__ft">
-            <view id="btnUserSelect" class="weui-vcode-btn" bindtap="btnUserSelect">…</view>
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input weui-cell_vcode">
-          <view class="weui-cell__hd">
-            <view class="weui-label">申请部门</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请选择申请部门" value="{{deptName}}" disabled="true"></input>
-          </view>
-          <view class="weui-cell__ft">
-            <view id="btnDeptSelect" class="weui-vcode-btn" bindtap="bindDeptSelect">…</view>
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">客人</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input name='kr' class="weui-input" value="{{kr}}" />
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">联系方式</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input name="contact" class="weui-input" value="{{contact}}" />
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">用车日期</view>
-          </view>
-          <view class="weui-cell__bd">
-            <picker mode="date" value="{{ycrq}}" start="2019-07-01" end="2023-06-30" bindchange="bindYcrqChange">
-              <view class="weui-input">{{ycrq}}</view>
-            </picker>
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">出发省份</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input name="cfsf" class="weui-input" value="{{cfsf}}" />
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">出发城市</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input name="cfcs" class="weui-input" value="{{cfcs}}" />
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">详细地址(始)</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input name="address1" class="weui-input" value="{{address1}}" />
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">目的省份</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input name="mdsf" class="weui-input" value="{{mdsf}}" />
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">目的城市</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input name="mdcs" class="weui-input" value="{{mdcs}}" />
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">详细地址(终)</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input name="address2" class="weui-input" value="{{address2}}" />
-          </view>
-        </view>
-      </view>
+      <van-cell-group>
+          <van-field
+            label = "同车人员"
+            value="{{ employeeName }}"
+            placeholder="请选择同车人员"
+            bindinput="sltwordInput"
+            bindtap="btnUserSelect"
+            icon="search"
+          />
+      </van-cell-group>
+      <van-cell-group>
+        <van-field
+          label="申请部门"
+          value="{{ deptName }}"
+          required
+          icon="search"
+          placeholder="请选择申请部门"
+          bind:click-icon="bindDeptSelect"
+          bindtap="bindDeptSelect"
+        />
+      </van-cell-group>
+      <van-cell-group>
+          <van-field
+            label = "客人"
+            value="{{ kr }}"
+            placeholder="请输入客人姓名"
+            bind:change="bindKrChange"
+          />
+      </van-cell-group>
+      <van-cell-group>
+          <van-field
+            label = "联系方式"
+            value="{{ contact }}"
+            placeholder="请输入客人手机号"
+            type="tel"
+            bind:change="bindContactChange"
+          />
+      </van-cell-group>
+      <van-cell-group>
+        <picker mode="date" start="2019-07-01" end="2023-06-30" bindchange="bindYcrqChange">
+          <van-field label="用车日期" required value="{{ycrq}}" use-button-slot readonly>
+            <van-icon slot="button" name="arrow" />
+          </van-field>
+        </picker>
+      </van-cell-group>
+      <van-cell-group>
+          <van-field
+            label = "出发省份"
+            value="{{ cfsf }}"
+            placeholder="请输入出发省份"
+            bind:change="bindCfsfChange"
+          />
+      </van-cell-group>
+      <van-cell-group>
+          <van-field
+            label = "出发城市"
+            value="{{ cfcs }}"
+            placeholder="请输入出发城市"
+            bind:change="bindCfcsChange"
+          />
+      </van-cell-group>
+      <van-cell-group>
+          <van-field
+            label = "详细地址(始)"
+            value="{{ address1 }}"
+            placeholder="详细地址"
+            bind:change="bindAddress1Change"
+          />
+      </van-cell-group>
+      <van-cell-group>
+          <van-field
+            label = "目的省份"
+            value="{{ mdsf }}"
+            placeholder="目的省份"
+            bind:change="bindMdsfChange"
+          />
+      </van-cell-group>
+      <van-cell-group>
+          <van-field
+            label = "目的城市"
+            value="{{ mdcs }}"
+            placeholder="目的城市"
+            bind:change="bindMdcsChange"
+          />
+      </van-cell-group>
+      <van-cell-group>
+          <van-field
+            label = "详细地址(终)"
+            value="{{ address2 }}"
+            placeholder="详细地址"
+            bind:change="bindAddress2Change"
+          />
+      </van-cell-group>
       <view class="weui-cells__title">派车事由</view>
-      <view class="weui-cells weui-cells_after-title">
-        <view class="weui-cell">
-          <view class="weui-cell__bd">
-            <textarea name="reason" class="weui-textarea" placeholder="请输入派车事由" style="height: 100rpx" bindblur="bindSyChange" value="{{sy}}" />
-          </view>
-        </view>
-      </view>
-      <view class="button-sp-area">
-        <button class="weui-btn" form-type="submit" type="primary">添加</button>
+      <van-cell-group>
+        <van-field custom-style="height:100px"
+          model:value="{{ sy }}"
+          type="textarea"
+          placeholder="请输入派车事由"
+          bindblur="bindSyChange"
+          autosize
+        />
+      </van-cell-group>
+      <view style="text-align:center;margin-top:12px">
+        <van-button color="#0396FF" round form-type="submit" type="primary">添加</van-button>
       </view>
     </form>
   </view>

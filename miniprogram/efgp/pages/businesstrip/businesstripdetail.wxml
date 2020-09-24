@@ -5,75 +5,68 @@
   </view>
   <view class="page__bd">
     <form bindsubmit="formSubmit" bindreset="formReset">
-      <view class="weui-cells weui-cells_after-title">
-        <view class="weui-cell weui-cell_input weui-cell_vcode">
-          <view class="weui-cell__hd">
-            <view class="weui-label">出差人员</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input name="bizEmployeeName" class="weui-input" value="{{bizEmployeeName}}" disabled="true" />
-          </view>
-          <view class="weui-cell__ft">
-            <view id="btnDeptSelect" class="weui-vcode-btn" bindtap="bindUserSelect">…</view>
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">出差日期</view>
-          </view>
-          <view class="weui-cell__bd">
-            <picker name ="bizDate" mode="date" value="{{bizDate}}" start="2019-07-01" end="2023-06-30" bindchange="bindBizDateChange">
-              <view class="weui-input">{{bizDate}}</view>
-            </picker>
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">开始时间</view>
-          </view>
-          <view class="weui-cell__bd">
-            <picker mode="time" value="{{bizTime1}}" bindchange="bindTime1Change">
-              <view class="weui-input">{{bizTime1}}</view>
-            </picker>
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">截止时间</view>
-          </view>
-          <view class="weui-cell__bd">
-            <picker mode="time" value="{{bizTime2}}" bindchange="bindTime2Change">
-              <view class="weui-input">{{bizTime2}}</view>
-            </picker>
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">客户名称</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input name="bizObject" class="weui-input" value="{{bizObject}}" />
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">出差地址</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input name="bizAddress" class="weui-input" value="{{bizAddress}}" />
-          </view>
-        </view>
-      </view>
+      <van-cell-group>
+        <van-field
+        label="出差人员"
+        value="{{bizEmployeeName}}"
+        required
+        icon="search"
+        placeholder="请选择出差人员"
+        bindtap="bindUserSelect"
+        />
+      </van-cell-group>
+      <van-cell-group>
+        <picker mode="date" start="2019-07-01" end="2023-06-30" bindchange="bindBizDateChange">
+          <van-field label="出差日期" required value="{{bizDate}}" use-button-slot readonly>
+            <van-icon slot="button" name="arrow" />
+          </van-field>
+        </picker>
+      </van-cell-group>
+      <van-cell-group>
+        <picker mode="time" bindchange="bindTime1Change">
+          <van-field label="开始时间" required value="{{bizTime1}}" use-button-slot readonly>
+            <van-icon slot="button" name="arrow" />
+          </van-field>
+        </picker>
+      </van-cell-group>
+      <van-cell-group>
+          <picker mode="date" start="2019-07-01" end="2023-06-30" bindchange="bindTime2Change">
+          <van-field label="截止日期" required value="{{bizTime2}}" use-button-slot readonly>
+            <van-icon slot="button" name="arrow" />
+          </van-field>  
+        </picker>
+      </van-cell-group>
+      <van-cell-group>
+        <van-field
+          label = "客户名称"
+          value="{{ bizObject }}"
+          placeholder="请输入客户名称"
+          border="{{ false }}"
+          bind:change="bindBizObjectChange"
+        />
+      </van-cell-group>
+      <van-cell-group>
+        <van-field
+          label = "出差地址"
+          required
+          value="{{ bizAddress }}"
+          placeholder="请输入出差地址"
+          border="{{ false }}"
+          bind:change="bindBizAddressChange"
+        />
+      </van-cell-group>
       <view class="weui-cells__title">具体安排</view>
-      <view class="weui-cells weui-cells_after-title">
-        <view class="weui-cell">
-          <view class="weui-cell__bd">
-            <textarea name="bizContent" class="weui-textarea" placeholder="请输入具体安排内容" style="height: 100rpx" bindblur="bindBizContentChange" value="{{bizContent}}" />
-          </view>
-        </view>
-      </view>
-      <view class="button-sp-area">
-        <button class="weui-btn" form-type="submit" type="primary">添加</button>
+      <van-cell-group>
+        <van-field custom-style="height:100px"
+          value="{{ bizContent }}"
+          type="textarea"
+          placeholder="请输入具体安排内容"
+          autosize
+          bind:change="bindBizContentChange"
+        />
+      </van-cell-group>
+      <view style="text-align:center;margin-top:12px">
+        <van-button color="#0396FF" round form-type="submit" type="primary">添加</van-button>
       </view>
     </form>
   </view>
