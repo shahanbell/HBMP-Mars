@@ -273,12 +273,12 @@ Page({
                 preAccno: _this.data.preAccno,
                 coin: _this.data.coin,
                 prePayDate: _this.data.prePayDate,
-                loanTotal: e.detail.value.loanTotal,
-                trafficfee: e.detail.value.trafficfee,
-                accommodation: e.detail.value.accommodation,
-                allowance: e.detail.value.allowance,
-                entertain: e.detail.value.entertain,
-                other: e.detail.value.other,
+                loanTotal: _this.data.loanTotal,
+                trafficfee: _this.data.trafficfee,
+                accommodation: _this.data.accommodation,
+                allowance: _this.data.allowance,
+                entertain: _this.data.entertain,
+                other: _this.data.other,
                 reason: _this.data.reason
               },
               header: {

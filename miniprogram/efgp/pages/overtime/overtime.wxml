@@ -4,39 +4,34 @@
   </view>
   <view class="page__bd">
     <form bindsubmit="formSubmit" bindreset="formReset">
-      <view class="weui-cells weui-cells_after-title">
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">申请人员</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请输入申请人员" value="{{employeeName}}" disabled="true" />
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input weui-cell_vcode">
-          <view class="weui-cell__hd">
-            <view class="weui-label">申请部门</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请选择申请部门" value="{{deptName}}" disabled="true" />
-          </view>
-          <view class="weui-cell__ft">
-            <view id="btnDeptSelect" class="weui-vcode-btn" bindtap="bindDeptSelect">…</view>
-          </view>
-        </view>
-      </view>
+      <van-cell-group>
+        <van-field
+          label = "申请人员"
+          value="{{ employeeName }}"
+          placeholder="请输入申请人员"
+          required
+          border="{{ false }}"
+        />
+      </van-cell-group>
+      <van-cell-group>
+      <van-field
+        label="申请部门"
+        value="{{ deptName }}"
+        required
+        clearable
+        icon="search"
+        placeholder="请输入申请部门"
+        bind:click-icon="bindDeptSelect"
+      />
+      </van-cell-group>
       <view class="weui-cells__title">加班类别</view>
-      <view class="weui-cells weui-cells_after-title">
-        <radio-group bindchange="bindFormTypeChange">
-          <label class="weui-cell weui-check__label" wx:for="{{formTypes}}" wx:key="k">
-            <radio class="weui-check" value="{{item.k}}" checked="{{item.k==selectedType}}" />
-            <view class="weui-cell__bd">{{item.v}}</view>
-            <view class="weui-cell__ft weui-cell__ft_in-radio" wx:if="{{item.k==selectedType}}">
-              <icon class="weui-icon-radio" type="success_no_circle" size="16"></icon>
-            </view>
-          </label>
-        </radio-group>
-      </view>
+      <van-radio-group value="{{selectedType}}" bind:change="bindFormTypeChange">
+      <van-cell-group wx:for="{{formTypes}}" wx:key="k">
+        <van-cell title="{{ item.v }}" clickable data-name="{{item.k}}" bind:click="onTypeCellClick" checked="{{item.k==selectedType}}">
+          <van-radio slot="right-icon" name="{{item.k}}" />
+        </van-cell>
+      </van-cell-group>
+      </van-radio-group>
       <view class="weui-cells__title">加班明细</view>
       <view class="weui-panel weui-panel_access" wx:for="{{detailList}}" wx:key="seq">
         <view class="weui-panel__hd">
@@ -60,12 +55,10 @@
           </view>
         </view>
       </view>
-      <view class="button-sp-area">
-        <button class="weui-btn" bindtap="bindAddDetailTap">添加明细</button>
+      <view style="text-align:center;margin-bottom:12px">
+        <van-button icon="plus" color="#0396FF" bindtap="bindAddDetailTap" type="primary">添加明细</van-button>
       </view>
-      <view class="button-sp-area">
-        <button class="weui-btn" form-type="submit" type="primary" disabled="{{!canSubmit}}">提交</button>
-      </view>
+      <van-button custom-class="submitbtn" type="info" icon="passed" block disabled="{{!canSubmit}}" form-type="submit">提交</van-button>
     </form>
   </view>
 </view>

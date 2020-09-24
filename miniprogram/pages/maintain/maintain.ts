@@ -141,7 +141,7 @@ Page({
                 ta071: res.ta071,
                 ta010: res.ta010,
                 ta003: res.value,
-                repairno: res.key
+                repairno: res.key,
                 remark: res.ta017
               })
             }
@@ -399,7 +399,7 @@ Page({
                 tradingreason: _this.data.tradingreasonId,
                 deliveryremark: _this.data.deliveryremark,
                 deliverydeptId: _this.data.deliverydeptId
-              }
+              },
               header: {
                 'content-type': 'application/json'
               },

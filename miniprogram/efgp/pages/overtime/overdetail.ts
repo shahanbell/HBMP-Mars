@@ -75,12 +75,12 @@ Page({
   },
   bindLunchChange(e) {
     this.setData!({
-      lunch: e.detail.value
+      lunch: e.detail
     })
   },
   bindDinnerChange(e) {
     this.setData!({
-      dinner: e.detail.value
+      dinner: e.detail
     })
   },
   bindDate1Change(e) {
@@ -100,7 +100,7 @@ Page({
   },
   bindOvertimeChange(e) {
     this.setData!({
-      hour: e.detail.value
+      hour: e.detail
     })
   },
   bindContentChange(e) {

@@ -143,3 +143,14 @@ page {
   padding: 200rpx 0;
   box-sizing: border-box;
 } 
+
+/**<--封装蓝色botton按钮*/
+.submitWrap_fix{
+  height:44px;
+}
+.submitbtn{
+  width:100%;
+  position:fixed;
+  margin-top:12px
+}
+/**-->*/

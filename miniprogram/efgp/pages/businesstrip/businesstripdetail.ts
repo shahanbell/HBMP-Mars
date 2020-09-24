@@ -96,6 +96,21 @@ Page({
       bizTime2: e.detail.value
     })
   },
+  bindBizObjectChange(e) {
+    this.setData!({
+      bizObject: e.detail
+    })
+  },
+  bindBizAddressChange(e) {
+    this.setData!({
+      bizAddress: e.detail
+    })
+  },
+  bindBizContentChange(e) {
+    this.setData!({
+      bizContent: e.detail
+    })
+  },
   formSubmit(e) {
     let canSubmit = true
     let errmsg = ''
@@ -117,9 +132,9 @@ Page({
         bizDate: this.data.bizDate,
         bizTime1: this.data.bizTime1,
         bizTime2: this.data.bizTime2,
-        bizObject: e.detail.value.bizObject,
-        bizAddress: e.detail.value.bizAddress,
-        bizContent: e.detail.value.bizContent
+        bizObject: this.data.bizObject,
+        bizAddress: this.data.bizAddress,
+        bizContent: this.data.bizContent
       }
       // console.log(newObject)
       eventChannel = this.getOpenerEventChannel()

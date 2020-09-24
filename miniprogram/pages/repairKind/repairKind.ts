@@ -23,7 +23,7 @@ Page({
       data: {
         appid: app.globalData.restId,
         token: app.globalData.restToken
-      }
+      },
       header: {
         'content-type': 'application/json'
       },

@@ -1,5 +1,5 @@
 import { IMyApp } from '../../app'
-import util = require('../../utils/util')
+import util = require("../../../utils/util")
 
 const app = getApp<IMyApp>()
 let d = new Date()
@@ -51,7 +51,7 @@ Page({
   onPullDownRefresh(){
     this.onShow();
     wx.stopPullDownRefresh;
-  }
+  },
   onLoad() {
     wx.showLoading({
       title: 'Loading',
@@ -110,4 +110,3 @@ Page({
     }
   },
 });
-}

@@ -80,6 +80,12 @@ Page({
       })
     }
   },
+  onTypeCellClick(event){
+    const {name} = event.currentTarget.dataset;
+    this.setData({
+      selectedType:name,
+    });
+  },
   bindAddDetailTap(e) {
     let _this = this
     wx.navigateTo({

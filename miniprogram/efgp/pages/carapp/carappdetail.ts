@@ -140,6 +140,46 @@ Page({
       hour: e.detail.value
     })
   },
+  bindKrChange(e) {
+    this.setData({
+      kr: e.detail
+    })
+  },
+  bindContactChange(e) {
+    this.setData({
+      contact: e.detail
+    })
+  },
+  bindCfsfChange(e) {
+    this.setData({
+      cfsf: e.detail
+    })
+  },
+  bindCfcsChange(e) {
+    this.setData({
+      cfcs: e.detail
+    })
+  },
+  bindAddress1Change(e) {
+    this.setData({
+      address1: e.detail
+    })
+  },
+  bindMdsfChange(e) {
+    this.setData({
+      mdsf: e.detail
+    })
+  },
+  bindMdcsChange(e) {
+    this.setData({
+      mdcs: e.detail
+    })
+  },
+  bindAddress2Change(e) {
+    this.setData({
+      address2: e.detail
+    })
+  },
   bindSyChange(e) {
     this.setData!({
       sy: e.detail.value
@@ -163,14 +203,14 @@ Page({
         deptId: this.data.deptId,
         deptName: this.data.deptName,
         ycrq: this.data.ycrq,
-        kr: e.detail.value.kr,
-        contact: e.detail.value.contact,
-        cfsf: e.detail.value.cfsf,
-        cfcs: e.detail.value.cfcs,
-        address1: e.detail.value.address1,
-        mdsf: e.detail.value.mdsf,
-        mdcs: e.detail.value.mdcs,
-        address2: e.detail.value.address2,
+        kr: this.data.kr,
+        contact: this.data.contact,
+        cfsf: this.data.cfsf,
+        cfcs: this.data.cfcs,
+        address1: this.data.address1,
+        mdsf: this.data.mdsf,
+        mdcs: this.data.mdcs,
+        address2: this.data.address2,
         sy: this.data.sy
       }
       console.log(newObject)

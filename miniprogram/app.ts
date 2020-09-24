@@ -147,7 +147,7 @@ App<IMyApp>({
     console.log("Quit MicroPrg");
   },
   globalData: {
-    // restAdd:'https://jrs.hanbell.com.cn',
+    //restAdd:'https://jrs.hanbell.com.cn',
      restAdd: 'https://i2.hanbell.com.cn',
     // restAdd: 'http://localhost:8480',
     //URL转码

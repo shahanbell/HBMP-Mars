@@ -65,24 +65,24 @@ Page({
   bindEmployeeIdChange(e) {
     let employeeId = 'wechatUser.employeeId';
     this.setData!({
-      [employeeId]: e.detail.value
+      [employeeId]: e.detail
     })
   },
   bindEmployeeNameChange(e) {
     let employeeName = 'wechatUser.employeeName';
     this.setData!({
-      [employeeName]: e.detail.value
+      [employeeName]: e.detail
     })
   },
   bindMobileChange(e) {
     let mobile = 'wechatUser.mobile';
     this.setData!({
-      [mobile]: e.detail.value
+      [mobile]: e.detail
     })
   },
   bindCheckCodeChange(e) {
     this.setData!({
-      checkCode: e.detail.value
+      checkCode: e.detail
     })
   },
   bindSendCodeTap(e) {

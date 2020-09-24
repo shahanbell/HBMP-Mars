@@ -71,7 +71,7 @@ Page({
     })
   },
   bindFormTypeChange(e) {
-    if (e.detail.value) {
+    if (e.detail) {
       this.setData!({
         formType: '2',
         formTypeDesc: '法定节假假日前后'
@@ -144,17 +144,17 @@ Page({
   },
   bindLeaveDayChange(e) {
     this.setData!({
-      leaveDay: e.detail.value
+      leaveDay: e.detail
     })
   },
   bindLeaveHourChange(e) {
     this.setData!({
-      leaveHour: e.detail.value
+      leaveHour: e.detail
     })
   },
   bindLeaveMinuteChange(e) {
     this.setData!({
-      leaveMinute: e.detail.value
+      leaveMinute: e.detail
     })
   },
   bindReasonChange(e) {
