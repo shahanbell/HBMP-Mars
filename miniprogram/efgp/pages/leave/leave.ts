@@ -24,7 +24,8 @@ Page({
     leaveDay: 1 as number,
     leaveHour: 0 as number,
     leaveMinute: 0 as number,
-    reason: ''
+    reason: '',
+    checked:false
   },
   onLoad() {
     wx.showLoading({
@@ -71,15 +72,18 @@ Page({
     })
   },
   bindFormTypeChange(e) {
+    console.info(e.detail)
     if (e.detail) {
-      this.setData!({
+      this.setData({
         formType: '2',
-        formTypeDesc: '法定节假假日前后'
+        formTypeDesc: '法定节假假日前后',
+        checked:true
       })
     } else {
-      this.setData!({
+      this.setData({
         formType: '1',
-        formTypeDesc: '普通工作日'
+        formTypeDesc: '普通工作日',
+        checked:false
       })
     }
   },
