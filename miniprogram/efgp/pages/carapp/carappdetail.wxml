@@ -21,7 +21,6 @@
           required
           icon="search"
           placeholder="请选择申请部门"
-          bind:click-icon="bindDeptSelect"
           bindtap="bindDeptSelect"
         />
       </van-cell-group>

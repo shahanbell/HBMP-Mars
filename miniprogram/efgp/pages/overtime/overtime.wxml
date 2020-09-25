@@ -21,7 +21,7 @@
         clearable
         icon="search"
         placeholder="请输入申请部门"
-        bind:click-icon="bindDeptSelect"
+        bindtap="bindDeptSelect"
       />
       </van-cell-group>
       <view class="weui-cells__title">加班类别</view>

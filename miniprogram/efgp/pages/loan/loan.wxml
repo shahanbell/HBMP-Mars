@@ -34,7 +34,6 @@
           required
           icon="search"
           placeholder="请选择申请部门"
-          bind:click-icon="bindDeptSelect"
           bindtap="bindDeptSelect"
         />
       </van-cell-group>
@@ -45,7 +44,6 @@
           required
           icon="search"
           placeholder="请选择借支性质"
-          bind:click-icon="bindLoanProperty"
           bindtap="bindLoanProperty"
         />
       </van-cell-group>
@@ -56,7 +54,6 @@
           required
           icon="search"
           placeholder="请选择预算科目"
-          bind:click-icon="bindBudgetacc"
           bindtap="bindBudgetacc"
         />
       </van-cell-group>
@@ -67,7 +64,6 @@
           required
           icon="search"
           placeholder="请选择币别"
-          bind:click-icon="bindCoin"
           bindtap="bindCoin"
         />
       </van-cell-group>

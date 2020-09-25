@@ -19,7 +19,6 @@
           required
           icon="search"
           placeholder="请选择申请部门"
-          bind:click-icon="bindDeptSelect"
           bindtap="bindDeptSelect"
         />
       </van-cell-group>
@@ -37,7 +36,6 @@
           required
           icon="search"
           placeholder="请选择车辆性质"
-          bind:click-icon="bindClzx"
           bindtap="bindClzx"
         />
       </van-cell-group>
@@ -48,8 +46,6 @@
           required
           icon="search"
           placeholder="请开窗选取驾驶员"
-          bind:click-icon="bindUserSelect"
-          bindinput = "bindUserInput"
           bindtap="bindUserSelect"
         />
       </van-cell-group>
@@ -74,7 +70,6 @@
           value="{{ purposeDesc }}"
           icon="search"
           placeholder="请选择用车原因"
-          bind:click-icon="bindUserSelect"
           bindtap="bindPurpose"
         />
       </van-cell-group>
