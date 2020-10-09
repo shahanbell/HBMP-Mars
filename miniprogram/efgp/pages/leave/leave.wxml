@@ -82,12 +82,12 @@
       </van-cell-group>
       <van-cell-group>
         <van-cell title="请假时数">
-          <van-stepper value="{{ LeaveHour }}"  min="0" max="24" bindchange="bindLeaveMinuteChange" integer />
+          <van-stepper value="{{ LeaveHour }}"  min="0" max="24" bindchange="bindLeaveHourChange" integer />
         </van-cell>
       </van-cell-group>
       <van-cell-group>
         <van-cell title="请假分钟">
-          <van-stepper value="{{ LeaveMinute }}" step="30" min="0" max="60" bindchange="bindLeaveHourChange" integer />
+          <van-stepper value="{{ LeaveMinute }}" step="30" min="0" max="60" bindchange="bindLeaveMinuteChange" integer />
         </van-cell>
       </van-cell-group>
       <view class="weui-cells__title">请假原因</view>

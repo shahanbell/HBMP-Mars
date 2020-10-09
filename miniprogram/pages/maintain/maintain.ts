@@ -43,7 +43,8 @@ Page({
     tradingreasonName: '',
     deliveryremark: '',
     deliverydeptId: '',
-    deliverydeptName: ''
+    deliverydeptName: '',
+    sendJobNum: ''
   },
   onLoad() {
     wx.showLoading({
@@ -262,7 +263,8 @@ Page({
                 maintainer: res.key,
                 maintaineId: res.key + '-' + res.value,
                 warehouseId: res.value1,
-                warehouseName: res.value1 + "-" + res.value2
+                warehouseName: res.value1 + "-" + res.value2,
+                sendJobNum: res.value3
               })
             }
           }
@@ -398,8 +400,9 @@ Page({
                 incentoryform: _this.data.incentoryformId,
                 tradingreason: _this.data.tradingreasonId,
                 deliveryremark: _this.data.deliveryremark,
-                deliverydeptId: _this.data.deliverydeptId
-              },
+                deliverydeptId: _this.data.deliverydeptId,
+                sendJobNum: _this.data.sendJobNum,
+              }
               header: {
                 'content-type': 'application/json'
               },
