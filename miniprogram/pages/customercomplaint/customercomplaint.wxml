@@ -75,14 +75,14 @@
         <van-field
           label="紧急度"
           value="{{ emergencyDrgreeId }}"
-          disabled="true"
+          readonly="true"
         />
       </van-cell-group>
       <van-cell-group>
         <van-field
           label="紧急名称"
           value="{{ emergencyDrgreeName }}"
-          disabled="true"
+          readonly="true"
         />
       </van-cell-group>
       <van-cell-group>

@@ -1,5 +1,5 @@
 import { IMyApp } from '../../app';
-import * as drawQrcode  from '../../../utils/weapp.qrcode.min.js';
+import * as drawQrcode from '../../../utils/weapp.qrcode.min.js';
 const app = getApp<IMyApp>()
 let restUrl: string;
 let eventChannel;
@@ -39,10 +39,29 @@ Page({
 
   onLoad(option) {
     var that = this;
+    
+    if (option.addressView != undefined && option.addressView != '') {
+      that.setData!({
+        addressView: option.addressView
+      })
+    }
+    if (option.addressNameView != undefined && option.addressNameView != '') {
+      that.setData!({
+        addressNameView: option.addressNameView
+      })
+    }
+    if (option.maintainDescribe != undefined && option.maintainDescribe != '') {
+      that.setData!({
+        maintainDescribe: option.maintainDescribe
+      })
+      //修改缓存中的数据，修改会造成修改之前的数据
+      var pagedate=wx.getStorageSync('pageData');
+      pagedate.handlingInfo = option.maintainDescribe;
+      wx.setStorageSync('pageData', { ...pagedate});
+    }
     wx.getStorage({
       key: 'pageData',
       success: function (res) {
-
         var myData = res.data;//读取key值为myData的缓存数据
         if (JSON.stringify(myData) == '{}') {
           that.setData({
@@ -67,7 +86,6 @@ Page({
         }
       }
     })
-
     wx.request({
       url: app.globalData.restAdd + '/Hanbell-JRS/api/crm/repmq/maintainform/' + app.globalData.employeeId,
       data: {
@@ -144,7 +162,20 @@ Page({
     return out;
   },
 
-
+  photoUpload: function (res) {
+    var that = this;
+    if (that.data.maintainTypeId == '' || that.data.maintainNumberId == '' || that.data.customerName == '') {
+      wx.showModal({
+        title: '系统提示',
+        content: "请先绑定表单",
+        showCancel: false
+      });
+      return;
+    }
+    wx.navigateTo({
+      url: './photoUpload?maintainType=' + that.data.maintainTypeId + "&maintainNumber=" + that.data.maintainNumberId + "&addressView=" + that.data.addressView + "&addressNameView=" + that.data.addressNameView + "&maintainDescribe=" + that.data.maintainDescribe
+    });
+  },
   queryIp: function (res) {
     var that = this;
     if (that.data.maintainTypeId == '' || that.data.maintainNumberId == '' || that.data.customerName == '') {
@@ -161,7 +192,7 @@ Page({
     var qrcode_typeNumber = 7;
     var qrcode_background = "#FFFFFF";
     var qrcode_foreground = "#000000";
-    var qrcode_url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx197c3762bc4258f0&redirect_uri=" + app.globalData.weChatCallBack+"&response_type=code&scope=snsapi_userinfo&state=" + state + "&#wechat_redirect";
+    var qrcode_url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx197c3762bc4258f0&redirect_uri=" + app.globalData.weChatCallBack + "&response_type=code&scope=snsapi_userinfo&state=" + state + "&#wechat_redirect";
     var qrcode_url_length = qrcode_url.length;
     if (qrcode_url_length < 64) {
       qrcode_typeNumber = 7;

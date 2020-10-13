@@ -4,79 +4,37 @@
   </view>
   <view class="page__bd">
     <form bindsubmit="formSubmit" bindreset="formReset">
-      <view class="weui-cells weui-cells_after-title">
+      <van-cell-group>
+        <van-field label="服务方式" value="次数" />
+      </van-cell-group>
+      <van-cell-group>
+        <van-field label="品号" value="{{ productQuality }}" placeholder="请选择品号" required clearable icon="search" bindtap="bindProductQualitySelect" />
+      </van-cell-group>
+      <van-cell-group>
+        <van-field label="品名" value="{{product_name}}" readonly="true"/>
+      </van-cell-group>
+      <van-cell-group>
+        <van-field label="规格" value="{{productStandard}}" readonly="true"/>
+      </van-cell-group>
 
+      <van-cell-group>
+        <van-field label="仓库" value="{{ warehouseName }}" placeholder="请选择仓库" required clearable icon="search" bindtap="bindWarehouseSelect" />
+      </van-cell-group>
 
+     <van-cell-group>
+        <van-field custom-style="height:50px"
+          label = "预计维修数量"
+          value="{{ planMaintainCount }}"
+          type="textarea"
+          placeholder="请填写预计维修数量"
+          autosize
+          required
+          bindblur="bindPlanMaintainCountChange"
+        />
+      </van-cell-group>
 
-
-
-        <view class="weui-cell weui-cell_input weui-cell_vcode">
-          <view class="weui-cell__hd">
-            <view class="weui-label">服务方式</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" value="次数" disabled="true" />
-          </view>
-        </view>
-
-        <view class="weui-cell weui-cell_input weui-cell_vcode">
-          <view class="weui-cell__hd">
-            <view class="weui-label">品号</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请选择品号" value="{{productQuality}}" disabled="true" />
-          </view>
-          <view class="weui-cell__ft">
-            <view class="weui-vcode-btn" bindtap="bindProductQualitySelect">…</view>
-          </view>
-        </view>
-
-
-
-        <view class="weui-cell weui-cell_input weui-cell_vcode">
-          <view class="weui-cell__hd">
-            <view class="weui-label">品名</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" value="{{product_name}}" disabled="true" />
-          </view>
-        </view>
-
-        <view class="weui-cell weui-cell_input weui-cell_vcode">
-          <view class="weui-cell__hd">
-            <view class="weui-label">规格</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" value="{{productStandard}}" disabled="true" />
-          </view>
-        </view>
-
-        <view class="weui-cell weui-cell_input weui-cell_vcode">
-          <view class="weui-cell__hd">
-            <view class="weui-label">仓库</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请选择仓库" value="{{warehouseName}}" disabled="true" />
-          </view>
-          <view class="weui-cell__ft">
-            <view class="weui-vcode-btn" bindtap="bindWarehouseSelect">…</view>
-          </view>
-        </view>
-
-        <view class="weui-cell weui-cell_input weui-cell_vcode">
-          <view class="weui-cell__hd">
-            <view class="weui-label">预计维修数量</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input name="planMaintainCount" class="weui-input" placeholder="请填写预计维修数量" value="{{planMaintainCount}}" bindblur="bindPlanMaintainCountChange" />
-          </view>
-        </view>
-
-
-
-      </view>
       <view class="button-sp-area">
-        <button class="weui-btn" form-type="submit" type="primary">添加</button>
+        <van-button custom-class="submitbtn" type="info" icon="passed" form-type="submit">添加</van-button>
       </view>
     </form>
   </view>

@@ -9,7 +9,7 @@
           加载中...
         </loading>
         <view class="weui-cell__bd">
-          <input bindinput="sltwordInput" class="weui-input" placeholder="请选择预算科目" bindinput="changeSearchWord"/>
+          <input bindinput="sltwordInput" class="weui-input" placeholder="请输入查询的内容" bindinput="changeSearchWord"/>
         </view>
         <view class="weui-cell__ft">
           <view class="weui-vcode-btn" bindtap="budgetaccQuery">查询</view>

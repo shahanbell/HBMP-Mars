@@ -4,96 +4,51 @@
   </view>
   <view class="page__bd">
     <form bindsubmit="formSubmit" bindreset="formReset">
-      <view class="weui-cells weui-cells_after-title">
-
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">派工码</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请输入派工码" value="{{assignmentcode}}" />
-          </view>
+      <van-cell-group>
+        <van-field label="派工码" value="{{ assignmentcode }}" placeholder="请输入派工码" required clearable icon="search" readonly="{{true}}" />
+      </van-cell-group>
+      <van-cell-group>
+        <picker mode="date" start="2019-07-01" end="2023-06-30" bindchange="bindDate1Change">
+          <van-field label="约定完修日" required value="{{date1}}" use-button-slot readonly>
+            <van-icon slot="button" name="arrow" />
+          </van-field>
+        </picker>
+      </van-cell-group>
+      <van-cell-group>
+        <picker mode="date" start="2019-07-01" end="2023-06-30" bindchange="bindDate2Change">
+          <van-field label="预交日期" required value="{{date2}}" use-button-slot readonly>
+            <van-icon slot="button" name="arrow" />
+          </van-field>
+        </picker>
+      </van-cell-group>
+      <van-cell-group>
+        <picker mode="date" start="2019-07-01" end="2023-06-30" bindchange="bindDate3Change">
+          <van-field label="预计维修日" required value="{{date3}}" use-button-slot readonly>
+            <van-icon slot="button" name="arrow" />
+          </van-field>
+        </picker>
+      </van-cell-group>
+      <van-cell-group>
+        <picker mode="date" start="2019-07-01" end="2023-06-30" bindchange="bindDate4Change">
+          <van-field label="预计完修日" required value="{{date4}}" use-button-slot readonly>
+            <van-icon slot="button" name="arrow" />
+          </van-field>
+        </picker>
+      </van-cell-group>
+      <van-cell-group>
+        <van-field label="站别编号" value="{{ stationname }}" placeholder="请输入站别编号" required clearable icon="search" bindtap="bindStation" />
+      </van-cell-group>
+      <van-cell-group>
+        <van-field label="主要维修人员" value="{{ repairmanname }}" placeholder="请输入主要维修人员" required clearable icon="search" bindtap="bindRepairman" />
+      </van-cell-group>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">
+          <textarea name="repairmanname2" class="weui-textarea" placeholder="请选择维修人员" style="height: 100rpx" value="{{repairmanname2}}" disabled="true"></textarea>
         </view>
-
-
       </view>
-
-      <view class="weui-cells weui-cells_after-title">
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">约定完修日</view>
-          </view>
-          <view class="weui-cell__bd">
-            <picker mode="date" value="{{date1}}" start="2019-07-01" end="2023-06-30" bindchange="bindDate1Change">
-              <view class="weui-input">{{date1}}</view>
-            </picker>
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">预交日期</view>
-          </view>
-          <view class="weui-cell__bd">
-            <picker mode="date" value="{{date2}}" start="2019-07-01" end="2023-06-30" bindchange="bindDate2Change">
-              <view class="weui-input">{{date2}}</view>
-            </picker>
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">预计维修日</view>
-          </view>
-          <view class="weui-cell__bd">
-            <picker mode="date" value="{{date3}}" start="2019-07-01" end="2023-06-30" bindchange="bindDate3Change">
-              <view class="weui-input">{{date3}}</view>
-            </picker>
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">预计完修日</view>
-          </view>
-          <view class="weui-cell__bd">
-            <picker mode="date" value="{{date4}}" start="2019-07-01" end="2023-06-30" bindchange="bindDate4Change">
-              <view class="weui-input">{{date4}}</view>
-            </picker>
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">站别编号</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请输入站别编号" value="{{stationname}}" disabled="true" />
-          </view>
-          <view class="weui-cell__ft">
-            <view class="weui-vcode-btn" bindtap="bindStation">…</view>
-          </view>
-        </view>
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">主要维修人员</view>
-          </view>
-          <view class="weui-cell__bd">
-            <input class="weui-input" placeholder="请输入主要维修人员" disabled="true" value="{{repairmanname}}" />
-          </view>
-          <view class="weui-cell__ft">
-            <view class="weui-vcode-btn" bindtap="bindRepairman">…</view>
-          </view>
-        </view>
-        <view class="weui-cell">
-          <view class="weui-cell__bd">
-            <textarea name="repairmanname2" class="weui-textarea" placeholder="请选择维修人员" style="height: 100rpx" value="{{repairmanname2}}" disabled="true" ></textarea>
-          </view>
-        </view>
-
-      </view>
-
-
       <view class="button-sp-area">
-        <button class="weui-btn" form-type="submit" type="primary">添加</button>
+        <van-button custom-class="submitbtn" type="info" icon="passed" form-type="submit">添加</van-button>
       </view>
-
     </form>
   </view>
 </view>

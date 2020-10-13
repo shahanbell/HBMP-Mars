@@ -6,7 +6,7 @@ Page({
   data: {
     selectedType: '1',
     repairKind: '',
-    repairKindname: '请选择',
+    repairKindname: '',
     detailList: [] as any,
     employeeId: null,
     employeeName: null,
