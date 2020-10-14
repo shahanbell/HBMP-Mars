@@ -43,7 +43,11 @@ Page({
     tradingreasonName: '',
     deliveryremark: '',
     deliverydeptId: '',
-    deliverydeptName: ''
+    deliverydeptName: '',
+    sendJobNum: '',
+    hasWartb: false, //是否开启录入库存交易单
+    canSubmit: true
+
   },
   onLoad() {
     wx.showLoading({
@@ -159,6 +163,20 @@ Page({
     }
   },
 
+  bindHasWartb: function (e) {
+    console.info("fuckyou")
+    if (e.detail) {
+      this.setData!({
+        hasWartb: true
+      });
+    }
+    else {
+      this.setData!({
+        hasWartb: false
+      });
+    }
+  },
+
   bindAddDetailTap(e) {
     let _this = this
     wx.navigateTo({
@@ -172,7 +190,7 @@ Page({
           })
           _this.setData({
             detailList: details,
-            canSubmit: true
+      
           })
         }
       },
@@ -262,7 +280,8 @@ Page({
                 maintainer: res.key,
                 maintaineId: res.key + '-' + res.value,
                 warehouseId: res.value1,
-                warehouseName: res.value1 + "-" + res.value2
+                warehouseName: res.value1 + "-" + res.value2,
+                sendJobNum: res.value3
               })
             }
           }
@@ -362,14 +381,6 @@ Page({
       canSubmit = false
       errmsg += "请选择维修人员\r\n"
     }
-    if (!this.data.incentoryformId || this.data.incentoryformId == '') {
-      canSubmit = false
-      errmsg += "请选择库存交易单别\r\n"
-    }
-    if (!this.data.deliverydeptId || this.data.deliverydeptId == '') {
-      canSubmit = false
-      errmsg += "请选择发货部门\r\n"
-    }
 
     if (canSubmit) {
       let _this = this
@@ -398,8 +409,10 @@ Page({
                 incentoryform: _this.data.incentoryformId,
                 tradingreason: _this.data.tradingreasonId,
                 deliveryremark: _this.data.deliveryremark,
-                deliverydeptId: _this.data.deliverydeptId
-              },
+                deliverydeptId: _this.data.deliverydeptId,
+                sendJobNum: _this.data.sendJobNum,
+                hasWartb: _this.data.hasWartb
+              }
               header: {
                 'content-type': 'application/json'
               },

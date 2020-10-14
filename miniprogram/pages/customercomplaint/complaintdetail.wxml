@@ -41,21 +41,21 @@
         <van-field
           label="产品品号"
           value="{{ productQuality }}"
-          required
+          readonly="true"
         />
       </van-cell-group>
       <van-cell-group>
         <van-field
           label="产品品名"
           value="{{ product_name }}"
-          required
+          readonly="true"
         />
       </van-cell-group>
       <van-cell-group>
         <van-field
           label="产品规格"
           value="{{ productStandard }}"
-          required
+          readonly="true"
         />
       </van-cell-group>
       <view style="text-align:center;margin-top:12px">

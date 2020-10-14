@@ -2,9 +2,8 @@
   <van-dropdown-item value="{{ selectValue }}" options="{{ option1 }}" bind:change="onSwitch2Change" />
 </van-dropdown-menu>
 <view class='main'>
-  <van-button plain hairline type="info" color="red !important" size="normal" bindtap="bindLocationSelect">
-    <view class="view" style="font-size:20pt;color:green">
-      <van-icon name="location" color="green" />选择位置</view>
+  <van-button icon="location" type="info" bindtap="bindLocationSelect">
+    选择位置
   </van-button>
 </view>
     <loading hidden="{{loadingHidden}}">
@@ -16,8 +15,8 @@
 </view>
 
 <view class='main'>
-  <van-button plain hairline type="info" color="green" size="normal" bindtap="bindMatainFormSelect">
-    <view class="view" style="font-size:15pt">表单绑定</view>
+  <van-button type="info" style="margin-bottom:12rpx" bindtap="bindMatainFormSelect">
+    表单绑定
   </van-button>
 </view>
 
@@ -43,20 +42,22 @@
     <van-cell title="离开时间" value="{{leaveDate}}" style="width:50%" />
     <van-cell title="路程结束" value="{{roadEndtDate}}" style="width:50%" />
   </view>
-  
 </view>
 <view class='main' wx:if="{{selectValue=='3'}}">
-  <van-button plain hairline type="info" color="green" size="normal" bindtap="eject">
-    <view class="view" style="font-size:12pt">实际处理描述</view>
+  <van-button type="info" bindtap="eject">
+    实际处理描述
   </van-button>
 </view>
-
 <view class='main' wx:if="{{selectValue=='3'}}">
-  <van-button plain hairline type="info" color="green" size="normal" bindtap="queryIp">
-    <view class="view" style="font-size:12pt">满意度二维码</view>
+  <van-button style="margin-top:12rpx" type="info" bindtap="queryIp">
+    满意度二维码
   </van-button>
 </view>
-
+<view class='main'wx:if="{{selectValue=='3'||selectValue=='2'||selectValue=='4'}}">
+  <van-button style="margin-top:12rpx" type="info" bindtap="photoUpload">
+    照片上传
+  </van-button>
+</view>
 <view style="height 20rpx:"></view>
 <view class='main'>
   <view id="circle" bindtap="commit">
@@ -67,20 +68,12 @@
 <!-- 备注弹窗 -->
 <view class="model" catchtouchmove='preventTouchMove' wx:if='{{showModal}}'></view>
 <view class="modalDlg" catchtouchmove='preventTouchMove' wx:if='{{showModal}}'>
-
-  <van-button plain hairline type="info" color="green" size="normal" bindtap="eject">
-    <view class="view" style="font-size:12pt">实际处理描述</view>
-  </van-button>
-
-
+  <view class="weui-cells__title">实际处理描述</view>
   <view class='wishName'>
     <textarea bindinput='wish_put' placeholder='请输入内容' class='wish_put' value="{{maintainDescribe}}"></textarea>
   </view>
-  <view class='wishbnt'>
-    <button class='wishbnt_bt' bindtap='ok'>确定</button>
-  </view>
+  <van-button style="margin-bottom:12rpx" type="info" bindtap="ok">确定</van-button>
 </view>
-
 
 <modal title="满意度调查二维码" hidden="{{modalHidden}}" bindconfirm="modalConfirm" bindcancel="modalCandel">
 
