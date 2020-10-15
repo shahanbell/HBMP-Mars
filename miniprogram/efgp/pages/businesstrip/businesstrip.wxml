@@ -58,6 +58,7 @@
           value="{{otherType}}"
           placeholder="请填写其他性质"
           border="{{ false }}"
+          bind:change="bindOtherTypeChange"
         />
       </van-cell-group>
       <van-cell-group>
@@ -77,6 +78,7 @@
           value="{{otherVehicle}}"
           placeholder="请填写其他交通工具"
           border="{{ false }}"
+          bind:change="bindOtherVehicleChange"
         />
       </van-cell-group>
       <van-cell-group>

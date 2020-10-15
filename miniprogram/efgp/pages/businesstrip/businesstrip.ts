@@ -153,6 +153,16 @@ Page({
       applyDate: e.detail.value,
     })
   },
+  bindOtherTypeChange(e) {
+    this.setData!({
+      otherType: e.detail
+    })
+  },
+  bindOtherVehicleChange(e) {
+    this.setData!({
+      otherVehicle: e.detail
+    })
+  },
   bindDayBeginChange(e) {
     this.setData!({
       dayBegin: e.detail.value
@@ -301,15 +311,15 @@ Page({
                 applyDept: _this.data.deptId,
                 formType: _this.data.businessProperty,
                 formTypeDesc: _this.data.businessPropertyDesc,
-                otherType:e.detail.value.otherType,
+                otherType:_this.data.otherType,
                 vehicle: _this.data.vehicle,
                 vehicleDesc: _this.data.vehicleDesc,
-                otherVehicle: e.detail.value.otherVehicle,
+                otherVehicle: _this.data.otherVehicle,
                 destination: _this.data.destination,
                 destinationDesc: _this.data.destinationDesc,
-                startDate: e.detail.value.dayBegin,
-                endDate: e.detail.value.dayEnd,
-                days: e.detail.value.daysTotal,
+                startDate: _this.data.dayBegin,
+                endDate: _this.data.dayEnd,
+                days: _this.data.daysTotal,
                 detailList: _this.data.detailList
               },
               header: {
