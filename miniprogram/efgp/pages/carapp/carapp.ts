@@ -15,6 +15,7 @@ Page({
     clxz: '1',
     clxzDesc: '1-公务车',
     privatedriver: '',
+    privatecarno:'',
     telcontact: '',
     purpose: '',
     purposeDesc: '',
@@ -224,9 +225,19 @@ Page({
       sqrqDate:e.detail.value
     });
   },
-  bindReasonChange(e) {
+  bindTelcontactChange(e){
+    this.setData({
+      telcontact:e.detail
+    });
+  },
+  bindPrivatecarnoChange(e){
+    this.setData({
+      privatecarno:e.detail
+    });
+  },
+  bindHmark1Change(e) {
     this.setData!({
-      reason: e.detail.value
+      hmark1: e.detail.value
     })
   },
   formSubmit(e) {
@@ -250,11 +261,11 @@ Page({
       errmsg += "请选择车辆性质\r\n"
     }
     if (this.data.clxz == "2") {
-      if (e.detail.value.privatedriver == "") {
+      if (this.data.privatedriver == "") {
         errmsg += "请填写私车驾驶员\r\n"
         canSubmit = false
       }
-      if (e.detail.value.privatecarno == "") {
+      if (this.data.privatecarno == "") {
         errmsg += "请填写私车车牌号\r\n"
         canSubmit = false
       }
@@ -264,7 +275,7 @@ Page({
       errmsg += "请选择用车原因\r\n"
     }
 
-    if (this.data.purpose == "13" && e.detail.value.hmark1 == "") {
+    if (this.data.purpose == "13" && this.data.hmark1 == "") {
       errmsg += "其他用车请输入备注说明\r\n"
       canSubmit = false
     }
@@ -300,12 +311,12 @@ Page({
                 sqrqDate: _this.data.sqrqDate,
                 clxz: _this.data.clxz,
                 clxzDesc: _this.data.clxzDesc,
-                privatedriver: e.detail.value.privatedriver,
-                privatecarno: e.detail.value.privatecarno,
+                privatedriver: _this.data.privatedriver,
+                privatecarno: _this.data.privatecarno,
                 purpose: _this.data.purpose,
                 purposeDesc: _this.data.purposeDesc,
-                telcontact: e.detail.value.telcontact,
-                hmark1: e.detail.value.hmark1,
+                telcontact: _this.data.telcontact,
+                hmark1: _this.data.hmark1,
                 detailList: _this.data.detailList
               },
               header: {

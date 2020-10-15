@@ -236,7 +236,7 @@ Page({
       canSubmit = false
       errmsg += "请填写申请部门\r\n"
     }
-    if (this.data.budgetaccName == '') {
+    if (this.data.preAccno == '') {
       canSubmit = false
       errmsg += "请填写预算科目\r\n"
     }
