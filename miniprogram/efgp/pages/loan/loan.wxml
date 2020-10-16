@@ -3,7 +3,7 @@
     <view class="page__title">借支申请</view>
   </view>
   <view class="page__bd">
-    <form bindsubmit="formSubmit" bindreset="formReset">
+    <form bindreset="formReset">
     <van-cell-group>
           <van-field
             label = "公司别"
@@ -126,7 +126,7 @@
           autosize
         />
       </van-cell-group>
-      <van-button custom-class="submitbtn" type="info" icon="passed" form-type="submit">提交</van-button>
+      <van-button custom-class="submitbtn" type="info" icon="passed" form-type="submit" bind:click="formSubmit">提交</van-button>
     </form>
   </view>
 </view>

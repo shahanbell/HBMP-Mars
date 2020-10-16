@@ -4,7 +4,7 @@
     <view class="page__title">出差明细</view>
   </view>
   <view class="page__bd">
-    <form bindsubmit="formSubmit" bindreset="formReset">
+    <form bindreset="formReset">
       <van-cell-group>
         <van-field
         label="出差人员"
@@ -62,11 +62,12 @@
           type="textarea"
           placeholder="请输入具体安排内容"
           autosize
+          required
           bind:change="bindBizContentChange"
         />
       </van-cell-group>
       <view style="text-align:center;margin-top:12px">
-        <van-button color="#0396FF" round form-type="submit" type="primary">添加</van-button>
+        <van-button color="#0396FF" round form-type="submit" type="info" bind:click="formSubmit">添加</van-button>
       </view>
     </form>
   </view>

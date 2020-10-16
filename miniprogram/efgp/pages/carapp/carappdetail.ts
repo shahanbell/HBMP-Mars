@@ -187,15 +187,6 @@ Page({
   },
   formSubmit(e) {
     let canSubmit = true
-    let errmsg = ''
-    if (e.detail.value.cityDes == '') {
-      canSubmit = false
-      errmsg += '请输入目的城市 \r'
-    }
-    if (e.detail.value.reason == '') {
-      canSubmit = false
-      errmsg += '请输入派车事由 \r'
-    }
     if (canSubmit) {
       let newObject = {
         employeeId: this.data.employeeId,
@@ -222,7 +213,7 @@ Page({
     } else {
       wx.showModal({
         title: '系统提示',
-        content: errmsg,
+        content: '请输入必填项',
         showCancel: false
       })
     }

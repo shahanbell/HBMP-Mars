@@ -13,24 +13,6 @@ Page({
     bizObject: "",
     bizAddress: "",
     bizContent: "",
-    checkArray: [
-      {
-        name: "employeeName",
-        notempty: { key: true, msg: "出差人员不能为空\n" }
-      },
-      {
-        name: "bizObject",
-        notempty: { key: true, msg: "客户名称不能为空\n" }
-      },
-      {
-        name: "bizAddress",
-        notempty: { key: true, msg: "出差地址不能为空 \n" }
-      },
-      {
-        name: "bizContent",
-        notempty: { key: true, msg: "具体安排不能为空\n" }
-      }
-    ]
   },
   onLoad() {
     wx.showLoading({
@@ -113,18 +95,6 @@ Page({
   },
   formSubmit(e) {
     let canSubmit = true
-    let errmsg = ''
-    let checkobj = e.detail.value;
-    // console.log(checkobj);
-    this.data.checkArray.forEach((value, idx, array) => {
-      // val: 当前值
-      // idx：当前index
-      // array: Array
-        if (checkobj[value.name] == "") {
-          errmsg += value.notempty.msg
-          canSubmit = false;
-        }
-    });
     if (canSubmit) {
       let newObject = {
         bizEmployee: this.data.bizEmployee,
@@ -145,9 +115,10 @@ Page({
     } else {
       wx.showModal({
         title: '系统提示',
-        content: errmsg,
+        content: '有必填项未填',
         showCancel: false
       })
     }
   }
+
 })
