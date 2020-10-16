@@ -283,7 +283,6 @@ Page({
 
   bindPickerDate(e) {
     this.openPickerDate();
-    console.info("进入")
     this.setData!({
       conpomentid: e.currentTarget.id
     })
@@ -299,7 +298,6 @@ Page({
     this.closePickerDate();
   },
   bindDateInput(e) {
-    console.info("this.dateFormatForYYMMDD(e.detail)==" + this.dateFormatForYYMMDD(e.detail))
     if (this.data.conpomentid == 'dayBegin') {
       this.setData!({
         dayBegin: this.dateFormatForYYMMDD(e.detail)
