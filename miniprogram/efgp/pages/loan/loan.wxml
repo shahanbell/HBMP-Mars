@@ -13,12 +13,13 @@
             icon="search"
           />
       </van-cell-group>
+       <van-popup show="{{ showDate }}" position="bottom" bind:close="bindCloseDate">
+        <van-datetime-picker type="date" id="picker1" value="{{showDateInit}}" bind:cancel="bindDateCancel" bind:confirm="bindDateConfirm" bind:input="bindDateInput" formatter="{{formatter}}" />
+      </van-popup>
       <van-cell-group>
-        <picker mode="date" start="2019-07-01" end="2023-06-30" bindchange="bindLoanDateChange">
-          <van-field label="借支日期" required value="{{loanDate}}" use-button-slot readonly>
+          <van-field label="借支日期" required value="{{loanDate}}" use-button-slot readonly bindtap='bindPickerDate' >
             <van-icon slot="button" name="arrow" />
           </van-field>
-        </picker>
       </van-cell-group>
       <van-cell-group>
           <van-field
