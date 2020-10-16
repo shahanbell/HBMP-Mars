@@ -3,7 +3,7 @@
     <view class="page__title">用车明细</view>
   </view>
   <view class="page__bd">
-    <form bindsubmit="formSubmit" bindreset="formReset">
+    <form bindreset="formReset">
       <van-cell-group>
           <van-field
             label = "同车人员"
@@ -12,6 +12,7 @@
             bindinput="sltwordInput"
             bindtap="btnUserSelect"
             icon="search"
+            required
           />
       </van-cell-group>
       <van-cell-group>
@@ -28,6 +29,7 @@
           <van-field
             label = "客人"
             value="{{ kr }}"
+            required
             placeholder="请输入客人姓名"
             bind:change="bindKrChange"
           />
@@ -41,19 +43,22 @@
             bind:change="bindContactChange"
           />
       </van-cell-group>
+ <van-popup show="{{ showDate }}" position="bottom" bind:close="bindCloseDate">
+        <van-datetime-picker type="date" id="picker1" value="{{showDateInit}}" bind:cancel="bindDateCancel" bind:confirm="bindDateConfirm" bind:input="bindDateInput" formatter="{{formatter}}" />
+      </van-popup>
       <van-cell-group>
-        <picker mode="date" start="2019-07-01" end="2023-06-30" bindchange="bindYcrqChange">
-          <van-field label="用车日期" required value="{{ycrq}}" use-button-slot readonly>
+          <van-field label="用车日期" required value="{{ycrq}}" use-button-slot readonly bindtap='bindPickerDate'>
             <van-icon slot="button" name="arrow" />
           </van-field>
-        </picker>
       </van-cell-group>
+
       <van-cell-group>
           <van-field
             label = "出发省份"
             value="{{ cfsf }}"
             placeholder="请输入出发省份"
             bind:change="bindCfsfChange"
+            required
           />
       </van-cell-group>
       <van-cell-group>
@@ -62,6 +67,7 @@
             value="{{ cfcs }}"
             placeholder="请输入出发城市"
             bind:change="bindCfcsChange"
+            required
           />
       </van-cell-group>
       <van-cell-group>
@@ -70,6 +76,7 @@
             value="{{ address1 }}"
             placeholder="详细地址"
             bind:change="bindAddress1Change"
+            required
           />
       </van-cell-group>
       <van-cell-group>
@@ -78,12 +85,14 @@
             value="{{ mdsf }}"
             placeholder="目的省份"
             bind:change="bindMdsfChange"
+            required
           />
       </van-cell-group>
       <van-cell-group>
           <van-field
             label = "目的城市"
             value="{{ mdcs }}"
+            required
             placeholder="目的城市"
             bind:change="bindMdcsChange"
           />
@@ -94,6 +103,7 @@
             value="{{ address2 }}"
             placeholder="详细地址"
             bind:change="bindAddress2Change"
+            required
           />
       </van-cell-group>
       <view class="weui-cells__title">派车事由</view>
@@ -104,10 +114,11 @@
           placeholder="请输入派车事由"
           bindblur="bindSyChange"
           autosize
+          required
         />
       </van-cell-group>
       <view style="text-align:center;margin-top:12px">
-        <van-button color="#0396FF" round form-type="submit" type="primary">添加</van-button>
+        <van-button color="#0396FF" round form-type="submit" bind:click="formSubmit" type="primary">添加</van-button>
       </view>
     </form>
   </view>

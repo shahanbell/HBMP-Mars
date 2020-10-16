@@ -5,12 +5,16 @@ const app = getApp<IMyApp>()
 let d = new Date()
 Page({
   data: {
-    formTypes: [
-      { k: '1', v: '平日加班' },
-      { k: '2', v: '双休加班' },
-      { k: '3', v: '节日加班' }
-    ],
-    selectedType: '1',
+    formTypes: [{
+      formType: '1',
+      formTypeDesc: '平日加班'
+    }, {
+      formType: '2',
+      formTypeDesc: '双休加班'
+    }, {
+      formType: '3',
+      formTypeDesc: '节日加班'
+    }],
     formType: '1',
     formTypeDesc: '平日加班',
     detailList: [] as any,
@@ -59,32 +63,12 @@ Page({
       }
     })
   },
-  bindFormTypeChange(e) {
-    if (e.detail.value == '1') {
-      this.setData!({
-        formType: '1',
-        formTypeDesc: '平日加班',
-        selectedType: e.detail.value
-      })
-    } else if (e.detail.value == '2') {
-      this.setData!({
-        formType: '2',
-        formTypeDesc: '双休加班',
-        selectedType: e.detail.value
-      })
-    } else {
-      this.setData!({
-        formType: '3',
-        formTypeDesc: '节日加班',
-        selectedType: e.detail.value
-      })
-    }
-  },
-  onTypeCellClick(event){
-    const {name} = event.currentTarget.dataset;
+
+  onChange(e){
     this.setData({
-      selectedType:name,
+      formType:e.detail,
     });
+    console.log("当前选择了"+e.detail)
   },
   bindAddDetailTap(e) {
     let _this = this

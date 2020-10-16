@@ -11,6 +11,7 @@ Page({
     employeeName: null,
     deptId: null,
     deptName: null,
+    showRowDate: new Date().getTime(),
     date1: d.toISOString().substring(0, 10),
     date2: d.toISOString().substring(0, 10),
     time1: "08:00",
@@ -25,7 +26,20 @@ Page({
     leaveHour: 0 as number,
     leaveMinute: 0 as number,
     reason: '',
-    checked:false
+    checked:false,
+    showTime:false,
+    showDate:false,
+    conpomentid: '',
+    formatter(type, value) {
+      if (type === 'year') {
+        return `${value}年`;
+      } else if (type === 'month') {
+        return `${value}月`;
+      } else if (type === 'day') {
+        return `${value}日`;
+      }
+      return value;
+    },
   },
   onLoad() {
     wx.showLoading({
@@ -72,7 +86,6 @@ Page({
     })
   },
   bindFormTypeChange(e) {
-    console.info(e.detail)
     if (e.detail) {
       this.setData({
         formType: '2',
@@ -125,27 +138,6 @@ Page({
       }
     })
   },
-  bindDate1Change(e) {
-    this.setData!({
-      date1: e.detail.value,
-      date2: e.detail.value
-    })
-  },
-  bindTime1Change(e) {
-    this.setData!({
-      time1: e.detail.value
-    })
-  },
-  bindDate2Change(e) {
-    this.setData!({
-      date2: e.detail.value
-    })
-  },
-  bindTime2Change(e) {
-    this.setData!({
-      time2: e.detail.value
-    })
-  },
   bindLeaveDayChange(e) {
     this.setData!({
       leaveDay: e.detail
@@ -165,6 +157,97 @@ Page({
     console.log(e)
     this.setData!({
       reason: e.detail.value
+    })
+  },
+
+  bindPickerTime(e){
+    this.setData!({
+      conpomentid: e.currentTarget.id
+    })
+    this.openPickerTime1();
+  },
+  bindCloseTime(e){
+    this.closePickerTime1();
+  },
+  bindTime1Cencel(e){
+    this.closePickerTime1();
+  },
+  bindTime1Confirm(e){
+    this.closePickerTime1();
+  },
+  bindTime1Input(e){
+    if(this.data.conpomentid=='time1'){
+      this.setData!({
+        time1: e.detail
+      })
+    }
+    if (this.data.conpomentid == 'time2') {
+    this.setData!({
+      time2: e.detail
+    })
+    }
+  },
+  
+  openPickerTime1(){ 
+    this.setData!({
+      showTime: true
+    })
+  },
+  closePickerTime1() {
+    this.setData!({
+      showTime: false
+    })
+  },
+
+
+  bindPickerDate(e){
+    this.openPickerDate();
+    console.info("进入")
+    this.setData!({
+      conpomentid: e.currentTarget.id
+    })
+  },
+  bindCloseDate(e){
+    this.closePickerDate();
+  },
+
+  bindDateCancel(e){
+    this.closePickerDate();
+  },
+  bindDateConfirm(e){
+    this.closePickerDate();
+  },
+  bindDateInput(e){
+    console.info("this.dateFormatForYYMMDD(e.detail)==" + this.dateFormatForYYMMDD(e.detail))
+    if (this.data.conpomentid == 'date1') {
+      this.setData!({
+        date1: this.dateFormatForYYMMDD(e.detail)
+      })
+    }
+    if (this.data.conpomentid == 'date2') {
+      this.setData!({
+        date2: this.dateFormatForYYMMDD(e.detail)
+      })
+    }
+  },
+  dateFormatForYYMMDD(date) {
+    let dateTemp = new Date(date);
+    let year = dateTemp.getFullYear();
+    let month = dateTemp.getMonth() + 1;
+    let day = dateTemp.getDate();
+    let hour = dateTemp.getHours();
+    let minute = dateTemp.getMinutes();
+    let dayTemp = year + "-" + month + "-" + day;
+    return dayTemp;
+  },
+  openPickerDate() {
+    this.setData!({
+      showDate: true
+    })
+  },
+  closePickerDate() {
+    this.setData!({
+      showDate: false
     })
   },
   formSubmit(e) {

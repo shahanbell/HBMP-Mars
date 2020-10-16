@@ -4,7 +4,7 @@
     <view class="page__title">出差明细</view>
   </view>
   <view class="page__bd">
-    <form bindsubmit="formSubmit" bindreset="formReset">
+    <form bindreset="formReset">
       <van-cell-group>
         <van-field
         label="出差人员"
@@ -15,26 +15,28 @@
         bindtap="bindUserSelect"
         />
       </van-cell-group>
+ <!-- 日期选择弹窗 -->
+      <van-popup show="{{ showDate }}" position="bottom" bind:close="bindCloseDate">
+        <van-datetime-picker type="date" id="picker1" value="{{showInitDate}}" bind:cancel="bindDateCancel" bind:confirm="bindDateConfirm" bind:input="bindDateInput" formatter="{{formatter}}" />
+      </van-popup>
+      <!-- 时间选择弹窗 -->
+      <van-popup show="{{ showTime }}" position="bottom" bind:close="bindCloseTime">
+        <van-datetime-picker type="time" id="picker1" value="{{showDateInit}}" bind:cancel="bindTime1Cencel" bind:confirm="bindTime1Confirm" bind:input="bindTime1Input" formatter="{{formatter}}" />
+      </van-popup>
       <van-cell-group>
-        <picker mode="date" start="2019-07-01" end="2023-06-30" bindchange="bindBizDateChange">
-          <van-field label="出差日期" required value="{{bizDate}}" use-button-slot readonly>
+          <van-field label="出差日期" required value="{{bizDate}}" use-button-slot readonly bindtap='bindPickerDate'>
             <van-icon slot="button" name="arrow" />
           </van-field>
-        </picker>
       </van-cell-group>
       <van-cell-group>
-        <picker mode="time" bindchange="bindTime1Change">
-          <van-field label="开始时间" required value="{{bizTime1}}" use-button-slot readonly>
+          <van-field label="开始时间" required value="{{bizTime1}}" id='bizTime1' use-button-slot readonly bindtap='bindPickerTime'>
             <van-icon slot="button" name="arrow" />
           </van-field>
-        </picker>
       </van-cell-group>
       <van-cell-group>
-          <picker mode="date" start="2019-07-01" end="2023-06-30" bindchange="bindTime2Change">
-          <van-field label="截止日期" required value="{{bizTime2}}" use-button-slot readonly>
+          <van-field label="截止日期" required value="{{bizTime2}}" id='bizTime2' use-button-slot readonly bindtap='bindPickerTime'>
             <van-icon slot="button" name="arrow" />
           </van-field>  
-        </picker>
       </van-cell-group>
       <van-cell-group>
         <van-field
@@ -62,11 +64,12 @@
           type="textarea"
           placeholder="请输入具体安排内容"
           autosize
+          required
           bind:change="bindBizContentChange"
         />
       </van-cell-group>
       <view style="text-align:center;margin-top:12px">
-        <van-button color="#0396FF" round form-type="submit" type="primary">添加</van-button>
+        <van-button color="#0396FF" round form-type="submit" type="info" bind:click="formSubmit">添加</van-button>
       </view>
     </form>
   </view>
