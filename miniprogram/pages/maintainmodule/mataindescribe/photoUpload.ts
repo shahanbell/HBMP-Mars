@@ -87,7 +87,7 @@ Page({
         data: {}
       })
       wx.request({
-        url: app.globalData.restAdd + '/Hanbell-JRS/api/crm/dupld/uploadEqpRepairPic',
+        url: app.globalData.restAdd + '/Hanbell-JRS/api/crm/dupld/upload',
         method: 'POST',
         data: {
           entityList: that.data.photoInfo,
@@ -116,7 +116,7 @@ Page({
     });
 
     wx.uploadFile({
-      url: 'https://i2.hanbell.com.cn/FileUploadServer/FileUploadServlet',
+      url: app.globalData.restAdd +'/FileUploadServer/FileUploadServlet',
       filePath: file[i],
       name: 'file',
       success: function (res) {

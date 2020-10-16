@@ -13,6 +13,21 @@ Page({
     bizObject: "",
     bizAddress: "",
     bizContent: "",
+    showDate: false,
+    showTime:false,
+    showInitDate: new Date().getTime(),
+    formatter(type, value) {
+      if (type === 'year') {
+        return `${value}年`;
+      } else if (type === 'month') {
+        return `${value}月`;
+      } else if (type === 'day') {
+        return `${value}日`;
+      }
+      return value;
+    },
+    conpomentid: '',
+    showDateInit:''
   },
   onLoad() {
     wx.showLoading({
@@ -62,22 +77,7 @@ Page({
       }
     })
   },
-  bindBizDateChange(e) {
-    this.setData!({
-      bizDate: e.detail.value
-    })
-  },
 
-  bindTime1Change(e) {
-    this.setData!({
-      bizTime1: e.detail.value
-    })
-  },
-  bindTime2Change(e) {
-    this.setData!({
-      bizTime2: e.detail.value
-    })
-  },
   bindBizObjectChange(e) {
     this.setData!({
       bizObject: e.detail
@@ -93,6 +93,99 @@ Page({
       bizContent: e.detail
     })
   },
+
+  
+  bindPickerDate(e) {
+    this.openPickerDate();
+  },
+  bindCloseDate(e) {
+    this.closePickerDate();
+  },
+
+  bindDateCancel(e) {
+    this.closePickerDate();
+  },
+  bindDateConfirm(e) {
+    this.closePickerDate();
+  },
+  bindDateInput(e) {
+    console.info("eee==" + this.dateFormatForYYMMDD(e.detail))
+    this.setData!({
+      bizDate: this.dateFormatForYYMMDD(e.detail)
+    })   
+  },
+  openPickerDate() {
+    this.setData!({
+      showDate: true
+    })
+  },
+  closePickerDate() {
+    this.setData!({
+      showDate: false
+    })
+  },
+  dateFormatForYYMMDD(date) {
+    let dateTemp = new Date(date);
+    let year = dateTemp.getFullYear();
+    let month = dateTemp.getMonth() + 1;
+    let day = dateTemp.getDate();
+    let hour = dateTemp.getHours();
+    let minute = dateTemp.getMinutes();
+    let dayTemp = year + "-" + month + "-" + day;
+    return dayTemp;
+  },
+
+
+  bindPickerTime(e) {
+    if (e.currentTarget.id =='bizTime1'){
+      this.setData!({
+        showDateInit: this.data.bizTime1
+      })
+    }
+    if (e.currentTarget.id == 'bizTime2') {
+      this.setData!({
+        showDateInit: this.data.bizTime2
+      })
+    }
+    this.setData!({
+      conpomentid: e.currentTarget.id
+    })
+    this.openPickerTime1();
+  },
+  bindCloseTime(e) {
+    this.closePickerTime1();
+  },
+  bindTime1Cencel(e) {
+    this.closePickerTime1();
+  },
+  bindTime1Confirm(e) {
+    this.closePickerTime1();
+  },
+  bindTime1Input(e) {
+    if (this.data.conpomentid == 'bizTime1') {
+      this.setData!({
+        bizTime1: e.detail
+      })
+    }
+    if (this.data.conpomentid == 'bizTime2') {
+      this.setData!({
+        bizTime2: e.detail
+      })
+    }
+  },
+
+  openPickerTime1() {
+    this.setData!({
+      showTime: true
+    })
+  },
+  closePickerTime1() {
+    this.setData!({
+      showTime: false
+    })
+  },
+
+
   formSubmit(e) {
     let canSubmit = true
     if (canSubmit) {
