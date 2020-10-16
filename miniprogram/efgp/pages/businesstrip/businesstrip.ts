@@ -14,17 +14,30 @@ Page({
     applyDate: d.toISOString().substring(0, 10),
     businessProperty: '1',
     businessPropertyDesc: '业务推展',
-    otherType:'',
+    otherType: '',
     vehicle: '3',
     vehicleDesc: "高铁",
-    otherVehicle:'',
+    otherVehicle: '',
     destination: '1',
     destinationDesc: '中国大陆',
     dayBegin: d.toISOString().substring(0, 10),
     dayEnd: '',
     daysTotal: 0.00 as number,
     reason: '',
-    total: 0.00 as number
+    total: 0.00 as number,
+    showDate: false,
+    showRowDate: new Date().getTime(),
+    conpomentid: '',
+    formatter(type, value) {
+      if (type === 'year') {
+        return `${value}年`;
+      } else if (type === 'month') {
+        return `${value}月`;
+      } else if (type === 'day') {
+        return `${value}日`;
+      }
+      return value;
+    },
   },
   onLoad() {
     wx.showLoading({
@@ -167,7 +180,7 @@ Page({
     this.setData!({
       dayBegin: e.detail.value
     })
-    
+
     let total = this.caculaterDays(this.data.dayBegin, this.data.dayEnd);
     this.setData({
       daysTotal: total
@@ -266,120 +279,185 @@ Page({
       reason: e.detail
     })
   },
-  formSubmit(e) {
-    console.log(e);
-    let canSubmit = true
-    let errmsg = ''
-    if (!app.globalData.authorized) {
-      canSubmit = false
-      errmsg += '账号未授权\r\n'
-    }
-    if (!this.data.employeeId || this.data.employeeId == '') {
-      canSubmit = false
-      errmsg += '请填写申请人员\r\n'
-    }
-    if (!this.data.deptId || this.data.deptId == '') {
-      canSubmit = false
-      errmsg += "请填写申请部门\r\n"
-    }
 
-    let t = this.data.dayEnd
-    if (t == '') {
-      canSubmit = false
-      errmsg += "请填写截止日期\r\n"
-    }
-    if (this.data.daysTotal == '' || this.data.daysTotal == '0') {
-      canSubmit = false
-      errmsg += "请填写出差天数\r\n"
-    }
-    if (canSubmit) {
-      let _this = this
-      wx.showModal({
-        title: '系统提示',
-        content: '确定提交吗',
-        success(res) {
-          if (res.confirm) {
-            wx.showLoading({
-              title: 'Sending'
-            })
-            wx.request({
-              url: app.globalData.restAdd + '/Hanbell-JRS/api/efgp/hzgl004/wechat?' + app.globalData.restAuth,
-              data: {
-                company: _this.data.company,
-                applyUser: _this.data.employeeId,
-                applyDate: _this.data.applyDate,
-                applyDept: _this.data.deptId,
-                formType: _this.data.businessProperty,
-                formTypeDesc: _this.data.businessPropertyDesc,
-                otherType:_this.data.otherType,
-                vehicle: _this.data.vehicle,
-                vehicleDesc: _this.data.vehicleDesc,
-                otherVehicle: _this.data.otherVehicle,
-                destination: _this.data.destination,
-                destinationDesc: _this.data.destinationDesc,
-                startDate: _this.data.dayBegin,
-                endDate: _this.data.dayEnd,
-                days: _this.data.daysTotal,
-                detailList: _this.data.detailList
-              },
-              header: {
-                'content-type': 'application/json'
-              },
-              method: 'POST',
-              success: res => {
-                wx.hideLoading()
-                wx.showModal({
-                  title: '系统消息',
-                  content: res.data.msg,
-                  showCancel: false,
-                  success(res) {
-                    wx.switchTab({
-                      url: "/pages/index/index"
-                    })
-                  }
-                })
-              },
-              fail: fail => {
-                wx.hideLoading()
-                console.log(fail)
-              }
-            })
-          }
-        }
-      })
-    } else {
-      wx.showModal({
-        title: '系统提示',
-        content: errmsg,
-        showCancel: false
-      })
-    }
 
+  bindPickerDate(e) {
+    this.openPickerDate();
+    console.info("进入")
+    this.setData!({
+      conpomentid: e.currentTarget.id
+    })
   },
-  formReset() {
-    //console.log('form发生了reset事件');
-  }
-  ,
-  caculaterDays(date1, date2) {
-    if(date1 == "" || date2 == ""){
-      return ;
-    }
-    let daysTotal
-    let today = new Date();//取今天的日期
-    //5天日期管控
-    let d2 = new Date(date2);//出差日期
-    let days = (Date.parse(today) - Date.parse(d2)) / (1000 * 60 * 60 * 24);
-    if (days > 5) {
-      wx.showModal({
-        title: '系统提示',
-        content: "出差日期截止超过5天不可以申请",
-        showCancel: false
+  bindCloseDate(e) {
+    this.closePickerDate();
+  },
+
+  bindDateCancel(e) {
+    this.closePickerDate();
+  },
+  bindDateConfirm(e) {
+    this.closePickerDate();
+  },
+  bindDateInput(e) {
+    console.info("this.dateFormatForYYMMDD(e.detail)==" + this.dateFormatForYYMMDD(e.detail))
+    if (this.data.conpomentid == 'dayBegin') {
+      this.setData!({
+        dayBegin: this.dateFormatForYYMMDD(e.detail)
       })
-      return false;
     }
-    let d1 = new Date(date1);//出差时间（起）
-    days = (Date.parse(d2) - Date.parse(d1)) / (1000 * 60 * 60 * 24);
-    daysTotal = days + 1;
-    return daysTotal;
-  }
-})
+    if (this.data.conpomentid == 'dayEnd') {
+      this.setData!({
+        dayEnd: this.dateFormatForYYMMDD(e.detail)
+      })
+    }
+    if (this.data.conpomentid == 'applyDate') {
+      this.setData!({
+        applyDate: this.dateFormatForYYMMDD(e.detail)
+      })
+
+      let total = this.caculaterDays(this.data.dayBegin, this.data.dayEnd);
+      this.setData!({
+        daysTotal: total
+      });
+      }
+    },
+    dateFormatForYYMMDD(date) {
+      let dateTemp = new Date(date);
+      let year = dateTemp.getFullYear();
+      let month = dateTemp.getMonth() + 1;
+      let day = dateTemp.getDate();
+      let hour = dateTemp.getHours();
+      let minute = dateTemp.getMinutes();
+      let dayTemp = year + "-" + month + "-" + day;
+      return dayTemp;
+    },
+    openPickerDate() {
+      this.setData!({
+        showDate: true
+      })
+    },
+    closePickerDate() {
+      this.setData!({
+        showDate: false
+      })
+    },
+
+
+
+    formSubmit(e) {
+      console.log(e);
+      let canSubmit = true
+      let errmsg = ''
+      if (!app.globalData.authorized) {
+        canSubmit = false
+        errmsg += '账号未授权\r\n'
+      }
+      if (!this.data.employeeId || this.data.employeeId == '') {
+        canSubmit = false
+        errmsg += '请填写申请人员\r\n'
+      }
+      if (!this.data.deptId || this.data.deptId == '') {
+        canSubmit = false
+        errmsg += "请填写申请部门\r\n"
+      }
+
+      let t = this.data.dayEnd
+      if (t == '') {
+        canSubmit = false
+        errmsg += "请填写截止日期\r\n"
+      }
+      if (this.data.daysTotal == '' || this.data.daysTotal == '0') {
+        canSubmit = false
+        errmsg += "请填写出差天数\r\n"
+      }
+      if (canSubmit) {
+        let _this = this
+        wx.showModal({
+          title: '系统提示',
+          content: '确定提交吗',
+          success(res) {
+            if (res.confirm) {
+              wx.showLoading({
+                title: 'Sending'
+              })
+              wx.request({
+                url: app.globalData.restAdd + '/Hanbell-JRS/api/efgp/hzgl004/wechat?' + app.globalData.restAuth,
+                data: {
+                  company: _this.data.company,
+                  applyUser: _this.data.employeeId,
+                  applyDate: _this.data.applyDate,
+                  applyDept: _this.data.deptId,
+                  formType: _this.data.businessProperty,
+                  formTypeDesc: _this.data.businessPropertyDesc,
+                  otherType: _this.data.otherType,
+                  vehicle: _this.data.vehicle,
+                  vehicleDesc: _this.data.vehicleDesc,
+                  otherVehicle: _this.data.otherVehicle,
+                  destination: _this.data.destination,
+                  destinationDesc: _this.data.destinationDesc,
+                  startDate: _this.data.dayBegin,
+                  endDate: _this.data.dayEnd,
+                  days: _this.data.daysTotal,
+                  detailList: _this.data.detailList
+                },
+                header: {
+                  'content-type': 'application/json'
+                },
+                method: 'POST',
+                success: res => {
+                  wx.hideLoading()
+                  wx.showModal({
+                    title: '系统消息',
+                    content: res.data.msg,
+                    showCancel: false,
+                    success(res) {
+                      wx.switchTab({
+                        url: "/pages/index/index"
+                      })
+                    }
+                  })
+                },
+                fail: fail => {
+                  wx.hideLoading()
+                  console.log(fail)
+                }
+              })
+            }
+          }
+        })
+      } else {
+        wx.showModal({
+          title: '系统提示',
+          content: errmsg,
+          showCancel: false
+        })
+      }
+
+    },
+    formReset() {
+      //console.log('form发生了reset事件');
+    }
+  ,
+    caculaterDays(date1, date2) {
+      if (date1 == "" || date2 == "") {
+        return;
+      }
+      let daysTotal
+      let today = new Date();//取今天的日期
+      //5天日期管控
+      let d2 = new Date(date2);//出差日期
+      let days = (Date.parse(today) - Date.parse(d2)) / (1000 * 60 * 60 * 24);
+      if (days > 5) {
+        wx.showModal({
+          title: '系统提示',
+          content: "出差日期截止超过5天不可以申请",
+          showCancel: false
+        })
+        return false;
+      }
+      let d1 = new Date(date1);//出差时间（起）
+      days = (Date.parse(d2) - Date.parse(d1)) / (1000 * 60 * 60 * 24);
+      daysTotal = days + 1;
+      return daysTotal;
+    }
+  })

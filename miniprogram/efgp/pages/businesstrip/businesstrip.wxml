@@ -5,113 +5,61 @@
   <view class="page__bd">
     <form bindsubmit="formSubmit" bindreset="formReset">
       <van-cell-group>
-        <van-field
-        label="公司别"
-        value="{{ company }}"
-        required
-        icon="search"
-        placeholder="请选择公司别"
-        bind:click-icon="bindCompanySelect"
-        />
+        <van-field label="公司别" value="{{ company }}" required icon="search" placeholder="请选择公司别" bind:click-icon="bindCompanySelect" />
       </van-cell-group>
       <van-cell-group>
-        <picker mode="date" start="2019-07-01" end="2023-06-30" bindchange="bindApplyDateChange">
-          <van-field label="开始日期" required value="{{applyDate}}" use-button-slot readonly>
+          <van-field label="申请日期" required value="{{applyDate}}" id='applyDate' use-button-slot readonly bindtap='bindPickerDate'>
             <van-icon slot="button" name="arrow" />
           </van-field>
-        </picker>
       </van-cell-group>
       <van-cell-group>
-        <van-field
-          label = "申请人员"
-          required
-          clearable
-          value="{{employeeName}}"
-          placeholder="请输入申请人员"
-          border="{{ false }}"
-        />
+        <van-field label="申请人员" required clearable value="{{employeeName}}" placeholder="请输入申请人员" border="{{ false }}" />
       </van-cell-group>
       <van-cell-group>
-      <van-field
-        label="申请部门"
-        value="{{deptName}}"
-        required
-        icon="search"
-        placeholder="请输入申请部门"
-        bindtap="bindDeptSelect"
-        />
+        <van-field label="申请部门" value="{{deptName}}" required icon="search" placeholder="请输入申请部门" bindtap="bindDeptSelect" />
       </van-cell-group>
       <van-cell-group>
-      <van-field
-        label="出差性质"
-        value="{{businessPropertyDesc}}"
-        required
-        icon="search"
-        placeholder="请选择出差性质"
-        bindtap="bindBusinessProperty"
-        />
+        <van-field label="出差性质" value="{{businessPropertyDesc}}" required icon="search" placeholder="请选择出差性质" bindtap="bindBusinessProperty" />
       </van-cell-group>
       <van-cell-group>
-        <van-field
-          label = "其他性质"
-          clearable
-          value="{{otherType}}"
-          placeholder="请填写其他性质"
-          border="{{ false }}"
-          bind:change="bindOtherTypeChange"
-        />
+        <van-field label="其他性质" clearable value="{{otherType}}" placeholder="请填写其他性质" border="{{ false }}" bind:change="bindOtherTypeChange" />
       </van-cell-group>
       <van-cell-group>
-      <van-field
-        label="交通工具"
-        value="{{vehicleDesc}}"
-        required
-        icon="search"
-        placeholder="请选择交通工具"
-        bindtap="bindVehicle"
-        />
+        <van-field label="交通工具" value="{{vehicleDesc}}" required icon="search" placeholder="请选择交通工具" bindtap="bindVehicle" />
       </van-cell-group>
       <van-cell-group>
-        <van-field
-          label = "其他交通"
-          clearable
-          value="{{otherVehicle}}"
-          placeholder="请填写其他交通工具"
-          border="{{ false }}"
-          bind:change="bindOtherVehicleChange"
-        />
+        <van-field label="其他交通" clearable value="{{otherVehicle}}" placeholder="请填写其他交通工具" border="{{ false }}" bind:change="bindOtherVehicleChange" />
       </van-cell-group>
       <van-cell-group>
-      <van-field
-        label="目的地"
-        value="{{destinationDesc}}"
-        required
-        icon="search"
-        placeholder="请选择目的地"
-        bindtap="bindDestination"
-        />
+        <van-field label="目的地" value="{{destinationDesc}}" required icon="search" placeholder="请选择目的地" bindtap="bindDestination" />
       </van-cell-group>
+      <!-- 日期弹窗 -->
+      <van-popup show="{{ showDate }}" position="bottom" bind:close="bindCloseDate">
+        <van-datetime-picker type="date" id="picker1" value="{{showRowDate}}" bind:cancel="bindDateCancel" bind:confirm="bindDateConfirm" bind:input="bindDateInput" formatter="{{formatter}}" />
+      </van-popup>
+
       <van-cell-group>
-        <picker mode="date" start="2019-07-01" end="2023-06-30" bindchange="bindDayBeginChange">
-          <van-field label="开始日期" required value="{{dayBegin}}" use-button-slot readonly>
+        <!-- <picker mode="date" start="2019-07-01" end="2023-06-30" bindchange="bindDayBeginChange"> -->
+          <van-field label="开始日期" required value="{{dayBegin}}" id='dayBegin' use-button-slot readonly bindtap='bindPickerDate'>
             <van-icon slot="button" name="arrow" />
           </van-field>
-        </picker>
+        <!-- </picker> -->
       </van-cell-group>
+
       <van-cell-group>
-        <picker mode="date" start="2019-07-01" end="2023-06-30" bindchange="bindDayEndChange">
-          <van-field label="截止日期" required value="{{dayEnd}}" use-button-slot readonly>
+        <!-- <picker mode="date" start="2019-07-01" end="2023-06-30" bindchange="bindDayEndChange"> -->
+          <van-field label="截止日期" required value="{{dayEnd}}" id='dayEnd' use-button-slot readonly bindtap='bindPickerDate'>
             <van-icon slot="button" name="arrow" />
           </van-field>
-        </picker>
+        <!-- </picker> -->
       </van-cell-group>
       <van-cell-group>
         <van-cell title="出差天数" required>
           <van-stepper value="{{ daysTotal }}" step="1" integer />
         </van-cell>
       </van-cell-group>
-   <view class="weui-cells__title">出差明细</view>
-     <view class="weui-panel weui-panel_access" wx:for="{{detailList}}" wx:key="seq">
+      <view class="weui-cells__title">出差明细</view>
+      <view class="weui-panel weui-panel_access" wx:for="{{detailList}}" wx:key="seq">
         <view class="weui-panel__hd">
           <view>明细{{item.seq}}
             <view class="button-warn" bindtap="bindRemoveDetailTap" data-index="{{index}}">删除</view>
@@ -122,18 +70,18 @@
           <view class="weui-form-preview__bd">
             <view class="weui-form-preview__item">
               <view class="weui-form-preview__label">{{item.bizDate}}</view>
-               <view class="weui-form-preview__value">{{item.employeeName}}</view>
+              <view class="weui-form-preview__value">{{item.employeeName}}</view>
             </view>
           </view>
           <view class="weui-form-preview__bd">
             <view class="weui-form-preview__item">
-            <view class="weui-form-preview__label">出差地点</view>
+              <view class="weui-form-preview__label">出差地点</view>
               <view class="weui-form-preview__value">{{item.bizAddress}}</view>
             </view>
           </view>
-           <view class="weui-form-preview__bd">
+          <view class="weui-form-preview__bd">
             <view class="weui-form-preview__item">
-           <view class="weui-form-preview__label">拜访客户</view>
+              <view class="weui-form-preview__label">拜访客户</view>
               <view class="weui-form-preview__value">{{item.bizObject}}</view>
             </view>
           </view>

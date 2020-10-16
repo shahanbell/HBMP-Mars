@@ -5,22 +5,10 @@
   <view class="page__bd">
     <form bindreset="formReset">
       <van-cell-group>
-        <van-field
-          label = "申请人员"
-          value="{{ employeeName }}"
-          placeholder="请输入申请人员"
-          border="{{ false }}"
-        />
+        <van-field label="申请人员" value="{{ employeeName }}" placeholder="请输入申请人员" border="{{ false }}" />
       </van-cell-group>
       <van-cell-group>
-      <van-field
-        label="申请部门"
-        value="{{ deptName }}"
-        required
-        icon="search"
-        placeholder="请输入申请部门"
-        bindtap="bindDeptSelect"
-      />
+        <van-field label="申请部门" value="{{ deptName }}" required icon="search" placeholder="请输入申请部门" bindtap="bindDeptSelect" />
       </van-cell-group>
       <van-cell-group>
         <van-cell title="法定节假日前后请假" required>
@@ -28,52 +16,41 @@
         </van-cell>
       </van-cell-group>
       <van-cell-group>
-      <van-field
-        label="请假假别"
-        value="{{ formKindDesc }}"
-        required
-        icon="search"
-        bindtap="bindLeaveKindSelect"
-      />
+        <van-field label="请假假别" value="{{ formKindDesc }}" required icon="search" bindtap="bindLeaveKindSelect" />
       </van-cell-group>
       <van-cell-group>
-      <van-field
-        label="请假班别"
-        value="{{ workTypeDesc }}"
-        required
-        clearable
-        icon="search"
-        bindtap="bindWorkTypeSelect"
-      />
+        <van-field label="请假班别" value="{{ workTypeDesc }}" required clearable icon="search" bindtap="bindWorkTypeSelect" />
       </van-cell-group>
       <view class="weui-cells__title">请假时间</view>
       <van-cell-group>
-        <picker mode="date" start="2019-07-01" end="2023-06-30" bindchange="bindDate1Change">
-          <van-field label="开始日期" required value="{{date1}}" use-button-slot readonly>
+          <van-field label="开始日期" required value="{{date1}}" id='date1' use-button-slot readonly bindtap='bindPickerDate'>
             <van-icon slot="button" name="arrow" />
           </van-field>
-        </picker>
       </van-cell-group>
       <van-cell-group>
-        <picker mode="time" bindchange="bindTime1Change">
-          <van-field label="开始时间" required value="{{time1}}" use-button-slot readonly>
+          <van-field label="开始时间" required value="{{time1}}" id='time1' use-button-slot readonly bindtap='bindPickerTime'>
             <van-icon slot="button" name="arrow" />
           </van-field>
-        </picker>
       </van-cell-group>
+
+      <van-popup show="{{ showTime }}" position="bottom" bind:close="bindCloseTime">
+        <van-datetime-picker type="time" id="picker1" value="{{time1}}" bind:cancel="bindTime1Cencel" bind:confirm="bindTime1Confirm" bind:input="bindTime1Input"  formatter="{{formatter}}" />
+      </van-popup>
+
+      <van-popup show="{{ showDate }}" position="bottom" bind:close="bindCloseDate">
+        <van-datetime-picker type="date" id="picker1" value="{{showRowDate}}" bind:cancel="bindDateCancel" bind:confirm="bindDateConfirm" bind:input="bindDateInput"  formatter="{{formatter}}" />
+      </van-popup>
+
+
       <van-cell-group>
-          <picker mode="date" start="2019-07-01" end="2023-06-30" bindchange="bindDate2Change">
-          <van-field label="截止日期" required value="{{date2}}" use-button-slot readonly>
+          <van-field label="截止日期" required value="{{date2}}" id='date2' use-button-slot readonly bindtap='bindPickerDate'>
             <van-icon slot="button" name="arrow" />
-          </van-field>  
-        </picker>
+       </van-field>
       </van-cell-group>
       <van-cell-group>
-        <picker mode="time" bindchange="bindTime2Change">
-          <van-field label="截止时间" required value="{{time2}}" use-button-slot readonly>
+          <van-field label="截止时间" required value="{{time2}}" id='time2' use-button-slot readonly bindtap='bindPickerTime'>
             <van-icon slot="button" name="arrow" />
           </van-field>
-        </picker>
       </van-cell-group>
       <van-cell-group>
         <van-cell title="请假天数">
@@ -82,7 +59,7 @@
       </van-cell-group>
       <van-cell-group>
         <van-cell title="请假时数">
-          <van-stepper value="{{ LeaveHour }}"  min="0" max="24" bindchange="bindLeaveHourChange" integer />
+          <van-stepper value="{{ LeaveHour }}" min="0" max="24" bindchange="bindLeaveHourChange" integer />
         </van-cell>
       </van-cell-group>
       <van-cell-group>
@@ -92,14 +69,7 @@
       </van-cell-group>
       <view class="weui-cells__title">请假原因</view>
       <van-cell-group>
-        <van-field custom-style="height:100px"
-          value="{{ reason }}"
-          type="textarea"
-          placeholder="请输入请假原因"
-          autosize
-          required
-          bindblur="bindReasonChange"
-        />
+        <van-field custom-style="height:100px" value="{{ reason }}" type="textarea" placeholder="请输入请假原因" autosize required bindblur="bindReasonChange" />
       </van-cell-group>
       <van-button custom-class="submitbtn" type="info" icon="passed" form-type="submit" bind:click="formSubmit">提交</van-button>
     </form>

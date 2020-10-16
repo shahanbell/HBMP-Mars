@@ -35,7 +35,19 @@ Page({
         value: 0,
         notempty: { key: true, msg: "不能为空" },
         isnumber: { key: true, msg: "数字!" }
-      }]
+      }],
+    showTime: false,
+    showDateInit: new Date().getTime(),
+    formatter(type, value) {
+      if (type === 'year') {
+        return `${value}年`;
+      } else if (type === 'month') {
+        return `${value}月`;
+      } else if (type === 'day') {
+        return `${value}日`;
+      }
+      return value;
+    },
   },
   onLoad() {
     wx.showLoading({
@@ -219,6 +231,49 @@ Page({
       reason: e.detail.value
     })
   },
+
+
+  bindPickerDate(e) {
+    console.info("----")
+    this.openPickerDate();
+  },
+  bindCloseDate(e) {
+    this.closePickerDate();
+  },
+
+  bindDateCancel(e) {
+    this.closePickerDate();
+  },
+  bindDateConfirm(e) {
+    this.closePickerDate();
+  },
+  bindDateInput(e) {
+    console.info("eee==" + this.dateFormatForYYMMDD(e.detail))
+    this.setData!({
+      loanDate: this.dateFormatForYYMMDD(e.detail)
+    })
+  },
+  openPickerDate() {
+    this.setData!({
+      showDate: true
+    })
+  },
+  closePickerDate() {
+    this.setData!({
+      showDate: false
+    })
+  },
+  dateFormatForYYMMDD(date) {
+    let dateTemp = new Date(date);
+    let year = dateTemp.getFullYear();
+    let month = dateTemp.getMonth() + 1;
+    let day = dateTemp.getDate();
+    let hour = dateTemp.getHours();
+    let minute = dateTemp.getMinutes();
+    let dayTemp = year + "-" + month + "-" + day;
+    return dayTemp;
+  },
+
   formSubmit(e) {
     // console.log(e)
 
