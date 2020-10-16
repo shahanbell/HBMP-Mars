@@ -1,7 +1,7 @@
 import { IMyApp } from '../../../app'
 
 const app = getApp<IMyApp>()
-let d = new Date();
+let d = new Date()
 let userInput = ''
 Page({
   data: {
@@ -15,7 +15,6 @@ Page({
     clxz: '1',
     clxzDesc: '1-公务车',
     privatedriver: '',
-    privatecarno: '',
     telcontact: '',
     purpose: '',
     purposeDesc: '',
@@ -26,22 +25,9 @@ Page({
         value: 0,
         notempty: { key: true, msg: "不能为空" },
         isnumber: { key: true, msg: "数字!" }
-      }],
-    showTime: false,
-    showDateInit: new Date().getTime(),
-    formatter(type, value) {
-      if (type === 'year') {
-        return `${value}年`;
-      } else if (type === 'month') {
-        return `${value}月`;
-      } else if (type === 'day') {
-        return `${value}日`;
-      }
-      return value;
-    },
+      }]
   },
   onLoad() {
-    console.info("-----" + JSON.stringify(d.toISOString()))
     wx.showLoading({
       title: 'Loading',
     })
@@ -233,65 +219,16 @@ Page({
       detailList: details
     })
   },
-  bindTelcontactChange(e) {
+  bindsqrqDateChange(e){
     this.setData({
-      telcontact: e.detail
+      sqrqDate:e.detail.value
     });
   },
-  bindPrivatecarnoChange(e) {
-    this.setData({
-      privatecarno: e.detail
-    });
-  },
-  bindHmark1Change(e) {
+  bindReasonChange(e) {
     this.setData!({
-      hmark1: e.detail.value
+      reason: e.detail.value
     })
   },
-
-
-  bindPickerDate(e) {
-    console.info("----")
-    this.openPickerDate();
-  },
-  bindCloseDate(e) {
-    this.closePickerDate();
-  },
-
-  bindDateCancel(e) {
-    this.closePickerDate();
-  },
-  bindDateConfirm(e) {
-    this.closePickerDate();
-  },
-  bindDateInput(e) {
-    console.info("eee==" + this.dateFormatForYYMMDD(e.detail))
-    this.setData!({
-      sqrqDate: this.dateFormatForYYMMDD(e.detail)
-    })
-  },
-  openPickerDate() {
-    this.setData!({
-      showDate: true
-    })
-  },
-  closePickerDate() {
-    this.setData!({
-      showDate: false
-    })
-  },
-  dateFormatForYYMMDD(date) {
-    let dateTemp = new Date(date);
-    let year = dateTemp.getFullYear();
-    let month = dateTemp.getMonth() + 1;
-    let day = dateTemp.getDate();
-    let hour = dateTemp.getHours();
-    let minute = dateTemp.getMinutes();
-    let dayTemp = year + "-" + month + "-" + day;
-    return dayTemp;
-  },
-
-
   formSubmit(e) {
 
     let canSubmit = true
@@ -313,11 +250,11 @@ Page({
       errmsg += "请选择车辆性质\r\n"
     }
     if (this.data.clxz == "2") {
-      if (this.data.privatedriver == "") {
+      if (e.detail.value.privatedriver == "") {
         errmsg += "请填写私车驾驶员\r\n"
         canSubmit = false
       }
-      if (this.data.privatecarno == "") {
+      if (e.detail.value.privatecarno == "") {
         errmsg += "请填写私车车牌号\r\n"
         canSubmit = false
       }
@@ -327,7 +264,7 @@ Page({
       errmsg += "请选择用车原因\r\n"
     }
 
-    if (this.data.purpose == "13" && this.data.hmark1 == "") {
+    if (this.data.purpose == "13" && e.detail.value.hmark1 == "") {
       errmsg += "其他用车请输入备注说明\r\n"
       canSubmit = false
     }
@@ -363,12 +300,12 @@ Page({
                 sqrqDate: _this.data.sqrqDate,
                 clxz: _this.data.clxz,
                 clxzDesc: _this.data.clxzDesc,
-                privatedriver: _this.data.privatedriver,
-                privatecarno: _this.data.privatecarno,
+                privatedriver: e.detail.value.privatedriver,
+                privatecarno: e.detail.value.privatecarno,
                 purpose: _this.data.purpose,
                 purposeDesc: _this.data.purposeDesc,
-                telcontact: _this.data.telcontact,
-                hmark1: _this.data.hmark1,
+                telcontact: e.detail.value.telcontact,
+                hmark1: e.detail.value.hmark1,
                 detailList: _this.data.detailList
               },
               header: {

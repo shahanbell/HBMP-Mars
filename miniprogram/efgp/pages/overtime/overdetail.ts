@@ -17,20 +17,7 @@ Page({
     time2: "17:10",
     hour: 0.5 as number,
     content: '',
-    isNew: false,
-    showDate: false,
-    showInitDate: new Date().getTime(),
-    formatter(type, value) {
-      if (type === 'year') {
-        return `${value}年`;
-      } else if (type === 'month') {
-        return `${value}月`;
-      } else if (type === 'day') {
-        return `${value}日`;
-      }
-      return value;
-    },
-    conpomentid: ''
+    isNew: false
   },
   onLoad() {
     wx.showLoading({
@@ -96,6 +83,21 @@ Page({
       dinner: e.detail
     })
   },
+  bindDate1Change(e) {
+    this.setData!({
+      date1: e.detail.value
+    })
+  },
+  bindTime1Change(e) {
+    this.setData!({
+      time1: e.detail.value
+    })
+  },
+  bindTime2Change(e) {
+    this.setData!({
+      time2: e.detail.value
+    })
+  },
   bindOvertimeChange(e) {
     this.setData!({
       hour: e.detail
@@ -106,90 +108,6 @@ Page({
       content: e.detail.value
     })
   },
-
-
-  bindPickerDate(e) {
-    this.openPickerDate();
-  },
-  bindCloseDate(e) {
-    this.closePickerDate();
-  },
-
-  bindDateCancel(e) {
-    this.closePickerDate();
-  },
-  bindDateConfirm(e) {
-    this.closePickerDate();
-  },
-  bindDateInput(e) {
-    console.info("eee==" + this.dateFormatForYYMMDD(e.detail))
-    this.setData!({
-      date1: this.dateFormatForYYMMDD(e.detail)
-    })   
-  },
-  openPickerDate() {
-    this.setData!({
-      showDate: true
-    })
-  },
-  closePickerDate() {
-    this.setData!({
-      showDate: false
-    })
-  },
-  dateFormatForYYMMDD(date) {
-    let dateTemp = new Date(date);
-    let year = dateTemp.getFullYear();
-    let month = dateTemp.getMonth() + 1;
-    let day = dateTemp.getDate();
-    let hour = dateTemp.getHours();
-    let minute = dateTemp.getMinutes();
-    let dayTemp = year + "-" + month + "-" + day;
-    return dayTemp;
-  },
-
-
-  bindPickerTime(e) {
-    this.setData!({
-      conpomentid: e.currentTarget.id
-    })
-    this.openPickerTime1();
-  },
-  bindCloseTime(e) {
-    this.closePickerTime1();
-  },
-  bindTime1Cencel(e) {
-    this.closePickerTime1();
-  },
-  bindTime1Confirm(e) {
-    this.closePickerTime1();
-  },
-  bindTime1Input(e) {
-    if (this.data.conpomentid == 'time1') {
-      this.setData!({
-        time1: e.detail
-      })
-    }
-    if (this.data.conpomentid == 'time2') {
-      this.setData!({
-        time2: e.detail
-      })
-    }
-  },
-
-  openPickerTime1() {
-    this.setData!({
-      showTime: true
-    })
-  },
-  closePickerTime1() {
-    this.setData!({
-      showTime: false
-    })
-  },
-
-
-
   formSubmit(e) {
     let canSubmit = true
     let errmsg = ''

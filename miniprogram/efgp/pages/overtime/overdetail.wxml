@@ -3,12 +3,26 @@
     <view class="page__title">加班明细</view>
   </view>
   <view class="page__bd">
-    <form bindreset="formReset">
+    <form bindsubmit="formSubmit" bindreset="formReset">
       <van-cell-group>
-        <van-field label="申请人员" value="{{ employeeName }}" placeholder="请输入申请人员" required border="{{ false }}" />
+          <van-field
+            label = "申请人员"
+            value="{{ employeeName }}"
+            placeholder="请输入申请人员"
+            required
+            border="{{ false }}"
+          />
       </van-cell-group>
       <van-cell-group>
-        <van-field label="所在部门" value="{{ deptName }}" required clearable icon="search" placeholder="请输入所在部门" bindtap="bindDeptSelect" />
+        <van-field
+          label="所在部门"
+          value="{{ deptName }}"
+          required
+          clearable
+          icon="search"
+          placeholder="请输入所在部门"
+          bindtap="bindDeptSelect"
+        />
       </van-cell-group>
       <view class="weui-cells__title">是否用餐</view>
       <van-cell-group>
@@ -20,30 +34,26 @@
         </van-cell>
       </van-cell-group>
       <view class="weui-cells__title">加班时间</view>
-      <!-- 日期选择弹窗 -->
-      <van-popup show="{{ showDate }}" position="bottom" bind:close="bindCloseDate">
-        <van-datetime-picker type="date" id="picker1" value="{{showInitDate}}" bind:cancel="bindDateCancel" bind:confirm="bindDateConfirm" bind:input="bindDateInput" formatter="{{formatter}}" />
-      </van-popup>
-      <!-- 时间选择弹窗 -->
-      <van-popup show="{{ showTime }}" position="bottom" bind:close="bindCloseTime">
-        <van-datetime-picker type="time" id="picker1" value="{{time1}}" bind:cancel="bindTime1Cencel" bind:confirm="bindTime1Confirm" bind:input="bindTime1Input" formatter="{{formatter}}" />
-      </van-popup>
-
       <van-cell-group>
-        <van-field label="加班日期" required value="{{date1}}" use-button-slot readonly bindtap='bindPickerDate'>
-          <van-icon slot="button" name="arrow" />
-        </van-field>
-      </van-cell-group>
-
-      <van-cell-group>
-          <van-field label="开始时间" required value="{{time1}}" id='time1' use-button-slot readonly bindtap='bindPickerTime'>
+        <picker mode="date" start="2019-07-01" end="2023-06-30" bindchange="bindDate1Change">
+          <van-field label="加班日期" required value="{{date1}}" use-button-slot readonly>
             <van-icon slot="button" name="arrow" />
           </van-field>
+        </picker>
       </van-cell-group>
       <van-cell-group>
-          <van-field label="截止时间" required value="{{time2}}" id='time2' use-button-slot readonly bindtap='bindPickerTime'>
+        <picker mode="time" bindchange="bindTime1Change">
+          <van-field label="开始时间" required value="{{time1}}" use-button-slot readonly>
             <van-icon slot="button" name="arrow" />
           </van-field>
+          </picker>
+      </van-cell-group>
+      <van-cell-group>
+      <picker mode="time" bindchange="bindTime2Change">
+            <van-field label="截止时间" required value="{{time2}}" use-button-slot readonly>
+            <van-icon slot="button" name="arrow" />
+            </van-field>
+      </picker>
       </van-cell-group>
       <van-cell-group>
         <van-cell title="加班时数">
@@ -52,11 +62,16 @@
       </van-cell-group>
       <view class="weui-cells__title">工作内容</view>
       <van-cell-group>
-        <van-field custom-style="height:100px" value="{{ content }}" type="textarea" placeholder="请输入工作内容" autosize required bindblur="bindContentChange" />
+        <van-field custom-style="height:100px"
+          value="{{ content }}"
+          type="textarea"
+          placeholder="请输入工作内容"
+          autosize
+          required
+          bindblur="bindContentChange"
+        />
       </van-cell-group>
-      <view style="text-align:center;margin-bottom:12px">
-        <van-button icon="plus" color="#0396FF" type="info" bind:click="formSubmit">添加</van-button>
-      </view>
+      <van-button custom-class="submitbtn" type="info" icon="passed" form-type="submit">添加</van-button>
     </form>
   </view>
 </view>
