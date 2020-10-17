@@ -260,13 +260,12 @@ Page({
     this.closePickerDate();
   },
   bindDateConfirm(e) {
-    this.closePickerDate();
-  },
-  bindDateInput(e) {
     this.setData!({
       sqrqDate: this.dateFormatForYYMMDD(e.detail)
     })
+    this.closePickerDate();
   },
+
   openPickerDate() {
     this.setData!({
       showDate: true
