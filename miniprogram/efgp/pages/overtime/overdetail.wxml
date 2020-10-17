@@ -22,13 +22,8 @@
       <view class="weui-cells__title">加班时间</view>
       <!-- 日期选择弹窗 -->
       <van-popup show="{{ showDate }}" position="bottom" bind:close="bindCloseDate">
-        <van-datetime-picker type="date" id="picker1" value="{{showInitDate}}" bind:cancel="bindDateCancel" bind:confirm="bindDateConfirm" bind:input="bindDateInput" formatter="{{formatter}}" />
+        <van-datetime-picker type="date" id="picker1" value="{{showInitDate}}" bind:cancel="bindDateCancel" bind:confirm="bindDateConfirm"  formatter="{{formatter}}" />
       </van-popup>
-      <!-- 时间选择弹窗 -->
-      <van-popup show="{{ showTime }}" position="bottom" bind:close="bindCloseTime">
-        <van-datetime-picker type="time" id="picker1" value="{{time1}}" bind:cancel="bindTime1Cencel" bind:confirm="bindTime1Confirm" bind:input="bindTime1Input" formatter="{{formatter}}" />
-      </van-popup>
-
       <van-cell-group>
         <van-field label="加班日期" required value="{{date1}}" use-button-slot readonly bindtap='bindPickerDate'>
           <van-icon slot="button" name="arrow" />
@@ -36,15 +31,24 @@
       </van-cell-group>
 
       <van-cell-group>
-          <van-field label="开始时间" required value="{{time1}}" id='time1' use-button-slot readonly bindtap='bindPickerTime'>
+          <van-field label="开始时间" required value="{{time1}}" id='time1' use-button-slot readonly bindtap='bindPickerTime1'>
             <van-icon slot="button" name="arrow" />
           </van-field>
       </van-cell-group>
+    <van-popup show="{{ showTime1 }}" position="bottom" bind:close="bindCloseTime1">
+        <van-datetime-picker type="time" value="{{time1}}" bind:cancel="bindTime1Cencel" bind:confirm="bindTime1Confirm"  formatter="{{formatter}}" />
+      </van-popup>
+
       <van-cell-group>
-          <van-field label="截止时间" required value="{{time2}}" id='time2' use-button-slot readonly bindtap='bindPickerTime'>
+          <van-field label="截止时间" required value="{{time2}}" id='time2' use-button-slot readonly bindtap='bindPickerTime2'>
             <van-icon slot="button" name="arrow" />
           </van-field>
       </van-cell-group>
+
+   <van-popup show="{{ showTime2 }}" position="bottom" bind:close="bindCloseTime2">
+        <van-datetime-picker type="time"  value="{{time2}}" bind:cancel="bindTime2Cencel" bind:confirm="bindTime2Confirm"  formatter="{{formatter}}" />
+      </van-popup>
+
       <van-cell-group>
         <van-cell title="加班时数">
           <van-stepper value="{{ hour }}" min="0.5" max="12" step="0.5" bindchange="bindOvertimeChange" />

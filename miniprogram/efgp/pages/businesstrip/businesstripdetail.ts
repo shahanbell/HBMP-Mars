@@ -13,9 +13,10 @@ Page({
     bizObject: "",
     bizAddress: "",
     bizContent: "",
-    showDate: false,
-    showTime:false,
-    showInitDate: new Date().getTime(),
+    showDate1: false,
+    showRowDate1: new Date().getTime(),
+    showTime1:false,
+    showTime2: false,
     formatter(type, value) {
       if (type === 'year') {
         return `${value}年`;
@@ -53,7 +54,7 @@ Page({
           bizTime2: res.data.bizTime2,
           bizObject: res.data.bizObject,
           bizAddress: res.data.bizAddress,
-          bizContent: res.data.bizContent
+          bizContent: res.data.bizContent,
         })
       }
     })
@@ -95,34 +96,99 @@ Page({
   },
 
   
-  bindPickerDate(e) {
-    this.openPickerDate();
+  //出差日期时间组件事件
+  bindPickerDate1(e) {
+    this.setData!({
+      showRowDate1: this.formatYYMMDDToDate(this.data.bizDate)
+    })
+    this.openPickerDate1();
   },
-  bindCloseDate(e) {
-    this.closePickerDate();
+  bindCloseDate1(e) {
+    this.closePickerDate1();
   },
 
-  bindDateCancel(e) {
-    this.closePickerDate();
+  bindDate1Cancel(e) {
+    this.closePickerDate1();
   },
-  bindDateConfirm(e) {
-    this.closePickerDate();
+  bindDate1Confirm(e) {
+    if (e.detail != 1262275200000) {
+      this.setData!({
+        bizDate: this.dateFormatForYYMMDD(e.detail)
+      })
+    }
+    this.closePickerDate1();
   },
-  bindDateInput(e) {
+  openPickerDate1() {
     this.setData!({
-      bizDate: this.dateFormatForYYMMDD(e.detail)
-    })   
-  },
-  openPickerDate() {
-    this.setData!({
-      showDate: true
+      showDate1: true
     })
   },
-  closePickerDate() {
+  closePickerDate1() {
     this.setData!({
-      showDate: false
+      showDate1: false
     })
   },
+//开始时间组件事件
+  bindPickerTime1(e) {
+    this.openPickerTime1();
+  },
+  bindCloseTime1(e) {
+    this.closePickerTime1();
+  },
+  bindTime1Cencel(e) {
+    this.closePickerTime1();
+  },
+  bindTime1Confirm(e) {
+    this.setData!({
+      bizTime1: e.detail
+    })
+    this.closePickerTime1();
+  },
+ 
+  openPickerTime1() {
+    this.setData!({
+      showTime1: true
+    })
+  },
+  closePickerTime1() {
+    this.setData!({
+      showTime1: false
+    })
+  },
+  //截止时间组件事件
+  bindPickerTime2(e) {
+    this.openPickerTime2();
+  },
+  bindCloseTime2(e) {
+    this.closePickerTime2();
+  },
+  bindTime2Cencel(e) {
+    this.closePickerTime2();
+  },
+  bindTime2Confirm(e) {
+    this.setData!({
+      bizTime2: e.detail
+    })
+    this.closePickerTime2();
+  },
+
+  openPickerTime2() {
+    this.setData!({
+      showTime2: true
+    })
+  },
+  closePickerTime2() {
+    this.setData!({
+      showTime2: false
+    })
+  },
+
+  formatYYMMDDToDate(value) {
+    var str = value.replace(/-/g, '/');
+    var date = new Date(str)
+    return date.getTime();
+  },
+
   dateFormatForYYMMDD(date) {
     let dateTemp = new Date(date);
     let year = dateTemp.getFullYear();
@@ -132,56 +198,6 @@ Page({
     let minute = dateTemp.getMinutes();
     let dayTemp = year + "-" + month + "-" + day;
     return dayTemp;
-  },
-
-
-  bindPickerTime(e) {
-    if (e.currentTarget.id =='bizTime1'){
-      this.setData!({
-        showDateInit: this.data.bizTime1
-      })
-    }
-    if (e.currentTarget.id == 'bizTime2') {
-      this.setData!({
-        showDateInit: this.data.bizTime2
-      })
-    }
-    this.setData!({
-      conpomentid: e.currentTarget.id
-    })
-    this.openPickerTime1();
-  },
-  bindCloseTime(e) {
-    this.closePickerTime1();
-  },
-  bindTime1Cencel(e) {
-    this.closePickerTime1();
-  },
-  bindTime1Confirm(e) {
-    this.closePickerTime1();
-  },
-  bindTime1Input(e) {
-    if (this.data.conpomentid == 'bizTime1') {
-      this.setData!({
-        bizTime1: e.detail
-      })
-    }
-    if (this.data.conpomentid == 'bizTime2') {
-      this.setData!({
-        bizTime2: e.detail
-      })
-    }
-  },
-
-  openPickerTime1() {
-    this.setData!({
-      showTime: true
-    })
-  },
-  closePickerTime1() {
-    this.setData!({
-      showTime: false
-    })
   },
 
 

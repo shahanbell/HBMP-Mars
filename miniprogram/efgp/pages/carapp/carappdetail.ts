@@ -203,12 +203,10 @@ Page({
     this.closePickerDate();
   },
   bindDateConfirm(e) {
-    this.closePickerDate();
-  },
-  bindDateInput(e) {
     this.setData!({
       ycrq: this.dateFormatForYYMMDD(e.detail)
     })
+    this.closePickerDate();
   },
   openPickerDate() {
     this.setData!({

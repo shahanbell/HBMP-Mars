@@ -44,7 +44,7 @@
           />
       </van-cell-group>
  <van-popup show="{{ showDate }}" position="bottom" bind:close="bindCloseDate">
-        <van-datetime-picker type="date" id="picker1" value="{{showDateInit}}" bind:cancel="bindDateCancel" bind:confirm="bindDateConfirm" bind:input="bindDateInput" formatter="{{formatter}}" />
+        <van-datetime-picker type="date" id="picker1" value="{{showDateInit}}" bind:cancel="bindDateCancel" bind:confirm="bindDateConfirm"  formatter="{{formatter}}" />
       </van-popup>
       <van-cell-group>
           <van-field label="用车日期" required value="{{ycrq}}" use-button-slot readonly bindtap='bindPickerDate'>

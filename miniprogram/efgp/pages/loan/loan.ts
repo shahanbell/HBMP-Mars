@@ -36,9 +36,10 @@ Page({
         notempty: { key: true, msg: "不能为空" },
         isnumber: { key: true, msg: "数字!" }
       }],
-    showDate: false,
-    showDateInit: new Date().getTime(),
-    componentid:'',
+    showDate1: false,
+    showDate1Init: new Date().getTime(),
+    sowDate2: false,
+    showDate2Init: new Date().getTime(),
     formatter(type, value) {
       if (type === 'year') {
         return `${value}年`;
@@ -228,45 +229,61 @@ Page({
     })
   },
 
-
-  bindPickerDate(e) {
-      this.setData!({
-        componentid: e.currentTarget.id
-      })
-    this.openPickerDate();
+//借支日期组件事件
+  bindPickerDate1(e) {
+    this.openPickerDate1();
   },
-  bindCloseDate(e) {
-    this.closePickerDate();
+  bindCloseDate1(e) {
+    this.closePickerDate1();
   },
 
-  bindDateCancel(e) {
-    this.closePickerDate();
+  bindDate1Cancel(e) {
+    this.closePickerDate1();
   },
-  bindDateConfirm(e) {
-    this.closePickerDate();
-  },
-  bindDateInput(e) {
-    if (this.data.componentid =='loanDate'){
+  bindDate1Confirm(e) {
       this.setData!({
         loanDate: this.dateFormatForYYMMDD(e.detail)
       })
-    }
-    if (this.data.componentid == 'prePayDate') {
-      this.setData!({
-        prePayDate: this.dateFormatForYYMMDD(e.detail)
-      })
-    }
+    this.closePickerDate1();
   },
-  openPickerDate() {
+  openPickerDate1() {
     this.setData!({
-      showDate: true
+      showDate1: true
     })
   },
-  closePickerDate() {
+  closePickerDate1() {
     this.setData!({
-      showDate: false
+      showDate1: false
     })
   },
+//预计付款日日期组件事件
+  bindPickerDate2(e) {
+    this.openPickerDate2();
+  },
+  bindCloseDate2(e) {
+    this.closePickerDate2();
+  },
+
+  bindDate2Cancel(e) {
+    this.closePickerDate2();
+  },
+  bindDate2Confirm(e) {
+    this.setData!({
+      prePayDate: this.dateFormatForYYMMDD(e.detail)
+    })
+    this.closePickerDate2();
+  },
+  openPickerDate2() {
+    this.setData!({
+      showDate2: true
+    })
+  },
+  closePickerDate2() {
+    this.setData!({
+      showDate2: false
+    })
+  },
+
   dateFormatForYYMMDD(date) {
     let dateTemp = new Date(date);
     let year = dateTemp.getFullYear();

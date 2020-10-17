@@ -24,7 +24,7 @@
       </van-cell-group>
       <!-- 时间选择器弹窗 -->
        <van-popup show="{{ showDate }}" position="bottom" bind:close="bindCloseDate">
-        <van-datetime-picker type="date" id="picker1" value="{{showDateInit}}" bind:cancel="bindDateCancel" bind:confirm="bindDateConfirm" bind:input="bindDateInput" formatter="{{formatter}}" />
+        <van-datetime-picker type="date" id="picker1" value="{{showDateInit}}" bind:cancel="bindDateCancel" bind:confirm="bindDateConfirm" formatter="{{formatter}}" />
       </van-popup>
       <van-cell-group>
         <!-- <picker mode="date" start="2019-07-01" end="2023-06-30" bindchange="bindsqrqDateChange"> -->

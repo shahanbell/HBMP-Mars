@@ -13,11 +13,13 @@ Page({
     lunch: false,
     dinner: false,
     date1: d.toISOString().substring(0, 10),
-    time1: "08:00",
-    time2: "17:10",
+    time1: '08:00',
+    time2: '17:50',
     hour: 0.5 as number,
     content: '',
     isNew: false,
+    showTime1:false,
+    showTime2: false,
     showDate: false,
     showInitDate: new Date().getTime(),
     formatter(type, value) {
@@ -39,7 +41,7 @@ Page({
     setTimeout(function () {
       wx.hideLoading()
     }, 2000)
-    eventChannel = this.getOpenerEventChannel()
+    eventChannel = this.getOpenerEventChannel();
     eventChannel.on('openDetail', (res) => {
       if (res.isNew) {
         this.setData!({
@@ -47,9 +49,12 @@ Page({
           employeeName: res.data.employeeName,
           deptId: res.data.deptId,
           deptName: res.data.deptName,
-          isNew: res.isNew
+          isNew: res.isNew,
         })
       } else {
+        var str = res.data.date1.replace(/-/g, '/');
+        var date = new Date(str)
+    
         this.setData!({
           employeeId: res.data.employeeId,
           employeeName: res.data.employeeName,
@@ -58,11 +63,12 @@ Page({
           lunch: res.data.lunch,
           dinner: res.data.dinner,
           date1: res.data.date1,
-          time1: res.data.time1,
-          time2: res.data.time2,
           hour: res.data.hour,
           content: res.data.content,
-          isNew: res.isNew
+          isNew: res.isNew,
+          showInitDate: date.getTime(),
+          time1: res.data.time1,
+          time2: res.data.time2
         })
       }
     })
@@ -119,12 +125,10 @@ Page({
     this.closePickerDate();
   },
   bindDateConfirm(e) {
-    this.closePickerDate();
-  },
-  bindDateInput(e) {
     this.setData!({
       date1: this.dateFormatForYYMMDD(e.detail)
-    })   
+    })  
+    this.closePickerDate();
   },
   openPickerDate() {
     this.setData!({
@@ -136,57 +140,70 @@ Page({
       showDate: false
     })
   },
+
   dateFormatForYYMMDD(date) {
     let dateTemp = new Date(date);
     let year = dateTemp.getFullYear();
     let month = dateTemp.getMonth() + 1;
     let day = dateTemp.getDate();
-    let hour = dateTemp.getHours();
-    let minute = dateTemp.getMinutes();
     let dayTemp = year + "-" + month + "-" + day;
-    return dayTemp;
+    return dayTemp
   },
 
-
-  bindPickerTime(e) {
-    this.setData!({
-      conpomentid: e.currentTarget.id
-    })
+  //开始时间组件的事件
+  bindPickerTime1(e) {
     this.openPickerTime1();
   },
-  bindCloseTime(e) {
+  bindCloseTime1(e) {
     this.closePickerTime1();
   },
   bindTime1Cencel(e) {
     this.closePickerTime1();
   },
   bindTime1Confirm(e) {
+    this.setData!({
+      time1: e.detail
+    })
     this.closePickerTime1();
-  },
-  bindTime1Input(e) {
-    if (this.data.conpomentid == 'time1') {
-      this.setData!({
-        time1: e.detail
-      })
-    }
-    if (this.data.conpomentid == 'time2') {
-      this.setData!({
-        time2: e.detail
-      })
-    }
   },
 
   openPickerTime1() {
     this.setData!({
-      showTime: true
+      showTime1: true
     })
   },
   closePickerTime1() {
     this.setData!({
-      showTime: false
+      showTime1: false
     })
   },
-
+//截止时间的组件事件
+  bindPickerTime2(e) {
+    this.openPickerTime2();
+  },
+  bindCloseTime2(e) {
+    this.closePickerTime2();
+  },
+  bindTime2Cencel(e) {
+    this.closePickerTime2();
+  },
+  bindTime2Confirm(e) {
+    this.setData!({
+      time2: e.detail
+    })
+    this.closePickerTime2();
+  },
+ 
+  openPickerTime2() {
+    this.setData!({
+      showTime2: true
+    })
+  },
+  closePickerTime2() {
+    this.setData!({
+      showTime2: false
+    })
+  },
 
 
   formSubmit(e) {
@@ -215,7 +232,7 @@ Page({
         hour: this.data.hour,
         content: this.data.content
       }
-      eventChannel = this.getOpenerEventChannel()
+      eventChannel = this.getOpenerEventChannel();
       eventChannel.emit('returnDetail', { data: newObject, isNew: this.data.isNew })
       wx.navigateBack({
         delta: 1
