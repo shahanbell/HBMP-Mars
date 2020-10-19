@@ -41,7 +41,6 @@ Page({
     },
   },
   onLoad() {
-    console.info("-----" + JSON.stringify(d.toISOString()))
     wx.showLoading({
       title: 'Loading',
     })
@@ -251,7 +250,6 @@ Page({
 
 
   bindPickerDate(e) {
-    console.info("----")
     this.openPickerDate();
   },
   bindCloseDate(e) {
@@ -265,7 +263,6 @@ Page({
     this.closePickerDate();
   },
   bindDateInput(e) {
-    console.info("eee==" + this.dateFormatForYYMMDD(e.detail))
     this.setData!({
       sqrqDate: this.dateFormatForYYMMDD(e.detail)
     })

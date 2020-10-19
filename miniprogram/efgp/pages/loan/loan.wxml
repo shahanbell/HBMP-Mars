@@ -17,7 +17,7 @@
         <van-datetime-picker type="date" id="picker1" value="{{showDateInit}}" bind:cancel="bindDateCancel" bind:confirm="bindDateConfirm" bind:input="bindDateInput" formatter="{{formatter}}" />
       </van-popup>
       <van-cell-group>
-          <van-field label="借支日期" required value="{{loanDate}}" use-button-slot readonly bindtap='bindPickerDate' >
+          <van-field label="借支日期" required value="{{loanDate}}" id='loanDate' use-button-slot readonly bindtap='bindPickerDate' >
             <van-icon slot="button" name="arrow" />
           </van-field>
       </van-cell-group>
@@ -69,11 +69,9 @@
         />
       </van-cell-group>
       <van-cell-group>
-        <picker mode="date" start="2019-07-01" end="2023-06-30" bindchange="bindPrePayDateChange">
-          <van-field label="预计付款日" required value="{{prePayDate}}" use-button-slot readonly>
+          <van-field label="预计付款日" required value="{{prePayDate}}" id='prePayDate' use-button-slot readonly bindtap='bindPickerDate'>
             <van-icon slot="button" name="arrow" />
           </van-field>
-        </picker>
       </van-cell-group>
       <view class="weui-cells__title">费用明细</view>
       <van-cell-group>

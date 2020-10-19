@@ -109,7 +109,6 @@ Page({
     this.closePickerDate();
   },
   bindDateInput(e) {
-    console.info("eee==" + this.dateFormatForYYMMDD(e.detail))
     this.setData!({
       bizDate: this.dateFormatForYYMMDD(e.detail)
     })   

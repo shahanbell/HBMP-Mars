@@ -36,8 +36,9 @@ Page({
         notempty: { key: true, msg: "不能为空" },
         isnumber: { key: true, msg: "数字!" }
       }],
-    showTime: false,
+    showDate: false,
     showDateInit: new Date().getTime(),
+    componentid:'',
     formatter(type, value) {
       if (type === 'year') {
         return `${value}年`;
@@ -195,11 +196,6 @@ Page({
     })
   },
 
-  bindPrePayDateChange(e) {
-    this.setData!({
-      prePayDate: e.detail.value
-    })
-  },
   getmoney(e) {
     let reg = /^(([1-9]\d*)|\d)(\.\d+)?$/;
     if (!reg.test(e.detail.value)) { //e.detail.value就是金额
@@ -234,7 +230,9 @@ Page({
 
 
   bindPickerDate(e) {
-    console.info("----")
+      this.setData!({
+        componentid: e.currentTarget.id
+      })
     this.openPickerDate();
   },
   bindCloseDate(e) {
@@ -248,10 +246,16 @@ Page({
     this.closePickerDate();
   },
   bindDateInput(e) {
-    console.info("eee==" + this.dateFormatForYYMMDD(e.detail))
-    this.setData!({
-      loanDate: this.dateFormatForYYMMDD(e.detail)
-    })
+    if (this.data.componentid =='loanDate'){
+      this.setData!({
+        loanDate: this.dateFormatForYYMMDD(e.detail)
+      })
+    }
+    if (this.data.componentid == 'prePayDate') {
+      this.setData!({
+        prePayDate: this.dateFormatForYYMMDD(e.detail)
+      })
+    }
   },
   openPickerDate() {
     this.setData!({
