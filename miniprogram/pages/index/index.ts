@@ -28,6 +28,7 @@ Page({
     duration: 1000
   },
   onLoad() {
+    var that=this;
     if (app.globalData.userInfo) {
       this.setData!({
         hasUserInfo: true
@@ -38,15 +39,6 @@ Page({
       app.userInfoReadyCallback = (res) => {
         this.setData!({
           hasUserInfo: true
-        })
-      }
-      app.authInfoReadyCallback = (date) => {
-        let list = this.data.menu;
-        for (let entry of app.globalData.authData) {
-          list.push(entry); // 1, "string", false
-        }
-        this.setData!({
-          menu: list
         })
       }
     } 
@@ -73,6 +65,27 @@ Page({
         })
       }
     }
+     if (app.globalData.authData.length==0) {
+        app.authInfoReadyCallback = function (date) {
+          var list = that.data.menu;
+          for (var _i = 0, _a = date; _i < _a.length; _i++) {
+            var entry = _a[_i];
+            list.push(entry);
+          }
+          that.setData({
+            menu: list
+          });
+        };
+      }else{
+        var list = that.data.menu;
+        for (var _i = 0, _a = app.globalData.authData; _i < _a.length; _i++) {
+          var entry = _a[_i];
+          list.push(entry);
+        }
+       that.setData({
+          menu: list
+        });
+      }
   },
   onShow() {
     if (!this.data.hasUserInfo && app.globalData.userInfo) {
