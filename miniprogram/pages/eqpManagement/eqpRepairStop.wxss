@@ -4,7 +4,7 @@ page {
 }
 
 .submitWrap_fix{
-  height:40px;
+  height:44px;
 }
 
 .submitBarWrap_fix{
@@ -51,7 +51,7 @@ page {
 
 .orderList{
   width: 95%;
-  /* height: 485rpx; */
+  height: 400rpx;
   border-radius:16rpx;
   background-color: rgb(255, 255, 255); 
   margin-bottom: 20rpx;
@@ -190,7 +190,23 @@ page {
   .orderNum text{
   position: relative;
   font-size: 26rpx;
-  color: #000; 
+  color: rgb(0, 0, 0);
+  }
+
+  .auditContect{
+    display: flex;
+    justify-content: space-between;
+    font-size: 24rpx;
+    color: #333; 
+    line-height: 82rpx;
+    border-top: 2rpx solid #eee;
+    white-space: nowrap;
+    }
+
+  .auditContect text{
+    position: relative;
+    font-size: 26rpx;
+    color: #FF4B0A;
   }
 
   .orderNum .totalCost{
@@ -199,23 +215,6 @@ page {
     font:italic arial,sans-serif;
     color: rgb(255, 60, 0)
     }
-
-    .auditContect{
-      display: flex;
-      justify-content: space-between;
-      font-size: 24rpx;
-      color: #333; 
-      line-height: 82rpx;
-      border-top: 2rpx solid #eee;
-      white-space: nowrap;
-      }
-  
-    .auditContect text{
-      position: relative;
-      font-size: 26rpx;
-      color: #FF4B0A;
-    }
-  
 
   .eqpListLoading{
     display: flex;
@@ -368,22 +367,4 @@ page {
     padding-right: 10px;
   }
 
-  .vancell_submit{
-    height:50px;
-    display: flex;
-    justify-content: center;  
-    align-items: center;
-    padding:0 0 0 0 !important;
-  }
-
-  .addHelperView{
-    display: flex;
-    justify-content: center;  
-    align-items: center;
-  }
-
-  .cellSwitchPro{
-    display: flex;
-    justify-content: flex-end;
-  	align-items: flex-end;
-  }
+  

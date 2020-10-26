@@ -19,14 +19,32 @@
 <van-search
   id="proSearchBar"
   value="{{ searchBarDta }}"
+  data-name="searchBarDta"
   shape="round"
   placeholder="请输入搜索关键词"
+  bind:change="bindData"
   bind:search="onEqpSearchStart"
   use-action-slot
   use-right-icon-slot
 >
 
-    <van-icon class="searchRightIcon" slot="right-icon" name="scan" color="blue" size="20px" bind:click="startScanCode"/>
+    <view class="searchItemView" slot="right-icon">
+      <view wx:for="{{searchItemList}}" wx:key="index" data-item="{{item}}">
+        <van-tag
+          wx:if="{{item.itemSelected}}" 
+          closeable
+          data-itemid="{{index}}"
+          size="medium"
+          type="primary"
+          id="primary"
+          style="padding-right:10px;"
+          bind:close="onTagClose"
+        >
+          {{item.searchItemDesc}}:{{item.searchItemValue}}
+        </van-tag>
+      </view>
+      <van-icon class="searchRightIcon" name="add-o" color="blue" size="20px" bind:click="onClickShow"/>
+    </view>
 
 </van-search>
 
@@ -88,7 +106,65 @@
 </van-cell-group>
 </van-popup>
 
-<!-- 出发时才显示的组件 -->
+<van-overlay z-index="1100" show="{{ showExSearchOverlay }}" bind:click="onClickHide">
+  <view class="wrapper">
+    <view class="wrapperBlock">
+    <view class="page__hd" catchtap="noop">
+        <view class="proTitle">更多查询条件</view>
+    </view>
+      <van-cell-group>
+          <van-field
+            label="编号"
+            value="{{ searchItemList[0].searchItemValue }}"
+            placeholder="请输入设备编号"
+            data-name="searchItemList[0].searchItemValue"
+            bind:change="bindData"
+            catch:tap="noop"
+          >
+            <van-checkbox
+              class="checkboxes-{{ index }}"
+              data-itemindex="0"
+              name="{{ item.searchItemName }}"
+              style="padding-right:5px;"
+              shape="square"
+              slot="left-icon"
+              value="{{ searchItemList[0].itemSelected }}"
+              bind:change="onExSearchItemChange"
+            />
+          </van-field>
+
+          <van-field
+            label="规格"
+            value="{{ searchItemList[1].searchItemValue }}"
+            placeholder="请输入设备规格"
+            data-name="searchItemList[1].searchItemValue"
+            bind:change="bindData"
+            catch:tap="noop"
+          >
+            <van-checkbox
+              class="checkboxes-{{ index }}"
+              data-itemindex="1"
+              name="{{ item.searchItemName }}"
+              style="padding-right:5px;"
+              shape="square"
+              slot="left-icon"
+              value="{{ searchItemList[1].itemSelected }}"
+              bind:change="onExSearchItemChange"
+            />
+          </van-field>
+        </van-cell-group>
+
+        <view catchtap="noop" style="height:15px;"></view>
+        <view catchtap="noop" class="wrapperBtnWrap">
+          <van-button round color="#DCDCDC" size="small" custom-style="color:#696969;width:80px;" catch:tap="onExSearchClearBtnClick" >重置</van-button>
+          <van-button round type="info" size="small" custom-style="margin-left:30px;width:80px;" catch:tap="onExSearchBtnClick" >确定</van-button>
+        </view>
+        <view catchtap="noop" style="height:10px;"></view>
+    </view>
+  </view>
+</van-overlay>
+
+<!-- 触发时才显示的组件 -->
 
 <view class="page__hd">
     <view class="proTitle">基本资料</view>
@@ -124,7 +200,7 @@
       </van-field>
   </van-cell-group>
 
-    <van-field
+  <van-field
     label="设备名称"
     value="{{ itemdsc }}"
     data-name="itemdsc"
@@ -138,7 +214,7 @@
     bind:change="bindData"
   />
 
-    <van-field
+  <van-field
     label="存放地址"
     value="{{ assetPosition }}"
     data-name="assetPosition"
@@ -193,14 +269,50 @@
   </picker> -->
 
   <van-field
+    label="维修方式"
+    value="{{repairMethodObj.repairMethodDesc}}"
+    right-icon="arrow-down"
+    data-selector="repairMethod"
+    bindtap='showSelectorPopup'
+    readonly
+  />
+
+  <van-field
     label="维修人"
     value="{{serviceusername}}"
     data-name="serviceusername"
     bind:change="bindData"
     right-icon="arrow-down"
     bindtap='onServiceUserCellTap'
+    disabled="{{disableServiceUser}}"
     readonly
   />
+
+  <van-cell center title="二次维修">
+    <van-switch class="cellSwitchPro" size="24px" checked="{{ reRepairFlag }}" bind:change="on2ndRepairChange" />
+  </van-cell>
+
+  <van-collapse value="{{ activeNames }}" bind:change="onSupplementChangePro">
+    <van-collapse-item title="补单" name="1">
+      <van-switch class="cellSwitchPro" slot="value" size="24px" checked="{{ supplementFlag }}" />
+      <van-field
+        label="到达时间"
+        value="{{ suppleStartDateObj.dateFormatStr }}"
+        right-icon="arrow-down"
+        data-selector="suppleStartDate"
+        bindtap='showSelectorPopup'
+        readonly
+      />
+      <van-field
+        label="完成时间"
+        value="{{ suppleCompleteDateObj.dateFormatStr }}"
+        right-icon="arrow-down"
+        data-selector="suppleCompleteDate"
+        bindtap='showSelectorPopup'
+        readonly
+      />
+    </van-collapse-item>
+  </van-collapse>
 
 <van-cell-group>
     <van-cell title="故障部位详细情况" border="{{false}}" use-label-slot></van-cell>
@@ -322,6 +434,70 @@
     bind:change="onHitchUrgencyPickerChange"
     bind:confirm="onHitchUrgencyPickerConfirm"
     bind:cancel="onHitchUrgencyPickerCancel"
+  />
+
+</van-popup>
+
+<van-popup
+    show="{{ show.repairMethodSelectorPopup }}"
+    position="bottom"
+    data-selector="repairMethod"
+    bind:close="closeSelectorPopup"
+>
+
+  <van-picker
+    show-toolbar
+    title="维修方式"
+    columns="{{ repairMethodList }}"
+    value-key="repairMethodDesc"
+    data-selector="repairMethod"
+    bind:change="onPickerChange"
+    bind:confirm="onPickerConfirm"
+    bind:cancel="onPickerCancel"
+  />
+
+</van-popup>
+
+<van-popup
+    show="{{ show.suppleStartDateSelectorPopup }}"
+    position="bottom"
+    bind:close="closeSelectorPopup"
+>
+
+  <van-datetime-picker
+    type="datetime"
+    id = "picker1"
+    value="{{currentDate}}"
+    cancel-button-text="清空"
+    data-selector="suppleStartDate"
+    bind:cancel="onDatePickerCancel"
+    bind:confirm="onDatePickerConfirm"
+    bind:input="onDatePickerInput"
+    min-date="{{minCompleteDate}}"
+    max-date="{{currentDate}}"
+    formatter="{{formatter}}"
+  />
+
+</van-popup>
+
+<van-popup
+    show="{{ show.suppleCompleteDateSelectorPopup }}"
+    position="bottom"
+    bind:close="closeSelectorPopup"
+>
+
+  <van-datetime-picker
+  type="datetime"
+  id = "picker1"
+  value="{{currentDate}}"
+  cancel-button-text="清空"
+  data-selector="suppleCompleteDate"
+  bind:cancel="onDatePickerCancel"
+  bind:confirm="onDatePickerConfirm"
+  bind:input="onDatePickerInput"
+  min-date="{{minCompleteDate}}"
+  max-date="{{currentDate}}"
+  formatter="{{formatter}}"
   />
 
 </van-popup>

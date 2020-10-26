@@ -367,4 +367,10 @@ page {
     padding-right: 10px;
   }
 
+  .cellSwitchPro{
+    display: flex;
+    justify-content: flex-end;
+  	align-items: flex-end;
+  }
+
   

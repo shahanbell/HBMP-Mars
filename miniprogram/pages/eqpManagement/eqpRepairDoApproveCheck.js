@@ -132,6 +132,7 @@ Page({
     repairProcess:'',
     measure:'',
     rStatus:'',
+    reRepairFlag: null,
     auditTabActive: 0,
 
     formatter(type, value) {
@@ -154,6 +155,13 @@ Page({
       serviceusername: this.data.serviceUserList[val].userName,
       serviceuser: this.data.serviceUserList[val].userId,
     })
+  },
+
+  on2ndRepairChange(event){
+    console.log(event);
+    this.setData({
+      reRepairFlag:event.detail
+    });
   },
 
   chooseImage(e) {
@@ -909,6 +917,7 @@ upload: function(e) {
               userno:app.globalData.employeeId,
               contenct:that.data.auditContenctType,
               note:that.data.auditNote,
+              remark: that.data.reRepairFlag.toString(),
             },
             header: {
               'content-type': 'application/json'
@@ -1053,8 +1062,11 @@ upload: function(e) {
       docFormid: options.docFormid,
       rStatus:options.rStatus,
       downTime:JSON.parse(options.eqpInfo).repairTime,
-      repairTimestamp:JSON.parse(options.eqpInfo).repairTimestamp
+      repairTimestamp:JSON.parse(options.eqpInfo).repairTimestamp,
+      reRepairFlag: (options.reRepairFlag == "true")
     })
+
+    console.log(this.data);
 
     let _this = this;
     //console.log("windowsHeightTemp:" + app.globalData.windowHeight);
@@ -1331,12 +1343,13 @@ upload: function(e) {
           var hitchTypeTemp = '';
           
           for(var i= 0;i<repairHisListInfo.length;i++){
-            let newItem = {pId:'', userNo: '', userName: '', creDate: '', contenct: ''};
+            let newItem = {pId:'', userNo: '', userName: '', creDate: '', contenct: '', note: ''};
             newItem.pId = repairHisListInfo[i].pid;
             newItem.userNo = repairHisListInfo[i].userno;
             newItem.userName = repairHisListInfo[i].username;
             newItem.creDate = _this.utcInit(repairHisListInfo[i].credate);
             newItem.contenct = repairHisListInfo[i].contenct;
+            newItem.note = repairHisListInfo[i].note;
             _this.data.repairHisList.push(newItem);
           }
 
@@ -1370,9 +1383,10 @@ upload: function(e) {
     var year_month_day = utc_datetime.substr(0,T_pos);
     var hour_minute_second = utc_datetime.substr(T_pos+1,Z_pos-T_pos-1);
     var new_datetime = year_month_day+" "+hour_minute_second; // 2017-03-31 08:02:06
+    var new_datetimeInit = new_datetime.replace(/-/g, '/');
 
     // 处理成为时间戳
-    timestamp = new Date(Date.parse(new_datetime));
+    timestamp = new Date(Date.parse(new_datetimeInit));
     timestamp = timestamp.getTime();
     timestamp = timestamp/1000;
 

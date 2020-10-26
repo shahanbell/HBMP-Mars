@@ -1,0 +1,177 @@
+<!--pages/businesstrip/businesstripdetail.wxml-->
+<view class="pagePro" style="height:100%;" xmlns:wx="http://www.w3.org/1999/xhtml">
+
+	<!-- 触发时才显示的组件 -->
+
+<van-popup
+    show="{{ show.serviceUserSelectorPopup }}"
+    position="bottom"
+    bind:close="closeServiceUserSelectorPopup"
+>
+
+  <van-picker
+    show-toolbar
+    title="维修人"
+    columns="{{ serviceUserList }}"
+    value-key="userInfo"
+    bind:change="onServiceUserPickerChange"
+    bind:confirm="onServiceUserPickerConfirm"
+    bind:cancel="onServiceUserPickerCancel"
+  />
+
+</van-popup>
+
+	<!-- 触发时才显示的组件 -->
+
+<!-- <scroll-view id="eqpList" class="scrollWrap" scroll-y="true" style='height:{{eqpListHeight}}px'> -->
+				<!-- <view class="scrollTest" id="eqpListTest2"> -->
+					<view class="eqpListWrap">
+					</view>
+					<view class="orderList" wx:for="{{eqpRepairInfoList}}" wx:key="index" data-item="{{item}}" id='eqpListIndex_{{index}}'>
+						<view class="shop">
+							<view class="shop_name">
+								报修单号:{{item.formId}}
+							</view>
+							<View class="shop_name">维修人:{{item.serviceUserName}}</View>
+						</view>
+						<view class="proInfo">
+							<image class="proInfo_img" src='{{item.pictureurl==""?defaultImg:item.pictureurl}}' mode='widthFix' lazy-load='true' binderror="errorFn" data-errorimg="{{index}}"></image>
+							<view class="proInfo_right">
+								<view class="proInfo_text">
+									<view class="proInfo_text_title">
+										{{item.displayType}}:{{item.assetDesc}}
+									</view>
+									<text class="proInfo_text_acount">×{{item.productcount}}</text>
+								</view>
+								<view class="proInfo_text">
+									<view class="proInfo_text_dtt">资产编号:{{item.assetFormId}}</view>
+								</view>
+							</view>
+						</view>
+						<view class="orderNum">
+							<view>故障发生时间:{{item.creDate}}</view>
+							<view>报修人:<text>{{item.repairUserName}}</text></view>
+						</view>
+
+					</view>
+				<!-- </view> -->
+
+				<view class="page__hd">
+					<view class="proTitle">转派维修人</view>
+				</view>
+
+				<van-field
+					label="维修人"
+					value="{{serviceusername}}"
+					data-name="serviceusername"
+					bind:change="bindData"
+					right-icon="arrow-down"
+					bindtap='onServiceUserCellTap'
+					readonly
+				/>
+
+        <van-cell-group>
+            <van-cell title="转派原因" border="{{false}}" use-label-slot></van-cell>
+            <view class='textarea_pro' data-show="changeReason" bindtap="ifshowArea">
+                <textarea wx:if="{{showTextArea.changeReason}}" 
+                class='areaInput' bindblur="ifshowArea" data-show="changeReason" value="{{changeReason}}" 
+                maxlength="200" 
+                placeholder="请输入问题的正文内容" 
+                placeholder-style="color:#b3b3b3;font-size:14px;" 
+                auto-focus="true" 
+                bindinput="textAreaProInput"/>
+                <view wx:if="{{!showTextArea.changeReason}}" 
+                class='areaTest' 
+                style='color:{{changeReason==""?"#999":"#2b2b2b"}}; word-break:break-all; white-space:pre-line;'>
+                    <view wx:if="{{changeReason==''}}" style='color:#b3b3b3;font-size:14px;'>请输入问题的正文内容</view>{{changeReason}}
+                </view>
+                <view class="textarea-counter">{{changeReason.length}}/200</view>
+            </view>
+        </van-cell-group>
+
+<view class="submitWrap_fix">
+	<van-button type="info" icon="passed" form-type="submit" style="width:100%;position:fixed;bottom:0px;" bind:click="changeServiceUserFormSubmit" block>确定</van-button>
+</view>
+
+<van-popup
+    show="{{ show.contenctSelectorPopup }}"
+    position="bottom"
+    bind:close="closeContenctSelectorPopup"
+>
+
+  <van-picker
+    show-toolbar
+    title="审批结果"
+    columns="{{  auditContenctList }}"
+    value-key="contenctDesc"
+    bind:change="onContenctPickerChange"
+    bind:confirm="onContenctPickerConfirm"
+    bind:cancel="onContenctPickerCancel"
+  />
+
+</van-popup>
+
+<van-popup
+    show="{{ show.hitchSort01SelectorPopup }}"
+    position="bottom"
+    bind:close="closeHitchSort01SelectorPopup"
+>
+
+  <van-picker
+    show-toolbar
+    title="故障类型"
+    columns="{{ hitchSort01List }}"
+    value-key="troubleName"
+    bind:change="onHitchSort01PickerChange"
+    bind:confirm="onHitchSort01PickerConfirm"
+    bind:cancel="onHitchSort01PickerCancel"
+  />
+
+</van-popup>
+
+<van-popup
+    show="{{ show.hitchTypeSelectorPopup }}"
+    position="bottom"
+    bind:close="closeHitchTypeSelectorPopup"
+>
+
+  <van-picker
+    show-toolbar
+    title="故障类型"
+    columns="{{ hitchTypeList }}"
+    value-key="hitchTypeName"
+    bind:change="onHitchTypePickerChange"
+    bind:confirm="onHitchTypePickerConfirm"
+    bind:cancel="onHitchTypePickerCancel"
+  />
+
+</van-popup>
+
+<van-popup
+    show="{{ show.dateFilterPopup }}"
+    position="bottom"
+    bind:close="closeDateFilterPopup"
+>
+
+  <van-datetime-picker
+  type="datetime"
+  id = "picker1"
+  value="{{currentDate}}"
+  bind:cancel="onDateFilterCancel"
+  bind:confirm="onDateFilterConfirm"
+  bind:input="onDateFilterInput"
+  min-date="{{minDate}}"
+  max-date="{{currentDate}}"
+  formatter="{{formatter}}"
+  />
+
+</van-popup>
+
+
+<!-- <cover-view class="cover-view">
+<button class="auditSubmitBtn" hover-class="auditSubmitBtn_hover" bindtap='onBtnTapTest' >提交</button>
+</cover-view> -->
+
+<van-dialog id="van-dialog"/>
+
+</view>
