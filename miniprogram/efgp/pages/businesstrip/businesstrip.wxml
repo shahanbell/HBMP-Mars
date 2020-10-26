@@ -8,10 +8,13 @@
         <van-field label="公司别" value="{{ company }}" required icon="search" placeholder="请选择公司别" bind:click-icon="bindCompanySelect" />
       </van-cell-group>
       <van-cell-group>
-          <van-field label="申请日期" required value="{{applyDate}}" id='applyDate' use-button-slot readonly bindtap='bindPickerDate'>
+          <van-field label="申请日期" required value="{{applyDate}}" id='applyDate' use-button-slot readonly bindtap='bindPickerDate1'>
             <van-icon slot="button" name="arrow" />
           </van-field>
       </van-cell-group>
+           <van-popup show="{{ showDate1 }}" position="bottom" bind:close="bindCloseDate1">
+        <van-datetime-picker type="date" id="picker1" value="{{showRowDate1}}" bind:cancel="bindDate1Cancel" bind:confirm="bindDate1Confirm" formatter="{{formatter}}" />
+      </van-popup>
       <van-cell-group>
         <van-field label="申请人员" required clearable value="{{employeeName}}" placeholder="请输入申请人员" border="{{ false }}" />
       </van-cell-group>
@@ -33,29 +36,25 @@
       <van-cell-group>
         <van-field label="目的地" value="{{destinationDesc}}" required icon="search" placeholder="请选择目的地" bindtap="bindDestination" />
       </van-cell-group>
-      <!-- 日期弹窗 -->
-      <van-popup show="{{ showDate }}" position="bottom" bind:close="bindCloseDate">
-        <van-datetime-picker type="date" id="picker1" value="{{showRowDate}}" bind:cancel="bindDateCancel" bind:confirm="bindDateConfirm" bind:input="bindDateInput" formatter="{{formatter}}" />
-      </van-popup>
-
       <van-cell-group>
-        <!-- <picker mode="date" start="2019-07-01" end="2023-06-30" bindchange="bindDayBeginChange"> -->
-          <van-field label="开始日期" required value="{{dayBegin}}" id='dayBegin' use-button-slot readonly bindtap='bindPickerDate'>
+          <van-field label="开始日期" required value="{{dayBegin}}" id='dayBegin' use-button-slot readonly bindtap='bindPickerDate2'>
             <van-icon slot="button" name="arrow" />
           </van-field>
-        <!-- </picker> -->
       </van-cell-group>
-
+<van-popup show="{{ showDate2 }}" position="bottom" bind:close="bindCloseDate2">
+        <van-datetime-picker type="date" id="picker2" value="{{showRowDate2}}" bind:cancel="bindDate2Cancel" bind:confirm="bindDate2Confirm" formatter="{{formatter}}" />
+        </van-popup>
       <van-cell-group>
-        <!-- <picker mode="date" start="2019-07-01" end="2023-06-30" bindchange="bindDayEndChange"> -->
-          <van-field label="截止日期" required value="{{dayEnd}}" id='dayEnd' use-button-slot readonly bindtap='bindPickerDate'>
+          <van-field label="截止日期" required value="{{dayEnd}}" id='dayEnd' use-button-slot readonly bindtap='bindPickerDate3'>
             <van-icon slot="button" name="arrow" />
           </van-field>
-        <!-- </picker> -->
       </van-cell-group>
+<van-popup show="{{ showDate3 }}" position="bottom" bind:close="bindCloseDate3">
+        <van-datetime-picker type="date" id="picker3" value="{{showRowDate3}}" bind:cancel="bindDate3Cancel" bind:confirm="bindDate3Confirm" formatter="{{formatter}}" />
+</van-popup>
       <van-cell-group>
         <van-cell title="出差天数" required>
-          <van-stepper value="{{ daysTotal }}" step="1" integer />
+          <van-stepper value="{{ daysTotal }}" step="1" integer bind:change="bindDaysTotalChange"/>
         </van-cell>
       </van-cell-group>
       <view class="weui-cells__title">出差明细</view>

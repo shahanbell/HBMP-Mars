@@ -21,12 +21,16 @@ Page({
     destination: '1',
     destinationDesc: '中国大陆',
     dayBegin: d.toISOString().substring(0, 10),
-    dayEnd: '',
+    dayEnd: d.toISOString().substring(0, 10),
     daysTotal: 0.00 as number,
     reason: '',
     total: 0.00 as number,
-    showDate: false,
-    showRowDate: new Date().getTime(),
+    showDate1: false,
+    showDate2:false,
+    showDate3:false,
+    showRowDate1: new Date().getTime(),
+    showRowDate2: new Date().getTime(),
+    showRowDate3: new Date().getTime(),
     conpomentid: '',
     formatter(type, value) {
       if (type === 'year') {
@@ -176,24 +180,10 @@ Page({
       otherVehicle: e.detail
     })
   },
-  bindDayBeginChange(e) {
+  bindDaysTotalChange(e){
     this.setData!({
-      dayBegin: e.detail.value
+      daysTotal: e.detail
     })
-
-    let total = this.caculaterDays(this.data.dayBegin, this.data.dayEnd);
-    this.setData({
-      daysTotal: total
-    });
-  },
-  bindDayEndChange(e) {
-    this.setData!({
-      dayEnd: e.detail.value
-    })
-    let total = this.caculaterDays(this.data.dayBegin, this.data.dayEnd);
-    this.setData({
-      daysTotal: total
-    });
   },
 
   bindAddDetailTap(e) {
@@ -280,66 +270,122 @@ Page({
     })
   },
 
-
-  bindPickerDate(e) {
-    this.openPickerDate();
+  //申请日期选择组件事件
+  bindPickerDate1(e) {
     this.setData!({
-      conpomentid: e.currentTarget.id
+      showRowDate1: this.formatYYMMDDToDate(this.data.applyDate)
+    })
+    this.openPickerDate1();
+  },
+  bindCloseDate1(e) {
+    this.closePickerDate1();
+  },
+
+  bindDate1Cancel(e) {
+    this.closePickerDate1();
+  },
+  bindDate1Confirm(e) {
+    if (e.detail != 1262275200000) {
+      this.setData!({
+        applyDate: this.dateFormatForYYMMDD(e.detail)
+      })
+    }
+    this.closePickerDate1();
+  },
+  openPickerDate1() {
+    this.setData!({
+      showDate1: true
     })
   },
-  bindCloseDate(e) {
-    this.closePickerDate();
+  closePickerDate1() {
+    this.setData!({
+      showDate1: false
+    })
+  },
+//开始日期的组件事件
+  bindPickerDate2(e) {
+    this.setData!({
+      showRowDate2: this.formatYYMMDDToDate(this.data.dayBegin)
+    })
+    this.openPickerDate2();
+  },
+  bindCloseDate2(e) {
+    this.closePickerDate2();
   },
 
-  bindDateCancel(e) {
-    this.closePickerDate();
+  bindDate2Cancel(e) {
+    this.closePickerDate2();
   },
-  bindDateConfirm(e) {
-    this.closePickerDate();
-  },
-  bindDateInput(e) {
-    if (this.data.conpomentid == 'dayBegin') {
+  bindDate2Confirm(e) {
+    if (e.detail != 1262275200000) {
       this.setData!({
         dayBegin: this.dateFormatForYYMMDD(e.detail)
       })
     }
-    if (this.data.conpomentid == 'dayEnd') {
+    this.closePickerDate2();
+  },
+
+  openPickerDate2() {
+    this.setData!({
+      showDate2: true
+    })
+  },
+  closePickerDate2() {
+    this.setData!({
+      showDate2: false
+    })
+  },
+
+  //截止日期的时间组件
+  bindPickerDate3(e) {
+    this.setData!({
+      showRowDate3: this.formatYYMMDDToDate(this.data.dayEnd)
+    })
+    this.openPickerDate3();
+  },
+  bindCloseDate3(e) {
+    this.closePickerDate3();
+  },
+
+  bindDate3Cancel(e) {
+    this.closePickerDate3();
+  },
+  bindDate3Confirm(e) {
+       if (e.detail != 1262275200000) {
       this.setData!({
         dayEnd: this.dateFormatForYYMMDD(e.detail)
       })
     }
-    if (this.data.conpomentid == 'applyDate') {
-      this.setData!({
-        applyDate: this.dateFormatForYYMMDD(e.detail)
-      })
+    this.closePickerDate3();
+  },
 
-      let total = this.caculaterDays(this.data.dayBegin, this.data.dayEnd);
-      this.setData!({
-        daysTotal: total
-      });
-      }
-    },
-    dateFormatForYYMMDD(date) {
-      let dateTemp = new Date(date);
-      let year = dateTemp.getFullYear();
-      let month = dateTemp.getMonth() + 1;
-      let day = dateTemp.getDate();
-      let hour = dateTemp.getHours();
-      let minute = dateTemp.getMinutes();
-      let dayTemp = year + "-" + month + "-" + day;
-      return dayTemp;
-    },
-    openPickerDate() {
-      this.setData!({
-        showDate: true
-      })
-    },
-    closePickerDate() {
-      this.setData!({
-        showDate: false
-      })
-    },
+  openPickerDate3() {
+    this.setData!({
+      showDate3: true
+    })
+  },
+  closePickerDate3() {
+    this.setData!({
+      showDate3: false
+    })
+  },
 
+  formatYYMMDDToDate(value) {
+    var str = value.replace(/-/g, '/');
+    var date = new Date(str)
+    return date.getTime();
+  },
+
+  dateFormatForYYMMDD(date) {
+    let dateTemp = new Date(date);
+    let year = dateTemp.getFullYear();
+    let month = dateTemp.getMonth() + 1;
+    let day = dateTemp.getDate();
+    let hour = dateTemp.getHours();
+    let minute = dateTemp.getMinutes();
+    let dayTemp = year + "-" + month + "-" + day;
+    return dayTemp;
+  },
 
 
     formSubmit(e) {

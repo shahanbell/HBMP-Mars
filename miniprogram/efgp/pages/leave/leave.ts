@@ -11,9 +11,11 @@ Page({
     employeeName: null,
     deptId: null,
     deptName: null,
-    showRowDate: new Date().getTime(),
-    date1: d.toISOString().substring(0, 10),
-    date2: d.toISOString().substring(0, 10),
+    showRowDate1: null,
+    showRowDate2: null,
+    showRowTime: null,
+    date1: null,
+    date2: null,
     time1: "08:00",
     time2: "17:10",
     formType: '1',
@@ -26,10 +28,11 @@ Page({
     leaveHour: 0 as number,
     leaveMinute: 0 as number,
     reason: '',
-    checked:false,
-    showTime:false,
-    showDate:false,
-    conpomentid: '',
+    checked: false,
+    showTime1: false,
+    showTime1: false,
+    showDate1: false,
+    showDate2: false,
     formatter(type, value) {
       if (type === 'year') {
         return `${value}年`;
@@ -42,12 +45,22 @@ Page({
     },
   },
   onLoad() {
+    var that = this;
     wx.showLoading({
       title: 'Loading',
     })
     setTimeout(function () {
       wx.hideLoading()
     }, 2000)
+    let dateTemp = new Date(new Date().getTime());
+    let year = dateTemp.getFullYear();
+    let month = dateTemp.getMonth() + 1;
+    let day = dateTemp.getDate();
+    let dayTemp = year + "-" + month + "-" + day;
+    that.setData!({
+      date1: this.dateFormatForYYMMDD(new Date().getTime()),
+      date2: this.dateFormatForYYMMDD(new Date().getTime()),
+    })
     if (app.globalData.openId) {
       this.setData!({
         hasOpenId: true
@@ -90,13 +103,13 @@ Page({
       this.setData({
         formType: '2',
         formTypeDesc: '法定节假假日前后',
-        checked:true
+        checked: true
       })
     } else {
       this.setData({
         formType: '1',
         formTypeDesc: '普通工作日',
-        checked:false
+        checked: false
       })
     }
   },
@@ -160,73 +173,133 @@ Page({
     })
   },
 
-  bindPickerTime(e){
-    this.setData!({
-      conpomentid: e.currentTarget.id
-    })
+  //开始时间的组件回调函数
+  bindPickerTime1(e) {
     this.openPickerTime1();
   },
-  bindCloseTime(e){
+  bindCloseTime1(e) {
     this.closePickerTime1();
   },
-  bindTime1Cencel(e){
+  bindTime1Cencel(e) {
     this.closePickerTime1();
   },
-  bindTime1Confirm(e){
-    this.closePickerTime1();
-  },
-  bindTime1Input(e){
-    if(this.data.conpomentid=='time1'){
-      this.setData!({
-        time1: e.detail
-      })
-    }
-    if (this.data.conpomentid == 'time2') {
+  bindTime1Confirm(e) {
     this.setData!({
-      time2: e.detail
+      time1: e.detail
     })
-    }
+    this.closePickerTime1();
   },
-  
-  openPickerTime1(){ 
+  openPickerTime1() {
     this.setData!({
-      showTime: true
+      showTime1: true
     })
   },
   closePickerTime1() {
     this.setData!({
-      showTime: false
+      showTime1: false
     })
   },
 
+  //截止时间的组件回调
 
-  bindPickerDate(e){
-    this.openPickerDate();
+  bindPickerTime2(e) {
+    this.openPickerTime2();
+  },
+  bindCloseTime2(e) {
+    this.closePickerTime2();
+  },
+  bindTime2Cencel(e) {
+    this.closePickerTime2();
+  },
+  bindTime2Confirm(e) {
     this.setData!({
-      conpomentid: e.currentTarget.id
+      time2: e.detail
     })
-  },
-  bindCloseDate(e){
-    this.closePickerDate();
+    this.closePickerTime2();
   },
 
-  bindDateCancel(e){
-    this.closePickerDate();
+  openPickerTime2() {
+    this.setData!({
+      showTime2: true
+    })
   },
-  bindDateConfirm(e){
-    this.closePickerDate();
+  closePickerTime2() {
+    this.setData!({
+      showTime2: false
+    })
   },
-  bindDateInput(e){
-    if (this.data.conpomentid == 'date1') {
+
+
+  // 开始日期的时间组件回调
+  bindPickerDate1(e) {
+    this.setData!({
+      showRowDate1: this.formatYYMMDDToDate(this.data.date1)
+    })
+    this.openPickerDate1();
+  },
+  bindCloseDate1(e) {
+    this.closePickerDate1();
+  },
+
+  bindDate1Cancel(e) {
+    this.closePickerDate1();
+  },
+  bindDate1Confirm(e) {
+    //首次加载回调显示都是2010/1/1,
+    if (e.detail != 1262275200000) {
       this.setData!({
         date1: this.dateFormatForYYMMDD(e.detail)
       })
     }
-    if (this.data.conpomentid == 'date2') {
+    this.closePickerDate1();
+  },
+  openPickerDate1() {
+    this.setData!({
+      showDate1: true
+    })
+  },
+  closePickerDate1() {
+    this.setData!({
+      showDate1: false
+    })
+  },
+  //截止时间的日期组件回调
+  bindPickerDate2(e) {
+    this.setData!({
+      showRowDate2: this.formatYYMMDDToDate(this.data.date2)
+    })
+    this.openPickerDate2();
+  },
+  bindCloseDate2(e) {
+    this.closePickerDate2();
+  },
+
+  bindDate2Cancel(e) {
+    this.closePickerDate2();
+  },
+  bindDate2Confirm(e) {
+    if (e.detail != 1262275200000) {
       this.setData!({
         date2: this.dateFormatForYYMMDD(e.detail)
       })
     }
+    this.closePickerDate2();
+  },
+  openPickerDate2() {
+    this.setData!({
+      showDate2: true
+    })
+  },
+  closePickerDate2() {
+    this.setData!({
+      showDate2: false
+    })
+  },
+
+  formatYYMMDDToDate(value) {
+    var str = value.replace(/-/g, '/');
+    var date = new Date(str)
+    return date.getTime();
   },
   dateFormatForYYMMDD(date) {
     let dateTemp = new Date(date);
@@ -237,16 +310,6 @@ Page({
     let minute = dateTemp.getMinutes();
     let dayTemp = year + "-" + month + "-" + day;
     return dayTemp;
-  },
-  openPickerDate() {
-    this.setData!({
-      showDate: true
-    })
-  },
-  closePickerDate() {
-    this.setData!({
-      showDate: false
-    })
   },
   formSubmit(e) {
     let canSubmit = true
@@ -323,7 +386,7 @@ Page({
                 wx.hideLoading();
                 wx.showModal({
                   title: '系统提示',
-                  content: "请联系管理员:"+fail,
+                  content: "请联系管理员:" + fail,
                   showCancel: false
                 })
               }
