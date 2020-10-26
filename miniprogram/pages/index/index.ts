@@ -42,7 +42,7 @@ Page({
       }
       app.authInfoReadyCallback = (date) => {
         let list = this.data.menu;
-        for (let entry of date) {
+        for (let entry of app.globalData.authData) {
           list.push(entry); // 1, "string", false
         }
         this.setData!({

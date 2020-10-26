@@ -308,6 +308,12 @@ Page({
       canSubmit = false
       errmsg += "请选择车辆性质\r\n"
     }
+
+    if (this.data.telcontact == '') {
+      canSubmit = false
+      errmsg += "请输入手机号\r\n"
+    }
+
     if (this.data.clxz == "2") {
       if (this.data.privatedriver == "") {
         errmsg += "请填写私车驾驶员\r\n"

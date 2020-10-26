@@ -8,7 +8,7 @@
         <van-field label="申请人员" value="{{ employeeName }}" placeholder="请输入申请人员" border="{{ false }}" readonly="true" />
       </van-cell-group>
       <van-cell-group>
-        <van-field label="申请部门" value="{{ deptName }}" required icon="search" placeholder="请输入申请部门" bindtap="bindDeptSelect" />
+        <van-field label="申请部门" value="{{ deptName }}" required icon="search" placeholder="请输入申请部门" bindtap="bindDeptSelect" readonly/>
       </van-cell-group>
       <van-cell-group>
         <van-cell title="法定节假日前后请假" required>
@@ -16,10 +16,10 @@
         </van-cell>
       </van-cell-group>
       <van-cell-group>
-        <van-field label="请假假别" value="{{ formKindDesc }}" required icon="search" bindtap="bindLeaveKindSelect" />
+        <van-field label="请假假别" value="{{ formKindDesc }}" required icon="search" bindtap="bindLeaveKindSelect" readonly/>
       </van-cell-group>
       <van-cell-group>
-        <van-field label="请假班别" value="{{ workTypeDesc }}" required clearable icon="search" bindtap="bindWorkTypeSelect" />
+        <van-field label="请假班别" value="{{ workTypeDesc }}" required clearable icon="search" bindtap="bindWorkTypeSelect" readonly/>
       </van-cell-group>
       <view class="weui-cells__title">请假时间</view>
       <van-cell-group>

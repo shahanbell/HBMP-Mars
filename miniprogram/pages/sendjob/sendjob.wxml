@@ -6,10 +6,10 @@
     <form bindsubmit="formSubmit" bindreset="formReset">
       <view class="weui-cells weui-cells_after-title">
         <van-cell-group>
-          <van-field label="叫修单别" value="{{ repairKindname }}" placeholder="请选择叫修单别" required clearable icon="search" bindtap="bindRepairKind" />
+          <van-field label="叫修单别" value="{{ repairKindname }}" placeholder="请选择叫修单别" required clearable icon="search" bindtap="bindRepairKind" readonly/>
         </van-cell-group>
         <van-cell-group>
-          <van-field label="叫修单号" value="{{ repairno }}" placeholder="请输入叫修单号" required clearable icon="search" bindtap="bindRepairnoChange" />
+          <van-field label="叫修单号" value="{{ repairno }}" placeholder="请输入叫修单号" required clearable icon="search" bindtap="bindRepairnoChange" readonly/>
         </van-cell-group>
         <van-cell-group>
           <van-field label="单据日期" value="{{ta003}}" readonly="{{true}}"/>

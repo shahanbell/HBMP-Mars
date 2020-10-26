@@ -22,7 +22,7 @@ Page({
     destinationDesc: '中国大陆',
     dayBegin: d.toISOString().substring(0, 10),
     dayEnd: d.toISOString().substring(0, 10),
-    daysTotal: 0.00 as number,
+    daysTotal: 1,
     reason: '',
     total: 0.00 as number,
     showDate1: false,
