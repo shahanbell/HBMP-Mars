@@ -11,16 +11,16 @@
         <van-field label="填单部门" value="{{deptName}}" readonly="true"/>
       </van-cell-group>
       <van-cell-group>
-        <van-field label="叫修单别" value="{{ repairKindName }}" placeholder="请选择叫修单别" required clearable icon="search" bindtap="bindRepairKind" />
+        <van-field label="叫修单别" value="{{ repairKindName }}" placeholder="请选择叫修单别" required clearable icon="search" bindtap="bindRepairKind"readonly />
       </van-cell-group>
       <van-cell-group>
-        <van-field label="叫修单号" value="{{ repairno }}" placeholder="请选择叫修单号" required clearable icon="search" bindtap="bindRepairnoChange" />
+        <van-field label="叫修单号" value="{{ repairno }}" placeholder="请选择叫修单号" required clearable icon="search" bindtap="bindRepairnoChange" readonly/>
       </van-cell-group>
       <van-cell-group>
-        <van-field label="维修人员" value="{{ maintaineId }}" placeholder="请选择维修人员" required clearable icon="search" bindtap="bindMaintainNumberSelect" />
+        <van-field label="维修人员" value="{{ maintaineId }}" placeholder="请选择维修人员" required clearable icon="search" bindtap="bindMaintainNumberSelect" readonly/>
       </van-cell-group>
       <van-cell-group>
-        <van-field label="维修单别" value="{{ maintainTypeName }}" placeholder="请选择维修单别" required clearable icon="search" bindtap="bindMaintainTypeSelect" />
+        <van-field label="维修单别" value="{{ maintainTypeName }}" placeholder="请选择维修单别" required clearable icon="search" bindtap="bindMaintainTypeSelect" readonly/>
       </van-cell-group>
       <van-cell-group>
         <van-field label="单据日期" value="{{ta003}}"  readonly="true"/>
@@ -70,13 +70,13 @@
       <view wx:if="{{hasWartb==true}}">
       <view class="weui-cells__title" >录入库存交易单</view>
       <van-cell-group>
-        <van-field label="单别" value="{{incentoryformName}}" placeholder="请选择录入库存交易单别" required clearable icon="search" bindtap="bindIncentoryformSelect" />
+        <van-field label="单别" value="{{incentoryformName}}" placeholder="请选择录入库存交易单别" required clearable icon="search" bindtap="bindIncentoryformSelect" readonly/>
       </van-cell-group>
       <van-cell-group>
-        <van-field label="交易原因" value="{{tradingreasonName}}" placeholder="请选择交易原因" required clearable icon="search" bindtap="bindTradingReasonSelect" />
+        <van-field label="交易原因" value="{{tradingreasonName}}" placeholder="请选择交易原因" required clearable icon="search" bindtap="bindTradingReasonSelect" readonly/>
       </van-cell-group>
       <van-cell-group>
-        <van-field label="发货部门" value="{{deliverydeptName}}" placeholder="请选择发货部门" required clearable icon="search" bindtap="bindDeliverydeptSelect" />
+        <van-field label="发货部门" value="{{deliverydeptName}}" placeholder="请选择发货部门" required clearable icon="search" bindtap="bindDeliverydeptSelect" readonly/>
       </van-cell-group>
       <van-cell-group>
         <van-field custom-style="height:100px" label="备注" value="{{ reason }}" type="textarea" placeholder="请输入录入库存交易单备注" autosize required bindblur="bindDeliveryremarkChange" />

@@ -3,43 +3,51 @@
     <view class="page__title">派工明细</view>
   </view>
   <view class="page__bd">
-    <form bindsubmit="formSubmit" bindreset="formReset">
+    <form  bindreset="formReset">
       <van-cell-group>
         <van-field label="派工码" value="{{ assignmentcode }}" placeholder="请输入派工码" required clearable icon="search" readonly="{{true}}" />
       </van-cell-group>
+      <van-popup show="{{ showDate1 }}" position="bottom" bind:close="bindCloseDate1">
+        <van-datetime-picker type="date" value="{{showRowDate1}}" bind:cancel="bindDate1Cancel" bind:confirm="bindDate1Confirm" formatter="{{formatter}}" />
+      </van-popup>
+
       <van-cell-group>
-        <picker mode="date" start="2019-07-01" end="2023-06-30" bindchange="bindDate1Change">
-          <van-field label="约定完修日" required value="{{date1}}" use-button-slot readonly>
+        <van-field label="约定完修日" required value="{{date1}}" use-button-slot readonly bindtap="bindPickerDate1">
+          <van-icon slot="button" name="arrow" />
+        </van-field>
+      </van-cell-group>
+
+      <van-popup show="{{ showDate2 }}" position="bottom" bind:close="bindCloseDate2">
+        <van-datetime-picker type="date" value="{{showRowDate2}}" bind:cancel="bindDate2Cancel" bind:confirm="bindDate2Confirm" formatter="{{formatter}}" />
+      </van-popup>
+      <van-cell-group>
+          <van-field label="预交日期" required value="{{date2}}" use-button-slot readonly bindtap="bindPickerDate2">
             <van-icon slot="button" name="arrow" />
           </van-field>
-        </picker>
       </van-cell-group>
+
+            <van-popup show="{{ showDate3 }}" position="bottom" bind:close="bindCloseDate3">
+        <van-datetime-picker type="date" value="{{showRowDate3}}" bind:cancel="bindDate3Cancel" bind:confirm="bindDate3Confirm" formatter="{{formatter}}" />
+      </van-popup>
       <van-cell-group>
-        <picker mode="date" start="2019-07-01" end="2023-06-30" bindchange="bindDate2Change">
-          <van-field label="预交日期" required value="{{date2}}" use-button-slot readonly>
+          <van-field label="预计维修日" required value="{{date3}}" use-button-slot readonly bindtap="bindPickerDate3">
             <van-icon slot="button" name="arrow" />
           </van-field>
-        </picker>
       </van-cell-group>
+
+       <van-popup show="{{ showDate4 }}" position="bottom" bind:close="bindCloseDate4">
+        <van-datetime-picker type="date" value="{{showRowDate4}}" bind:cancel="bindDate4Cancel" bind:confirm="bindDate4Confirm" formatter="{{formatter}}" />
+      </van-popup>
       <van-cell-group>
-        <picker mode="date" start="2019-07-01" end="2023-06-30" bindchange="bindDate3Change">
-          <van-field label="预计维修日" required value="{{date3}}" use-button-slot readonly>
+          <van-field label="预计完修日" required value="{{date4}}" use-button-slot readonly  bindtap="bindPickerDate4">
             <van-icon slot="button" name="arrow" />
           </van-field>
-        </picker>
       </van-cell-group>
       <van-cell-group>
-        <picker mode="date" start="2019-07-01" end="2023-06-30" bindchange="bindDate4Change">
-          <van-field label="预计完修日" required value="{{date4}}" use-button-slot readonly>
-            <van-icon slot="button" name="arrow" />
-          </van-field>
-        </picker>
+        <van-field label="站别编号" value="{{ stationname }}" placeholder="请输入站别编号" required clearable icon="search" bindtap="bindStation" readonly/>
       </van-cell-group>
       <van-cell-group>
-        <van-field label="站别编号" value="{{ stationname }}" placeholder="请输入站别编号" required clearable icon="search" bindtap="bindStation" />
-      </van-cell-group>
-      <van-cell-group>
-        <van-field label="主要维修人员" value="{{ repairmanname }}" placeholder="请输入主要维修人员" required clearable icon="search" bindtap="bindRepairman" />
+        <van-field label="主要维修人员" value="{{ repairmanname }}" placeholder="请输入主要维修人员" required clearable icon="search" bindtap="bindRepairman" readonly/>
       </van-cell-group>
       <view class="weui-cell">
         <view class="weui-cell__bd">
@@ -47,7 +55,7 @@
         </view>
       </view>
       <view class="button-sp-area">
-        <van-button custom-class="submitbtn" type="info" icon="passed" form-type="submit">添加</van-button>
+        <van-button custom-class="submitbtn" type="info" icon="passed" form-type="submit" bind:click="formSubmit">添加</van-button>
       </view>
     </form>
   </view>

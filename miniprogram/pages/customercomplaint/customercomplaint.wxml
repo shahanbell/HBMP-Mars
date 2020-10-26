@@ -10,6 +10,7 @@
             value="{{ employeeName }}"
             placeholder=""
             required
+            readonly
           />
       </van-cell-group>
       <van-cell-group>
@@ -18,6 +19,7 @@
           value="{{ deptName }}"
           required
           placeholder=""
+          readonly
         />
       </van-cell-group>
       <van-cell-group>
@@ -29,6 +31,7 @@
           placeholder="请选择客诉类型"
           bind:click-icon="bindComplaintTypeSelect"
           bindtap="bindComplaintTypeSelect"
+          readonly
         />
       </van-cell-group>
       <van-cell-group>
@@ -40,6 +43,7 @@
           placeholder="请选择客户代号"
           bind:click-icon="bindCustomerCodeSelect"
           bindtap="bindCustomerCodeSelect"
+          readonly
         />
       </van-cell-group>
       <van-cell-group>
@@ -47,6 +51,7 @@
           label="来电者"
           value="{{ callViewName }}"
           required
+          readonly
         />
       </van-cell-group>
       <van-cell-group>
@@ -58,6 +63,7 @@
           placeholder="请选择品号类别"
           bind:click-icon="bindProductTypeSelect"
           bindtap="bindProductTypeSelect"
+          readonly
         />
       </van-cell-group>
       <van-cell-group>
@@ -69,6 +75,7 @@
           placeholder="请选择问题分类"
           bind:click-icon="bindProblemTypeSelect"
           bindtap="bindProblemTypeSelect"
+          readonly
         />
       </van-cell-group>
       <van-cell-group>
@@ -94,6 +101,7 @@
           placeholder="请选择区域别"
           bind:click-icon="bindAreaSelect"
           bindtap="bindAreaSelect"
+          readonly
         />
       </van-cell-group>
       <van-cell-group>
@@ -105,6 +113,7 @@
           placeholder="请选择产品别"
           bind:click-icon="bindProductSelect"
           bindtap="bindProductSelect"
+          readonly
         />
       </van-cell-group>
       <van-cell-group>
@@ -116,6 +125,7 @@
           placeholder="请选择事发省"
           bind:click-icon="bindIncidentProvinceSelect"
           bindtap="bindIncidentProvinceSelect"
+          readonly
         />
       </van-cell-group>
       <van-cell-group>
@@ -127,6 +137,7 @@
           placeholder="请选择事发市"
           bind:click-icon="bindIncidentCitySelect"
           bindtap="bindIncidentCitySelect"
+          readonly
         />
       </van-cell-group>
       <view class="weui-cells__title">问题描述</view>

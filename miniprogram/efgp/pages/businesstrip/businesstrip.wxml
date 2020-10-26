@@ -5,7 +5,7 @@
   <view class="page__bd">
     <form bindreset="formReset">
       <van-cell-group>
-        <van-field label="公司别" value="{{ company }}" required icon="search" placeholder="请选择公司别" bind:click-icon="bindCompanySelect" />
+        <van-field label="公司别" value="{{ company }}" required icon="search" placeholder="请选择公司别" bind:click-icon="bindCompanySelect"  readonly/>
       </van-cell-group>
       <van-cell-group>
           <van-field label="申请日期" required value="{{applyDate}}" id='applyDate' use-button-slot readonly bindtap='bindPickerDate1'>
@@ -19,22 +19,22 @@
         <van-field label="申请人员" required clearable value="{{employeeName}}" placeholder="请输入申请人员" border="{{ false }}" readonly="true" />
       </van-cell-group>
       <van-cell-group>
-        <van-field label="申请部门" value="{{deptName}}" required icon="search" placeholder="请输入申请部门" bindtap="bindDeptSelect" />
+        <van-field label="申请部门" value="{{deptName}}" required icon="search" placeholder="请输入申请部门" bindtap="bindDeptSelect" readonly />
       </van-cell-group>
       <van-cell-group>
-        <van-field label="出差性质" value="{{businessPropertyDesc}}" required icon="search" placeholder="请选择出差性质" bindtap="bindBusinessProperty" />
+        <van-field label="出差性质" value="{{businessPropertyDesc}}" required icon="search" placeholder="请选择出差性质" bindtap="bindBusinessProperty" readonly/>
       </van-cell-group>
       <van-cell-group>
         <van-field label="其他性质" clearable value="{{otherType}}" placeholder="请填写其他性质" border="{{ false }}" bind:change="bindOtherTypeChange" />
       </van-cell-group>
       <van-cell-group>
-        <van-field label="交通工具" value="{{vehicleDesc}}" required icon="search" placeholder="请选择交通工具" bindtap="bindVehicle" />
+        <van-field label="交通工具" value="{{vehicleDesc}}" required icon="search" placeholder="请选择交通工具" bindtap="bindVehicle" readonly/>
       </van-cell-group>
       <van-cell-group>
         <van-field label="其他交通" clearable value="{{otherVehicle}}" placeholder="请填写其他交通工具" border="{{ false }}" bind:change="bindOtherVehicleChange" />
       </van-cell-group>
       <van-cell-group>
-        <van-field label="目的地" value="{{destinationDesc}}" required icon="search" placeholder="请选择目的地" bindtap="bindDestination" />
+        <van-field label="目的地" value="{{destinationDesc}}" required icon="search" placeholder="请选择目的地" bindtap="bindDestination" readonly />
       </van-cell-group>
       <van-cell-group>
           <van-field label="开始日期" required value="{{dayBegin}}" id='dayBegin' use-button-slot readonly bindtap='bindPickerDate2'>

@@ -20,6 +20,7 @@
         value="{{ deptName }}"
         required
         clearable
+        readonly
         icon="search"
         placeholder="请输入申请部门"
         bindtap="bindDeptSelect"

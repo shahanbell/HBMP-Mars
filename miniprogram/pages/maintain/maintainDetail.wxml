@@ -3,12 +3,12 @@
     <view class="page__title">维修明细</view>
   </view>
   <view class="page__bd">
-    <form bindsubmit="formSubmit" bindreset="formReset">
+    <form  bindreset="formReset">
       <van-cell-group>
         <van-field label="服务方式" value="次数" />
       </van-cell-group>
       <van-cell-group>
-        <van-field label="品号" value="{{ productQuality }}" placeholder="请选择品号" required clearable icon="search" bindtap="bindProductQualitySelect" />
+        <van-field label="品号" value="{{ productQuality }}" placeholder="请选择品号" required clearable icon="search" bindtap="bindProductQualitySelect" readonly/>
       </van-cell-group>
       <van-cell-group>
         <van-field label="品名" value="{{product_name}}" readonly="true"/>
@@ -18,7 +18,7 @@
       </van-cell-group>
 
       <van-cell-group>
-        <van-field label="仓库" value="{{ warehouseName }}" placeholder="请选择仓库" required clearable icon="search" bindtap="bindWarehouseSelect" />
+        <van-field label="仓库" value="{{ warehouseName }}" placeholder="请选择仓库" required clearable icon="search" bindtap="bindWarehouseSelect" readonly/>
       </van-cell-group>
 
      <van-cell-group>
@@ -34,7 +34,7 @@
       </van-cell-group>
 
       <view class="button-sp-area">
-        <van-button custom-class="submitbtn" type="info" icon="passed" form-type="submit">添加</van-button>
+        <van-button custom-class="submitbtn" type="info" icon="passed" form-type="submit"  bind:click="formSubmit">添加</van-button>
       </view>
     </form>
   </view>

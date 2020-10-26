@@ -11,6 +11,7 @@
             placeholder="请选择申请公司"
             bindtap="bindCompanySelect"
             icon="search"
+            readonly
           />
       </van-cell-group>
 
@@ -39,6 +40,7 @@
           icon="search"
           placeholder="请选择申请部门"
           bindtap="bindDeptSelect"
+          readonly
         />
       </van-cell-group>
       <van-cell-group>
@@ -49,6 +51,7 @@
           icon="search"
           placeholder="请选择借支性质"
           bindtap="bindLoanProperty"
+          readonly
         />
       </van-cell-group>
       <van-cell-group>
@@ -59,6 +62,7 @@
           icon="search"
           placeholder="请选择预算科目"
           bindtap="bindBudgetacc"
+          readonly
         />
       </van-cell-group>
       <van-cell-group>
@@ -69,6 +73,7 @@
           icon="search"
           placeholder="请选择币别"
           bindtap="bindCoin"
+          readonly
         />
       </van-cell-group>
       <van-cell-group>

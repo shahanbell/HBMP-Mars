@@ -84,8 +84,8 @@ App<IMyApp>({
                 method: 'GET',
                 success: res => {
                   var data = res.data;
-                  this.globalData.auth = data;
                   if (this.authInfoReadyCallback) {
+                    this.globalData.authData = data;
                     this.authInfoReadyCallback(data);
                   }
                 },
@@ -133,7 +133,6 @@ App<IMyApp>({
         }
       }
     })
-
      //获取手机屏幕,状态栏的高度
     wx.getSystemInfo({
       success: res => {
@@ -147,6 +146,7 @@ App<IMyApp>({
     console.log("Quit MicroPrg");
   },
   globalData: {
+    authData: [],//页面缓存数据
     //restAdd:'https://jrs.hanbell.com.cn',
      restAdd: 'https://i2.hanbell.com.cn',
     // restAdd: 'http://localhost:8480',
