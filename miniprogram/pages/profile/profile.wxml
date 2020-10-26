@@ -15,7 +15,7 @@
   个人信息
   </van-divider>
   <view class="weui-panel weui-panel_access">
-    <form bindsubmit="formSubmit" bindreset="formReset">
+    <form bindreset="formReset">
       <van-cell-group>
         <van-field
           label = "工号"
@@ -53,7 +53,7 @@
       <van-button slot="button" size="small" type="primary" disabled="{{!canSendCode}}" bindtap="bindSendCodeTap">{{btnSendDisplay}}</van-button>
       </van-field>
     </van-cell-group>
-    <van-button custom-class="submitbtn" form-type="submit" type="primary" disabled="{{!canSubmit}}">授权</van-button>
+    <van-button custom-class="submitbtn" form-type="submit" type="primary" disabled="{{!canSubmit}}" bind:click="formSubmit">授权</van-button>
     </form>
   </view>
 </view>

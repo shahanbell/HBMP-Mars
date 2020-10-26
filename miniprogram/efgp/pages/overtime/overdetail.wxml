@@ -5,7 +5,7 @@
   <view class="page__bd">
     <form bindreset="formReset">
       <van-cell-group>
-        <van-field label="申请人员" value="{{ employeeName }}" placeholder="请输入申请人员" required border="{{ false }}" />
+        <van-field label="申请人员" value="{{ employeeName }}" placeholder="请输入申请人员" required border="{{ false }}" readonly="true" />
       </van-cell-group>
       <van-cell-group>
         <van-field label="所在部门" value="{{ deptName }}" required clearable icon="search" placeholder="请输入所在部门" bindtap="bindDeptSelect" />

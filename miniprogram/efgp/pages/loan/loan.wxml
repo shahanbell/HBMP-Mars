@@ -28,6 +28,7 @@
             label = "申请人员"
             value="{{ employeeName }}"
             placeholder="请输入申请人员"
+            readonly="true"
           />
       </van-cell-group>
       <van-cell-group>
