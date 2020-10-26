@@ -13,6 +13,7 @@
         icon="search"
         placeholder="请选择出差人员"
         bindtap="bindUserSelect"
+        readonly="true"
         />
       </van-cell-group>
       <van-cell-group>
