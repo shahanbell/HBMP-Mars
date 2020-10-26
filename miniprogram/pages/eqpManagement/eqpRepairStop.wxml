@@ -139,7 +139,7 @@
 	<!-- 触发时才显示的组件 -->
 
 	<van-tabs active="{{ auditTabActive }}" bind:change="onChange" z-index='100' sticky>
-		<van-tab title="故障维修审批单">
+		<van-tab title="故障维修责任单">
 
 <!-- <scroll-view id="eqpList" class="scrollWrap" scroll-y="true" style='height:{{eqpListHeight}}px'> -->
 				<!-- <view class="scrollTest" id="eqpListTest2"> -->
@@ -174,10 +174,6 @@
 							<view>维修到达时间:{{item.serviceArriveTime}}</view>
 							<view>联络时间:<text>{{item.contactTime}}小时</text></view>
 						</view>
-						<view class="orderNum">
-							<view>维修完成时间:{{item.completeTime}}</view>
-							<view>维修时间:<text>{{item.repairTime}}小时</text></view>
-						</view>
 
 					</view>
 				<!-- </view> -->
@@ -185,29 +181,11 @@
         <view class="eqpListWrap">
 				</view>
 
-				<van-field label="审批人" value="{{ approveUserName }}" data-name="approveUserName" use-button-slot readonly >
+				<van-field label="维修人" value="{{ approveUserName }}" data-name="approveUserName" use-button-slot readonly >
         </van-field>
 
-				<van-cell center title="二次维修">
-					<van-switch class="cellSwitchPro" size="24px" checked="{{ reRepairFlag }}" bind:change="on2ndRepairChange" />
-				</van-cell>
-
-        <!-- <van-field label="审批结果" value="{{ auditContenctObj.contenctDesc }}" data-name="contenctDesc" bind:change="bindData" right-icon="arrow-down" bindtap='onAuditContenctCellTap' readonly /> -->
-
-				<van-cell title="审批结果">
-					<van-radio-group
-						value="{{ auditContenctType }}"
-						name="stockTypeRadio"
-						bind:change="onContenctChange"
-						style="display:flex;flex-flow:row nowarp;justify-content:flex-end;"
-					>
-						<van-radio name="合格" style="margin-right:40rpx;">合格</van-radio>
-						<van-radio name="不合格">不合格</van-radio>
-					</van-radio-group>
-				</van-cell>
-
         <van-cell-group>
-            <van-cell title="审批意见" border="{{false}}" use-label-slot></van-cell>
+            <van-cell title="暂停原因" border="{{false}}" use-label-slot></van-cell>
             <view class='textarea_pro' data-show="auditNote" bindtap="ifshowArea">
                 <textarea wx:if="{{showTextArea.auditNote}}" 
                 class='areaInput' bindblur="ifshowArea" data-show="auditNote" value="{{auditNote}}" 
@@ -271,7 +249,7 @@
   </van-tab>
 
 <view class="submitWrap_fix">
-	<van-button type="info" icon="passed" form-type="submit" style="width:100%;position:fixed;bottom:0px;z-index:100" bind:click="auditApproveFormSubmit" block>提交</van-button>
+	<van-button type="info" icon="passed" form-type="submit" style="width:100%;position:fixed;bottom:0px;z-index:100" bind:click="repairStopFormSubmit" block>提交</van-button>
 </view>
 
 </van-tabs>

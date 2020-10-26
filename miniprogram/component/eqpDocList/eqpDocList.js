@@ -55,6 +55,7 @@ Component({
     bottomTabHeight: null,
     startDateFilter: null,
     endDateFilter: null,
+    deptFilterChecked: false,
     dateFilterChecked: false,
     statusFilterData:[{statusDesc:'请选择',statusCode:null},
     {statusDesc:'已报修',statusCode:'10'},
@@ -390,7 +391,15 @@ Component({
           filterPopup:true,
         },
         [dateFilterType]: null,
+        deptFilterChecked:false,
         dateFilterChecked:false,
+      });
+    },
+
+    onDeptFilterSwitchChange(event){
+      //console.log("dateFilterSwitchChange " + event.detail);
+      this.setData({
+        deptFilterChecked: event.detail
       });
     },
   
@@ -464,6 +473,7 @@ Component({
       this.setData({
         statusFilterValue: "请选择",
         statusFilterObj: {statusDesc:'请选择',statusCode:null},
+        deptFilterChecked: false,
         dateFilterChecked: false,
         startDateFilter: null,
         endDateFilter:null
@@ -491,7 +501,16 @@ Component({
       //     restUrl += '/f/s';
       // }
       //restUrl += '/f;deptno=' + '13000' + '/s';
-      if(app.globalData.defaultDeptId.indexOf("1W3") >= 0){
+
+      if(this.data.deptFilterChecked == true){
+        if(app.globalData.defaultDeptId.indexOf("1W3") >= 0){
+          restUrl += '/f';
+        }
+        else{
+          restUrl += '/f;repairdeptno=' + app.globalData.defaultDeptId;
+        }
+      }
+      else if(app.globalData.defaultDeptId.indexOf("1W3") >= 0 || app.globalData.defaultDeptId.indexOf("131") >= 0){
         restUrl += '/f;serviceuser=' + res;
       }
       else{
@@ -566,9 +585,9 @@ Component({
 
           repairDocListDta = res.data;
           var dataLen = res.data.length;
-          if(dataLen > 10){
-            dataLen = 10;
-          }
+          // if(dataLen > 10){
+          //   dataLen = 10;
+          // }
 
           for(var i = 0;i < dataLen; i++){
             let newItem = { shop: "A119-01", shopurl: "/images/1.jpg", origin: "TaoBao", orderstate: "", pictureurl: "/images/1.jpg", couponname: "", orderdtt: "副齿轮检验轴AA-2600I", productcount: 1, ordernum: "202054654654466", type: "维修", payamount: "技术员" };
@@ -621,8 +640,14 @@ Component({
       switch(statusCode) {
         case "10":
             return "已报修";
+        case "15":
+            return "已受理";
         case "20":
             return "维修到达";
+        case "25":
+            return "维修中";
+        case "28":
+            return "维修暂停";
         case "30":
             return "维修完成";
         case "40":
@@ -663,9 +688,10 @@ Component({
       var year_month_day = utc_datetime.substr(0,T_pos);
       var hour_minute_second = utc_datetime.substr(T_pos+1,Z_pos-T_pos-1);
       var new_datetime = year_month_day+" "+hour_minute_second; // 2017-03-31 08:02:06
+      var new_datetimeInit = new_datetime.replace(/-/g, '/');
   
       // 处理成为时间戳
-      timestamp = new Date(Date.parse(new_datetime));
+      timestamp = new Date(Date.parse(new_datetimeInit));
       timestamp = timestamp.getTime();
       timestamp = timestamp/1000;
   
@@ -702,6 +728,7 @@ Component({
       this.setData({
         statusFilterValue: "请选择",
         statusFilterObj: {statusDesc:'请选择',statusCode:null},
+        deptFilterChecked: false,
         dateFilterChecked: false,
         startDateFilter: null,
         endDateFilter:null

@@ -235,19 +235,22 @@
 					<van-empty wx:if="{{repairHisList.length<1}}" description="无审批流程"/>
 					<view class="hitchDutyList" wx:for="{{repairHisList}}" wx:key="index" data-item="{{item}}" bindtap='repairHisCardSelect' id='repairHisListIndex_{{index}}'>
 						<view class="shop">
-							<view class="shop_name">
+							<!-- <view class="shop_name">
 								报修单号:{{item.pId}}
 							</view>
 							
 							<view class="shop_name">
-							</view>
-						</view>
-						<view class="proInfo">
+							</view> -->
 							<view class="shop_name">
 								审批人:{{item.userNo}}
 							</view>
 							<view class="shop_name">
 								审批时间:{{item.creDate}}
+							</view>
+						</view>
+						<view class="proInfo">
+							<view class="shop_name">
+								审批意见:{{item.note}}
 							</view>
 						</view>
 						<view class="auditContect">

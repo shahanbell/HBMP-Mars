@@ -200,4 +200,46 @@
     line-height: 40rpx;
     padding-top: 4rpx;
   }
+
+  .searchItemView{
+    display: flex;
+    justify-content: center;  
+    align-items: center;
+  }
+
+  .wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  
+  .wrapperBlock {
+    border-radius: 8px;
+    width: 70%;
+    background-color: #fff;
+  }
+
+  .wrapperBtnWrap{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cellSwitchPro{
+    display: flex;
+    justify-content: flex-end;
+  	align-items: flex-end;
+  }
+
+  .van-icon-arrow{
+    display: none !important;
+    opacity: 0 !important;
+  }
+
+  .van-cell__right-icon-wrap{
+    margin-left: 0px !important;
+  }
+
+
   

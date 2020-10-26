@@ -230,15 +230,15 @@
 				</view>
 
 				<van-field label="非工作时间" value="{{ exceptTime }}" data-name="exceptTime" bind:change="onExceptTimeChange" use-button-slot readonly >
-          <view slot="button" class="btnSlot_Minite">(小时)</view>
+          <view slot="button" class="btnSlot_Minite">(分钟)</view>
         </van-field>
 
 				<van-field label="停机时间" value="{{ downTime }}" data-name="downTime" bind:change="bindData" use-button-slot  readonly>
-					<view slot="button" class="btnSlot_Minite">(小时)</view>
+					<view slot="button" class="btnSlot_Minite">(分钟)</view>
 				</van-field>
 
 				<van-field label="停工时间" value="{{ stopWorkTime }}" data-name="stopWorkTime" bind:change="bindData" use-button-slot readonly >
-          <view slot="button" class="btnSlot_Minite">(小时)</view>
+          <view slot="button" class="btnSlot_Minite">(分钟)</view>
         </van-field>
 
 			<view class="page__hd">
@@ -252,7 +252,7 @@
 					<view class="proTitle">故障原因分析</view>
 				</view>
 
-				<van-field label="磨损性故障" value="{{ abraseHitchObj.abraseHitchDesc }}" data-name="abraseHitchDesc" bind:change="bindData" right-icon="arrow-down" readonly />
+				<van-field label="故障责任原因" value="{{ abraseHitchObj.abraseHitchDesc }}" data-name="abraseHitchDesc" bind:change="bindData" right-icon="arrow-down" readonly />
 				<van-field label="紧急程度" value="{{ hitchTypeObj.hitchTypeName }}" data-name="hitchTypeName" bind:change="bindData" right-icon="arrow-down" readonly />
 				<van-field label="故障类型" value="{{ hitchSort01Obj.troubleName }}" data-name="toubleName" bind:change="bindData" right-icon="arrow-down" readonly />
 
@@ -470,7 +470,7 @@
 
   <van-picker
     show-toolbar
-    title="磨损性故障"
+    title="故障责任原因"
     columns="{{  abraseHitchList }}"
     value-key="abraseHitchDesc"
     bind:change="onAbrasePickerChange"

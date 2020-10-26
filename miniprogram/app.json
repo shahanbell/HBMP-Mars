@@ -32,7 +32,12 @@
     "van-sticky": "component/vant/sticky/index",
     "van-submit-bar": "component/vant/submit-bar/index",
     "van-divider": "component/vant/divider/index",
-    "van-stepper": "component/vant/stepper/index"
+    "van-stepper": "component/vant/stepper/index",
+    "van-collapse": "component/vant/collapse/index",
+    "van-collapse-item": "component/vant/collapse-item/index",
+    "van-overlay": "component/vant/overlay/index",
+    "van-checkbox": "component/vant/checkbox/index",
+    "van-checkbox-group": "component/vant/checkbox-group/index"
   },
   "pages": [
     "pages/index/index",
@@ -64,7 +69,9 @@
     "pages/eqpManagement/eqpRepairAuditCheck",
     "pages/eqpManagement/eqpRepairApprove",
     "pages/eqpManagement/eqpRepairDoApproveCheck",
-    "pages/eqpManagement/eqpRepairDutyResponse"
+    "pages/eqpManagement/eqpRepairDutyResponse",
+    "pages/eqpManagement/eqpRepairStop",
+    "pages/eqpManagement/eqpRepairChangeServiceUser"
   ],
   "subpackages": [
     {

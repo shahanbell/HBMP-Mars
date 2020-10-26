@@ -11,6 +11,12 @@
 
   <van-cell title="报修单状态" is-link value="{{statusFilterObj.statusDesc}}" arrow-direction="down" bind:click="onStatusFilterCellClick" />
 
+  <van-cell border="{{ true }}" class="haTimeCell" title="部门所有单据" value="{{ date }}">
+   
+    <van-switch size="22px" active-color="#7232dd" checked="{{ deptFilterChecked }}" bind:change="onDeptFilterSwitchChange" />
+
+  </van-cell>
+
   <van-cell border="{{ false }}" class="haTimeCell" title="故障发生时间" value="{{ date }}">
    
     <van-switch size="22px" active-color="#7232dd" checked="{{ dateFilterChecked }}" bind:change="onDateFilterSwitchChange" />

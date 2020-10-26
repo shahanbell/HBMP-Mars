@@ -40,10 +40,21 @@ Page({
       arrivalCheckBtn:false,
       finishCheckBtn:false,
       startAuditBtn:false,
+      saveRepairInfoBtn:false,
       responseDutyBtn:false,
       approveAuditBtn:false,
       examAuditBtn: false,
       auditInfoBtn: false,
+      stopRepairBtn: false,
+      startRepairBtn: false,
+      changeServiceUserBtn: false,
+    },
+    disableBtn:{
+      arrivalCheckBtn: false,
+      finishCheckBtn:false,
+      stopRepairBtn: false,
+      startRepairBtn: false,
+      saveRepairInfoBtn: false,
     },
     eqpListLoading: false,
     eqpListLoadingTest2: true,
@@ -159,7 +170,6 @@ Page({
     ],
 
     repairStepActive: '-1',
-    disableCheckBtn: false,
 
     formatter(type, value) {
       if (type === 'year') {
@@ -569,11 +579,78 @@ upload: function(e) {
 
   onDateFilterInput(event){
     //console.log(event);
-    let dateTemp = this.dateFormatForFilter(event.detail);
-    this.setData({
-      formdate: dateTemp,
-      formdateTS: event.detail,
-    });
+    // let dateTemp = this.dateFormatForFilter(event.detail);
+    // this.setData({
+    //   formdate: dateTemp,
+    //   formdateTS: event.detail,
+    // });
+  },
+
+  onDeleteBtnClick: function(){
+
+    var _this = this;
+    Dialog.confirm({
+      mask: false,
+      title: '系统提示',
+      message: '确认作废吗?',
+      zIndex: 1000,
+    })
+      .then(() => {
+
+        //console.log(_this.data);
+
+        // on confirm
+        wx.showLoading({
+          title: 'Sending',
+          mask: true
+        });
+        wx.request({
+          url: app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/deleteRepairDoc?' + app.globalData.restAuth,
+          //url: 'http://325810l80q.qicp.vip' + '/Hanbell-JRS/api/shbeam/equipmentinventory/insertStockInfo4MicroApp?' + app.globalData.restAuth,
+          data: {
+            company: "C",
+            formid: _this.data.docFormidId,
+            id: _this.data.docId,
+          },
+          header: {
+            'content-type': 'application/json'
+          },
+          method: 'POST',
+          success: function (res) {
+            wx.hideLoading();
+            var resMsg = '';
+            //console.log(res);
+            if(res.statusCode == 200 && res.data.msg != null){
+              resMsg = '作废成功';
+            }
+            else{
+              resMsg = '作废失败';
+            }
+            //console.log("update status success!");
+            Dialog.alert({
+            title: '系统消息',
+            zIndex: 1000,
+            mask:false,
+            message: resMsg,
+              }).then(() => {
+               // on close
+               //initProInfo(_this);
+               wx.navigateBack();
+            });
+          },
+          fail: function (fail) {
+            wx.hideLoading();
+            wx.showModal({
+              title: '系统提示',
+              content: "请联系管理员:" + fail,
+              showCancel: false
+            });
+          }
+        });
+      })
+      .catch(() => {
+        // on cancel
+      });
   },
 
   onCheckBtnClick: function(){
@@ -657,7 +734,8 @@ upload: function(e) {
     //console.log(this.data.uploaderList);
     const FileSystemManager = wx.getFileSystemManager();
     //console.log(this.data);
-    var canSubmit = this.checkFormDtaBeforeSubmit();
+    //var canSubmit = this.checkFormDtaBeforeSubmit();
+    var canSubmit = true;
     var errmsg = '';
     if (!app.globalData.authorized) {
       canSubmit = false;
@@ -777,12 +855,133 @@ upload: function(e) {
     });
   },
 
+  onStopBtnClick: function(e){
+    let that = this;
+    //console.log(e);
+    var eqpInfo = { formId: that.data.docFormidId,displayType: "品名", assetDesc: that.data.itemdsc, productcount: 1, assetFormId: that.data.assetno, repairUserName: that.data.repairUserName,creDate: that.data.formdate,serviceUserName: that.data.serviceusername,serviceArriveTime:that.data.serviceArriveTime,completeTime:that.data.completeTime,contactTime:that.data.contactTime,repairTime:that.data.repairTime,repairTimestamp:that.data.repairTimestamp };
+    var eqpInfoObj = JSON.stringify(eqpInfo);
+    wx.navigateTo({
+      url: '../eqpManagement/eqpRepairStop?eqpInfo=' + eqpInfoObj + '&docFormid=' + that.data.docFormidId + '&docId=' + that.data.docId
+    });
+  },
+
+  onStartBtnClick: function(e){
+    let that = this;
+    //console.log(this.data.uploaderList);
+    const FileSystemManager = wx.getFileSystemManager();
+    //console.log(this.data);
+    //var canSubmit = this.checkFormDtaBeforeSubmit();
+    var canSubmit = true;
+    var errmsg = '';
+    if (!app.globalData.authorized) {
+      canSubmit = false;
+      errmsg += '账号未授权\r\n';
+    }
+    if (canSubmit) {
+      Dialog.confirm({
+        title: '系统提示',
+        message: '确认开始吗?',
+        mask: false,
+        zIndex: 1000,
+      })
+        .then(() => {
+
+          console.log(that.data);
+
+          // on confirm
+          wx.showLoading({
+            title: 'Sending',
+            mask: true
+          });
+          
+          wx.request({
+            url: app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/repairStart?' + app.globalData.restAuth,
+            //url: 'http://325810l80q.qicp.vip' + '/Hanbell-JRS/api/shbeam/equipmentinventory/insertStockInfo4MicroApp?' + app.globalData.restAuth,
+            data: {
+              id: that.data.docId,
+              pid: that.data.docFormidId,
+              company: app.globalData.defaultCompany,
+              userno:app.globalData.employeeId,
+              contenct:"开始维修",
+              note:"解除暂停,开始维修",
+            },
+            header: {
+              'content-type': 'application/json'
+            },
+            method: 'POST',
+            success: function (res) {
+              wx.hideLoading();
+              var resMsg = '';
+              console.log(res);
+              if(res.statusCode == 200 && res.data.msg != null){
+                resMsg = '提交成功';
+              }
+              else{
+                resMsg = '提交失败';
+              }
+              Dialog.alert({
+                title: '系统消息',
+                zIndex: 1000,
+                mask:false,
+                message: resMsg,
+                  }).then(() => {
+                   // on close
+                   //initProInfo(_this);
+                   wx.navigateBack({delta: 1});
+                });
+              // wx.showModal({
+              //   title: '系统消息',
+              //   content: res.data.msg,
+              //   content: '提交成功',
+              //   showCancel: false,
+              //   success: function (res) {
+              //     initProInfo(that);
+              //   }
+              // });
+            },
+            fail: function (fail) {
+              wx.hideLoading();
+              wx.showModal({
+                title: '系统提示',
+                content: "网络异常请重试:" + fail,
+                showCancel: false
+              });
+            }
+          });
+        })
+        .catch(() => {
+          // on cancel
+          this.setData({
+            textareaDisabled:false
+          });
+        });
+    } else {
+      // wx.showModal({
+      //   title: '系统提示!',
+      //   content: errmsg,
+      //   showCancel: false
+      // });
+      return;
+    }
+  },
+
+  onChangeServiceUserBtnClick: function(e){
+    let that = this;
+    //console.log(e);
+    var eqpInfo = { formId: that.data.docFormidId,displayType: "品名", assetDesc: that.data.itemdsc, productcount: 1, assetFormId: that.data.assetno, repairUserName: that.data.repairUserName,creDate: that.data.formdate,serviceUserName: that.data.serviceusername};
+    var eqpInfoObj = JSON.stringify(eqpInfo);
+    wx.navigateTo({
+      url: '../eqpManagement/eqpRepairChangeServiceUser?eqpInfo=' + eqpInfoObj + '&docFormid=' + that.data.docFormidId + '&docId=' + that.data.docId
+    });
+  },
+
   eqpRepairFormSubmit: function(e){
     var that = this;
     //console.log(this.data.uploaderList);
     const FileSystemManager = wx.getFileSystemManager();
     //console.log(this.data);
-    var canSubmit = this.checkFormDtaBeforeSubmit();
+    //var canSubmit = this.checkFormDtaBeforeSubmit();
+    var canSubmit = true;
     var errmsg = '';
     if (!app.globalData.authorized) {
       canSubmit = false;
@@ -1160,7 +1359,7 @@ upload: function(e) {
         if(repairDocDta.rstatus == "10"){
           stepCode = 0;
         }
-        if(repairDocDta.rstatus == "20"){
+        if(repairDocDta.rstatus >= "20" && repairDocDta.rstatus < "30"){
           stepCode = 1;
         }
         if(repairDocDta.rstatus == "30"){
@@ -1179,6 +1378,7 @@ upload: function(e) {
           stepCode = 3;
         }
 
+        _this.data.showBtn.auditInfoBtn = true;
 
         if(repairDocDta.repairuser == app.globalData.employeeId){
           _this.data.steps = _this.data.steps_info;
@@ -1187,9 +1387,15 @@ upload: function(e) {
             _this.data.showBtn.arrivalCheckBtn = true;
             stepCode = 0;
           }
-          if(repairDocDta.rstatus == "20"){
+          if(repairDocDta.rstatus >= "20" && repairDocDta.rstatus < "30" && repairDocDta.rstatus != "28"){
             _this.data.showBtn.finishCheckBtn = true;
             stepCode = 1;
+          }
+          if(repairDocDta.rstatus == "28"){
+            _this.data.showBtn.finishCheckBtn = true;
+            _this.data.disableBtn.finishCheckBtn = true;
+            stepCode = 1;
+            _this.data.steps[stepCode].text = "暂停维修"
           }
           if(repairDocDta.rstatus >= "30"){
             _this.data.showBtn.auditInfoBtn = true;
@@ -1209,7 +1415,7 @@ upload: function(e) {
           }
         }
 
-        if(repairDocDta.serviceuser == app.globalData.employeeId){
+        if(repairDocDta.serviceuser == app.globalData.employeeId && repairDocDta.repairmethodtype != "2"){
           if(repairDocDta.rstatus <= "40"){
             _this.data.steps = _this.data.steps_repair;
           }
@@ -1217,10 +1423,22 @@ upload: function(e) {
             _this.data.steps = _this.data.steps_audit;
           }
           if(repairDocDta.rstatus == "10"){
+            _this.data.showBtn.deleteBtn = true;
+            _this.data.showBtn.changeServiceUserBtn = true;
             stepCode = 0;
           }
-          if(repairDocDta.rstatus == "20"){
+          if(repairDocDta.rstatus >= "20" && repairDocDta.rstatus < "30" && repairDocDta.rstatus != "28"){
+            _this.data.showBtn.deleteBtn = true;
+            _this.data.showBtn.saveRepairInfoBtn = true;
+            _this.data.showBtn.stopRepairBtn = true;
             stepCode = 1;
+          }
+          if(repairDocDta.rstatus == "28"){
+            _this.data.showBtn.saveRepairInfoBtn = true;
+            _this.data.showBtn.startRepairBtn = true;
+            _this.data.disableBtn.saveRepairInfoBtn = true;
+            stepCode = 1;
+            _this.data.steps[stepCode].text = "暂停维修"
           }
           if(repairDocDta.rstatus == "30"){
             _this.data.showBtn.startAuditBtn = true;
@@ -1248,7 +1466,7 @@ upload: function(e) {
           }
         }
 
-        if(app.globalData.defaultDeptId == "1W300"){
+        if(app.globalData.defaultDeptId == "1W300" || app.globalData.defaultDeptId == "13130"){
           if(repairDocDta.rstatus == "60"){
             _this.data.showBtn.approveAuditBtn = true;
           }
@@ -1274,12 +1492,13 @@ upload: function(e) {
           arrivalDate_bj = _this.utcInit(repairDocDta.servicearrivetime);
           var arrivalDateTemp = new Date(arrivalDate_bj);
           _this.data.contactTime = _this.timestampInit(arrivalDateTemp-creDateTemp);
-        }
-        if(repairDocDta.completetime != null){
-          completeDate_bj = _this.utcInit(repairDocDta.completetime);
-          var completeDataTemp = new Date(completeDate_bj);
-          _this.data.repairTime = _this.timestampInit(completeDataTemp - creDateTemp);
-          _this.data.repairTimestamp = completeDataTemp-creDateTemp;
+
+          if(repairDocDta.completetime != null){
+            completeDate_bj = _this.utcInit(repairDocDta.completetime);
+            var completeDataTemp = new Date(completeDate_bj);
+            _this.data.repairTime = _this.timestampInit(completeDataTemp - arrivalDateTemp);
+            _this.data.repairTimestamp = completeDataTemp-arrivalDateTemp;
+          }
         }
 
         _this.setData({
@@ -1299,7 +1518,7 @@ upload: function(e) {
           serviceuser: repairDocDta.serviceuser,
           serviceusername: repairDocDta.serviceusername,
           repairStepActive: stepCode,
-          disableCheckBtn: _this.data.disableCheckBtn,
+          disableBtn: _this.data.disableBtn,
           showBtn: _this.data.showBtn,
           steps: _this.data.steps,
           contactTime: _this.data.contactTime,
@@ -1329,6 +1548,7 @@ upload: function(e) {
     // let minutes = parseInt((timestampTemp/1000/3600%24 - hours) * 60);
 
     let hours = (timestampTemp/1000/3600).toFixed(1);
+    //let minutes = parseInt(timestampTemp/1000/60);
 
     return hours;
   },
@@ -1343,9 +1563,10 @@ upload: function(e) {
     var year_month_day = utc_datetime.substr(0,T_pos);
     var hour_minute_second = utc_datetime.substr(T_pos+1,Z_pos-T_pos-1);
     var new_datetime = year_month_day+" "+hour_minute_second; // 2017-03-31 08:02:06
+    var new_datetimeInit = new_datetime.replace(/-/g, '/');
 
     // 处理成为时间戳
-    timestamp = new Date(Date.parse(new_datetime));
+    timestamp = new Date(Date.parse(new_datetimeInit));
     timestamp = timestamp.getTime();
     timestamp = timestamp/1000;
 
@@ -1410,7 +1631,8 @@ upload: function(e) {
         var dataLen = res.data.length;
         var imagePathArray = [];
         for(var i = 0;i < dataLen;i++){
-          imagePathArray = imagePathArray.concat([app.globalData.restAdd + "/Hanbell-EAM/resources/app/res/" + res.data[i].filename]);
+          var pathArray = res.data[i].filepath.split("/");
+          imagePathArray = imagePathArray.concat([app.globalData.restAdd + "/Hanbell-EAM/resources/app/res/" + pathArray.pop()]);
         }
 
         //console.log(imagePathArray);

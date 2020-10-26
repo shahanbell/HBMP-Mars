@@ -35,11 +35,16 @@ Page({
    * 页面的初始数据
    */
   data: {
+    collapseActiveNames: [],
+
+    repairBasicInfoCardHeight: '400',
+    completeFlag:false,
     totalPrice:null,
     spareCost:null,
     laborCost:null,
     repairCost:null,
     repairTimestamp:null,
+    downTimestamp: null,
     exceptTime:'0',
     stopWorkTime:'0',
     spareSelectPopup: null,
@@ -59,7 +64,12 @@ Page({
     serviceUserList:[], 
     hitchDutyList:[],
     repairHisList:[],
-    abraseHitchList:[{abraseHitchId : '1',abraseHitchDesc: '非正常磨损'},{abraseHitchId : '2',abraseHitchDesc: '正常磨损'}],
+    repairHelperList:[],
+    abraseHitchList:[{abraseHitchId : '01',abraseHitchDesc: '使用不当'},
+                     {abraseHitchId : '02',abraseHitchDesc: '保养不当'},
+                     {abraseHitchId : '03',abraseHitchDesc: '维修不当'},
+                     {abraseHitchId : '04',abraseHitchDesc: '劣质配件'},
+                     {abraseHitchId : '05',abraseHitchDesc: '正常使用寿命'}],
     //hitchTypeList:[{hitchTypeCode: '0', hitchTypeName: '一般故障'},{hitchTypeCode: '1', hitchTypeName: '严重故障'}],
     hitchTypeList:[],
     hitchSort01List:[],
@@ -78,6 +88,7 @@ Page({
     show:{
       eqpSelectorPopup: false,
       hitchDutySelectorPopup: false,
+      repairHelperSelectorPopup: false,
       hitchSort01SelectorPopup: false,
       abraseSelectorPopup: false,
       hitchTypeSelectorPopup: false,
@@ -127,6 +138,7 @@ Page({
     hitchReason:'',
     repairProcess:'',
     measure:'',
+    reRepairFlag: null,
 
     auditTabActive: 0,
 
@@ -141,6 +153,41 @@ Page({
       return value;
     },
 
+  },
+
+  onCollapseChange(event) {
+    console.log(event);
+    this.setData({
+      collapseActiveNames: event.detail,
+    });
+  },
+
+    /**
+   * 滑动单元格关闭事件
+   */
+  onSwipeClose: function(event){
+    console.log(event);
+    var that = this;
+    const { position, instance } = event.detail;
+    console.log("position:" + position);
+    switch (position) {
+      case 'right':
+      case 'cell':
+        instance.close();
+        break;
+      case 'left':
+        console.log(that.data.barCodeId);
+        //this.getAssetInfo(this.data.barCodeId);
+        instance.close();
+        break;
+    }
+  },
+
+  on2ndRepairChange(event){
+    console.log(event);
+    this.setData({
+      reRepairFlag:event.detail
+    });
   },
 
   bindServiceUserPickerChange(e) {
@@ -383,6 +430,47 @@ upload: function(e) {
       this.closeHitchDutySelectorPopup();
   },
 
+    /**
+   * 辅助人员信息单元格点击事件
+   */
+  onRepairHelperCellTap: function(){
+    this.setData({
+      show:{
+        repairHelperSelectorPopup: true
+      }
+    });
+  },
+
+    /**
+   * 辅助人员选择弹窗关闭事件
+   */
+  closeRepairHelperSelectorPopup: function(){
+    //console.log("HitchDutyListClose!");
+    this.setData({
+      show:{
+        repairHelperSelectorPopup: false
+      }
+    });
+  },
+
+  onRepairHelperSelBackClick: function(){
+    this.closeRepairHelperSelectorPopup();
+    this.setData({
+      //orderList: [],
+      eqpListScrollTop:0,
+      });
+  },
+
+  onRepairHelperSelResetClick(){
+    hitchDutyListDta = null;
+    this.setData({
+      //orderList: [],
+      hitchDutyList:[],
+      eqpListScrollTop:0,
+      });
+      this.closeRepairHelperSelectorPopup();
+  },
+
   pullDownTest(){
     //console.log("test");
     this.setData({
@@ -500,6 +588,7 @@ upload: function(e) {
       restUrl += '/f;basicInfo=' + res + '/s';
       // restUrl += '/f' + '/s';
       restUrl += '/' + 0 + '/' + 20;
+      restUrl = encodeURI(restUrl);
       //console.log(restUrl);
       wx.showLoading({
         title: 'Sending',
@@ -592,6 +681,7 @@ upload: function(e) {
       //restUrl += '/f;deptno=' + '13000' + '/s';
       restUrl += '/f;basicInfo=' + res + '/s';
       restUrl += '/' + 0 + '/' + 20;
+      restUrl = encodeURI(restUrl);
       //console.log(restUrl);
       wx.showLoading({
         title: 'Sending',
@@ -713,8 +803,53 @@ upload: function(e) {
       this.closeHitchDutySelectorPopup();
     },
 
+    repairHelperCardSelect:function(e){
+      //console.log(spareListDta);
+      var eqpIndex = 0;
+      var findFlag = false;
+      let _this = this;
+      if(e.currentTarget.id.split('_').length > 1){
+        eqpIndex = e.currentTarget.id.split('_')[1];
+      }
+      var repairHelperList = this.data.repairHelperList;
+      var hitchDutyList = this.data.hitchDutyList;
+      let repairHelperItem = hitchDutyList[eqpIndex];
 
+      //console.log(spareListItem);
 
+      if(app.globalData.employeeId == repairHelperItem.userId){
+        findFlag = true;
+      }
+
+      for(var i = 0 ; i< repairHelperList.length;i++){
+        if(repairHelperList[i].CurNode == repairHelperItem.userId){
+          findFlag = true;
+          break;
+        }
+      }
+
+      if(!findFlag){
+        let newItem = {Id: '',Company:'',Pid:'',Seq:'',Rtype:'',CurNode:'',CurNode2:'',UserNo:''};
+        newItem.Id = repairHelperItem.userId;
+        newItem.Company = "C";
+        newItem.Pid = this.data.docFormid;
+        newItem.Rtype = "0";
+        newItem.CurNode =repairHelperItem.userId;
+        newItem.CurNode2 = repairHelperItem.userName;
+        newItem.UserNo = '';
+        this.data.repairHelperList.push(newItem);
+      }
+
+      findFlag = false;
+
+      this.setData({
+        repairHelperList: _this.data.repairHelperList,
+      });
+
+      //console.log(this.data.spareUsedList);
+      
+      this.closeRepairHelperSelectorPopup();
+    },
 
     onHitchSort01CellTap:function(){
       this.showHitchSort01SelectorPopup();
@@ -909,6 +1044,12 @@ upload: function(e) {
     var opedesc = e.currentTarget.dataset.opedesc;
     var restApiTemp = e.currentTarget.dataset.subtype;
     var errmsg = '';
+
+    var jsonArrayTemp = [];
+    jsonArrayTemp.push(that.data.spareUsedList);
+    jsonArrayTemp.push(that.data.repairHelperList);
+    console.log(jsonArrayTemp);
+
     if (!app.globalData.authorized) {
       canSubmit = false;
       errmsg += '账号未授权\r\n';
@@ -930,6 +1071,9 @@ upload: function(e) {
             title: 'Sending',
             mask: true
           });
+          var jsonArray = [];
+          jsonArray.push(that.data.spareUsedList);
+          jsonArray.push(that.data.repairHelperList);
           wx.request({
             url: app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/' + restApiTemp + '?' + app.globalData.restAuth,
             //url: 'http://325810l80q.qicp.vip' + '/Hanbell-JRS/api/shbeam/equipmentinventory/insertStockInfo4MicroApp?' + app.globalData.restAuth,
@@ -955,7 +1099,8 @@ upload: function(e) {
               sparecost:that.data.spareCost,
               repaircost:that.data.repairCost,
               laborcosts:that.data.laborCost,
-              remark: JSON.stringify(that.data.spareUsedList)
+              remark: JSON.stringify(jsonArray),
+              optuser: that.data.reRepairFlag.toString(),
             },
             header: {
               'content-type': 'application/json'
@@ -1000,7 +1145,7 @@ upload: function(e) {
               wx.hideLoading();
               wx.showModal({
                 title: '系统提示',
-                content: "请联系管理员:" + fail,
+                content: "网络异常请重试:" + fail,
                 showCancel: false
               });
             }
@@ -1280,6 +1425,86 @@ upload: function(e) {
 
   },
 
+  onRepairHelperSwipeClose:function(e){
+    console.log(e);
+    const { position, instance } = e.detail;
+    instance.close();
+    if(e.detail.position != "right"){
+      return;
+    }
+    //console.log(this.data.spareUsedList[e.currentTarget.dataset.itemindex])
+    let _this = this;
+
+
+    Dialog.confirm({
+      title: '系统提示',
+      message: '确认删除吗?',
+      zIndex: 1000,
+    })
+      .then(() => {
+        console.log(_this.data.repairHelperList[e.currentTarget.dataset.itemindex]);
+        if(_this.data.repairHelperList[e.currentTarget.dataset.itemindex].Id == '' || _this.data.repairHelperList[e.currentTarget.dataset.itemindex].Id == null){
+          var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/deleteRepairHelperDta' + '?' + app.globalData.restAuth;
+          //console.log(restUrl);
+          wx.showLoading({
+            title: '获取中...',
+            mask: true
+          });
+          wx.request({
+            url: restUrl,
+            data: {
+              id:_this.data.repairHelperList[e.currentTarget.dataset.itemindex].docId,
+            },
+            header: {
+              'content-type': 'application/json'
+            },
+            method: 'POST',
+            success: function (res) {
+              //console.log(res);
+
+              if(res.data == "" || res.statusCode != 200){
+                //console.log("no Data");
+                wx.hideLoading();
+                return;
+              }
+
+              _this.data.repairHelperList.splice(e.currentTarget.dataset.itemindex,1);
+              _this.setData({
+                repairHelperList : _this.data.repairHelperList
+              });
+              _this.updateLaborCost();
+              _this.getTotalPrice();
+              wx.hideLoading();
+            },
+            fail: function (fail) {
+              wx.hideLoading();
+              console.log(fail.data);
+              Dialog.alert({
+                title: '系统消息',
+                message: fail.data + "-" + fail.statusCode + "-" + fail.header + "-" + fail.cookies,
+              }).then(() => {
+                // on close
+                //initProInfo(_this);
+                wx.navigateBack();
+              });
+            }
+          });
+        }
+        else{
+          _this.data.repairHelperList.splice(e.currentTarget.dataset.itemindex,1);
+          _this.setData({
+            repairHelperList : _this.data.repairHelperList
+          });
+          _this.updateLaborCost();
+          _this.getTotalPrice();
+        }
+      })
+      .catch(() => {
+        // on cancel
+      });
+
+  },
+
   inputConfirmTest:function(e){
     console.log(e);
   },
@@ -1288,13 +1513,13 @@ upload: function(e) {
     var spareListTemp = this.data.spareUsedList;
     var totalPrice = 0;
     var spareCostTemp = 0;
-    var repairCostTemp = isNaN(parseInt(this.data.repairCost)) ? 0 : parseInt(this.data.repairCost);
-    var laborCostTemp = isNaN(parseInt(this.data.laborCost)) ? 0 : parseInt(this.data.laborCost);
+    var repairCostTemp = isNaN(parseFloat(this.data.repairCost)) ? 0 : parseFloat(this.data.repairCost);
+    var laborCostTemp = isNaN(parseFloat(this.data.laborCost)) ? 0 : parseFloat(this.data.laborCost);
     for(var i = 0 ; i < spareListTemp.length ; i++){
       totalPrice = totalPrice + spareListTemp[i].uPrice * spareListTemp[i].qty;
     }
     spareCostTemp = totalPrice;
-    totalPrice = (totalPrice + repairCostTemp + laborCostTemp) * 100;
+    totalPrice = (totalPrice + repairCostTemp + laborCostTemp).toFixed(2) * 100;
     this.setData({
       totalPrice : totalPrice,
       spareCost : spareCostTemp,
@@ -1358,7 +1583,7 @@ upload: function(e) {
     })
   },
 
-      /**
+    /**
    * Fields数据绑定
    */
   bindExtraCost(event){
@@ -1367,6 +1592,41 @@ upload: function(e) {
      [name]:event.detail
     })
     this.getTotalPrice();
+  },
+
+  /**
+   * Fields数据绑定
+   */
+  bindLaborTime(event){
+    let name = event.currentTarget.dataset.name;
+    this.setData({
+     [name]:event.detail
+    })
+    this.updateLaborCost();
+    this.getTotalPrice();
+  },
+
+  /**
+   * Fields数据绑定
+   */
+  bindStopWorkTime(event){
+    let _this = this;
+    if(event.detail == null || event.detail == ''){
+      this.setData({
+        stopWorkTime: '0'
+      });
+      return;
+    }
+    if(isNaN(event.detail)){
+      this.setData({
+        stopWorkTime: _this.data.stopWorkTime
+      });
+      return;
+    }
+    let name = event.currentTarget.dataset.name;
+    this.setData({
+     [name]:parseInt(event.detail)
+    })
   },
 
   dateFormatForFilter(date){
@@ -1451,10 +1711,21 @@ upload: function(e) {
           var eqpRepairInfo = res.data[0];
           var fileUploadList = res.data[3];
           var spareUsedList = res.data[4];
+          var repairHelperList = res.data[5];
+          console.log(repairHelperList);
           var abraseHitchList = _this.data.abraseHitchList;
           var abraseHitchObjTemp = abraseHitchList[0];
           var hitchSort01ObjTemp = null;
           var hitchTypeObjTemp = null;
+
+          if(eqpRepairInfo.rstatus < "30"){
+            _this.data.completeFlag = false;
+            _this.data.repairBasicInfoCardHeight = '400'
+          }
+          else{
+            _this.data.completeFlag = true;
+            _this.data.repairBasicInfoCardHeight = '485'
+          }
 
           for(var i = 0;i<abraseHitchList.length;i++){
             if(abraseHitchList[i].abraseHitchId == eqpRepairInfo.abrasehitch){
@@ -1523,9 +1794,25 @@ upload: function(e) {
             _this.data.spareUsedList.push(newItem);
           }
 
-          
+          for(var i = 0;i < repairHelperList.length; i++){
+            if(repairHelperList[i].rtype != "0"){
+              let newItem = {Id: '',Company:'',Pid:'',Seq:'',Rtype:'',CurNode:'',CurNode2:'',UserNo:''};
+              newItem.Id = '';
+              newItem.docId = repairHelperList[i].id;
+              newItem.Company = repairHelperList[i].company;
+              newItem.Pid = repairHelperList[i].pid;
+              newItem.Seq = repairHelperList[i].seq;
+              newItem.Rtype = repairHelperList[i].rtype;
+              newItem.CurNode = repairHelperList[i].curnode;
+              newItem.CurNode2 = repairHelperList[i].curnode2;
+              newItem.UserNo = repairHelperList[i].userno;
+              _this.data.repairHelperList.push(newItem);
+            }
+          }
 
           _this.setData({
+            completeFlag: _this.data.completeFlag,
+            repairBasicInfoCardHeight: _this.data.repairBasicInfoCardHeight,
             //hitchDesc: res.data[0].hitchdesc,
             hitchSort01List : _this.data.hitchSort01List,
             //hitchSort01Obj: _this.data.hitchSort01List[0],
@@ -1541,6 +1828,7 @@ upload: function(e) {
                                hitchDutyUserId:eqpRepairInfo.hitchdutyuser == null ? null : eqpRepairInfo.hitchdutyuser},
             abraseHitchObj: abraseHitchObjTemp,
             hitchTypeObj: hitchTypeObjTemp,
+            reRepairFlag: eqpRepairInfo.remark == null ? 'false' : (eqpRepairInfo.remark == "true"),
             hitchDesc:eqpRepairInfo.hitchdesc == null ? '' : eqpRepairInfo.hitchdesc,
             hitchAlarm:eqpRepairInfo.hitchalarm == null ? '' : eqpRepairInfo.hitchalarm,
             hitchReason:eqpRepairInfo.hitchreason == null ? '' : eqpRepairInfo.hitchreason,
@@ -1555,6 +1843,7 @@ upload: function(e) {
             uploaderList:imagePathArray,
             uploaderObjInfoList:uploaderObjInfoList,
             spareUsedList: _this.data.spareUsedList,
+            repairHelperList:_this.data.repairHelperList,
 
             uploaderNum: _this.data.uploaderNum,
             showUpload: _this.data.showUpload,
@@ -1615,12 +1904,13 @@ upload: function(e) {
           var repairHisListInfo = res.data[0];
           
           for(var i= 0;i<repairHisListInfo.length;i++){
-            let newItem = {pId:'', userNo: '', userName: '', creDate: '', contenct: ''};
+            let newItem = {pId:'', userNo: '', userName: '', creDate: '', contenct: '', note:''};
             newItem.pId = repairHisListInfo[i].pid;
             newItem.userNo = repairHisListInfo[i].userno;
             newItem.userName = repairHisListInfo[i].username;
             newItem.creDate = _this.utcInit(repairHisListInfo[i].credate);
             newItem.contenct = repairHisListInfo[i].contenct;
+            newItem.note = repairHisListInfo[i].note;
             _this.data.repairHisList.push(newItem);
           }
 
@@ -1654,9 +1944,10 @@ upload: function(e) {
     var year_month_day = utc_datetime.substr(0,T_pos);
     var hour_minute_second = utc_datetime.substr(T_pos+1,Z_pos-T_pos-1);
     var new_datetime = year_month_day+" "+hour_minute_second; // 2017-03-31 08:02:06
+    var new_datetimeInit = new_datetime.replace(/-/g, '/');
 
     // 处理成为时间戳
-    timestamp = new Date(Date.parse(new_datetime));
+    timestamp = new Date(Date.parse(new_datetimeInit));
     timestamp = timestamp.getTime();
     timestamp = timestamp/1000;
 
@@ -1709,32 +2000,72 @@ upload: function(e) {
   },
 
   onExceptTimeChange:function(e){
-    if(e.detail > this.data.downTime){
+    let _this = this;
+    var exceptTimeTemp = e.detail;
+    var downTimestamp = this.data.repairTimestamp == null ? parseInt('0') : this.data.repairTimestamp;
+    if(e.detail == null || e.detail == ''){
+      exceptTimeTemp = '0'
+      this.setData({
+        exceptTime: '0'
+      });
+    }
+    else if(isNaN(e.detail)){
+      exceptTimeTemp = this.data.exceptTime
+      this.setData({
+        exceptTime: _this.data.exceptTime
+      });
+    }
+    else if(e.detail * 60000 > downTimestamp){
+      exceptTimeTemp = '0'
       this.setData({
         exceptTime: '0',
       });
-      return;
     }
-    this.updateDownTime(e.detail);
+    this.updateDownTime(parseInt(exceptTimeTemp));
+    this.getTotalPrice();
   },
 
   updateDownTime:function(dta){
     //console.log(dta);
-    var downTimestamp = this.data.repairTimestamp;;
-    downTimestamp = downTimestamp - dta * 3600000;
-    var downTimeTemp = this.timestampInit(downTimestamp);
+    var downTimestamp = this.data.repairTimestamp == null ? parseInt('0') : this.data.repairTimestamp;
+    downTimestamp = downTimestamp - dta * 60000;
+    if(downTimestamp < 0){
+      downTimestamp = 0;
+    }
+    var downTimeTemp = this.timestampInit_toMinutes(downTimestamp);
     this.setData({
       exceptTime:dta,
-      downTime:downTimeTemp
+      downTime:downTimeTemp,
+      downTimestamp: downTimestamp
     });
+
+    this.updateLaborCost();
   },
   
-  timestampInit:function(timestampTemp){
+  timestampInit_toMinutes:function(timestampTemp){
     // let day = parseInt(timestampTemp/1000/3600/24);
     // let hours = parseInt(timestampTemp/1000/3600%24);
     // let minutes = parseInt((timestampTemp/1000/3600%24 - hours) * 60);
-    let hours = (timestampTemp/1000/3600).toFixed(1);
-    return hours;
+    //let hours = (timestampTemp/1000/3600).toFixed(1);
+    let minutes = parseInt(timestampTemp/1000/60);
+    return minutes;
+  },
+
+  updateLaborCost:function(){
+    var repairHelperList = this.data.repairHelperList;
+    var downTime_minute = this.data.downTime == null ? '0' : this.data.downTime;
+    var totalTime = parseInt('0');
+    totalTime = totalTime + parseInt(downTime_minute);
+    for(var i = 0;i < repairHelperList.length;i++){
+      if(repairHelperList[i].rtype != "0"){
+        totalTime = totalTime + (isNaN(parseInt(repairHelperList[i].UserNo)) ? 0 : parseInt(repairHelperList[i].UserNo));
+      }
+    }
+    console.log(totalTime);
+    var laborCost = (totalTime * 0.7).toFixed(1);
+    this.setData({
+      laborCost: laborCost
+    });
   },
 
   ifshowArea:function(e){
