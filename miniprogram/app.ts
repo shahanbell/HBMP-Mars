@@ -23,6 +23,8 @@ export interface IMyApp {
     screenHeight?: number,
     statusBarHeight?: number,
     windowHeight?: number,
+    weChatCallBack?: string,
+    authData: Array<string>[],
   }
 }
 
@@ -63,7 +65,7 @@ App<IMyApp>({
                 method: 'GET',
                 success: res => {
                   // console.log("User信息：" + res.data)
-                  this.globalData.defaultCompany = res.data.company,
+                    this.globalData.defaultCompany = res.data.company,
                     this.globalData.defaultCompanyName = res.data.companyName,
                     this.globalData.defaultDeptId = res.data.deptno,
                     this.globalData.defaultDeptName = res.data.deptname
@@ -83,10 +85,11 @@ App<IMyApp>({
                 },
                 method: 'GET',
                 success: res => {
+                  var that=this;
                   var data = res.data;
-                  if (this.authInfoReadyCallback) {
-                    this.globalData.authData = data;
-                    this.authInfoReadyCallback(data);
+                  that.globalData.authData = data;
+                  if (that.authInfoReadyCallback) {
+                    that.authInfoReadyCallback(data);
                   }
                 },
                 fail: fail => {
