@@ -71,7 +71,8 @@
     "pages/eqpManagement/eqpRepairDoApproveCheck",
     "pages/eqpManagement/eqpRepairDutyResponse",
     "pages/eqpManagement/eqpRepairStop",
-    "pages/eqpManagement/eqpRepairChangeServiceUser"
+    "pages/eqpManagement/eqpRepairChangeServiceUser",
+    "pages/eqpManagement/eqpRepairDetailCheck"
   ],
   "subpackages": [
     {

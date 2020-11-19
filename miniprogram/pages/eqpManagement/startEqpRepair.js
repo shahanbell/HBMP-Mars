@@ -27,6 +27,7 @@ var eqpListDta = null;
 var serviceUserDta = null;
 var troubleReasonDta = null;
 var hitchUrgencyDta = null;
+var repairAreaDta = null;
 var dateTemp = null;
 Page({
 
@@ -42,9 +43,10 @@ Page({
     eqpListHeight: null,
     nodataType: 7,
     orderList: [],    //订单列表数据，接口获取
-    serviceUserList:[], 
+    serviceUserList:[{userId:null,userName:'请选择',userInfo:'请选择'}], 
     troubleReasonList:[],
     hitchUrgencyList:[],
+    repairAreaList:[{repairAreaDesc:'请选择',repairAreaValue:'-1'}],
     repairMethodList:[{repairMethodDesc:'维修课维修',repairMethodValue:'1'},
                       {repairMethodDesc:'现场自主维修',repairMethodValue:'2'},
                       {repairMethodDesc:'委外维修',repairMethodValue:'3'}],
@@ -67,6 +69,7 @@ Page({
       repairMethodSelectorPopup:false,
       suppleStartDateSelectorPopup:false,
       suppleCompleteDateSelectorPopup: false,
+      repairAreaSelectorPopup:false,
       dateFilterPopup: false,
       statusFilterPopup: false,
       dateSelector: false,
@@ -100,6 +103,7 @@ Page({
     hitchUrgencyId:null,
     hitchUrgencyDesc:null,
     repairMethodObj:null,
+    repairAreaObj:null,
     formdate: null,
     formdateTS: null,
     suppleStartDateObj:{},
@@ -411,6 +415,25 @@ upload: function(e) {
       //restUrl += '/f;deptno=' + '13000' + '/s';
       //restUrl += '/f;formid=' + '0005' + '/s';
       restUrl += '/f;';
+
+      if(res.indexOf('其他') > -1){
+        let otherItem = {id:"-1",assetDesc:"其他设备",formid:"无",assetItem:{itemno:'9'},repairuser:'',repairusername:'',username:'无',qty:'1',position1:{name:'无'},position2:{name:''}};
+        eqpListDta = new Array(otherItem);
+        let newItem = { shop: "A119-01", shopurl: "/images/1.jpg", origin: "TaoBao", orderstate: "", pictureurl: "/images/1.jpg", couponname: "品名", orderdtt: "副齿轮检验轴AA-2600I", productcount: 1, ordernum: "202054654654466", type: "维修", payamount: "技术员" };
+        newItem.shop = eqpListDta[0].assetItem.itemno;
+        newItem.orderdtt = eqpListDta[0].assetDesc;
+        newItem.productcount = eqpListDta[0].qty;
+        newItem.ordernum = eqpListDta[0].formid;
+        newItem.payamount = eqpListDta[0].username;
+        _this.data.orderList.push(newItem);
+
+
+        _this.setData({
+          orderList: _this.data.orderList
+        });
+        return;
+      }
+
       var exSearchArray = this.data.searchItemList;
       for(var i = 0;i<exSearchArray.length;i++){
         if(exSearchArray[i].itemSelected){
@@ -510,6 +533,7 @@ upload: function(e) {
         assetPosition: eqpListDta[eqpIndex].position1.name + eqpListDta[eqpIndex].position2.name,
 
       });
+      this.setEqpRepairArea(eqpListDta[eqpIndex].position2.name);
       this.closeEqpSelectorPopup();
     },
 
@@ -763,6 +787,7 @@ onServiceUserPickerCancel: function(event){
               serviceusername: that.data.serviceusername,
               serviceuser: that.data.serviceuser,
               creator: app.globalData.employeeId,
+              repairarea: that.data.repairAreaObj.repairAreaValue,
               repairdeptno: app.globalData.defaultDeptId,
               repairdeptname: app.globalData.defaultDeptName,
               hitchurgency: that.data.hitchUrgencyId,
@@ -966,6 +991,7 @@ onServiceUserPickerCancel: function(event){
             serviceUserDta = res.data[0];
             troubleReasonDta = res.data[1];
             hitchUrgencyDta = res.data[2];
+            repairAreaDta = res.data[3];
           }
 
           var dataLen = res.data.length;
@@ -995,10 +1021,18 @@ onServiceUserPickerCancel: function(event){
             _this.data.hitchUrgencyList.push(newItem);
           }
 
+          for(var i = 0;i < repairAreaDta.length; i++){
+            let newItem = { repairAreaValue: "" , repairAreaDesc: ""};
+            newItem.repairAreaValue = repairAreaDta[i].cdesc;
+            newItem.repairAreaDesc = repairAreaDta[i].cdesc;
+            _this.data.repairAreaList.push(newItem);
+          }
+
           _this.setData({
             serviceUserList: _this.data.serviceUserList,
             troubleReasonList: _this.data.troubleReasonList,
             hitchUrgencyList: _this.data.hitchUrgencyList,
+            repairAreaList: _this.data.repairAreaList,
             serviceuser: _this.data.serviceUserList[0].userId,
             serviceusername: _this.data.serviceUserList[0].userName,
             troubleFrom: _this.data.troubleReasonList[0].troubleId,
@@ -1006,6 +1040,7 @@ onServiceUserPickerCancel: function(event){
             hitchUrgencyId: _this.data.hitchUrgencyList[0].hitchUrgencyId,
             hitchUrgencyDesc: _this.data.hitchUrgencyList[0].hitchUrgencyDesc,
             repairMethodObj: _this.data.repairMethodList[0],
+            repairAreaObj:_this.data.repairAreaList[0],
           });
           wx.hideLoading();
         },
@@ -1230,7 +1265,8 @@ onServiceUserPickerCancel: function(event){
         });
       return false;
     }
-    if(this.data.troubleFrom == null || this.data.formdateTS == null || this.data.serviceuser == null || this.data.troubleDetailInfo == null || this.data.uploaderList.length < 1){
+    console.log(this.data.serviceuser);
+    if(this.data.troubleFrom == null || this.data.formdateTS == null || this.data.serviceuser == null || this.data.troubleDetailInfo == null || this.data.uploaderList.length < 1 || this.data.repairAreaObj.repairAreaValue == '-1'){
       Dialog.alert({
         title: '系统消息',
         message: "请将信息填写完整",
@@ -1374,6 +1410,14 @@ onServiceUserPickerCancel: function(event){
   onPickerChange: function(event){
     const { picker, value, index } = event.detail;
     var selectorName = event.currentTarget.dataset.selector + "Obj";
+    this.pickerChangeDapter(event);
+    this.setData({
+      [selectorName]:value
+    });
+  },
+
+  pickerChangeDapter:function(event){
+    const { picker, value, index } = event.detail;
     if(event.currentTarget.dataset.selector == "repairMethod"){
       if(value.repairMethodValue == '2'){
         this.setData({
@@ -1386,9 +1430,20 @@ onServiceUserPickerCancel: function(event){
         });
       }
     }
-    this.setData({
-      [selectorName]:value
-    });
+    else if(event.currentTarget.dataset.selector == "repairArea" && this.data.itemdsc == "其他设备"){
+      if("枫泾总部" == value.repairAreaValue){
+        this.setData({
+          serviceuser: 'C0567',
+          serviceusername: '张国荣',
+        });
+      }
+      else if("枫泾一厂" == value.repairAreaValue){
+        this.setData({
+          serviceuser: 'C1233',
+          serviceusername: '曹雪平',
+        });
+      }
+    }
   },
 
   onPickerConfirm: function(event){
@@ -1437,6 +1492,37 @@ onServiceUserPickerCancel: function(event){
     });
     this.closeSelectorPopup(event);
   },
+
+  setEqpRepairArea:function(positionName){
+    var repairAreaListTemp = this.data.repairAreaList;
+    for(var i = 0;i < repairAreaListTemp.length;i++){
+      if(positionName == repairAreaListTemp[i].repairAreaValue){
+        this.setData({
+          repairAreaObj: repairAreaListTemp[i]
+        });
+        return;
+      }
+    }
+
+    this.setData({
+      repairAreaObj: repairAreaListTemp[0],
+      serviceuser: null,
+      serviceusername: '请选择',
+    });
+
+    // if("枫泾总部" == this.data.repairAreaObj.repairAreaDesc){
+    //   this.setData({
+    //     serviceuser: 'C0567',
+    //     serviceusername: '张国荣',
+    //   });
+    // }
+    // else if("枫泾一厂" == this.data.repairAreaObj.repairAreaDesc){
+    //   this.setData({
+    //     serviceuser: 'C1233',
+    //     serviceusername: '曹雪平',
+    //   });
+    // }
+  }
 })
 
 function initProInfo(that) {

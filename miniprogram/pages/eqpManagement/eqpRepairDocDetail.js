@@ -44,7 +44,7 @@ Page({
       responseDutyBtn:false,
       approveAuditBtn:false,
       examAuditBtn: false,
-      auditInfoBtn: false,
+      detailCheckBtn: false,
       stopRepairBtn: false,
       startRepairBtn: false,
       changeServiceUserBtn: false,
@@ -70,8 +70,9 @@ Page({
     currentDate: null,
     contactTime:null,
     repairTime:null,
-    repairTimstamp:null,
+    repairTimestamp:null,
     downTime:null,
+    downTimestamp:null,
 
     docId: null,
     docFormidId: null,
@@ -824,11 +825,20 @@ upload: function(e) {
       return;
     }
   },
+  onDetailBtnClick: function(e){
+    let that = this;
+    //console.log(e);
+    var eqpInfo = { formId: that.data.docFormidId,displayType: "品名", assetDesc: that.data.itemdsc, productcount: 1, assetFormId: that.data.assetno, repairUserName: that.data.repairUserName,creDate: that.data.formdate,serviceUserName: that.data.serviceusername,serviceArriveTime:that.data.serviceArriveTime,completeTime:that.data.completeTime,contactTime:that.data.contactTime,repairTime:that.data.repairTime,repairTimestamp:that.data.repairTimestamp,downTime:that.data.downTime,downTimestamp: that.data.downTimestamp};
+    var eqpInfoObj = JSON.stringify(eqpInfo);
+    wx.navigateTo({
+      url: '../eqpManagement/eqpRepairDetailCheck?eqpInfo=' + eqpInfoObj + '&docFormid=' + that.data.docFormidId + '&docId=' + that.data.docId
+    });
+  },
 
   onAuditBtnClick: function(e){
     let that = this;
     //console.log(e);
-    var eqpInfo = { formId: that.data.docFormidId,displayType: "品名", assetDesc: that.data.itemdsc, productcount: 1, assetFormId: that.data.assetno, repairUserName: that.data.repairUserName,creDate: that.data.formdate,serviceUserName: that.data.serviceusername,serviceArriveTime:that.data.serviceArriveTime,completeTime:that.data.completeTime,contactTime:that.data.contactTime,repairTime:that.data.repairTime,repairTimestamp:that.data.repairTimestamp };
+    var eqpInfo = { formId: that.data.docFormidId,displayType: "品名", assetDesc: that.data.itemdsc, productcount: 1, assetFormId: that.data.assetno, repairUserName: that.data.repairUserName,creDate: that.data.formdate,serviceUserName: that.data.serviceusername,serviceArriveTime:that.data.serviceArriveTime,completeTime:that.data.completeTime,contactTime:that.data.contactTime,repairTime:that.data.repairTime,repairTimestamp:that.data.repairTimestamp,downTime:that.data.downTime,downTimestamp: that.data.downTimestamp};
     var eqpInfoObj = JSON.stringify(eqpInfo);
     wx.navigateTo({
       url: '../eqpManagement/eqpRepairAuditCheck?eqpInfo=' + eqpInfoObj + '&docFormid=' + that.data.docFormidId + '&docId=' + that.data.docId
@@ -838,7 +848,7 @@ upload: function(e) {
   onApproveBtnClick: function(e){
     let that = this;
     //console.log(e);
-    var eqpInfo = { formId: that.data.docFormidId,displayType: "品名", assetDesc: that.data.itemdsc, productcount: 1, assetFormId: that.data.assetno, repairUserName: that.data.repairUserName,creDate: that.data.formdate,serviceUserName: that.data.serviceusername,serviceArriveTime:that.data.serviceArriveTime,completeTime:that.data.completeTime,contactTime:that.data.contactTime,repairTime:that.data.repairTime,repairTimestamp:that.data.repairTimestamp };
+    var eqpInfo = { formId: that.data.docFormidId,displayType: "品名", assetDesc: that.data.itemdsc, productcount: 1, assetFormId: that.data.assetno, repairUserName: that.data.repairUserName,creDate: that.data.formdate,serviceUserName: that.data.serviceusername,serviceArriveTime:that.data.serviceArriveTime,completeTime:that.data.completeTime,contactTime:that.data.contactTime,repairTime:that.data.repairTime,repairTimestamp:that.data.repairTimestamp,downTime:that.data.downTime,downTimestamp: that.data.downTimestamp};
     var eqpInfoObj = JSON.stringify(eqpInfo);
     wx.navigateTo({
       url: '../eqpManagement/eqpRepairApprove?eqpInfo=' + eqpInfoObj + '&docFormid=' + that.data.docFormidId + '&docId=' + that.data.docId
@@ -847,11 +857,10 @@ upload: function(e) {
 
   onDutyResBtnClick: function(e){
     let that = this;
-    //console.log(e);
-    var eqpInfo = { formId: that.data.docFormidId,displayType: "品名", assetDesc: that.data.itemdsc, productcount: 1, assetFormId: that.data.assetno, repairUserName: that.data.repairUserName,creDate: that.data.formdate,serviceUserName: that.data.serviceusername,serviceArriveTime:that.data.serviceArriveTime,completeTime:that.data.completeTime,contactTime:that.data.contactTime,repairTime:that.data.repairTime,repairTimestamp:that.data.repairTimestamp };
+    var eqpInfo = { formId: that.data.docFormidId,displayType: "品名", assetDesc: that.data.itemdsc, productcount: 1, assetFormId: that.data.assetno, repairUserName: that.data.repairUserName,creDate: that.data.formdate,serviceUserName: that.data.serviceusername,serviceArriveTime:that.data.serviceArriveTime,completeTime:that.data.completeTime,contactTime:that.data.contactTime,repairTime:that.data.repairTime,repairTimestamp:that.data.repairTimestamp};
     var eqpInfoObj = JSON.stringify(eqpInfo);
     wx.navigateTo({
-      url: '../eqpManagement/eqpRepairDutyResponse?eqpInfo=' + eqpInfoObj + '&docFormid=' + that.data.docFormidId + '&docId=' + that.data.docId
+      url: '../eqpManagement/eqpRepairDutyResponse?eqpInfo=' + eqpInfoObj + '&docFormid=' + that.data.docFormidId + '&docId=' + that.data.docId + '&downTime=' + that.data.downTime
     });
   },
 
@@ -1378,7 +1387,7 @@ upload: function(e) {
           stepCode = 3;
         }
 
-        _this.data.showBtn.auditInfoBtn = true;
+        _this.data.showBtn.detailCheckBtn = true;
 
         if(repairDocDta.repairuser == app.globalData.employeeId){
           _this.data.steps = _this.data.steps_info;
@@ -1388,21 +1397,23 @@ upload: function(e) {
             stepCode = 0;
           }
           if(repairDocDta.rstatus >= "20" && repairDocDta.rstatus < "30" && repairDocDta.rstatus != "28"){
+            _this.data.showBtn.deleteBtn = true;
             _this.data.showBtn.finishCheckBtn = true;
             stepCode = 1;
           }
           if(repairDocDta.rstatus == "28"){
+            _this.data.showBtn.deleteBtn = true;
             _this.data.showBtn.finishCheckBtn = true;
             _this.data.disableBtn.finishCheckBtn = true;
             stepCode = 1;
             _this.data.steps[stepCode].text = "暂停维修"
           }
           if(repairDocDta.rstatus >= "30"){
-            _this.data.showBtn.auditInfoBtn = true;
+            _this.data.showBtn.detailCheckBtn = true;
             stepCode = 2;
           }
           if(repairDocDta.rstatus == "95"){
-            _this.data.showBtn.auditInfoBtn = true;
+            _this.data.showBtn.detailCheckBtn = true;
             stepCode = 3;
           }
         }
@@ -1428,7 +1439,6 @@ upload: function(e) {
             stepCode = 0;
           }
           if(repairDocDta.rstatus >= "20" && repairDocDta.rstatus < "30" && repairDocDta.rstatus != "28"){
-            _this.data.showBtn.deleteBtn = true;
             _this.data.showBtn.saveRepairInfoBtn = true;
             _this.data.showBtn.stopRepairBtn = true;
             stepCode = 1;
@@ -1449,19 +1459,19 @@ upload: function(e) {
             stepCode = 3;
           }
           if(repairDocDta.rstatus == '50'){
-            _this.data.showBtn.auditInfoBtn = true;
+            _this.data.showBtn.detailCheckBtn = true;
             stepCode = 1;
           }
           if(repairDocDta.rstatus == '60'){
-            _this.data.showBtn.auditInfoBtn = true;
+            _this.data.showBtn.detailCheckBtn = true;
             stepCode = 2;
           }
           if(repairDocDta.rstatus == '70'){
-            _this.data.showBtn.auditInfoBtn = true;
+            _this.data.showBtn.detailCheckBtn = true;
             stepCode = 3;
           }
           if(repairDocDta.rstatus == '95'){
-            _this.data.showBtn.auditInfoBtn = true;
+            _this.data.showBtn.detailCheckBtn = true;
             stepCode = 4;
           }
         }
@@ -1480,7 +1490,7 @@ upload: function(e) {
 
         if(repairDocDta.rstatus == "95"){
           _this.data.steps = _this.data.steps_info;
-          _this.data.showBtn.auditInfoBtn = true;
+          _this.data.showBtn.detailCheckBtn = true;
           stepCode = 3;
         }
 
@@ -1498,6 +1508,15 @@ upload: function(e) {
             var completeDataTemp = new Date(completeDate_bj);
             _this.data.repairTime = _this.timestampInit(completeDataTemp - arrivalDateTemp);
             _this.data.repairTimestamp = completeDataTemp-arrivalDateTemp;
+
+            if(repairDocDta.excepttime != null){
+              _this.data.downTime = _this.timestampInit(completeDataTemp - creDateTemp - repairDocDta.excepttime * 60000);
+            }
+            else{
+              _this.data.downTime = _this.timestampInit(completeDataTemp - creDateTemp);
+            }
+            _this.data.downTimestamp = completeDataTemp-creDateTemp;
+
           }
         }
 
@@ -1506,8 +1525,8 @@ upload: function(e) {
           docId: repairDocDta.id,
           repairuser: repairDocDta.repairuser,
           repairUserName: repairDocDta.repairusername,
-          assetno: repairDocDta.assetno.formid,
-          itemdsc: repairDocDta.assetno.assetDesc,
+          assetno: repairDocDta.assetno == null ? '无' : repairDocDta.assetno.formid,
+          itemdsc: repairDocDta.assetno == null ? '其他设备' : repairDocDta.assetno.assetDesc,
           itemno: repairDocDta.itemno,
           troubleFrom: repairDocDta.troublefrom,
           troubleDetailInfo: repairDocDta.hitchdesc,
@@ -1523,7 +1542,7 @@ upload: function(e) {
           steps: _this.data.steps,
           contactTime: _this.data.contactTime,
           repairTime : _this.data.repairTime,
-          assetPosition: repairDocDta.assetno.position1.name + repairDocDta.assetno.position2.name,
+          assetPosition: repairDocDta.assetno == null ? repairDocDta.repairarea : repairDocDta.assetno.position1.name + repairDocDta.assetno.position2.name,
           hitchUrgency: repairDocDta.hitchurgency != null ? repairDocDta.hitchurgency : '',
         });
         wx.hideLoading();

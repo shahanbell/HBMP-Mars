@@ -593,9 +593,9 @@ Component({
             let newItem = { shop: "A119-01", shopurl: "/images/1.jpg", origin: "TaoBao", orderstate: "", pictureurl: "/images/1.jpg", couponname: "", orderdtt: "副齿轮检验轴AA-2600I", productcount: 1, ordernum: "202054654654466", type: "维修", payamount: "技术员" };
             newItem.shop = repairDocListDta[i].formid;
             newItem.orderstate = _this.getDocStatus(repairDocListDta[i].rstatus);
-            newItem.orderdtt = repairDocListDta[i].assetno.assetDesc;
+            newItem.orderdtt = repairDocListDta[i].assetno == null ? '其他设备' : repairDocListDta[i].assetno.assetDesc;
             newItem.couponname = '品名';
-            newItem.productcount = repairDocListDta[i].assetno.qty;
+            newItem.productcount = repairDocListDta[i].assetno == null ? '1' : repairDocListDta[i].assetno.qty;
             newItem.ordernum = _this.utcInit(repairDocListDta[i].hitchtime);
             newItem.payamount = repairDocListDta[i].repairusername;
             _this.data.repairDocListArray[currentTemp].push(newItem);

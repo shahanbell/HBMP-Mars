@@ -1029,7 +1029,7 @@ upload: function(e) {
     this.setData({
       docId: options.docId,
       docFormid: options.docFormid,
-      downTime:JSON.parse(options.eqpInfo).repairTime,
+      downTime:options.downTime,
       repairTimestamp:JSON.parse(options.eqpInfo).repairTimestamp
     })
 

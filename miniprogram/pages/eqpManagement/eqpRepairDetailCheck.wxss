@@ -1,0 +1,389 @@
+/* miniprogram/pages/eqpManagement/startEqpRepair.wxss */
+page {
+  padding-bottom: 0;
+}
+
+.submitWrap_fix{
+  height:40px;
+}
+
+.submitBarWrap_fix{
+  height:50px;
+}
+
+.eqpSelectorButtonBlock{
+  display: flex;
+  justify-content: center;  
+  align-items: center;
+  /* border-top:0px; */
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  margin-top: 10px;
+  margin-left:auto;
+  margin-right:auto;
+  margin-bottom: 10px;
+}
+
+.swiper-box{ 
+  display: block; 
+  height: 100%; 
+  width: 100%; 
+  /*margin-top: 90rpx;*/
+  overflow: hidden; 
+  background-color: #F8F8F8;
+  }
+
+.scrollTest{
+  background-color: #F8F8F8;
+  -webkit-flex-shrink: 0;
+  flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  height: 100%;
+  overflow: visible;
+  
+}
+
+
+.orderList{
+  width: 95%;
+  /* height: 485rpx; */
+  border-radius:16rpx;
+  background-color: rgb(255, 255, 255); 
+  margin-bottom: 20rpx;
+  margin-left:auto;
+  margin-right:auto;
+  padding: 30rpx 24rpx 0 24rpx;
+  box-sizing: border-box;
+  }
+
+  .hitchDutyList{
+    width: 95%;
+    height: 246rpx;
+    border-radius:16rpx;
+    background-color: rgb(255, 255, 255); 
+    margin-bottom: 20rpx;
+    margin-left:auto;
+    margin-right:auto;
+    padding: 30rpx 24rpx 0 24rpx;
+    box-sizing: border-box;
+    }
+
+  .spareList{
+    width: 95%;
+    height: 350rpx;
+    border-radius:16rpx;
+    background-color: rgb(255, 255, 255); 
+    margin-bottom: 20rpx;
+    margin-left:auto;
+    margin-right:auto;
+    padding: 30rpx 24rpx 0 24rpx;
+    box-sizing: border-box;
+    }
+
+  
+  .shop,.proInfo,.orderNum{
+  display: flex;
+  justify-content: space-between;
+  }
+  .shop_name{
+  font-size: 26rpx;
+  color: #333;
+  }
+  .shop_name image{
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 15rpx;
+  position: relative;
+  top: 8rpx;
+  /* margin-top: 15rpx; */
+  }
+  .shop .state{
+  font-size: 26rpx;
+  }
+  .shop .state_taobao{
+  color: #FF4B0A;
+  }
+  .shop .state_pdd{
+  color: #E22E1F;
+  }
+  .shop .state_jd{
+  color: #D32835;
+  }
+  .proInfo{
+  padding: 30rpx 0;
+  box-sizing: border-box;
+  }
+  .proInfo_img{
+  width:110rpx;
+  height:110rpx;
+  border-radius:10rpx;
+  overflow: hidden;
+  /* background-color: pink; */
+  }
+  .proInfo_right{
+  width: 522rpx;
+  padding-top: 12rpx;
+  box-sizing: border-box;
+  }
+  .proInfo_text{
+  display: flex;
+  vertical-align:middle;
+  justify-content: space-between;
+  justify-items: middle;
+  }
+  .proInfo_text_title{
+  font-size: 28rpx;
+  color: #000;
+  line-height: 45rpx;
+  white-space: nowrap;
+  max-width: 480rpx;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-bottom: 10rpx;
+  }
+  .proInfo_text_title .iconfont{
+  font-size: 30rpx;
+  }
+  .icon-qianjinjiantou{
+  font-size: 25rpx;
+  color: #000;
+  font-weight: bold;
+  }
+  .proInfo_text_dtt{
+  font-size: 24rpx;
+  color: #999; 
+  }
+  .proInfo_text_btt{
+    font-size: 24rpx;
+    color: #000; 
+    }
+  .proInfo_text_acount{
+  font-size: 26rpx;
+  color: #999; 
+  }
+  .spareInfo_text_acount{
+    border-radius: 10rpx;
+    font-size: 30rpx;
+    color: rgb(44, 42, 42); 
+    background-color: rgb(214, 214, 214);
+    text-align:center;
+    vertical-align:middle;
+    width:30px;
+    height:10px;
+    }
+  .proInfo_text_acount text{
+  font-size: 32rpx;
+  color: #000; 
+  }
+  .orderNum{
+  font-size: 24rpx;
+  color: #333; 
+  line-height: 82rpx;
+  border-top: 2rpx solid #eee;
+  white-space: nowrap;
+  }
+  .orderNum text{
+  position: relative;
+  font-size: 26rpx;
+  color: #000; 
+  }
+
+  .orderNum .totalCost{
+    position: relative;
+    font-size: 30rpx;
+    font:italic arial,sans-serif;
+    color: rgb(255, 60, 0)
+    }
+
+    .auditContect{
+      display: flex;
+      justify-content: space-between;
+      font-size: 24rpx;
+      color: #333; 
+      line-height: 82rpx;
+      border-top: 2rpx solid #eee;
+      white-space: nowrap;
+      }
+  
+    .auditContect text{
+      position: relative;
+      font-size: 26rpx;
+      color: #FF4B0A;
+    }
+  
+
+  .eqpListLoading{
+    display: flex;
+    /* padding-top: 5px; */
+    height: 55px;
+    justify-content: center;  
+    align-items: center;
+    /* margin-top: 12px;
+    margin-bottom: 12px; */
+  }
+
+  .eqpListWrap{
+    width: 100%;
+    height: 20rpx;
+  }
+
+  .searchRightIcon{
+    display: flex;
+    justify-content: center;
+  }
+/* 
+  button::after {
+    border-radius: 0;
+    border: none;
+    background: #1989fa;
+    color: #fff;
+    font-size: 14px;
+  }
+  */
+  /* button{
+      border-radius: 0;
+      border: none;
+      background: #1989fa;
+      color: #fff;
+      font-size: 14px;
+  } */
+ 
+
+  .auditSubmitBtn{
+    border-radius:0 !important;
+    border: none !important;
+    background: #1989fa !important;
+    color: #fff !important;
+    font-size: 15px;
+    width:100%;
+    height: 90rpx;
+    line-height: 90rpx;
+    position:fixed;
+    bottom:0px;
+  }
+
+  .cover-view button.auditSubmitBtn_hover{
+    background: #276baf !important;
+  }
+
+  cover-view{
+    height: 44px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 444;
+  }
+
+  .textarea_pro{
+    width: 100%;
+    height: 200rpx;
+    /* border: 3rpx solid #6699FF; */
+    background-color: white;
+  }
+  
+  .areaInput{
+    margin-left: 5%;
+    margin-right: 5%;
+    width: 90%;
+    height: 150rpx;
+  }
+
+  .areaTest{
+    margin-left: 5%;
+    margin-right: 5%;
+    width: 90%;
+    height: 150rpx;
+    /* display: -webkit-box ; */
+  overflow: scroll;
+  /* text-overflow: ellipsis; */
+  /* word-break: break-all; */
+  /* -webkit-box-orient: vertical;
+  -webkit-line-clamp:2;  */
+  }
+  
+  .textarea-counter {
+    margin-right:5%;
+    font-size: 24rpx;
+    color: #999;
+    text-align: right;
+    height: 40rpx;
+    line-height: 40rpx;
+    padding-top: 4rpx;
+  }
+
+  .submitBarBtn{
+    background-color: #9565E6;
+    color: white;
+  }
+
+  .submitBar_UltraInfoView{
+    flex-direction: column;
+    justify-content: center;
+    font-size: 24rpx;
+    color: #333; 
+    padding-right: 8px;
+    margin-top: 2rpx;
+    margin-bottom: 2rpx;
+    /* border-right: 3rpx solid #eee; */
+  }
+
+  .submitBar_UltraInfoView text{
+    font-size: 30rpx;
+    font:italic arial,sans-serif;
+    /* font: Avenir-Heavy,PingFang SC,Helvetica Neue,Arial,sans-serif; */
+    color: rgb(255, 60, 0)
+  }
+
+  .van-submit-bar__bar{
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+
+  .van-submit-bar__text{
+    padding-right: 6px !important;
+  }
+
+  .VerLine{
+    width: 3rpx;
+    height: 45px;
+    margin-top: 4rpx;
+    margin-bottom: 4rpx;
+    background-color: #eee;
+  }
+
+  .btnSlot_Yuan{
+    font-size: 18px;
+    color: rgb(197, 197, 197);
+    padding-right: 10px;
+  }
+
+  .btnSlot_Minite{
+    font-size: 15px;
+    color: rgb(197, 197, 197);
+    padding-right: 10px;
+  }
+
+  .vancell_submit{
+    height:50px;
+    display: flex;
+    justify-content: center;  
+    align-items: center;
+    padding:0 0 0 0 !important;
+  }
+
+  .addHelperView{
+    display: flex;
+    justify-content: center;  
+    align-items: center;
+  }
+
+  .cellSwitchPro{
+    display: flex;
+    justify-content: flex-end;
+  	align-items: flex-end;
+  }

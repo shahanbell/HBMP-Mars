@@ -209,7 +209,7 @@
   <van-cell border="{{ true }}" style="width:100%;position:fixed;bottom:0px;border-top: 2rpx solid #eee;z-index: 999;">
   <view>
     <van-button round wx:if="{{showBtn.deleteBtn}}" color="#DCDCDC" size="small" custom-style="color:#696969;" bind:click="onDeleteBtnClick" >作废</van-button>
-    <van-button round wx:if="{{showBtn.auditInfoBtn}}" type="info" size="small" custom-style="margin-left:10px;" bind:click="">查看维修流程</van-button>
+    <van-button round wx:if="{{showBtn.detailCheckBtn}}" type="info" size="small" custom-style="margin-left:10px;" bind:click="onDetailBtnClick">维修详情</van-button>
     <van-button round wx:if="{{showBtn.arrivalCheckBtn}}" disabled="{{disableBtn.arrivalCheckBtn}}" type="info" size="small" custom-style="margin-left:10px;" bind:click="onCheckBtnClick">维修员到达</van-button>
     <van-button round wx:if="{{showBtn.finishCheckBtn}}" disabled="{{disableBtn.finishCheckBtn}}"  type="info" size="small" custom-style="margin-left:10px;" bind:click="onFinishBtnClick">确认维修完成</van-button>
     <van-button round wx:if="{{showBtn.changeServiceUserBtn}}" type="info" size="small" custom-style="margin-left:10px;" bind:click="onChangeServiceUserBtnClick">转派维修人</van-button>
