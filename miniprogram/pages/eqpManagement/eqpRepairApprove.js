@@ -1345,7 +1345,7 @@ upload: function(e) {
           var imagePathArray = [];
           for(var i = 0;i < dataLen;i++){
             var pathArray = res.data[2][i].filepath.split("/");
-            imagePathArray = imagePathArray.concat([app.globalData.restAdd + "/Hanbell-EAM/resources/app/res/" + pathArray.pop()]);
+            imagePathArray = imagePathArray.concat([app.globalData.restAdd + ":443/Hanbell-EAM/resources/app/res/" + pathArray.pop()]);
           }
 
           _this.setData({

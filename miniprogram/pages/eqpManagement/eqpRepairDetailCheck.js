@@ -1793,7 +1793,7 @@ upload: function(e) {
           }
 
           for(var i = 0;i < dataLen;i++){
-            imagePathArray = imagePathArray.concat([app.globalData.restAdd + "/Hanbell-EAM/resources/app/res/" + fileUploadList[i].filename]);
+            imagePathArray = imagePathArray.concat([app.globalData.restAdd + ":443/Hanbell-EAM/resources/app/res/" + fileUploadList[i].filename]);
             uploaderObjInfoList.push({fileId:fileUploadList[i].id,fileName:fileUploadList[i].filename,type:'1'});
           }
 
