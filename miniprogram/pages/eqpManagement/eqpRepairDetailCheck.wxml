@@ -180,16 +180,74 @@
 		</van-cell-group>
 	</van-popup>
 
+	<van-popup id="repairHelperSelectPopup" show="{{ show.repairHelperSelectorPopup }}" z-index='1000' position="right" round custom-style="height: 95%;width: 95%;" bind:close="closeRepairHelperSelectorPopup">
+
+		<van-cell-group>
+
+			<van-cell-group>
+
+                    <van-search id="proSearchBar" value="{{ searchBarDta }}" shape="round" placeholder="请输入搜索关键词" bind:search="onHitchDutySearchStart" use-action-slot use-right-icon-slot>
+
+					    <van-icon class="searchRightIcon" slot="right-icon" name="scan" color="blue" size="20px" bind:click="startScanCode" />
+
+				    </van-search>
+
+			</van-cell-group>
+
+            <view class="scrollTest" id="eqpListTest">
+
+            <scroll-view id="eqpList2" class="scrollWrap" scroll-y="true" style='height:{{eqpListHeight}}px;'>
+					<view class="eqpListWrap">
+					</view>
+					<my-noData wx:if="{{hitchDutyList.length<1&&!loading}}" nodata="{{nodataType}}"></my-noData>
+					<view class="hitchDutyList" wx:for="{{hitchDutyList}}" wx:key="index" data-item="{{item}}" bindtap='repairHelperCardSelect' id='repairHelperListIndex_{{index}}'>
+						<view class="shop">
+							<view class="shop_name">
+								工号:{{item.userId}}
+							</view>
+							<view class="shop_name">
+								部门:{{item.deptNo}}-{{item.dept}}
+							</view>
+							<!-- <text class="state {{item.origin=='TaoBao' ? 'state_taobao' : item.origin=='PinDuoDuo' ? 'state_pdd' : item.origin=='JDCOM' ? 'state_jd' : ''}}">{{item.orderstate}}</text> -->
+						</view>
+						<view class="proInfo">
+							<view class="shop_name">
+								姓名:{{item.userName}}
+							</view>
+							<view class="shop_name">
+								邮箱:{{item.email}}
+							</view>
+						</view>
+						<view class="orderNum">
+							<view></view>
+							<view>联系电话:<text>{{item.phone}}</text></view>
+						</view>
+
+					</view>
+
+				</scroll-view>
+            </view>
+
+
+			<view class="eqpSelectorButtonBlock">
+				<van-button round color="#DCDCDC" size="small" custom-style="color:#696969;width:80px;" bind:click="onRepairHelperSelResetClick">清空</van-button>
+				<van-button round type="info" size="small" custom-style="margin-left:30px;width:80px;" bind:click="onRepairHelperSelBackClick">返回</van-button>
+			</view>
+
+
+		</van-cell-group>
+	</van-popup>
+
 	<!-- 触发时才显示的组件 -->
 
-	<van-tabs active="{{ auditTabActive }}" bind:change="onChange" z-index='100' sticky>
-		<van-tab title="故障维修验收单">
+	<van-tabs active="{{ auditTabActive }}" bind:change="onTabChange" z-index='100' sticky>
+		<van-tab title="故障维修详情">
 
 <!-- <scroll-view id="eqpList" class="scrollWrap" scroll-y="true" style='height:{{eqpListHeight}}px'> -->
 				<!-- <view class="scrollTest" id="eqpListTest2"> -->
 					<view class="eqpListWrap">
 					</view>
-					<view class="orderList" wx:for="{{eqpRepairInfoList}}" wx:key="index" data-item="{{item}}" id='eqpListIndex_{{index}}'>
+					<view class="orderList" style="height:{{repairBasicInfoCardHeight}}rpx" wx:for="{{eqpRepairInfoList}}" wx:key="index" data-item="{{item}}" id='eqpListIndex_{{index}}'>
 						<view class="shop">
 							<view class="shop_name">
 								报修单号:{{item.formId}}
@@ -214,33 +272,41 @@
 							<view>故障发生时间:{{item.creDate}}</view>
 							<view>报修人:<text>{{item.repairUserName}}</text></view>
 						</view>
-						<view class="orderNum">
+						<view wx:if="{{arriveFlag}}" class="orderNum">
 							<view>维修到达时间:{{item.serviceArriveTime}}</view>
 							<view>联络时间:<text>{{item.contactTime}}小时</text></view>
 						</view>
-						<view class="orderNum">
+						<view wx:if="{{completeFlag}}" class="orderNum">
 							<view>维修完成时间:{{item.completeTime}}</view>
 							<view>故障时间:<text>{{downTime}}小时</text></view>
 						</view>
 
 					</view>
 				<!-- </view> -->
-
+			<view wx:if="{{completeFlag}}" class="workTimeView">
         <view class="eqpListWrap">
 				</view>
 
-				<van-field label="非工作时间" value="{{ exceptTime }}" data-name="exceptTime" bind:change="onExceptTimeChange" use-button-slot readonly >
+				<van-field label="非工作时间" value="{{ exceptTime }}" data-name="exceptTime" bind:change="onExceptTimeChange" use-button-slot readonly>
           <view slot="button" class="btnSlot_Minite">(分钟)</view>
         </van-field>
+
+				<!-- <van-field label="故障持续时间" value="{{ downTime }}" data-name="downTime" bind:change="bindData" use-button-slot  readonly>
+					<view slot="button" class="btnSlot_Minite">(分钟)</view>
+				</van-field> -->
 
 				<van-field label="维修时间" value="{{ repairTime }}" data-name="repairTime" bind:change="bindData" use-button-slot  readonly>
 					<view slot="button" class="btnSlot_Minite">(分钟)</view>
 				</van-field>
 
-				<van-field label="停工时间" value="{{ stopWorkTime }}" data-name="stopWorkTime" bind:change="bindData" use-button-slot readonly >
+				<van-field label="停工时间" value="{{ stopWorkTime }}" data-name="stopWorkTime" bind:change="bindStopWorkTime" use-button-slot readonly>
           <view slot="button" class="btnSlot_Minite">(分钟)</view>
         </van-field>
 
+				<van-cell center title="二次维修">
+					<van-switch class="cellSwitchPro" size="24px" checked="{{ reRepairFlag }}" />
+				</van-cell>
+			</view>
 			<view class="page__hd">
 				<view class="proTitle">故障责任分析</view>
 			</view>
@@ -255,6 +321,7 @@
 				<van-field label="故障责任原因" value="{{ abraseHitchObj.abraseHitchDesc }}" data-name="abraseHitchDesc" bind:change="bindData" right-icon="arrow-down" readonly />
 				<van-field label="紧急程度" value="{{ hitchTypeObj.hitchTypeName }}" data-name="hitchTypeName" bind:change="bindData" right-icon="arrow-down" readonly />
 				<van-field label="故障类型" value="{{ hitchSort01Obj.troubleName }}" data-name="toubleName" bind:change="bindData" right-icon="arrow-down" readonly />
+
 
 <van-cell-group>
     <van-cell title="故障部位及详情描述" border="{{false}}" use-label-slot></van-cell>
@@ -347,19 +414,47 @@
     </view>
 </van-cell-group>
 
-				<view class="page__hd">
-					<view class="proTitle">维修费用信息</view>
-				</view>
+<view class="page__hd">
+	<view class="proTitle">维修费用信息</view>
+</view>
 
-				<van-field label="其他费用" value="{{ repairCost }}" data-name="repairCost" bind:change="bindExtraCost" readonly use-button-slot>
-                    <view slot="button" class="btnSlot_Yuan">¥</view>
-                </van-field>
+<!-- <van-collapse value="{{ collapseActiveNames }}" bind:change="onCollapseChange">
+  <van-collapse-item title="辅助人员" name="1">
+		<view class="helperList" wx:for="{{repairHelperList}}" wx:key="index" data-item="{{item}}" id='repairHelperListIndex_{{index}}'>
+		  <van-swipe-cell right-width="{{ 65 }}" data-itemindex="{{index}}" async-close bind:close="onRepairHelperSwipeClose">
+				<van-cell-group>
+					<van-field
+						value="{{ repairHelperList[index].UserNo }}"
+						data-name="repairHelperList[{{index}}].UserNo"
+						bind:change="bindLaborTime"
+						center
+						clearable
+						placeholder="请输入工作时间"
+						border="{{ false }}"
+						use-button-slot
+					>
+					<view slot="label">
+						<span class="van-cell-text">{{item.CurNode2}}</span>
+					</view>
+					<view slot="button">(分钟)</view>
+					</van-field>
+				</van-cell-group>
+				<view slot="right">删除</view>
+			</van-swipe-cell>
+		</view>
+		<view class="addHelperView">
+			<van-button round type="info" size="small" style="padding-top:10px" bind:click="onRepairHelperCellTap">添加辅助人员</van-button>
+		</view>
+  </van-collapse-item>
+</van-collapse> -->
 
-				<van-field label="人工费用" value="{{ laborCost }}" data-name="laborCost" bind:change="bindExtraCost" readonly use-button-slot>
-                    <view slot="button" class="btnSlot_Yuan">¥</view>
-                </van-field>
+<van-field label="其他费用" value="{{ repairCost }}" data-name="repairCost" bind:change="bindExtraCost" use-button-slot readonly>
+  <view slot="button" class="btnSlot_Yuan">¥</view>
+</van-field>
 
-
+<van-field label="人工费用" value="{{ laborCost }}" data-name="laborCost" bind:change="bindExtraCost" use-button-slot readonly>
+  <view slot="button" class="btnSlot_Yuan">¥</view>
+</van-field>
 
 <!-- <view class='view_contain1' data-show="1" bindtap="ifshowArea">
 	<textarea wx:if="{{textareaIsShow}}" class='areaInput' bindblur="ifshowArea" data-show="0" value="{{textareaValue}}" maxlength="200" placeholder="请输入" auto-focus="true" bindinput="textareaInput"/>
@@ -369,8 +464,30 @@
 </view> -->
 
 <!-- <view class="submitWrap_fix">
-<van-button type="info" icon="passed" form-type="submit" style="width:100%;position:fixed;bottom:0px;z-index:100" bind:click="eqpRepairFormSubmit" block>提交</van-button>
+
+	<view wx:if="{{completeFlag}}" style="width:100%;position:fixed;bottom:0px;z-index:100">
+		<van-button data-subtype="saveAuditDta" data-opedesc="暂存" icon="warning-o" color="rgb(255, 123, 0)" custom-style="height:40px;width:50%;margin-left:0px;border-radius:0px;" bind:click="eqpRepairFormSubmit">暂存</van-button>
+		<van-button data-subtype="repairAudit" data-opedesc="提交" icon="passed" type="info" custom-style="height:40px;width:50%;margin-right:0px;border-radius:0px;" bind:click="eqpRepairFormSubmit">提交</van-button>
+	</view>
+
+	<view wx:if="{{!completeFlag}}" style="width:100%;position:fixed;bottom:0px;z-index:100">
+		<van-button data-subtype="saveAuditDta" data-opedesc="暂存" icon="warning-o" color="rgb(255, 123, 0)" custom-style="height:40px;width:100%;margin-left:0px;border-radius:0px;" bind:click="eqpRepairFormSubmit">暂存</van-button>
+	</view>
+
 </view> -->
+
+<!-- <van-cell-group>
+  <van-cell border="{{ true }}" custom-class="vancell_submit" style="height:40px;width:100%;position:fixed;bottom:0px;border-top: 2rpx solid #eee;z-index: 999;">
+	<view slot="title">
+    <van-button round color="rgb(255, 123, 0)" custom-style="height:40px;width:90%;margin-left:10px;" bind:click="">保存</van-button>
+  </view>
+	<view>
+		<van-button round icon="passed" type="info" custom-style="height:40px;width:90%;margin-right:10px;" bind:click="">提交</van-button>
+  </view>
+  </van-cell>
+</van-cell-group> -->
+
+
 
 <!-- <van-button type="info" icon="passed" form-type="submit" style="width:100%;position:fixed;bottom:0px;z-index:999;" bind:click="eqpRepairFormSubmit" block>提交</van-button> -->
 
@@ -439,16 +556,16 @@
 <!-- <van-button icon="add-o" form-type="submit" color="#9565E6" style="width:100%;position:fixed;bottom:0px;z-index:100;" bind:click="onEqpSelectorTap" block>添加</van-button> -->
 <van-submit-bar
   price="{{(totalPrice == null || totalPrice == '') ? 0 : totalPrice}}"
-  button-text="单据审批"
-  bind:submit="onDoApproveBtnClick"
+  button-text="审批流程"
+  bind:submit="onEqpSelectorTap"
   style="width:100%;position:fixed;bottom:0px;z-index:100;"
-  button-type="info"
+  button-class="submitBarBtn"
+  button-type="normal"
 >
 
 <view class="submitBar_UltraInfoView">
     <view>其他费用：¥<text>{{(repairCost == null || repairCost == '') ? 0 : repairCost}}</text></view>
     <view>人工费用：¥<text>{{(laborCost == null || laborCost == '') ? 0 : laborCost}}</text></view>
-    <!-- <van-button round type="danger" data-btntype="rollback" size="small" bind:click="eqpRepairFormSubmit">退回</van-button> -->
 </view>
 
 <view class="VerLine">
@@ -459,6 +576,41 @@
 
 
   </van-tab>
+
+<van-tab title="审批流程明细">
+			<view class="eqpListWrap">
+					</view>
+					<van-empty wx:if="{{repairHisList.length<1}}" description="无审批流程"/>
+					<view class="hitchDutyList" wx:for="{{repairHisList}}" wx:key="index" data-item="{{item}}" bindtap='repairHisCardSelect' id='repairHisListIndex_{{index}}'>
+						<view class="shop">
+							<!-- <view class="shop_name">
+								报修单号:{{item.pId}}
+							</view>
+							
+							<view class="shop_name">
+							</view> -->
+							<view class="shop_name">
+								审批人:{{item.userNo}}
+							</view>
+							<view class="shop_name">
+								审批时间:{{item.creDate}}
+							</view>
+						</view>
+						<view class="proInfo">
+							<view class="shop_name">
+								审批意见:{{item.note}}
+							</view>
+						</view>
+						<view class="auditContect">
+							<view></view>
+							<view class="shop_name">
+								审批结果:<text class="state_taobao">{{item.contenct}}</text>
+							</view>
+						</view>
+
+					</view>
+</van-tab>
+
 </van-tabs>
 
 
@@ -506,7 +658,7 @@
 
   <van-picker
     show-toolbar
-    title="故障类型"
+    title="紧急程度"
     columns="{{ hitchTypeList }}"
     value-key="hitchTypeName"
     bind:change="onHitchTypePickerChange"

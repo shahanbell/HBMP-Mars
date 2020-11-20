@@ -278,7 +278,7 @@
 						</view>
 						<view wx:if="{{completeFlag}}" class="orderNum">
 							<view>维修完成时间:{{item.completeTime}}</view>
-							<view>维修时间:<text>{{item.repairTime}}小时</text></view>
+							<view>故障时间:<text>{{downTime}}小时</text></view>
 						</view>
 
 					</view>
@@ -291,7 +291,11 @@
           <view slot="button" class="btnSlot_Minite">(分钟)</view>
         </van-field>
 
-				<van-field label="故障持续时间" value="{{ downTime }}" data-name="downTime" bind:change="bindData" use-button-slot  readonly>
+				<!-- <van-field label="故障持续时间" value="{{ downTime }}" data-name="downTime" bind:change="bindData" use-button-slot  readonly>
+					<view slot="button" class="btnSlot_Minite">(分钟)</view>
+				</van-field> -->
+
+				<van-field label="维修时间" value="{{ repairTime }}" data-name="repairTime" bind:change="bindData" use-button-slot  readonly>
 					<view slot="button" class="btnSlot_Minite">(分钟)</view>
 				</van-field>
 

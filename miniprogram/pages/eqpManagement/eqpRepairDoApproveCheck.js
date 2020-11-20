@@ -39,6 +39,7 @@ Page({
     totalPrice:null,
     laborCost:null,
     repairCost:null,
+    downTime:null,
     repairTimestamp:null,
     exceptTime:null,
     stopWorkTime:null,
@@ -1061,7 +1062,8 @@ upload: function(e) {
       docId: options.docId,
       docFormid: options.docFormid,
       rStatus:options.rStatus,
-      downTime:JSON.parse(options.eqpInfo).repairTime,
+      downTime:options.downTime,
+      //downTime:JSON.parse(options.eqpInfo).repairTime,
       repairTimestamp:JSON.parse(options.eqpInfo).repairTimestamp,
       reRepairFlag: (options.reRepairFlag == "true")
     })

@@ -214,11 +214,20 @@
     bind:change="bindData"
   />
 
-  <van-field
+  <!-- <van-field
     label="存放地址"
     value="{{ assetPosition }}"
     data-name="assetPosition"
     bind:change="bindData"
+  /> -->
+
+  <van-field
+    label="所属厂区"
+    value="{{repairAreaObj.repairAreaDesc}}"
+    right-icon="arrow-down"
+    data-selector="repairArea"
+    bindtap='showSelectorPopup'
+    readonly
   />
 
 </van-cell-group>
@@ -459,6 +468,26 @@
 </van-popup>
 
 <van-popup
+    show="{{ show.repairAreaSelectorPopup }}"
+    position="bottom"
+    data-selector="repairArea"
+    bind:close="closeSelectorPopup"
+>
+
+  <van-picker
+    show-toolbar
+    title="所属厂区"
+    columns="{{ repairAreaList }}"
+    value-key="repairAreaDesc"
+    data-selector="repairArea"
+    bind:change="onPickerChange"
+    bind:confirm="onPickerConfirm"
+    bind:cancel="onPickerCancel"
+  />
+
+</van-popup>
+
+<van-popup
     show="{{ show.suppleStartDateSelectorPopup }}"
     position="bottom"
     bind:close="closeSelectorPopup"
@@ -503,7 +532,7 @@
 </van-popup>
 
 <view class="submitWrap_fix">
-<van-button type="info" icon="passed" form-type="submit" style="width:100%;position:fixed;bottom:0px;" bind:click="eqpRepairFormSubmit" block>提交</van-button>
+<van-button type="info" icon="passed" form-type="submit" style="width:100%;position:fixed;bottom:0px;z-index:2;" bind:click="eqpRepairFormSubmit" block>提交</van-button>
 </view>
 <van-dialog id="van-dialog"/>
 

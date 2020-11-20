@@ -43,6 +43,7 @@ Page({
     spareCost:null,
     laborCost:null,
     repairCost:null,
+    repairTime:null,
     repairTimestamp:null,
     downTimestamp: null,
     exceptTime:'0',
@@ -1063,7 +1064,7 @@ upload: function(e) {
       })
         .then(() => {
 
-          //console.log(that.data);
+          console.log(that.data);
           //console.log(app.globalData);
 
           // on confirm
@@ -1275,7 +1276,7 @@ upload: function(e) {
     this.setData({
       docId: options.docId,
       docFormid: options.docFormid,
-      downTime:JSON.parse(options.eqpInfo).repairTime,
+      downTimestamp:JSON.parse(options.eqpInfo).downTimestamp,
       repairTimestamp:JSON.parse(options.eqpInfo).repairTimestamp
     })
 
@@ -1774,7 +1775,7 @@ upload: function(e) {
           }
 
           for(var i = 0;i < dataLen;i++){
-            imagePathArray = imagePathArray.concat([app.globalData.restAdd + "/Hanbell-EAM/resources/app/res/" + fileUploadList[i].filename]);
+            imagePathArray = imagePathArray.concat([app.globalData.restAdd + ":443/Hanbell-EAM/resources/app/res/" + fileUploadList[i].filename]);
             uploaderObjInfoList.push({fileId:fileUploadList[i].id,fileName:fileUploadList[i].filename,type:'1'});
           }
 
@@ -1850,6 +1851,7 @@ upload: function(e) {
           });
 
           _this.updateDownTime(_this.data.exceptTime);
+          _this.updateRepairTime(_this.data.exceptTime);
           _this.getTotalPrice();
         }
 
@@ -2022,21 +2024,39 @@ upload: function(e) {
       });
     }
     this.updateDownTime(parseInt(exceptTimeTemp));
+    this.updateRepairTime(parseInt(exceptTimeTemp));
     this.getTotalPrice();
   },
 
   updateDownTime:function(dta){
     //console.log(dta);
-    var downTimestamp = this.data.repairTimestamp == null ? parseInt('0') : this.data.repairTimestamp;
+    var downTimestamp = this.data.downTimestamp == null ? parseInt('0') : this.data.downTimestamp;
     downTimestamp = downTimestamp - dta * 60000;
     if(downTimestamp < 0){
       downTimestamp = 0;
     }
-    var downTimeTemp = this.timestampInit_toMinutes(downTimestamp);
+    var downTimeTemp = this.timestampInit_toHours(downTimestamp);
     this.setData({
       exceptTime:dta,
       downTime:downTimeTemp,
-      downTimestamp: downTimestamp
+      //downTimestamp: downTimestamp
+    });
+
+    //this.updateLaborCost();
+  },
+
+  updateRepairTime:function(dta){
+    //console.log(dta);
+    var repairTimestamp = this.data.repairTimestamp == null ? parseInt('0') : this.data.repairTimestamp;
+    repairTimestamp = repairTimestamp - dta * 60000;
+    if(repairTimestamp < 0){
+      repairTimestamp = 0;
+    }
+    var repairTimeTemp = this.timestampInit_toMinutes(repairTimestamp);
+    this.setData({
+      exceptTime:dta,
+      repairTime:repairTimeTemp,
+      //downTimestamp: downTimestamp
     });
 
     this.updateLaborCost();
@@ -2051,11 +2071,21 @@ upload: function(e) {
     return minutes;
   },
 
+  timestampInit_toHours:function(timestampTemp){
+    // let day = parseInt(timestampTemp/1000/3600/24);
+    // let hours = parseInt(timestampTemp/1000/3600%24);
+    // let minutes = parseInt((timestampTemp/1000/3600%24 - hours) * 60);
+    let hours = (timestampTemp/1000/3600).toFixed(1);
+    //let minutes = parseInt(timestampTemp/1000/60);
+    return hours;
+  },
+
   updateLaborCost:function(){
     var repairHelperList = this.data.repairHelperList;
-    var downTime_minute = this.data.downTime == null ? '0' : this.data.downTime;
+    //var downTime_minute = this.data.downTime == null ? '0' : this.data.downTime;
+    var repairTime_minute = this.data.repairTime == null ? '0' : this.data.repairTime;
     var totalTime = parseInt('0');
-    totalTime = totalTime + parseInt(downTime_minute);
+    totalTime = totalTime + parseInt(repairTime_minute);
     for(var i = 0;i < repairHelperList.length;i++){
       if(repairHelperList[i].rtype != "0"){
         totalTime = totalTime + (isNaN(parseInt(repairHelperList[i].UserNo)) ? 0 : parseInt(repairHelperList[i].UserNo));
