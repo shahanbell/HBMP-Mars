@@ -102,9 +102,7 @@ Page({
           if (res.data.code == 500) {
 
           } else {
-            wx.navigateTo({
-              url: '/pages/maintainmodule/mataindescribe/maintainDescribe?addressView=' + that.data.addressView + '&addressNameView=' + that.data.addressNameView + '&maintainDescribe=' + that.data.maintainDescribe
-            })
+            wx.navigateBack();
           }
         }
       })
