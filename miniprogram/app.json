@@ -61,18 +61,7 @@
     "pages/customercomplaint/complaintdetail",
     "pages/maintainmodule/maintainModule",
     "pages/maintainmodule/mataindescribe/maintainDescribe",
-    "pages/maintainmodule/mataindescribe/maintainNumberselect",
-    "pages/eqpManagement/eqpManageIndex",
-    "pages/eqpManagement/startEqpRepair",
-    "pages/eqpManagement/eqpRepairDocDetail",
-    "pages/eqpManagement/eqpRepairFinishCheck",
-    "pages/eqpManagement/eqpRepairAuditCheck",
-    "pages/eqpManagement/eqpRepairApprove",
-    "pages/eqpManagement/eqpRepairDoApproveCheck",
-    "pages/eqpManagement/eqpRepairDutyResponse",
-    "pages/eqpManagement/eqpRepairStop",
-    "pages/eqpManagement/eqpRepairChangeServiceUser",
-    "pages/eqpManagement/eqpRepairDetailCheck"
+    "pages/maintainmodule/mataindescribe/maintainNumberselect"   
   ],
   "subpackages": [
     {
@@ -88,6 +77,22 @@
         "pages/loan/loan",
         "pages/loan/loanPropertySelect",
         "pages/dine/dine"
+      ]
+    },
+    {
+      "root": "eam",
+      "pages": [
+        "pages/eqpManagement/eqpManageIndex",
+        "pages/eqpManagement/startEqpRepair",
+        "pages/eqpManagement/eqpRepairDocDetail",
+        "pages/eqpManagement/eqpRepairFinishCheck",
+        "pages/eqpManagement/eqpRepairAuditCheck",
+        "pages/eqpManagement/eqpRepairApprove",
+        "pages/eqpManagement/eqpRepairDoApproveCheck",
+        "pages/eqpManagement/eqpRepairDutyResponse",
+        "pages/eqpManagement/eqpRepairStop",
+        "pages/eqpManagement/eqpRepairChangeServiceUser",
+        "pages/eqpManagement/eqpRepairDetailCheck"
       ]
     }
   ],

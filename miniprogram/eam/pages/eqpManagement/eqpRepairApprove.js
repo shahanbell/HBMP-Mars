@@ -1,10 +1,9 @@
 // miniprogram/pages/eqpManagement/startEqpRepair.js
-import Dialog from '../../component/vant/dialog/dialog';
 const date = new Date()
 const years = []
 const months = []
 const days = []
-
+import Dialog from '../../../component/vant/dialog/dialog';
 for (let i = 1990; i <= date.getFullYear(); i++) {
   years.push(i)
 }
@@ -35,11 +34,12 @@ Page({
    * 页面的初始数据
    */
   data: {
-    auditContenctType:'合格',
     totalPrice:null,
     laborCost:null,
     repairCost:null,
     downTime:null,
+    repairTime:null,
+    downTimestamp:null,
     repairTimestamp:null,
     exceptTime:null,
     stopWorkTime:null,
@@ -58,11 +58,13 @@ Page({
     spareList: [],
     spareUsedList:[],
     serviceUserList:[], 
-    repairHisList:[],
-    hitchDutyList:[{userId:'C2090',deptNo:'13100',dept:'资讯室',userName:'沈越',email:'841873930@qq.com',phone:'18323491234'}],
-    abraseHitchList:[{abraseHitchId : '1',abraseHitchDesc: '非正常磨损'},{abraseHitchId : '2',abraseHitchDesc: '正常磨损'}],
+    hitchDutyList:[],
+    abraseHitchList:[{abraseHitchId : '01',abraseHitchDesc: '使用不当'},
+                     {abraseHitchId : '02',abraseHitchDesc: '保养不当'},
+                     {abraseHitchId : '03',abraseHitchDesc: '维修不当'},
+                     {abraseHitchId : '04',abraseHitchDesc: '劣质配件'},
+                     {abraseHitchId : '05',abraseHitchDesc: '正常使用寿命'}],
     hitchTypeList:[{hitchTypeCode: '0', hitchTypeName: '一般故障'},{hitchTypeCode: '1', hitchTypeName: '严重故障'}],
-    auditContenctList:[{contenctId:'合格',contenctDesc:'合格'},{contenctId:'不合格',contenctDesc:'不合格'}],
     hitchSort01List:[],
     hitchTypeCode:null,
     hitchTypeName:null,
@@ -81,7 +83,6 @@ Page({
       eqpSelectorPopup: false,
       hitchDutySelectorPopup: false,
       hitchSort01SelectorPopup: false,
-      contenctSelectorPopup:false,
       abraseSelectorPopup: false,
       hitchTypeSelectorPopup: false,
       dateFilterPopup: false,
@@ -90,7 +91,7 @@ Page({
       queryInfo: false,
     },
     showTextArea:{
-      auditNote:false,
+      hitchDesc:false,
     },
     eqpListLoading: false,
     eqpListLoadingTest2: true,
@@ -115,7 +116,6 @@ Page({
     abraseHitchObj:null,
     hitchSort01Obj:null,
     hitchTypeObj:null,
-    auditContenctObj:null,
     repairMethod: null,
     formdate: null,
     formdateTS: null,
@@ -125,7 +125,6 @@ Page({
     focusTroubleDetailField:'false',
     textareaDisabled:false,
     serviceuserPickerIndex: null,
-    auditNote:'',
     hitchAlarm:'',
     repairMethod:'',
     hitchDesc:'',
@@ -134,6 +133,7 @@ Page({
     measure:'',
     rStatus:'',
     reRepairFlag: null,
+
     auditTabActive: 0,
 
     formatter(type, value) {
@@ -156,13 +156,6 @@ Page({
       serviceusername: this.data.serviceUserList[val].userName,
       serviceuser: this.data.serviceUserList[val].userId,
     })
-  },
-
-  on2ndRepairChange(event){
-    console.log(event);
-    this.setData({
-      reRepairFlag:event.detail
-    });
   },
 
   chooseImage(e) {
@@ -390,12 +383,12 @@ upload: function(e) {
     //  var p = new Promise(function(resolve, reject){
     //   setTimeout(function(){
     //     resolve("foo");
-         //console.log("first");
+    //     console.log("first");
     //   }, 1000);
     // });
     
     // p.then(function(value){
-       //console.log(value);
+    //   console.log(value);
     // });
 
   },
@@ -410,7 +403,6 @@ upload: function(e) {
       //     this.refresh()
       //   }, 350)
       // }
-      //console.log(e.detail.scrollTop);
     },
 
     listTouchStart(){
@@ -499,7 +491,7 @@ upload: function(e) {
         },
         fail: function (fail) {
           wx.hideLoading();
-          console.log(fail.data);
+          //console.log(fail.data);
           Dialog.alert({
             title: '系统消息',
             message: fail.data + "-" + fail.statusCode + "-" + fail.header + "-" + fail.cookies,
@@ -672,12 +664,7 @@ upload: function(e) {
     },
     
     onHitchTypeCellTap:function(){
-      //console.log("123");
       this.showHitchTypeSelectorPopup();
-    },
-
-    onAuditContenctCellTap:function(){
-      this.showContenctSelectorPopup();
     },
 
 
@@ -735,24 +722,6 @@ upload: function(e) {
     });
   },
 
-          /**
-   * 故障来源选择弹出层开启
-   */
-  showContenctSelectorPopup: function(){
-    this.setData({
-      show:{contenctSelectorPopup:true}
-    });
-},
-
-  /**
-   * 故障来源选择弹出层关闭
-   */
-  closeContenctSelectorPopup: function(){
-    this.setData({
-      show:{contenctSelectorPopup:false}
-    });
-  },
-
     /**
    * 故障来源选择器事件
    */
@@ -801,26 +770,26 @@ upload: function(e) {
 
 
   /**
-   * 审批结果选择器事件
+   * 磨损性故障选择器事件
    */
-  onContenctPickerChange: function(event){
+  onAbrasePickerChange: function(event){
     //console.log(event);
     const { picker, value, index } = event.detail;
     this.setData({
-      auditContenctObj:value
+      abraseHitchObj:value
     });
   },
 
-  onContenctPickerConfirm: function(event){
+  onAbrasePickerConfirm: function(event){
     const { picker, value, index } = event.detail;
     this.setData({
-      auditContenctObj:value
+      abraseHitchObj:value
     });
-    this.closeContenctSelectorPopup();
+    this.closeAbraseSelectorPopup();
   },
 
-  onContenctPickerCancel: function(event){
-    this.closeContenctSelectorPopup();
+  onAbrasePickerCancel: function(event){
+    this.closeAbraseSelectorPopup();
   },
 
   handleContentInput:function(e){
@@ -868,7 +837,7 @@ upload: function(e) {
     });
   },
 
-  auditApproveFormSubmit: function(e){
+  eqpRepairFormSubmit: function(e){
     var that = this;
     //console.log(e);
     //console.log(this.data.uploaderList);
@@ -876,14 +845,7 @@ upload: function(e) {
     //console.log(this.data);
     //var canSubmit = this.checkFormDtaBeforeSubmit();
     var canSubmit = true;
-    var apiTemp = '';
-    if(this.data.rStatus == '60'){
-      apiTemp = 'repairAuditApprove';
-    }
-    else if(this.data.rStatus == '70'){
-      apiTemp = 'repairAuditExam';
-    }
-    
+    var apiTemp = 'repairAuditApprove';
     if(e.currentTarget.dataset.btntype != null){
       apiTemp = apiTemp + '_' + e.currentTarget.dataset.btntype
     }
@@ -913,12 +875,22 @@ upload: function(e) {
             //url: 'http://325810l80q.qicp.vip' + '/Hanbell-JRS/api/shbeam/equipmentinventory/insertStockInfo4MicroApp?' + app.globalData.restAuth,
             data: {
               id: that.data.docId,
-              pid: that.data.docFormid,
+              formid: that.data.docFormid,
               company: app.globalData.defaultCompany,
-              userno:app.globalData.employeeId,
-              contenct:that.data.auditContenctType,
-              note:that.data.auditNote,
-              remark: that.data.reRepairFlag.toString(),
+              excepttime:that.data.exceptTime,
+              stopworktime:that.data.stopWorkTime,
+              abrasehitch:that.data.abraseHitchObj.abraseHitchId,
+              hitchtype:that.data.hitchTypeObj.hitchTypeCode,
+              hitchsort1:that.data.hitchSort01Obj.troubleId,
+              hitchdesc:that.data.hitchDesc,
+              hitchalarm:that.data.hitchAlarm,
+              hitchreason:that.data.hitchReason,
+              repairmethod:that.data.repairMethod,
+              repairprocess:that.data.repairProcess,
+              measure:that.data.measure,
+              repaircost:that.data.repairCost,
+              laborcosts:that.data.laborCost,
+              remark: JSON.stringify(that.data.spareUsedList)
             },
             header: {
               'content-type': 'application/json'
@@ -930,20 +902,33 @@ upload: function(e) {
               //console.log(res);
               if(res.statusCode == 200 && res.data.msg != null){
                 resMsg = '提交成功';
+                if(that.data.uploaderList.length < 1){
+                  //console.log("no image upload!");
+                  wx.hideLoading();
+                  Dialog.alert({
+                  title: '系统消息',
+                  message: "提交成功",
+                  }).then(() => {
+                    // on close
+                      initProInfo(_this);
+                      wx.navigateBack();
+                  });
+                }
+                that.fileUpLoadByQueue(FileSystemManager,0);
               }
               else{
                 resMsg = '提交失败';
               }
-              Dialog.alert({
-                title: '系统消息',
-                zIndex: 1000,
-                mask:false,
-                message: resMsg,
-                  }).then(() => {
-                   // on close
-                   //initProInfo(_this);
-                   wx.navigateBack({delta: 3});
-                });
+              // Dialog.alert({
+              //   title: '系统消息',
+              //   zIndex: 1000,
+              //   mask:false,
+              //   message: resMsg,
+              //     }).then(() => {
+              //      // on close
+              //      //initProInfo(_this);
+              //      wx.navigateBack({delta: 2});
+              //   });
             },
             fail: function (fail) {
               wx.hideLoading();
@@ -1060,15 +1045,9 @@ upload: function(e) {
 
     this.setData({
       docId: options.docId,
-      docFormid: options.docFormid,
-      rStatus:options.rStatus,
-      downTime:options.downTime,
-      //downTime:JSON.parse(options.eqpInfo).repairTime,
-      repairTimestamp:JSON.parse(options.eqpInfo).repairTimestamp,
-      reRepairFlag: (options.reRepairFlag == "true")
+      downTimestamp:JSON.parse(options.eqpInfo).downTimestamp,
+      repairTimestamp:JSON.parse(options.eqpInfo).repairTimestamp
     })
-
-    console.log(this.data);
 
     let _this = this;
     //console.log("windowsHeightTemp:" + app.globalData.windowHeight);
@@ -1078,8 +1057,7 @@ upload: function(e) {
     dateTemp = new Date();
     //console.log("heightTest:" + heightTemp);
 
-    this.getRepairApproveInitDta(app.globalData.employeeId,this.data.docFormid);
-
+    this.getRepairApproveInitDta(app.globalData.employeeId,this.data.docId);
 
     //写你自己的接口
     this.setData({
@@ -1090,10 +1068,9 @@ upload: function(e) {
       minDate: new Date(dateTemp.getFullYear() -1 ,dateTemp.getMonth(), 1).getTime(),
       maxDate: dateTemp.getTime(),
       currentDate: dateTemp.getTime(),
-      approveUserId: app.globalData.employeeId,
-      approveUserName: app.globalData.employeeName,
+      repairuser: app.globalData.employeeId,
+      repairUserName: app.globalData.employeeName,
       abraseHitchObj: _this.data.abraseHitchList[0],
-      auditContenctObj: _this.data.auditContenctList[0],
       hitchTypeObj:_this.data.hitchTypeList[0],
       focusTroubleDetailField: false,
     });
@@ -1175,21 +1152,17 @@ upload: function(e) {
   getTotalPrice:function(){
     var spareListTemp = this.data.spareUsedList;
     var totalPrice = 0;
-    var repairCostTemp = isNaN(parseInt(this.data.repairCost)) ? 0 : parseInt(this.data.repairCost);
-    var laborCostTemp = isNaN(parseInt(this.data.laborCost)) ? 0 : parseInt(this.data.laborCost);
+    var spareCostTemp = 0;
+    var repairCostTemp = isNaN(parseFloat(this.data.repairCost)) ? 0 : parseFloat(this.data.repairCost);
+    var laborCostTemp = isNaN(parseFloat(this.data.laborCost)) ? 0 : parseFloat(this.data.laborCost);
     for(var i = 0 ; i < spareListTemp.length ; i++){
       totalPrice = totalPrice + spareListTemp[i].uPrice * spareListTemp[i].qty;
     }
-    totalPrice = (totalPrice + repairCostTemp + laborCostTemp) * 100;
+    spareCostTemp = totalPrice;
+    totalPrice = (totalPrice + repairCostTemp + laborCostTemp).toFixed(2) * 100;
     this.setData({
-      totalPrice : totalPrice
-    });
-  },
-
-  onContenctChange:function(e){
-    //console.log(e);
-    this.setData({
-      auditContenctType:e.detail,
+      totalPrice : totalPrice,
+      spareCost : spareCostTemp,
     });
   },
 
@@ -1298,10 +1271,10 @@ upload: function(e) {
     this.getAssetInfo(res);
   },
 
-  getRepairApproveInitDta: function (userId,docFormid) {
+  getRepairApproveInitDta: function (userId,docId) {
     var _this = this;
     // restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/assetcardtest';
-    var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/getRepairHistoryDta';
+    var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/getRepairApproveInitDta';
     //var restUrl = 'http://325810l80q.qicp.vip' + '/Hanbell-JRS/api/shbeam/assetcardtest';
     // if (options.employeeid) {
     //     restUrl += '/f;users.id=' + options.employeeid + '/s';
@@ -1312,7 +1285,7 @@ upload: function(e) {
     //restUrl += '/f;deptno=' + '13000' + '/s';
     // restUrl += '/f;repairuser=' + userId + ';';
     // restUrl += 'docId=' + docId + '/s';
-    restUrl += '/f;docFormid=' + docFormid + '/s';
+    restUrl += '/f;docId=' + docId + '/s';
     restUrl += '/' + 0 + '/' + 20;
     //console.log(restUrl);
     wx.showLoading({
@@ -1339,26 +1312,67 @@ upload: function(e) {
         }
         
         if(res.data.length > 0){
-          var repairHisListInfo = res.data[0];
           var eqpRepairInfo = res.data[0];
+          var eqpSpareListInfo = res.data[1];
+          var abraseHitchList = _this.data.abraseHitchList;
+          var hitchTypeList = _this.data.hitchTypeList;
           var abraseHitchTemp = '';
           var hitchTypeTemp = '';
-          
-          for(var i= 0;i<repairHisListInfo.length;i++){
-            let newItem = {pId:'', userNo: '', userName: '', creDate: '', contenct: '', note: ''};
-            newItem.pId = repairHisListInfo[i].pid;
-            newItem.userNo = repairHisListInfo[i].userno;
-            newItem.userName = repairHisListInfo[i].username;
-            newItem.creDate = _this.utcInit(repairHisListInfo[i].credate);
-            newItem.contenct = repairHisListInfo[i].contenct;
-            newItem.note = repairHisListInfo[i].note;
-            _this.data.repairHisList.push(newItem);
+          for(var i = 0;i<abraseHitchList.length;i++){
+            if(abraseHitchList[i].abraseHitchId == eqpRepairInfo.abrasehitch){
+              abraseHitchTemp = abraseHitchList[i].abraseHitchDesc;
+              break;
+            }
+          }
+
+          for(var i= 0;i<eqpSpareListInfo.length;i++){
+            let newItem = {id:'', spareNo: "A119-01", shopurl: "/images/1.jpg", origin: "TaoBao", orderstate: "", pictureurl: "/images/1.jpg", itemDisplayName: "备件名称", spareDesc: "副齿轮检验轴AA-2600I", productcount: 1, spareNum: "SDFA1111", uPrice:100, spareUserName: "技术员", userNo:'' , qty: 1};
+            newItem.Id = eqpSpareListInfo[i].id;
+            newItem.spareNo = eqpSpareListInfo[i].spareno;
+            newItem.spareDesc = eqpSpareListInfo[i].sparenum.sparedesc;
+            newItem.spareNum = eqpSpareListInfo[i].sparenum.sparenum;
+            newItem.uPrice = eqpSpareListInfo[i].uprice;
+            newItem.brand = eqpSpareListInfo[i].brand;
+            newItem.qty = eqpSpareListInfo[i].qty;
+            newItem.unit = eqpSpareListInfo[i].unit;
+            newItem.spareUserName = eqpSpareListInfo[i].userno;
+            newItem.userNo = eqpSpareListInfo[i].userno;
+            _this.data.spareUsedList.push(newItem);
+          }
+
+          var dataLen = res.data[2].length;
+          var imagePathArray = [];
+          for(var i = 0;i < dataLen;i++){
+            var pathArray = res.data[2][i].filepath.split("/");
+            imagePathArray = imagePathArray.concat([app.globalData.restAdd + ":443/Hanbell-EAM/resources/app/res/" + pathArray.pop()]);
           }
 
           _this.setData({
-            repairHisList: _this.data.repairHisList,
+            exceptTime: eqpRepairInfo.excepttime == null ? '0' : eqpRepairInfo.excepttime,
+            stopWorkTime: eqpRepairInfo.stopworktime == null ? '0' : eqpRepairInfo.stopworktime,
+            hitchDutyDeptObj: {hitchDutyDeptName:eqpRepairInfo.hitchdutydeptname == null ? '' : eqpRepairInfo.hitchdutydeptname},
+            hitchDutyUserObj: {hitchDutyUserName:eqpRepairInfo.hitchdutyusername == null ? '' : eqpRepairInfo.hitchdutyusername},
+            abraseHitchObj: {abraseHitchDesc:abraseHitchTemp},
+            hitchTypeObj: {hitchTypeName: eqpRepairInfo.hitchtype == null ? '' : eqpRepairInfo.hitchtype},
+            reRepairFlag: eqpRepairInfo.remark == null ? 'false' : (eqpRepairInfo.remark == "true"),
+            hitchDesc:eqpRepairInfo.hitchdesc == null ? '' : eqpRepairInfo.hitchdesc,
+            hitchAlarm:eqpRepairInfo.hitchalarm == null ? '' : eqpRepairInfo.hitchalarm,
+            hitchReason:eqpRepairInfo.hitchreason == null ? '' : eqpRepairInfo.hitchreason,
+            repairMethod:eqpRepairInfo.repairmethod == null ? '' : eqpRepairInfo.repairmethod,
+            repairProcess:eqpRepairInfo.repairprocess == null ? '' : eqpRepairInfo.repairprocess,
+            measure:eqpRepairInfo.measure == null ? '' : eqpRepairInfo.measure,
+            repairCost:eqpRepairInfo.repaircost == null ? '0' : eqpRepairInfo.repaircost,
+            laborCost:eqpRepairInfo.laborcosts == null ? '0' : eqpRepairInfo.laborcosts,
+            rStatus: eqpRepairInfo.rstatus == null ? '' : eqpRepairInfo.rstatus,
+            hitchSort01Obj: {troubleName: eqpRepairInfo.hitchsort1 == null ? '' : eqpRepairInfo.hitchsort1},
+
+            uploaderList:imagePathArray,
+            spareUsedList: _this.data.spareUsedList,
           });
 
+          _this.updateDownTime(_this.data.exceptTime);
+          _this.updateRepairTime(_this.data.exceptTime);
+          _this.getTotalPrice();
         }
 
 
@@ -1375,6 +1389,15 @@ upload: function(e) {
           //initProInfo(_this);
         });
       }
+    });
+  },
+
+  onDoApproveBtnClick: function(e){
+    let that = this;
+    var eqpInfoObj = JSON.stringify(that.data.eqpRepairInfoList[0]);
+    //console.log(eqpInfoObj);
+    wx.navigateTo({
+      url: '../eqpManagement/eqpRepairDoApproveCheck?eqpInfo=' + eqpInfoObj + '&docFormid=' + that.data.docFormid + '&docId=' + that.data.docId + '&rStatus=' + that.data.rStatus + '&reRepairFlag=' + that.data.reRepairFlag + '&downTime=' + that.data.downTime
     });
   },
 
@@ -1454,20 +1477,41 @@ upload: function(e) {
 
   updateDownTime:function(dta){
     //console.log(dta);
-    var downTimestamp = this.data.repairTimestamp;;
-    downTimestamp = downTimestamp - dta * 3600000;
-    var downTimeTemp = this.timestampInit(downTimestamp);
+    var downTimestamp = this.data.downTimestamp;;
+    downTimestamp = downTimestamp - dta * 60000;
+    var downTimeTemp = this.timestampInit_toHours(downTimestamp);
     this.setData({
       exceptTime:dta,
       downTime:downTimeTemp
     });
   },
+
+  updateRepairTime:function(dta){
+    //console.log(dta);
+    var repairTimestamp = this.data.repairTimestamp;;
+    repairTimestamp = repairTimestamp - dta * 60000;
+    var repairTimeTemp = this.timestampInit_toMinutes(repairTimestamp);
+    this.setData({
+      exceptTime:dta,
+      repairTime:repairTimeTemp
+    });
+  },
   
-  timestampInit:function(timestampTemp){
+  timestampInit_toMinutes:function(timestampTemp){
+    // let day = parseInt(timestampTemp/1000/3600/24);
+    // let hours = parseInt(timestampTemp/1000/3600%24);
+    // let minutes = parseInt((timestampTemp/1000/3600%24 - hours) * 60);
+    //let hours = (timestampTemp/1000/3600).toFixed(1);
+    let minutes = parseInt(timestampTemp/1000/60);
+    return minutes;
+  },
+
+  timestampInit_toHours:function(timestampTemp){
     // let day = parseInt(timestampTemp/1000/3600/24);
     // let hours = parseInt(timestampTemp/1000/3600%24);
     // let minutes = parseInt((timestampTemp/1000/3600%24 - hours) * 60);
     let hours = (timestampTemp/1000/3600).toFixed(1);
+    //let minutes = parseInt(timestampTemp/1000/60);
     return hours;
   },
 

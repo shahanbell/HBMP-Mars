@@ -1,6 +1,0 @@
-{
-  "usingComponents": {
-    "eqpDocList": "../../component/eqpDocList/eqpDocList",
-    "eqpRepairBacklogList": "../../component/eqpRepairBacklogList/eqpRepairBacklogList"
-  }
-}

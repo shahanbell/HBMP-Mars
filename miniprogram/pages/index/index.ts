@@ -20,7 +20,7 @@ Page({
       { id: 'menu03', name: '出差', imgUrl: '../../images/business.png', url: '../../efgp/pages/businesstrip/businesstrip', parentid: -1 },
       { id: 'menu04', name: '派车', imgUrl: '../../images/car.png', url: '../../efgp/pages/carapp/carapp', parentid: -1 },
       { id: 'menu05', name: '借支', imgUrl: '../../images/loan.png', url: '../../efgp/pages/loan/loan', parentid: -1 },
-      { id: 'menu09', name: '设备管理', imgUrl: '../../images/eqpManagement.png', url: '/pages/eqpManagement/eqpManageIndex', parentid: -1 },
+      { id: 'menu09', name: '设备管理', imgUrl: '../../images/eqpManagement.png', url: '../../eam/pages/eqpManagement/eqpManageIndex', parentid: -1 },
     ],
     indicatorDots: false,
     autoplay: true,
