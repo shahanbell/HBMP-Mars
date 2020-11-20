@@ -1,10 +1,9 @@
 // miniprogram/pages/eqpManagement/startEqpRepair.js
-import Dialog from '../../component/vant/dialog/dialog';
 const date = new Date()
 const years = []
 const months = []
 const days = []
-
+import Dialog from '../../../component/vant/dialog/dialog';
 for (let i = 1990; i <= date.getFullYear(); i++) {
   years.push(i)
 }
@@ -38,7 +37,6 @@ Page({
     collapseActiveNames: [],
 
     repairBasicInfoCardHeight: '400',
-    arriveFlag:false,
     completeFlag:false,
     totalPrice:null,
     spareCost:null,
@@ -85,9 +83,7 @@ Page({
     uploaderList: [],
     uploaderObjInfoList:[],
     uploaderNum:0,
-    showUpload:false,
-    showDelete:false,
-    showSpareEditBtn: false,
+    showUpload:true,
     troubleTypeCol: ['操作员点检','设备突发故障','维修员点检'],
     show:{
       eqpSelectorPopup: false,
@@ -157,12 +153,6 @@ Page({
       return value;
     },
 
-  },
-
-  onTabChange(event){
-    this.setData({
-      auditTabActive: event.detail.index
-    });
   },
 
   onCollapseChange(event) {
@@ -363,10 +353,9 @@ upload: function(e) {
    */
   onEqpSelectorTap: function(){
     this.setData({
-      // show:{
-      //   eqpSelectorPopup: true
-      // }
-      auditTabActive: 2
+      show:{
+        eqpSelectorPopup: true
+      }
     });
   },
 
@@ -1521,21 +1510,20 @@ upload: function(e) {
   },
 
   getTotalPrice:function(){
-    console.log("total price start");
-    // var spareListTemp = this.data.spareUsedList;
-    // var totalPrice = 0;
-    // var spareCostTemp = 0;
-    // var repairCostTemp = isNaN(parseFloat(this.data.repairCost)) ? 0 : parseFloat(this.data.repairCost);
-    // var laborCostTemp = isNaN(parseFloat(this.data.laborCost)) ? 0 : parseFloat(this.data.laborCost);
-    // for(var i = 0 ; i < spareListTemp.length ; i++){
-    //   totalPrice = totalPrice + spareListTemp[i].uPrice * spareListTemp[i].qty;
-    // }
-    // spareCostTemp = totalPrice;
-    // totalPrice = (totalPrice + repairCostTemp + laborCostTemp).toFixed(2) * 100;
-    // this.setData({
-    //   totalPrice : totalPrice,
-    //   spareCost : spareCostTemp,
-    // });
+    var spareListTemp = this.data.spareUsedList;
+    var totalPrice = 0;
+    var spareCostTemp = 0;
+    var repairCostTemp = isNaN(parseFloat(this.data.repairCost)) ? 0 : parseFloat(this.data.repairCost);
+    var laborCostTemp = isNaN(parseFloat(this.data.laborCost)) ? 0 : parseFloat(this.data.laborCost);
+    for(var i = 0 ; i < spareListTemp.length ; i++){
+      totalPrice = totalPrice + spareListTemp[i].uPrice * spareListTemp[i].qty;
+    }
+    spareCostTemp = totalPrice;
+    totalPrice = (totalPrice + repairCostTemp + laborCostTemp).toFixed(2) * 100;
+    this.setData({
+      totalPrice : totalPrice,
+      spareCost : spareCostTemp,
+    });
   },
 
   /**
@@ -1730,18 +1718,11 @@ upload: function(e) {
           var hitchSort01ObjTemp = null;
           var hitchTypeObjTemp = null;
 
-          if(eqpRepairInfo.rstatus < "20"){
-            _this.data.arriveFlag = false;
-            _this.data.completeFlag = false;
-            _this.data.repairBasicInfoCardHeight = '315'
-          }
-          else if(eqpRepairInfo.rstatus >= "20" && eqpRepairInfo.rstatus < "30"){
-            _this.data.arriveFlag = true;
+          if(eqpRepairInfo.rstatus < "30"){
             _this.data.completeFlag = false;
             _this.data.repairBasicInfoCardHeight = '400'
           }
           else{
-            _this.data.arriveFlag = true;
             _this.data.completeFlag = true;
             _this.data.repairBasicInfoCardHeight = '485'
           }
@@ -1831,7 +1812,6 @@ upload: function(e) {
 
           _this.setData({
             completeFlag: _this.data.completeFlag,
-            arriveFlag: _this.data.arriveFlag,
             repairBasicInfoCardHeight: _this.data.repairBasicInfoCardHeight,
             //hitchDesc: res.data[0].hitchdesc,
             hitchSort01List : _this.data.hitchSort01List,
@@ -2100,21 +2080,21 @@ upload: function(e) {
   },
 
   updateLaborCost:function(){
-    // var repairHelperList = this.data.repairHelperList;
-    // //var downTime_minute = this.data.downTime == null ? '0' : this.data.downTime;
-    // var repairTime_minute = this.data.repairTime == null ? '0' : this.data.repairTime;
-    // var totalTime = parseInt('0');
-    // totalTime = totalTime + parseInt(repairTime_minute);
-    // for(var i = 0;i < repairHelperList.length;i++){
-    //   if(repairHelperList[i].rtype != "0"){
-    //     totalTime = totalTime + (isNaN(parseInt(repairHelperList[i].UserNo)) ? 0 : parseInt(repairHelperList[i].UserNo));
-    //   }
-    // }
-    // console.log(totalTime);
-    // var laborCost = (totalTime * 0.7).toFixed(1);
-    // this.setData({
-    //   laborCost: laborCost
-    // });
+    var repairHelperList = this.data.repairHelperList;
+    //var downTime_minute = this.data.downTime == null ? '0' : this.data.downTime;
+    var repairTime_minute = this.data.repairTime == null ? '0' : this.data.repairTime;
+    var totalTime = parseInt('0');
+    totalTime = totalTime + parseInt(repairTime_minute);
+    for(var i = 0;i < repairHelperList.length;i++){
+      if(repairHelperList[i].rtype != "0"){
+        totalTime = totalTime + (isNaN(parseInt(repairHelperList[i].UserNo)) ? 0 : parseInt(repairHelperList[i].UserNo));
+      }
+    }
+    console.log(totalTime);
+    var laborCost = (totalTime * 0.7).toFixed(1);
+    this.setData({
+      laborCost: laborCost
+    });
   },
 
   ifshowArea:function(e){

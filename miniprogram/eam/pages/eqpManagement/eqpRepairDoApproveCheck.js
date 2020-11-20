@@ -1,10 +1,9 @@
 // miniprogram/pages/eqpManagement/startEqpRepair.js
-import Dialog from '../../component/vant/dialog/dialog';
 const date = new Date()
 const years = []
 const months = []
 const days = []
-
+import Dialog from '../../../component/vant/dialog/dialog';
 for (let i = 1990; i <= date.getFullYear(); i++) {
   years.push(i)
 }
@@ -35,10 +34,11 @@ Page({
    * 页面的初始数据
    */
   data: {
-    auditContenctType:'暂停维修',
+    auditContenctType:'合格',
     totalPrice:null,
     laborCost:null,
     repairCost:null,
+    downTime:null,
     repairTimestamp:null,
     exceptTime:null,
     stopWorkTime:null,
@@ -61,7 +61,7 @@ Page({
     hitchDutyList:[{userId:'C2090',deptNo:'13100',dept:'资讯室',userName:'沈越',email:'841873930@qq.com',phone:'18323491234'}],
     abraseHitchList:[{abraseHitchId : '1',abraseHitchDesc: '非正常磨损'},{abraseHitchId : '2',abraseHitchDesc: '正常磨损'}],
     hitchTypeList:[{hitchTypeCode: '0', hitchTypeName: '一般故障'},{hitchTypeCode: '1', hitchTypeName: '严重故障'}],
-    auditContenctList:[{contenctId:'接受',contenctDesc:'接受'},{contenctId:'不接受',contenctDesc:'不接受'}],
+    auditContenctList:[{contenctId:'合格',contenctDesc:'合格'},{contenctId:'不合格',contenctDesc:'不合格'}],
     hitchSort01List:[],
     hitchTypeCode:null,
     hitchTypeName:null,
@@ -131,7 +131,8 @@ Page({
     hitchReason:'',
     repairProcess:'',
     measure:'',
-
+    rStatus:'',
+    reRepairFlag: null,
     auditTabActive: 0,
 
     formatter(type, value) {
@@ -154,6 +155,13 @@ Page({
       serviceusername: this.data.serviceUserList[val].userName,
       serviceuser: this.data.serviceUserList[val].userId,
     })
+  },
+
+  on2ndRepairChange(event){
+    console.log(event);
+    this.setData({
+      reRepairFlag:event.detail
+    });
   },
 
   chooseImage(e) {
@@ -377,6 +385,18 @@ upload: function(e) {
         //console.log("start load more data");
        }, 2000);
     }
+
+    //  var p = new Promise(function(resolve, reject){
+    //   setTimeout(function(){
+    //     resolve("foo");
+         //console.log("first");
+    //   }, 1000);
+    // });
+    
+    // p.then(function(value){
+       //console.log(value);
+    // });
+
   },
 
   scrollFn(e) { 
@@ -579,6 +599,7 @@ upload: function(e) {
     },
 
     eqpCardSelect:function(e){
+      //console.log(spareListDta);
       var eqpIndex = 0;
       var findFlag = false;
       let _this = this;
@@ -617,6 +638,7 @@ upload: function(e) {
     },
 
     hitchDutyCardSelect:function(e){
+      //console.log(spareListDta);
       var eqpIndex = 0;
       var findFlag = false;
       let _this = this;
@@ -838,13 +860,14 @@ upload: function(e) {
   onDateFilterInput(event){
     //console.log(event);
     let dateTemp = this.dateFormatForFilter(event.detail);
+    //console.log(new Date(event.detail));
     this.setData({
       formdate: dateTemp,
       formdateTS: event.detail,
     });
   },
 
-  repairStopFormSubmit: function(e){
+  auditApproveFormSubmit: function(e){
     var that = this;
     //console.log(e);
     //console.log(this.data.uploaderList);
@@ -852,7 +875,14 @@ upload: function(e) {
     //console.log(this.data);
     //var canSubmit = this.checkFormDtaBeforeSubmit();
     var canSubmit = true;
-    var apiTemp = 'repairStop';
+    var apiTemp = '';
+    if(this.data.rStatus == '60'){
+      apiTemp = 'repairAuditApprove';
+    }
+    else if(this.data.rStatus == '70'){
+      apiTemp = 'repairAuditExam';
+    }
+    
     if(e.currentTarget.dataset.btntype != null){
       apiTemp = apiTemp + '_' + e.currentTarget.dataset.btntype
     }
@@ -887,6 +917,7 @@ upload: function(e) {
               userno:app.globalData.employeeId,
               contenct:that.data.auditContenctType,
               note:that.data.auditNote,
+              remark: that.data.reRepairFlag.toString(),
             },
             header: {
               'content-type': 'application/json'
@@ -897,10 +928,10 @@ upload: function(e) {
               var resMsg = '';
               //console.log(res);
               if(res.statusCode == 200 && res.data.msg != null){
-                resMsg = '暂停成功';
+                resMsg = '提交成功';
               }
               else{
-                resMsg = '暂停失败';
+                resMsg = '提交失败';
               }
               Dialog.alert({
                 title: '系统消息',
@@ -910,7 +941,7 @@ upload: function(e) {
                   }).then(() => {
                    // on close
                    //initProInfo(_this);
-                   wx.navigateBack({delta: 2});
+                   wx.navigateBack({delta: 3});
                 });
             },
             fail: function (fail) {
@@ -1029,9 +1060,14 @@ upload: function(e) {
     this.setData({
       docId: options.docId,
       docFormid: options.docFormid,
-      downTime:JSON.parse(options.eqpInfo).repairTime,
-      repairTimestamp:JSON.parse(options.eqpInfo).repairTimestamp
+      rStatus:options.rStatus,
+      downTime:options.downTime,
+      //downTime:JSON.parse(options.eqpInfo).repairTime,
+      repairTimestamp:JSON.parse(options.eqpInfo).repairTimestamp,
+      reRepairFlag: (options.reRepairFlag == "true")
     })
+
+    console.log(this.data);
 
     let _this = this;
     //console.log("windowsHeightTemp:" + app.globalData.windowHeight);
@@ -1041,7 +1077,7 @@ upload: function(e) {
     dateTemp = new Date();
     //console.log("heightTest:" + heightTemp);
 
-    this.getRepairHisDta(app.globalData.employeeId,this.data.docFormid);
+    this.getRepairApproveInitDta(app.globalData.employeeId,this.data.docFormid);
 
 
     //写你自己的接口
@@ -1226,6 +1262,7 @@ upload: function(e) {
 
   dateFormatForFilter(date){
     let dateTemp = new Date(date);
+    //console.log(event);
     let year = dateTemp.getFullYear();
     let month = dateTemp.getMonth() + 1;
     let day = dateTemp.getDate();
@@ -1260,7 +1297,7 @@ upload: function(e) {
     this.getAssetInfo(res);
   },
 
-  getRepairHisDta: function (userId,docFormid) {
+  getRepairApproveInitDta: function (userId,docFormid) {
     var _this = this;
     // restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/assetcardtest';
     var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/getRepairHistoryDta';
@@ -1361,6 +1398,7 @@ upload: function(e) {
     //var beijing_datetime = new Date(parseInt(timestamp) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
 
     let dateTemp = new Date(parseInt(timestamp) * 1000);
+    //console.log(event);
     let year = dateTemp.getFullYear();
     let month = dateTemp.getMonth() + 1;
     let day = dateTemp.getDate();

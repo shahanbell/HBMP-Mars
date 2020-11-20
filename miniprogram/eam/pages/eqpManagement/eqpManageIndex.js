@@ -4,6 +4,7 @@ var topTabHeight;
 var bottomTabHeight;
 var dateFilterType;
 var backlogCount = -1;
+import Dialog from '../../../component/vant/dialog/dialog';
 Page({
   data: {
     interval_getBacklog: null,
@@ -24,7 +25,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    //console.log("demo2 load");
+    console.info("demo2 load");
     let that = this;
     this.onGridClick();
     backlogCount = -1;

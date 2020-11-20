@@ -1,5 +1,5 @@
 // miniprogram/pages/eqpManagement/startEqpRepair.js
-import Dialog from '../../component/vant/dialog/dialog';
+import Dialog from '../../../component/vant/dialog/dialog';
 var endVal = null;
 var app = getApp();
 var startVal = null;
