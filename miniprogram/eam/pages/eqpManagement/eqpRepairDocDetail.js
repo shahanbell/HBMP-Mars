@@ -1389,7 +1389,7 @@ upload: function(e) {
 
         _this.data.showBtn.detailCheckBtn = true;
 
-        if(repairDocDta.repairuser == app.globalData.employeeId){
+        if(repairDocDta.repairdeptno == app.globalData.defaultDeptId){
           _this.data.steps = _this.data.steps_info;
           if(repairDocDta.rstatus == "10"){
             _this.data.showBtn.deleteBtn = true;
