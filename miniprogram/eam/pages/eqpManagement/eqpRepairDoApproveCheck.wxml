@@ -188,8 +188,16 @@
 				<van-field label="审批人" value="{{ approveUserName }}" data-name="approveUserName" use-button-slot readonly >
         </van-field>
 
-				<van-cell center title="二次维修">
-					<van-switch class="cellSwitchPro" size="24px" checked="{{ reRepairFlag }}" bind:change="on2ndRepairChange" />
+				<van-field wx:if="{{rStatus!='70'}}" label="其他费用" value="{{ repairCost }}" data-name="repairCost" bind:change="bindData" use-button-slot>
+        	<view slot="button" class="btnSlot_Yuan">¥</view>
+        </van-field>
+
+				<van-cell center title="重复维修">
+					<van-switch class="cellSwitchPro" size="24px" checked="{{ reRepairFlag }}" bind:change="on2ndRepairChange" disabled="{{rStatus=='70'}}" />
+				</van-cell>
+
+				<van-cell center title="是否归档">
+					<van-switch class="cellSwitchPro" size="24px" checked="{{ needArchiveFlag }}" bind:change="onNeedArchiveChange" disabled="{{rStatus=='70'}}" />
 				</van-cell>
 
         <!-- <van-field label="审批结果" value="{{ auditContenctObj.contenctDesc }}" data-name="contenctDesc" bind:change="bindData" right-icon="arrow-down" bindtap='onAuditContenctCellTap' readonly /> -->

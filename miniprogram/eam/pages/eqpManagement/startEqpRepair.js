@@ -441,8 +441,8 @@ upload: function(e) {
         }
       }
 
-
-      restUrl += '/s' + '/' + 0 + '/' + 20 + '?searchInfo=' + res;
+      //restUrl += '/s' + '/' + 0 + '/' + 20 + '?searchInfo=' + res + '&deptNo=1N240';
+      restUrl += '/s' + '/' + 0 + '/' + 20 + '?searchInfo=' + res + '&deptCheckCode=' + app.globalData.defaultCompany + '_' + app.globalData.defaultDeptId;
       restUrl = encodeURI(restUrl);
       //console.log(restUrl);
       wx.showLoading({
@@ -1156,6 +1156,23 @@ onServiceUserPickerCancel: function(event){
     let day = dateTemp.getDate();
     let hour = dateTemp.getHours();
     let minute = dateTemp.getMinutes();
+
+    if(month < '10'){
+      month = "0" + month;
+    }
+  
+    if(day < '10'){
+      day = "0" + day;
+    }
+  
+    if(hour < '10'){
+      hour = "0" + hour;
+    }
+  
+    if(minute < '10'){
+      minute = "0" + minute;
+    }
+
     let dayTemp = year + "/" + month + "/" + day + "  " + hour + ":" + minute;
     return dayTemp;
   },
@@ -1266,7 +1283,7 @@ onServiceUserPickerCancel: function(event){
       return false;
     }
     console.log(this.data.serviceuser);
-    if(this.data.troubleFrom == null || this.data.formdateTS == null || this.data.serviceuser == null || this.data.troubleDetailInfo == null || this.data.uploaderList.length < 1 || this.data.repairAreaObj.repairAreaValue == '-1'){
+    if(this.data.troubleFrom == null || this.data.formdateTS == null || (this.data.serviceuser == null && !this.data.disableServiceUser) || this.data.troubleDetailInfo == null || this.data.uploaderList.length < 1 || this.data.repairAreaObj.repairAreaValue == '-1'){
       Dialog.alert({
         title: '系统消息',
         message: "请将信息填写完整",
@@ -1278,12 +1295,31 @@ onServiceUserPickerCancel: function(event){
         });
       return false;
     }
+
+    console.log(this.data.formdateTS);
+    console.log(this.data.suppleStartDateObj);
+
     if(this.data.supplementFlag){
 
       if(this.data.suppleStartDateObj == null || JSON.stringify(this.data.suppleStartDateObj) === '{}'){
         Dialog.alert({
           title: '系统消息',
           message: "请选择维修到达时间",
+          zIndex:1000,
+          }).then(() => {
+            this.setData({
+              textareaDisabled:false
+            });
+          });
+        return false;
+      }
+
+      var startDateTSTemp = (this.data.suppleStartDateObj == null || JSON.stringify(this.data.suppleStartDateObj) === '{}') ? 0 : this.data.suppleStartDateObj.dateTS;
+      var completeDateTSTemp = (this.data.suppleCompleteDateObj == null || JSON.stringify(this.data.suppleCompleteDateObj) === '{}') ? 0 : this.data.suppleCompleteDateObj.dateTS;
+      if(startDateTSTemp < this.data.formdateTS || (completeDateTSTemp < startDateTSTemp && completeDateTSTemp != 0)){
+        Dialog.alert({
+          title: '系统消息',
+          message: "请确认故障到达和完成时间是否填写正确",
           zIndex:1000,
           }).then(() => {
             this.setData({

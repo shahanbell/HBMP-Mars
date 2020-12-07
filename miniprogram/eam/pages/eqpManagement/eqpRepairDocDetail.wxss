@@ -204,3 +204,13 @@
     line-height: 40rpx;
     padding-top: 4rpx;
   }
+
+  .repairDetailBtnWrap{
+    margin-right: 10px;
+    margin-bottom: 9px;
+  }
+
+  .repairDetailBtn{
+    margin-top: 7px;
+    margin-left:10px;
+  }

@@ -1,6 +1,7 @@
 // component/eqpDocList/eqpDocList.js
 import Notify from '../../component/vant/notify/notify';
 
+var util = require("../../utils/eamCommonUtils.js");
 var app = getApp();
 var searchBarHeight;
 var topTabHeight;
@@ -33,8 +34,8 @@ Component({
     orderState: null,
     winHeight: 900,
     currentTab: 0,     //当前显示tab的下标
-    navTab: ['全部', '处理中', '已完成'],
-    navTabPro: [{value:'全部',showScrollBar:true}, {value:'处理中',showScrollBar:false}, {value:'已完成',showScrollBar:false}],
+    navTab: ['处理中', '全部', '已完成'],
+    navTabPro: [{value:'处理中',showScrollBar:true}, {value:'全部',showScrollBar:false}, {value:'已完成',showScrollBar:false}],
     loading: true,
     refreshTrigger: false,
     show:{
@@ -502,7 +503,10 @@ Component({
       // }
       //restUrl += '/f;deptno=' + '13000' + '/s';
 
-      if(this.data.deptFilterChecked == true){
+      if(app.globalData.defaultDeptId.indexOf("1P000") >= 0){
+        restUrl += '/f';
+      }
+      else if(this.data.deptFilterChecked == true){
         if(app.globalData.defaultDeptId.indexOf("1W3") >= 0){
           restUrl += '/f';
         }
@@ -517,14 +521,14 @@ Component({
         restUrl += '/f;repairuser=' + res;
       }
 
-      if(this.data.currentTab == '1'){
-        restUrl += ';ALL=ALL';
-      }
-      else if(this.data.currentTab == '2'){
+      if(this.data.currentTab == '2'){
         restUrl += ';rstatus=95';
       }
       else if(this.data.statusFilterObj.statusCode != null &&  this.data.statusFilterObj.statusCode != ''){
         restUrl += ';rstatus=' + this.data.statusFilterObj.statusCode;
+      }
+      else if(this.data.currentTab == '0'){
+        restUrl += ';ALL=ALL';
       }
 
       if(this.data.dateFilterChecked == true){
@@ -596,7 +600,7 @@ Component({
             newItem.orderdtt = repairDocListDta[i].assetno == null ? '其他设备' : repairDocListDta[i].assetno.assetDesc;
             newItem.couponname = '品名';
             newItem.productcount = repairDocListDta[i].assetno == null ? '1' : repairDocListDta[i].assetno.qty;
-            newItem.ordernum = _this.utcInit(repairDocListDta[i].hitchtime);
+            newItem.ordernum = util.utcInit(repairDocListDta[i].hitchtime);
             newItem.payamount = repairDocListDta[i].repairusername;
             _this.data.repairDocListArray[currentTemp].push(newItem);
           }
@@ -631,6 +635,7 @@ Component({
         //console.log(rect);
         //console.log("endHeight" + that.properties.endHeight);
         let heightTemp = that.properties.endHeight-rect.bottom;
+        heightTemp = parseInt(heightTemp);
         that.setData({
           winHeight:heightTemp
         });
@@ -668,9 +673,9 @@ Component({
     },
     getDocStatusCodeByTabId: function(currentTab){
       switch(currentTab) {
-        case "0":
-            return '';
         case "1":
+            return '';
+        case "0":
             return 'ALL';
         case "2":
             return '95';
@@ -724,10 +729,16 @@ Component({
     ready: function(){
       //视图层布局完成
       //this.getSearchBarRect();
+      var statusFilterValueTemp = "请选择";
+      var statusFilterObjTemp = {statusDesc:'请选择',statusCode:null};
       this.getStartViewHeight();
+      if(app.globalData.defaultDeptId.indexOf("1P000") >= 0){
+        statusFilterValueTemp = "经理审核";
+        statusFilterObjTemp = {statusDesc:'经理审核',statusCode:'70'};
+      }
       this.setData({
-        statusFilterValue: "请选择",
-        statusFilterObj: {statusDesc:'请选择',statusCode:null},
+        statusFilterValue: statusFilterValueTemp,
+        statusFilterObj: statusFilterObjTemp,
         deptFilterChecked: false,
         dateFilterChecked: false,
         startDateFilter: null,
