@@ -1,5 +1,6 @@
 // miniprogram/pages/eqpManagement/startEqpRepair.js
 import Dialog from '../../../component/vant/dialog/dialog';
+var eamUtil = require('../../../utils/eamCommonUtils.js');
 var endVal = null;
 var app = getApp();
 var startVal = null;
@@ -7,6 +8,8 @@ var canLoadNewData = true;
 var eqpListDta = null;
 var dateTemp = null;
 var repairDocDta = null;
+var repairUserInfo = null;
+var serviceUserInfo = null;
 Page({
 
   /**
@@ -78,6 +81,7 @@ Page({
     docFormidId: null,
     repairuser: null,
     repairUserName: null,
+    repairUserMobile: null,
     assetno: null,
     itemdsc: null,
     itemno: null,
@@ -90,6 +94,7 @@ Page({
     assetCardId: null,
     serviceuser: 'TEST',
     serviceusername: 'CTEST',
+    serviceuserMobile: null,
     assetPosition:null,
     hitchUrgency:null,
 
@@ -1348,7 +1353,7 @@ upload: function(e) {
         }
 
         var dataLen = res.data.length;
-        if(dataLen > 2){
+        if(dataLen > 4){
           //console.log("data Error");
           wx.hideLoading();
           return;
@@ -1356,6 +1361,14 @@ upload: function(e) {
 
         repairDocDta = res.data[0];
         repairManagerInfo = res.data[1];
+        repairUserInfo = null;
+        serviceUserInfo = null;
+        if(res.data.length > 2){
+          repairUserInfo = res.data[2];
+        }
+        if(res.data.length > 3){
+          serviceUserInfo = res.data[3];
+        }
         var stepCode = null;
 
         //隐藏或显示按钮
@@ -1389,7 +1402,7 @@ upload: function(e) {
 
         _this.data.showBtn.detailCheckBtn = true;
 
-        if(repairDocDta.repairdeptno == app.globalData.defaultDeptId){
+        if(app.globalData.defaultDeptId.indexOf(repairDocDta.repairdeptno.substring(0,3)) >= 0){
           _this.data.steps = _this.data.steps_info;
           if(repairDocDta.rstatus == "10"){
             _this.data.showBtn.deleteBtn = true;
@@ -1425,6 +1438,7 @@ upload: function(e) {
             stepCode = 1;
           }
         }
+
 
         if(repairDocDta.serviceuser == app.globalData.employeeId && repairDocDta.repairmethodtype != "2"){
           if(repairDocDta.rstatus <= "40"){
@@ -1475,6 +1489,20 @@ upload: function(e) {
             stepCode = 4;
           }
         }
+        else if(repairDocDta.serviceuser == app.globalData.employeeId && repairDocDta.repairmethodtype == "2"){
+          if(repairDocDta.rstatus >= "20" && repairDocDta.rstatus < "30" && repairDocDta.rstatus != "28"){
+            _this.data.showBtn.saveRepairInfoBtn = true;
+            _this.data.showBtn.stopRepairBtn = true;
+            stepCode = 1;
+          }
+          if(repairDocDta.rstatus == "28"){
+            _this.data.showBtn.saveRepairInfoBtn = true;
+            _this.data.showBtn.startRepairBtn = true;
+            _this.data.disableBtn.saveRepairInfoBtn = true;
+            stepCode = 1;
+            _this.data.steps[stepCode].text = "暂停维修"
+          }
+        }
 
         if(app.globalData.defaultDeptId == "1W300" || app.globalData.defaultDeptId == "13130"){
           if(repairDocDta.rstatus == "60"){
@@ -1494,17 +1522,25 @@ upload: function(e) {
           stepCode = 3;
         }
 
-        var formDate_bj = _this.utcInit(repairDocDta.hitchtime);
+        if(repairUserInfo != null){
+          _this.data.repairUserMobile = repairUserInfo.phone;
+        }
+
+        if(serviceUserInfo != null){
+          _this.data.serviceuserMobile = serviceUserInfo.phone;
+        }
+
+        var formDate_bj = eamUtil.utcInit(repairDocDta.hitchtime);
         var creDateTemp = new Date(formDate_bj);
         var arrivalDate_bj = null;
         var completeDate_bj = null;
         if(repairDocDta.servicearrivetime != null){
-          arrivalDate_bj = _this.utcInit(repairDocDta.servicearrivetime);
+          arrivalDate_bj = eamUtil.utcInit(repairDocDta.servicearrivetime);
           var arrivalDateTemp = new Date(arrivalDate_bj);
           _this.data.contactTime = _this.timestampInit(arrivalDateTemp-creDateTemp);
 
           if(repairDocDta.completetime != null){
-            completeDate_bj = _this.utcInit(repairDocDta.completetime);
+            completeDate_bj = eamUtil.utcInit(repairDocDta.completetime);
             var completeDataTemp = new Date(completeDate_bj);
             _this.data.repairTime = _this.timestampInit(completeDataTemp - arrivalDateTemp);
             _this.data.repairTimestamp = completeDataTemp-arrivalDateTemp;
@@ -1525,6 +1561,7 @@ upload: function(e) {
           docId: repairDocDta.id,
           repairuser: repairDocDta.repairuser,
           repairUserName: repairDocDta.repairusername,
+          repairUserMobile: _this.data.repairUserMobile,
           assetno: repairDocDta.assetno == null ? '无' : repairDocDta.assetno.formid,
           itemdsc: repairDocDta.assetno == null ? '其他设备' : repairDocDta.assetno.assetDesc,
           itemno: repairDocDta.itemno,
@@ -1536,6 +1573,7 @@ upload: function(e) {
           //formdateTS: null,
           serviceuser: repairDocDta.serviceuser,
           serviceusername: repairDocDta.serviceusername,
+          serviceuserMobile: _this.data.serviceuserMobile,
           repairStepActive: stepCode,
           disableBtn: _this.data.disableBtn,
           showBtn: _this.data.showBtn,
@@ -1570,42 +1608,6 @@ upload: function(e) {
     //let minutes = parseInt(timestampTemp/1000/60);
 
     return hours;
-  },
-
-  utcInit: function(utc_datetime) {
-    if(utc_datetime == null || utc_datetime == ''){
-      return null;
-    }
-    // 转为正常的时间格式 年-月-日 时:分:秒
-    var T_pos = utc_datetime.indexOf('T');
-    var Z_pos = utc_datetime.indexOf('Z');
-    var year_month_day = utc_datetime.substr(0,T_pos);
-    var hour_minute_second = utc_datetime.substr(T_pos+1,Z_pos-T_pos-1);
-    var new_datetime = year_month_day+" "+hour_minute_second; // 2017-03-31 08:02:06
-    var new_datetimeInit = new_datetime.replace(/-/g, '/');
-
-    // 处理成为时间戳
-    timestamp = new Date(Date.parse(new_datetimeInit));
-    timestamp = timestamp.getTime();
-    timestamp = timestamp/1000;
-
-    // 增加8个小时，北京时间比utc时间多八个时区
-    var timestamp = timestamp+8*60*60;
-
-    // 时间戳转为时间
-    //var beijing_datetime = new Date(parseInt(timestamp) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
-
-    let dateTemp = new Date(parseInt(timestamp) * 1000);
-    let year = dateTemp.getFullYear();
-    let month = dateTemp.getMonth() + 1;
-    let day = dateTemp.getDate();
-    let hour = dateTemp.getHours();
-    let minute = dateTemp.getMinutes();
-    let dayTemp = year + "/" + month + "/" + day + "  " + hour + ":" + minute;
-    return dayTemp;
-
-
-    //return beijing_datetime; // 2017-03-31 16:02:06
   },
 
   getRepairDocImageInfo: function (formid) {
@@ -1730,6 +1732,33 @@ upload: function(e) {
          return -1;
     } 
   },
+
+  mobileIconClick:function(res){
+    var mobile = this.data[res.currentTarget.dataset.mobile];
+    if(mobile != null){
+      Dialog.confirm({
+        title: '系统提示',
+        message: '将拨打:' + mobile,
+        mask: false,
+        zIndex: 1000,
+      })
+      .then(() => {
+        wx.makePhoneCall({
+          phoneNumber: mobile
+        });
+      })
+      .catch(() => {
+        // on cancel
+      });
+    }
+    else{
+      Dialog.alert({
+        title: '系统消息',
+        message: "无手机号码信息",
+        zIndex:1000,
+      });
+    }
+  }
 
 })
 

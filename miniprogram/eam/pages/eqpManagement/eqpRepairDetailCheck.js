@@ -4,6 +4,7 @@ const years = []
 const months = []
 const days = []
 import Dialog from '../../../component/vant/dialog/dialog';
+var util = require("../../../utils/eamCommonUtils.js");
 for (let i = 1990; i <= date.getFullYear(); i++) {
   years.push(i)
 }
@@ -1521,20 +1522,20 @@ upload: function(e) {
 
   getTotalPrice:function(){
     console.log("total price start");
-    // var spareListTemp = this.data.spareUsedList;
-    // var totalPrice = 0;
-    // var spareCostTemp = 0;
-    // var repairCostTemp = isNaN(parseFloat(this.data.repairCost)) ? 0 : parseFloat(this.data.repairCost);
-    // var laborCostTemp = isNaN(parseFloat(this.data.laborCost)) ? 0 : parseFloat(this.data.laborCost);
-    // for(var i = 0 ; i < spareListTemp.length ; i++){
-    //   totalPrice = totalPrice + spareListTemp[i].uPrice * spareListTemp[i].qty;
-    // }
-    // spareCostTemp = totalPrice;
-    // totalPrice = (totalPrice + repairCostTemp + laborCostTemp).toFixed(2) * 100;
-    // this.setData({
-    //   totalPrice : totalPrice,
-    //   spareCost : spareCostTemp,
-    // });
+    var spareListTemp = this.data.spareUsedList;
+    var totalPrice = 0;
+    var spareCostTemp = 0;
+    var repairCostTemp = isNaN(parseFloat(this.data.repairCost)) ? 0 : parseFloat(this.data.repairCost);
+    var laborCostTemp = isNaN(parseFloat(this.data.laborCost)) ? 0 : parseFloat(this.data.laborCost);
+    for(var i = 0 ; i < spareListTemp.length ; i++){
+      totalPrice = totalPrice + spareListTemp[i].uPrice * spareListTemp[i].qty;
+    }
+    spareCostTemp = totalPrice;
+    totalPrice = (totalPrice + repairCostTemp + laborCostTemp).toFixed(2) * 100;
+    this.setData({
+      totalPrice : totalPrice,
+      spareCost : spareCostTemp,
+    });
   },
 
   /**
@@ -1928,7 +1929,7 @@ upload: function(e) {
             newItem.pId = repairHisListInfo[i].pid;
             newItem.userNo = repairHisListInfo[i].userno;
             newItem.userName = repairHisListInfo[i].username;
-            newItem.creDate = _this.utcInit(repairHisListInfo[i].credate);
+            newItem.creDate = util.utcInit(repairHisListInfo[i].credate);
             newItem.contenct = repairHisListInfo[i].contenct;
             newItem.note = repairHisListInfo[i].note;
             _this.data.repairHisList.push(newItem);

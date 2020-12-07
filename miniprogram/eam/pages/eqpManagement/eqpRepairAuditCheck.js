@@ -4,6 +4,7 @@ const years = []
 const months = []
 const days = []
 import Dialog from '../../../component/vant/dialog/dialog';
+var util = require("../../../utils/eamCommonUtils.js");
 for (let i = 1990; i <= date.getFullYear(); i++) {
   years.push(i)
 }
@@ -1909,7 +1910,7 @@ upload: function(e) {
             newItem.pId = repairHisListInfo[i].pid;
             newItem.userNo = repairHisListInfo[i].userno;
             newItem.userName = repairHisListInfo[i].username;
-            newItem.creDate = _this.utcInit(repairHisListInfo[i].credate);
+            newItem.creDate = util.utcInit(repairHisListInfo[i].credate);
             newItem.contenct = repairHisListInfo[i].contenct;
             newItem.note = repairHisListInfo[i].note;
             _this.data.repairHisList.push(newItem);

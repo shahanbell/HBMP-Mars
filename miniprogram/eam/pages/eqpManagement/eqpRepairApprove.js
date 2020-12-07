@@ -133,7 +133,7 @@ Page({
     measure:'',
     rStatus:'',
     reRepairFlag: null,
-
+    needArchiveFlag: null,
     auditTabActive: 0,
 
     formatter(type, value) {
@@ -1355,6 +1355,7 @@ upload: function(e) {
             abraseHitchObj: {abraseHitchDesc:abraseHitchTemp},
             hitchTypeObj: {hitchTypeName: eqpRepairInfo.hitchtype == null ? '' : eqpRepairInfo.hitchtype},
             reRepairFlag: eqpRepairInfo.remark == null ? 'false' : (eqpRepairInfo.remark == "true"),
+            needArchiveFlag: eqpRepairInfo.repairarchive == null ? 'false' :(eqpRepairInfo.repairarchive == "Y"),
             hitchDesc:eqpRepairInfo.hitchdesc == null ? '' : eqpRepairInfo.hitchdesc,
             hitchAlarm:eqpRepairInfo.hitchalarm == null ? '' : eqpRepairInfo.hitchalarm,
             hitchReason:eqpRepairInfo.hitchreason == null ? '' : eqpRepairInfo.hitchreason,
@@ -1397,7 +1398,7 @@ upload: function(e) {
     var eqpInfoObj = JSON.stringify(that.data.eqpRepairInfoList[0]);
     //console.log(eqpInfoObj);
     wx.navigateTo({
-      url: '../eqpManagement/eqpRepairDoApproveCheck?eqpInfo=' + eqpInfoObj + '&docFormid=' + that.data.docFormid + '&docId=' + that.data.docId + '&rStatus=' + that.data.rStatus + '&reRepairFlag=' + that.data.reRepairFlag + '&downTime=' + that.data.downTime
+      url: '../eqpManagement/eqpRepairDoApproveCheck?eqpInfo=' + eqpInfoObj + '&docFormid=' + that.data.docFormid + '&docId=' + that.data.docId + '&rStatus=' + that.data.rStatus + '&reRepairFlag=' + that.data.reRepairFlag + '&needArchiveFlag=' + that.data.needArchiveFlag + '&downTime=' + that.data.downTime + '&repairCost=' + that.data.repairCost
     });
   },
 

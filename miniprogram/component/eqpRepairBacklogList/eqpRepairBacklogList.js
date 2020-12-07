@@ -1,4 +1,5 @@
 var app = getApp();
+var util = require("../../utils/eamCommonUtils.js");
 Component({
   /**
    * 组件的属性列表
@@ -30,13 +31,22 @@ Component({
       var _this = this;
       var repairBacklogList = null;
       var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/getRepairBacklogList';
-      if(app.globalData.defaultDeptId.indexOf("1W3") >= 0){
+
+      if(app.globalData.defaultDeptId.indexOf("1P000") >= 0){
+        restUrl += '/f;rstatus=70';
+      }
+      else if(app.globalData.defaultDeptId.indexOf("1W3") >= 0){
         restUrl += '/f;serviceuser=' + res;
       }
       else{
         restUrl += '/f;repairuser=' + res;
       }
+
       restUrl += ';ALL=ALL';
+
+      if(app.globalData.defaultDeptId.indexOf("1W300") >= 0){
+        restUrl += ';ManagerCheck=ManagerCheck';
+      }
 
       restUrl += '/s/' + 0 + '/' + 20;
       //console.log(restUrl);
@@ -79,7 +89,7 @@ Component({
             let newItem = {pId:'',userNo:'',creDate:'',contenct:'',isRead:''};
             newItem.pId = repairBacklogList[i].formid;
             newItem.userNo = repairBacklogList[i].repairusername;
-            newItem.creDate = _this.utcInit(repairBacklogList[i].hitchtime);
+            newItem.creDate = util.utcInit(repairBacklogList[i].hitchtime);
             newItem.contenct = _this.getDocStatus(repairBacklogList[i].rstatus);
             newItem.isRead = repairBacklogList[i].status;
             _this.data.repairBacklogList.push(newItem);

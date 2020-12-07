@@ -297,7 +297,7 @@
     readonly
   />
 
-  <van-cell center title="二次维修">
+  <van-cell center title="重复维修">
     <van-switch class="cellSwitchPro" size="24px" checked="{{ reRepairFlag }}" bind:change="on2ndRepairChange" />
   </van-cell>
 

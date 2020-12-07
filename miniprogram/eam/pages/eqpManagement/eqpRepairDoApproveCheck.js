@@ -4,6 +4,7 @@ const years = []
 const months = []
 const days = []
 import Dialog from '../../../component/vant/dialog/dialog';
+var util = require("../../../utils/eamCommonUtils.js");
 for (let i = 1990; i <= date.getFullYear(); i++) {
   years.push(i)
 }
@@ -133,6 +134,7 @@ Page({
     measure:'',
     rStatus:'',
     reRepairFlag: null,
+    needArchiveFlag: null,
     auditTabActive: 0,
 
     formatter(type, value) {
@@ -161,6 +163,13 @@ Page({
     console.log(event);
     this.setData({
       reRepairFlag:event.detail
+    });
+  },
+
+  onNeedArchiveChange(event){
+    console.log(event);
+    this.setData({
+      needArchiveFlag:event.detail
     });
   },
 
@@ -873,25 +882,44 @@ upload: function(e) {
     //console.log(this.data.uploaderList);
     const FileSystemManager = wx.getFileSystemManager();
     //console.log(this.data);
-    //var canSubmit = this.checkFormDtaBeforeSubmit();
-    var canSubmit = true;
+    var canSubmit = this.checkFormDtaBeforeSubmit();
+    //var canSubmit = true;
     var apiTemp = '';
-    if(this.data.rStatus == '60'){
-      apiTemp = 'repairAuditApprove';
-    }
-    else if(this.data.rStatus == '70'){
-      apiTemp = 'repairAuditExam';
-    }
-    
-    if(e.currentTarget.dataset.btntype != null){
-      apiTemp = apiTemp + '_' + e.currentTarget.dataset.btntype
-    }
+    var dataInitObj = {};
     var errmsg = '';
+
     if (!app.globalData.authorized) {
       canSubmit = false;
       errmsg += '账号未授权\r\n';
     }
     if (canSubmit) {
+      if(this.data.rStatus == '60'){
+        apiTemp = 'repairAuditApprove';
+        dataInitObj = {
+          id: that.data.docId,
+          pid: that.data.docFormid,
+          company: app.globalData.defaultCompany,
+          userno:app.globalData.employeeId,
+          contenct:that.data.auditContenctType,
+          note:that.data.auditNote,
+          remark: that.data.reRepairFlag.toString(),
+          creator: that.data.repairCost,
+          status: that.data.needArchiveFlag ? 'Y':'N',
+        }
+      }
+      else if(this.data.rStatus == '70'){
+        apiTemp = 'repairAuditExam';
+        dataInitObj = {
+          id: that.data.docId,
+          pid: that.data.docFormid,
+          company: app.globalData.defaultCompany,
+          userno:app.globalData.employeeId,
+          contenct:that.data.auditContenctType,
+          note:that.data.auditNote,
+          remark: that.data.reRepairFlag.toString(),
+        }
+      }
+
       Dialog.confirm({
         title: '系统提示',
         message: '确认提交吗?',
@@ -910,15 +938,7 @@ upload: function(e) {
           wx.request({
             url: app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/' + apiTemp + '?' + app.globalData.restAuth,
             //url: 'http://325810l80q.qicp.vip' + '/Hanbell-JRS/api/shbeam/equipmentinventory/insertStockInfo4MicroApp?' + app.globalData.restAuth,
-            data: {
-              id: that.data.docId,
-              pid: that.data.docFormid,
-              company: app.globalData.defaultCompany,
-              userno:app.globalData.employeeId,
-              contenct:that.data.auditContenctType,
-              note:that.data.auditNote,
-              remark: that.data.reRepairFlag.toString(),
-            },
+            data: dataInitObj,
             header: {
               'content-type': 'application/json'
             },
@@ -926,12 +946,12 @@ upload: function(e) {
             success: function (res) {
               wx.hideLoading();
               var resMsg = '';
-              //console.log(res);
-              if(res.statusCode == 200 && res.data.msg != null){
+              console.log(res);
+              if(res.data.code == "200" && res.data.msg != null){
                 resMsg = '提交成功';
               }
               else{
-                resMsg = '提交失败';
+                resMsg = '提交失败,请检查数据是否填写正确';
               }
               Dialog.alert({
                 title: '系统消息',
@@ -1062,9 +1082,11 @@ upload: function(e) {
       docFormid: options.docFormid,
       rStatus:options.rStatus,
       downTime:options.downTime,
+      repairCost:options.repairCost == null ? 0:options.repairCost,
       //downTime:JSON.parse(options.eqpInfo).repairTime,
       repairTimestamp:JSON.parse(options.eqpInfo).repairTimestamp,
-      reRepairFlag: (options.reRepairFlag == "true")
+      reRepairFlag: (options.reRepairFlag == "true"),
+      needArchiveFlag: (options.needArchiveFlag == "true"),
     })
 
     console.log(this.data);
@@ -1348,7 +1370,7 @@ upload: function(e) {
             newItem.pId = repairHisListInfo[i].pid;
             newItem.userNo = repairHisListInfo[i].userno;
             newItem.userName = repairHisListInfo[i].username;
-            newItem.creDate = _this.utcInit(repairHisListInfo[i].credate);
+            newItem.creDate = util.utcInit(repairHisListInfo[i].credate);
             newItem.contenct = repairHisListInfo[i].contenct;
             newItem.note = repairHisListInfo[i].note;
             _this.data.repairHisList.push(newItem);
@@ -1413,23 +1435,20 @@ upload: function(e) {
 
   checkFormDtaBeforeSubmit: function(){
 
-    this.setData({
-      textareaDisabled:true
-    });
+    // this.setData({
+    //   textareaDisabled:true
+    // });
 
-    if(this.data.hitchTypeCode == null || this.data.docId == null || this.data.docFormid == null || this.data.repairMethod == null){
+    if(isNaN(this.data.repairCost)){
       Dialog.alert({
         title: '系统消息',
-        message: "请将信息填写完整",
-        zIndex:1000,
-        }).then(() => {
-          this.setData({
-            textareaDisabled:false
-          });
-        });
+        zIndex: 1000,
+        mask:false,
+        message: "请检查'其他费用'是否填写正确",
+          }).then(() => {
+      });
       return false;
     }
-  
     return true;
   },
 
