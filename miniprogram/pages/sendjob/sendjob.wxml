@@ -98,7 +98,7 @@
         <view style="text-align:center;margin-bottom:12px">
           <van-button icon="plus" color="#0396FF" bindtap="bindAddDetailTap" type="primary">添加明细</van-button>
         </view>
-        <van-button custom-class="submitbtn" type="info" icon="passed" form-type="submit" disabled="{{!canSubmit}}">提交</van-button>
+        <van-button custom-class="submitbtn" type="info" icon="passed" bindtap="formSubmit" disabled="{{!canSubmit}}">提交</van-button>
       </view>
     </form>
   </view>
