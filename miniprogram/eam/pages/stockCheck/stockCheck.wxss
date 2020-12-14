@@ -1,0 +1,12 @@
+/* miniprogram/pages/stockCheck/stockCheck.wxss */
+.van-swipe-cell__left{
+  display: inline-block;
+  width: 65px;
+  height: 50px !important;
+  font-size: 15px;
+  line-height: 50px !important;
+  color: #fff;
+  text-align: center;
+  vertical-align:middle;
+  background-color:rgb(50,205,50);
+}
