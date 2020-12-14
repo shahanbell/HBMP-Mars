@@ -454,68 +454,6 @@ Page({
     }
   },
 
-  webSocketTest:function(){
-    //建立连接
-    wx.connectSocket({
-      //url: "ws://localhost:12345",
-      url: "ws://localhost:8480/Hanbell-JRS/eamSocketPro/" + app.globalData.employeeId
-    })
- 
-    //连接成功
-    wx.onSocketOpen(function() {
-      wx.sendSocketMessage({
-        data: 'stock',
-      })
-      console.log("send success");
-    })
- 
-    //接收数据
-    wx.onSocketMessage(function(data) {
-      //var objData = JSON.parse(data.data);
-      console.log(data);
-    })
-
-    //连接关闭
-    wx.onSocketClose((result) => {
-      console.log(result);
-    })
- 
-    //连接失败
-    wx.onSocketError(function() {
-      console.log('websocket连接失败！');
-    })
-  },
-
-  webSocketSendMsgTest:function(){
-    var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/eamWebSocketSendTest';
-    wx.request({
-      url: restUrl,
-      data: {
-        userId: app.globalData.employeeId,
-        appid: app.globalData.restId,
-        token: app.globalData.restToken
-      },
-      header: {
-        'content-type': 'application/json'
-      },
-      method: 'GET',
-      success: function (res) {
-        console.log(res);
-      },
-      fail: function (fail) {
-        wx.hideLoading();
-        console.log(fail.data);
-        Dialog.alert({
-          title: '系统消息',
-          message: fail.data + "-" + fail.statusCode + "-" + fail.header + "-" + fail.cookies,
-        }).then(() => {
-          // on close
-          //initProInfo(_this);
-        });
-      }
-    });
-  },
-
   /**
    * 生命周期函数--监听页面加载
    */
