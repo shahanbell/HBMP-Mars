@@ -1,0 +1,134 @@
+<!--pages/businesstrip/businesstripdetail.wxml-->
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+
+<view class="page__hd">
+    <view class="proTitle">资讯室盘点</view>
+</view>
+
+<van-cell-group>
+
+  <van-field
+    label="盘点单号"
+    value="{{ formid }}"
+    data-name="formid"
+    bind:change="bindData"
+  />
+
+  <van-swipe-cell left-width="{{ 65 }}" async-close bind:close="onSwipeClose">
+    <view slot="left">确定</view>
+    <van-cell-group>
+      <van-field
+        value="{{ barCodeId }}"
+        data-name="barCodeId"
+        bind:change="bindData"
+        center
+        clearable
+        placeholder="请输入条码ID或直接扫码"
+        border="{{ false }}"
+        use-button-slot
+      >
+      <view slot="label">
+        <span class="van-cell-text">条码ID</span>
+        <van-tag wx:if="{{ show.queryInfo }}" type="danger" style="margin-left: 5px;">!</van-tag>
+        <!-- <van-tag wx:if="{{ show.queryInfo }}" type="danger" style="margin-left: 5px;">无信息</van-tag> -->
+      </view>
+        <van-button slot="button" size="small" type="info" bind:click="startScanCode">扫码</van-button>
+      </van-field>
+    </van-cell-group>
+  </van-swipe-cell>
+
+  <van-field
+    label="品名"
+    value="{{ itdsc }}"
+    data-name="itdsc"
+    bind:change="bindData"
+    readonly
+  />
+
+  <van-field
+    label="使用人"
+    value="{{ username }}"
+    data-name="username"
+    bind:change="bindData"
+    readonly
+  />
+
+  <van-field
+    label="部门"
+    value="{{ deptname }}"
+    data-name="deptname"
+    bind:change="bindData"
+    readonly
+  />
+
+  <van-field
+    label="资产位置"
+    value="{{ address }}"
+    data-name="address"
+    bind:change="bindData"
+    readonly
+  />
+
+  <!-- <van-field
+    label="数量"
+    value="{{ qty }}"
+    data-name="qty"
+    bind:change="bindData"
+    right-icon="arrow-down"
+    bindtap='onQtyTap'
+    readonly
+  /> -->
+
+  <van-cell title="数量">
+    <van-stepper value="{{ qty }}" bind:change="onQtyStepperChange" />
+  </van-cell>
+
+  <van-cell title="盘点类型">
+  <van-radio-group
+    value="{{ type }}"
+    name="stockTypeRadio"
+    bind:change="onTypeChange"
+    style="display:flex;flex-flow:row nowarp;justify-content:flex-end;"
+  >
+  <van-radio name='0' style="margin-right:40rpx;">初盘</van-radio>
+  <van-radio name='1'>复盘</van-radio>
+  </van-radio-group>
+  </van-cell>
+
+  <van-field
+    label="当前位置"
+    value="{{ iaddress }}"
+    data-name="iaddress"
+    bind:change="bindData"
+  />
+
+    <van-field
+    label="备注"
+    value="{{ remark }}"
+    data-name="remark"
+    bind:change="bindData"
+  />
+
+</van-cell-group>
+
+<van-popup
+    show="{{ show.popupBottom }}"
+    position="bottom"
+    bind:close="closePopupBotton"
+>
+
+  <van-picker
+    show-toolbar
+    title="数量"
+    columns="{{ numPickerCol }}"
+    bind:change="onNumPickerChange"
+    bind:confirm="onNumPickerConfirm"
+    bind:cancel="onNumPickerCancel"
+  />
+
+</van-popup>
+
+<van-button type="info" icon="passed" form-type="submit" style="width:100%;position:fixed;bottom:0px;" bind:click="formSubmit" block>提交</van-button>
+<van-dialog id="van-dialog" />
+
+</view>

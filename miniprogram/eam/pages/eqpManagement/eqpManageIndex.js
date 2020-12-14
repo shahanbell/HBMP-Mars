@@ -158,6 +158,12 @@ Page({
     })
   },
 
+  startStockCheck: function(){
+    wx.navigateTo({
+      url: '../stockCheck/stockCheck'
+    })
+  },
+
   onSearchDocBtnClick: function(){
     this.setData({ active: "search" });
   },
