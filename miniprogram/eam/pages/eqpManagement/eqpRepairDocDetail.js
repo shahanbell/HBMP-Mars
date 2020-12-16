@@ -1754,7 +1754,7 @@ upload: function(e) {
     else{
       Dialog.alert({
         title: '系统消息',
-        message: "无手机号码信息",
+        message: "无号码信息",
         zIndex:1000,
       });
     }
