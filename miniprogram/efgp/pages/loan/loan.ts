@@ -2,6 +2,7 @@ import { IMyApp } from '../../../app'
 
 const app = getApp<IMyApp>()
 let d = new Date()
+let companyinfo
 Page({
   data: {
     dataList: [] as any,
@@ -77,7 +78,7 @@ Page({
       })
       //带出预算中心
       wx.request({
-        url: app.globalData.restAdd + '/Hanbell-JRS/api/erp/budgetcenter/f;budgetCenterPK.facno=' + app.globalData.defaultCompany + ';budgetCenterPK.deptid=' + app.globalData.defaultDeptId + '/s/0/10/',
+        url: app.globalData.restAdd + '/Hanbell-JRS/api/shberp/budgetcenter/f;budgetCenterPK.facno=' + app.globalData.defaultCompany + ';budgetCenterPK.deptid=' + app.globalData.defaultDeptId + '/s/0/10/',
         data: {
           appid: app.globalData.restId,
           token: app.globalData.restToken
@@ -86,9 +87,9 @@ Page({
           'content-type': 'application/json'
         },
         method: 'GET',
-        success: res => {          
+        success: res => {        
           this.setData!({
-            centerid: res.data[0].budgetCenterPK.centerid
+            centerid: res.data.data[0].budgetCenterPK.centerid
           })
         },
         fail: fail => {
@@ -155,8 +156,9 @@ Page({
   },
   bindBudgetacc(e) {
     let that = this
+    companyinfo = this.data.company.split("-")[0];
     wx.navigateTo({
-      url: '../../../pages/budgetacc/budgetacc?centerid='+this.data.centerid,
+      url: '../../../pages/budgetacc/budgetacc?companyinfo='+companyinfo+'&centerid='+this.data.centerid,
       events: {
         returnBudgetacc: function (res) {
           if (res) {
@@ -174,8 +176,9 @@ Page({
   },
   bindCoin(e) {
     let that = this
+    companyinfo = this.data.company.split("-")[0];
     wx.navigateTo({
-      url: '../../../pages/coin/coin',
+      url: '../../../pages/coin/coin?companyinfo='+companyinfo+'',
       events: {
         returnCoinSelect: function (res) {
           if (res) {

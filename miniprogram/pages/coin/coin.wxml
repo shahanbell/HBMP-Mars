@@ -7,12 +7,12 @@
     <view class="weui-cells weui-cells_after-title">
       <radio-group bindchange="bindSelected">
         <label class="weui-cell weui-check__label" wx:for="{{dataList}}" wx:key="k">
-          <radio class="weui-check " value="{{item.k}}" checked="{{item.k==selectedKey}}" />
+          <radio class="weui-check " value="{{item.miscodePK.code}}" checked="{{item.k==selectedKey}}" />
           <view class="weui-cell__hd ">
-            <view class="weui-label ">{{item.k}}</view>
+            <view class="weui-label ">{{item.miscodePK.code}}</view>
           </view>
           <view class="weui-cell__bd">
-            <view class="weui-label">{{item.v}}</view>
+            <view class="weui-label">{{item.cdesc}}</view>
           </view>
           <view class="weui-cell__ft weui-cell__ft_in-radio" wx:if="{{item.k==selectedKey}}">
             <icon class="weui-icon-radio" type="success_no_circle" size="16"></icon>
