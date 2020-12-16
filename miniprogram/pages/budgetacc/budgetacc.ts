@@ -16,17 +16,22 @@ Page({
     this.requestData(option);
   },
   requestData(options?: any) {
-    let list = wx.getStorageSync("budgetaccList");
-    console.log(list)
-    if(list != null&&list.length>0){
-      this.setData!({
-        dataList: list
-      });
-      console.log("缓存获取")
-     return; 
+    try{
+      let list = wx.getStorageSync("budgetaccList");
+      if (list){
+        this.setData!({
+          dataList: list
+        });
+         return; 
+      }
+    }catch(e){
+
     }
-    console.log("api获取")
-    restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/erp/budgetcenteracc/f;budgetcenteraccdetailPK.facno=C;budgetcenteraccdetailPK.centerid=13000/s/' +this.data.offset + '/' +this.data.pageSize+'/',
+    if (options.centerid && options.companyinfo){
+      restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shberp/budgetcenteracc/f;budgetcenteraccdetailPK.facno='+options.companyinfo+';budgetcenteraccdetailPK.centerid='+ options.centerid+'/s/' +this.data.offset + '/' +this.data.pageSize+'/'
+    }else{
+return
+    }
     //console.log(restUrl)
     wx.request({
       url: restUrl,
@@ -41,13 +46,13 @@ Page({
       success: res => {
        // console.log(res.data)
         this.setData!({
-          dataList: res.data
+          dataList: res.data.data
       
         });
         //将数据存储在本地缓存中指定的 key 中
         wx.setStorage({
           key: "budgetaccList",
-          data: res.data
+          data: this.data.dataList
         })
       },
       fail: fail => {

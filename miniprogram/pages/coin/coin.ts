@@ -15,7 +15,7 @@ Page({
     this.requestData(option);
   },
   requestData(options?: any) {
-    restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/erp/coin'
+    restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shberp/coin/all/'+options.companyinfo
     //console.log(restUrl)
     wx.request({
       url: restUrl,
@@ -29,7 +29,7 @@ Page({
       method: 'GET',
       success: res => {
         this.setData!({
-          dataList: res.data
+          dataList: res.data.data
         })
       },
       fail: fail => {
@@ -42,9 +42,9 @@ Page({
       selectedKey: e.detail.value
     })
     this.data.dataList.forEach((o, i) => {
-      if (o.k == e.detail.value) {
+      if (o.miscodePK.code == e.detail.value) {
         this.setData!({
-          selectedObject: { k: o.k, v: o.v }
+          selectedObject: { k: o.miscodePK.code, v: o.cdesc}
         })
       }
     })
