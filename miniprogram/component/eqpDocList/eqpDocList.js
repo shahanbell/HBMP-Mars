@@ -34,6 +34,7 @@ Component({
     orderState: null,
     winHeight: 900,
     currentTab: 0,     //当前显示tab的下标
+    extraFilterValue:'', //查询页面主页搜索框
     navTab: ['处理中', '全部', '已完成'],
     navTabPro: [{value:'处理中',showScrollBar:true}, {value:'全部',showScrollBar:false}, {value:'已完成',showScrollBar:false}],
     loading: true,
@@ -546,6 +547,11 @@ Component({
         }
       }
 
+      //查询页面主页搜索框
+      if(this.data.extraFilterValue != '' && this.data.extraFilterValue != null){
+        restUrl += ';ExtraFilter=' + this.data.extraFilterValue;
+      }
+
       //restUrl += '/f;ALL=ALL/s';
       restUrl += '/s/' + 0 + '/' + 20;
       //console.log(restUrl);
@@ -719,6 +725,15 @@ Component({
   
       //return beijing_datetime; // 2017-03-31 16:02:06
     },
+    /**
+     * Fields数据绑定
+     */
+    bindData(event){
+      let name = event.currentTarget.dataset.name;
+      this.setData({
+      [name]:event.detail
+      })
+    }
   },
 
   lifetimes: {
