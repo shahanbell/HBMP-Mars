@@ -1341,7 +1341,7 @@ upload: function(e) {
       },
       method: 'GET',
       success: function (res) {
-        //console.log(res);
+        console.log(res);
 
         repairDocDta = null;
         var repairManagerInfo = null;
@@ -1448,7 +1448,6 @@ upload: function(e) {
             _this.data.steps = _this.data.steps_audit;
           }
           if(repairDocDta.rstatus == "10"){
-            _this.data.showBtn.deleteBtn = true;
             _this.data.showBtn.changeServiceUserBtn = true;
             stepCode = 0;
           }
@@ -1505,6 +1504,9 @@ upload: function(e) {
         }
 
         if(app.globalData.defaultDeptId == "1W300" || app.globalData.defaultDeptId == "13130"){
+          if(repairDocDta.rstatus < "30"){
+            _this.data.showBtn.deleteBtn = true;
+          }
           if(repairDocDta.rstatus == "60"){
             _this.data.showBtn.approveAuditBtn = true;
           }

@@ -397,7 +397,7 @@
     bind:close="closeDateFilterPopup"
 >
 
-  <van-datetime-picker
+<van-datetime-picker
   type="datetime"
   id = "picker1"
   value="{{currentDate}}"
@@ -408,7 +408,6 @@
   max-date="{{currentDate}}"
   formatter="{{formatter}}"
   />
-
 </van-popup>
 
 <van-popup

@@ -1,23 +1,6 @@
 // miniprogram/pages/eqpManagement/startEqpRepair.js
-const date = new Date()
-const years = []
-const months = []
-const days = []
 import Dialog from '../../../component/vant/dialog/dialog';
 var util = require("../../../utils/eamCommonUtils.js");
-for (let i = 1990; i <= date.getFullYear(); i++) {
-  years.push(i)
-}
-
-for (let i = 1; i <= 12; i++) {
-  months.push(i)
-}
-
-for (let i = 1; i <= 31; i++) {
-  days.push(i)
-}
-
-
 
 var endVal = null;
 var app = getApp();
@@ -1040,8 +1023,8 @@ upload: function(e) {
     //console.log(this.data.uploaderList);
     const FileSystemManager = wx.getFileSystemManager();
     //console.log(this.data);
-    //var canSubmit = this.checkFormDtaBeforeSubmit();
-    var canSubmit = true;
+    var canSubmit = this.checkFormDtaBeforeSubmit();
+    //var canSubmit = true;
     var opedesc = e.currentTarget.dataset.opedesc;
     var restApiTemp = e.currentTarget.dataset.subtype;
     var errmsg = '';
@@ -1110,9 +1093,19 @@ upload: function(e) {
             success: function (res) {
               wx.hideLoading();
               var resMsg = '';
-              //console.log(res);
+              console.log(res);
               if(res.statusCode == 200 && res.data.msg != null){
                 resMsg = '提交成功';
+                if(res.data.code != "200"){
+                  resMsg = '提交失败，请重试';
+                  Dialog.alert({
+                    title: '系统消息',
+                    message: resMsg,
+                    }).then(() => {
+                      // on close
+                    });
+                  return;
+                }
                 if(that.data.uploaderList.length < 1){
                   //console.log("no image upload!");
                   wx.hideLoading();
@@ -1130,6 +1123,12 @@ upload: function(e) {
               }
               else{
                 resMsg = '提交失败';
+                Dialog.alert({
+                  title: '系统消息',
+                  message: resMsg,
+                  }).then(() => {
+                    // on close
+                  });
               }
               // Dialog.alert({
               //   title: '系统消息',
@@ -1979,17 +1978,19 @@ upload: function(e) {
       textareaDisabled:true
     });
 
-    if(this.data.hitchTypeCode == null || this.data.docId == null || this.data.docFormid == null || this.data.repairMethod == null){
-      Dialog.alert({
-        title: '系统消息',
-        message: "请将信息填写完整",
-        zIndex:1000,
-        }).then(() => {
-          this.setData({
-            textareaDisabled:false
+    for(var i = 0;i<this.data.repairHelperList.length;i++){
+      if(isNaN(this.data.repairHelperList[i].UserNo) || isNaN(parseInt(this.data.repairHelperList[i].UserNo))){
+        Dialog.alert({
+          title: '系统消息',
+          message: "请确认辅助人员信息是否正确!",
+          zIndex:1000,
+          }).then(() => {
+            this.setData({
+              textareaDisabled:false
+            });
           });
-        });
-      return false;
+        return false;
+      }
     }
   
     return true;

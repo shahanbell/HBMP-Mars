@@ -1,5 +1,6 @@
 // miniprogram/pages/eqpManagement/startEqpRepair.js
 import Dialog from '../../../component/vant/dialog/dialog';
+var util = require("../../../utils/eamCommonUtils.js");
 const date = new Date()
 const years = []
 const months = []
@@ -45,7 +46,7 @@ Page({
     orderList: [],    //订单列表数据，接口获取
     serviceUserList:[{userId:null,userName:'请选择',userInfo:'请选择'}], 
     troubleReasonList:[],
-    hitchUrgencyList:[],
+    hitchUrgencyList:[{hitchUrgencyDesc:'请选择',hitchUrgencyId:'-1'}],
     repairAreaList:[{repairAreaDesc:'请选择',repairAreaValue:'-1'}],
     repairMethodList:[{repairMethodDesc:'维修课维修',repairMethodValue:'1'},
                       {repairMethodDesc:'现场自主维修',repairMethodValue:'2'},
@@ -737,7 +738,6 @@ onServiceUserPickerCancel: function(event){
     var that = this;
     //console.log(this.data.uploaderList);
     const FileSystemManager = wx.getFileSystemManager();
-    //console.log(this.data);
     var canSubmit = this.checkFormDtaBeforeSubmit();
     var errmsg = '';
     if (!app.globalData.authorized) {
@@ -992,6 +992,8 @@ onServiceUserPickerCancel: function(event){
             troubleReasonDta = res.data[1];
             hitchUrgencyDta = res.data[2];
             repairAreaDta = res.data[3];
+            //dateTemp = new Date(util.utcInit(res.data[4]));
+            dateTemp = res.data.length < 5 ? new Date() : new Date(util.utcInit(res.data[4]));
           }
 
           var dataLen = res.data.length;
@@ -1041,6 +1043,11 @@ onServiceUserPickerCancel: function(event){
             hitchUrgencyDesc: _this.data.hitchUrgencyList[0].hitchUrgencyDesc,
             repairMethodObj: _this.data.repairMethodList[0],
             repairAreaObj:_this.data.repairAreaList[0],
+
+            minDate: new Date(dateTemp.getFullYear() -1 ,dateTemp.getMonth(), 1).getTime(),
+            minCompleteDate: new Date(dateTemp.getFullYear() ,dateTemp.getMonth(), dateTemp.getDate() - 7).getTime(), 
+            maxDate: dateTemp.getTime(),
+            currentDate: dateTemp.getTime(),
           });
           wx.hideLoading();
         },
@@ -1062,10 +1069,10 @@ onServiceUserPickerCancel: function(event){
     this.setData({
       orderList: [],
       eqpListHeight : heightTemp,
-      minDate: new Date(dateTemp.getFullYear() -1 ,dateTemp.getMonth(), 1).getTime(),
-      minCompleteDate: new Date(dateTemp.getFullYear() ,dateTemp.getMonth(), dateTemp.getDate() - 7).getTime(), 
-      maxDate: dateTemp.getTime(),
-      currentDate: dateTemp.getTime(),
+      // minDate: new Date(dateTemp.getFullYear() -1 ,dateTemp.getMonth(), 1).getTime(),
+      // minCompleteDate: new Date(dateTemp.getFullYear() ,dateTemp.getMonth(), dateTemp.getDate() - 7).getTime(), 
+      // maxDate: dateTemp.getTime(),
+      // currentDate: dateTemp.getTime(),
       repairuser: app.globalData.employeeId,
       repairUserName: app.globalData.employeeName,
       focusTroubleDetailField: false,
@@ -1283,7 +1290,7 @@ onServiceUserPickerCancel: function(event){
       return false;
     }
     console.log(this.data.serviceuser);
-    if(this.data.troubleFrom == null || this.data.formdateTS == null || (this.data.serviceuser == null && !this.data.disableServiceUser) || this.data.troubleDetailInfo == null || this.data.uploaderList.length < 1 || this.data.repairAreaObj.repairAreaValue == '-1'){
+    if(this.data.troubleFrom == null || this.data.formdateTS == null || (this.data.serviceuser == null && !this.data.disableServiceUser) || this.data.troubleDetailInfo == null || this.data.uploaderList.length < 1 || this.data.repairAreaObj.repairAreaValue == '-1' || this.data.hitchUrgencyId == "-1"){
       Dialog.alert({
         title: '系统消息',
         message: "请将信息填写完整",
