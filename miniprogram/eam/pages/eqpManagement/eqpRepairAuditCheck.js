@@ -122,6 +122,7 @@ Page({
     hitchReason:'',
     repairProcess:'',
     measure:'',
+    arrivalDelayReason:'',
     reRepairFlag: null,
 
     auditTabActive: 0,
@@ -1023,10 +1024,10 @@ upload: function(e) {
     //console.log(this.data.uploaderList);
     const FileSystemManager = wx.getFileSystemManager();
     //console.log(this.data);
-    var canSubmit = this.checkFormDtaBeforeSubmit();
     //var canSubmit = true;
     var opedesc = e.currentTarget.dataset.opedesc;
     var restApiTemp = e.currentTarget.dataset.subtype;
+    var canSubmit = this.checkFormDtaBeforeSubmit(opedesc);
     var errmsg = '';
 
     var jsonArrayTemp = [];
@@ -1085,6 +1086,7 @@ upload: function(e) {
               laborcosts:that.data.laborCost,
               remark: JSON.stringify(jsonArray),
               optuser: that.data.reRepairFlag.toString(),
+              cfmuser: that.data.arrivalDelayReason
             },
             header: {
               'content-type': 'application/json'
@@ -1106,6 +1108,7 @@ upload: function(e) {
                     });
                   return;
                 }
+                that.updateStorageCache(opedesc);
                 if(that.data.uploaderList.length < 1){
                   //console.log("no image upload!");
                   wx.hideLoading();
@@ -1810,6 +1813,19 @@ upload: function(e) {
             }
           }
 
+          //获取本地缓存的延误原因信息
+          var arrivalDelayReason = '';
+          var cacheValue = wx.getStorageSync(_this.data.docFormid + "_ArrivalDelayReason");
+          if(cacheValue){
+            arrivalDelayReason = cacheValue;
+          }
+
+          // try {
+          //   if (value) {
+          //   }
+          // } catch (e) {
+          // }
+
           _this.setData({
             completeFlag: _this.data.completeFlag,
             repairBasicInfoCardHeight: _this.data.repairBasicInfoCardHeight,
@@ -1847,6 +1863,8 @@ upload: function(e) {
 
             uploaderNum: _this.data.uploaderNum,
             showUpload: _this.data.showUpload,
+
+            arrivalDelayReason: arrivalDelayReason
           });
 
           _this.updateDownTime(_this.data.exceptTime);
@@ -1972,11 +1990,25 @@ upload: function(e) {
     //return beijing_datetime; // 2017-03-31 16:02:06
   },
 
-  checkFormDtaBeforeSubmit: function(){
+  checkFormDtaBeforeSubmit: function(opedesc){
 
     this.setData({
       textareaDisabled:true
     });
+
+    if(opedesc == "提交" && this.data.eqpRepairInfoList.length > 0 && this.data.arrivalDelayReason == '' && this.data.eqpRepairInfoList[0].contactTime > 1)
+    {
+      Dialog.alert({
+        title: '系统消息',
+        message: "请填写延误原因!",
+        zIndex:1000,
+        }).then(() => {
+          this.setData({
+            textareaDisabled:false
+          });
+        });
+      return false;
+    }
 
     for(var i = 0;i<this.data.repairHelperList.length;i++){
       if(isNaN(this.data.repairHelperList[i].UserNo) || isNaN(parseInt(this.data.repairHelperList[i].UserNo))){
@@ -2115,7 +2147,25 @@ upload: function(e) {
     this.setData({
       [e.currentTarget.dataset.show]: e.detail.value
     });
+  },
+
+  updateStorageCache:function(opeDesc){
+    var _this = this;
+    var cacheKey = this.data.docFormid + "_ArrivalDelayReason";
+
+    if(opeDesc == "暂存"){
+      wx.setStorage({
+        data: _this.data.arrivalDelayReason,
+        key: cacheKey,
+      });
+    }
+    else{
+      wx.removeStorage({
+        key: cacheKey,
+      })
+    }
   }
+
 
 })
 
