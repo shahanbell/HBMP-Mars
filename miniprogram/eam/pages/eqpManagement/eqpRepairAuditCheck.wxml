@@ -306,6 +306,26 @@
 				<van-cell center title="重复维修">
 					<van-switch class="cellSwitchPro" size="24px" checked="{{ reRepairFlag }}" bind:change="on2ndRepairChange" />
 				</van-cell>
+
+				<van-cell-group wx:if="{{eqpRepairInfoList[0].contactTime > 1}}">
+						<van-cell title="延误原因" border="{{false}}" use-label-slot></van-cell>
+						<view class='textarea_pro' data-show="arrivalDelayReason" bindtap="ifshowArea">
+								<textarea wx:if="{{showTextArea.arrivalDelayReason}}" 
+								class='areaInput' bindblur="ifshowArea" data-show="arrivalDelayReason" value="{{arrivalDelayReason}}" 
+								maxlength="200" 
+								placeholder="由于联络时间超过1小时，请填写延误原因！" 
+								placeholder-style="color:#e04b15;font-size:14px;" 
+								auto-focus="true" 
+								bindinput="textAreaProInput"/>
+								<view wx:if="{{!showTextArea.arrivalDelayReason}}" 
+								class='areaTest' 
+								style='color:{{arrivalDelayReason==""?"#999":"#2b2b2b"}}; word-break:break-all; white-space:pre-line;'>
+										<view wx:if="{{arrivalDelayReason==''}}" style='color:#e04b15;font-size:14px;'>由于联络时间超过1小时，请填写延误原因！</view>{{arrivalDelayReason}}
+								</view>
+								<view class="textarea-counter">{{arrivalDelayReason.length}}/200</view>
+						</view>
+				</van-cell-group>
+				
 			</view>
 			<view class="page__hd">
 				<view class="proTitle">故障责任分析</view>
