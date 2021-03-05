@@ -20,6 +20,7 @@ export function utcInit(utc_datetime) {
   var hour_minute_second = utc_datetime.substr(T_pos+1,Z_pos-T_pos-1);
   var new_datetime = year_month_day+" "+hour_minute_second; // 2017-03-31 08:02:06
   var new_datetimeInit = new_datetime.replace(/-/g, '/');
+  new_datetimeInit = new_datetimeInit.split('.')[0];
 
   // 处理成为时间戳
   timestamp = new Date(Date.parse(new_datetimeInit));
