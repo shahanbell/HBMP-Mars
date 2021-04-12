@@ -1474,13 +1474,13 @@ onServiceUserPickerCancel: function(event){
       }
     }
     else if(event.currentTarget.dataset.selector == "repairArea" && this.data.itemdsc == "其他设备"){
-      if("枫泾总部" == value.repairAreaValue){
+      if("枫泾厂" == value.repairAreaValue || "枫泾总部" == value.repairAreaValue){
         this.setData({
           serviceuser: 'C0567',
           serviceusername: '张国荣',
         });
       }
-      else if("枫泾一厂" == value.repairAreaValue){
+      else if("兴塔厂" == value.repairAreaValue || "枫泾一厂" == value.repairAreaValue){
         this.setData({
           serviceuser: 'C1233',
           serviceusername: '曹雪平',
