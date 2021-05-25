@@ -107,13 +107,13 @@ Component({
         fail: function (fail) {
           wx.hideLoading();
           console.log(fail.data);
-          Dialog.alert({
-            title: '系统消息',
-            message: fail.data + "-" + fail.statusCode + "-" + fail.header + "-" + fail.cookies,
-          }).then(() => {
-            // on close
-            //initProInfo(_this);
-          });
+          // Dialog.alert({
+          //   title: '系统消息',
+          //   message: fail.data + "-" + fail.statusCode + "-" + fail.header + "-" + fail.cookies,
+          // }).then(() => {
+          //   // on close
+          //   //initProInfo(_this);
+          // });
         }
       });
     },

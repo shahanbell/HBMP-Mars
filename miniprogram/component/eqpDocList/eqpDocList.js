@@ -1,5 +1,6 @@
 // component/eqpDocList/eqpDocList.js
 import Notify from '../../component/vant/notify/notify';
+import Dialog from '../../component/vant/dialog/dialog';
 
 var util = require("../../utils/eamCommonUtils.js");
 var app = getApp();
@@ -623,13 +624,16 @@ Component({
         fail: function (fail) {
           wx.hideLoading();
           //console.log(fail.data);
-          Dialog.alert({
-            title: '系统消息',
-            message: fail.data + "-" + fail.statusCode + "-" + fail.header + "-" + fail.cookies,
-          }).then(() => {
-            // on close
-            //initProInfo(_this);
-          });
+          // Dialog.alert({
+          //   title: '系统消息',
+          //   message: '检测到系统已离线，请重新登录!',
+          // }).then(() => {
+          //   // on close
+          //   //initProInfo(_this);
+          //   wx.reLaunch({
+          //     url: '../eqpManagement/eqpManageIndex'
+          //   })
+          // });
         }
       });
     },

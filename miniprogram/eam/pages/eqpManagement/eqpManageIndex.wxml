@@ -1,5 +1,6 @@
 <!-- 触发时才显示的组件 -->
 <van-notify id="van-notify" />
+<van-dialog id="van-dialog"/>
 <!-- 触发时才显示的组件 -->
 
 <view wx:if="{{active === tabData[0]}}" class="menuView" style="{{menuViewStyle}}">

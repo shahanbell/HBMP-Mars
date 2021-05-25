@@ -52,7 +52,8 @@ Page({
                       {repairMethodDesc:'现场自主维修',repairMethodValue:'2'},
                       {repairMethodDesc:'委外维修',repairMethodValue:'3'}],
     searchItemList:[{itemSelected:false,searchItemName:'formid',searchItemDesc:'编号',searchItemValue:''},
-                    {itemSelected:false,searchItemName:'assetSpec',searchItemDesc:'规格',searchItemValue:''}],
+                    {itemSelected:false,searchItemName:'assetSpec',searchItemDesc:'规格',searchItemValue:''},
+                    {itemSelected:false,searchItemName:'otherEqp',searchItemDesc:'其它设备',searchItemValue:''}],
     refreshTrigger: false,
     currentTab: 0,     //当前显示tab的下标
     navTab: ['全部', '处理中', '已完成'],
@@ -180,7 +181,7 @@ Page({
 
   bindServiceUserPickerChange(e) {
     const val = e.detail.value;
-    //console.log(e);
+    console.log(e);
     this.setData({
       serviceusername: this.data.serviceUserList[val].userName,
       serviceuser: this.data.serviceUserList[val].userId,
@@ -417,8 +418,20 @@ upload: function(e) {
       //restUrl += '/f;formid=' + '0005' + '/s';
       restUrl += '/f;';
 
-      if(res.indexOf('其他') > -1){
-        let otherItem = {id:"-1",assetDesc:"其他设备",formid:"无",assetItem:{itemno:'9'},repairuser:'',repairusername:'',username:'无',qty:'1',position1:{name:'无'},position2:{name:''}};
+      var exSearchArray = this.data.searchItemList;
+      var otherEqpSelectFlag = false;
+      for(var i = 0;i<exSearchArray.length;i++){
+        if(exSearchArray[i].itemSelected){
+          if(exSearchArray[i].searchItemDesc == '其它设备'){
+            otherEqpSelectFlag = true;
+            break;
+          }
+          restUrl += exSearchArray[i].searchItemName + '=' + exSearchArray[i].searchItemValue + ';';
+        }
+      }
+
+      if(res.indexOf('其他') > -1 || res.indexOf('其它') > -1 || otherEqpSelectFlag){
+        let otherItem = {id:"-1",assetDesc:"其它设备",formid:"无",assetItem:{itemno:'9'},repairuser:'',repairusername:'',username:'无',qty:'1',position1:{name:'无'},position2:{name:''}};
         eqpListDta = new Array(otherItem);
         let newItem = { shop: "A119-01", shopurl: "/images/1.jpg", origin: "TaoBao", orderstate: "", pictureurl: "/images/1.jpg", couponname: "品名", orderdtt: "副齿轮检验轴AA-2600I", productcount: 1, ordernum: "202054654654466", type: "维修", payamount: "技术员" };
         newItem.shop = eqpListDta[0].assetItem.itemno;
@@ -433,13 +446,6 @@ upload: function(e) {
           orderList: _this.data.orderList
         });
         return;
-      }
-
-      var exSearchArray = this.data.searchItemList;
-      for(var i = 0;i<exSearchArray.length;i++){
-        if(exSearchArray[i].itemSelected){
-          restUrl += exSearchArray[i].searchItemName + '=' + exSearchArray[i].searchItemValue + ';';
-        }
       }
 
       //restUrl += '/s' + '/' + 0 + '/' + 20 + '?searchInfo=' + res + '&deptNo=1N240';
@@ -523,6 +529,7 @@ upload: function(e) {
       if(e.currentTarget.id.split('_').length > 1){
         eqpIndex = e.currentTarget.id.split('_')[1];
       }
+      this.setEqpRepairArea(eqpListDta[eqpIndex].position2.position);
       this.setData({
         //repairUserName: eqpListDta[eqpIndex].username,
         assetno: eqpListDta[eqpIndex].formid,
@@ -534,7 +541,6 @@ upload: function(e) {
         assetPosition: eqpListDta[eqpIndex].position1.name + eqpListDta[eqpIndex].position2.name,
 
       });
-      this.setEqpRepairArea(eqpListDta[eqpIndex].position2.name);
       this.closeEqpSelectorPopup();
     },
 
@@ -739,6 +745,7 @@ onServiceUserPickerCancel: function(event){
     //console.log(this.data.uploaderList);
     const FileSystemManager = wx.getFileSystemManager();
     var canSubmit = this.checkFormDtaBeforeSubmit();
+    console.log(that.data);
     var errmsg = '';
     if (!app.globalData.authorized) {
       canSubmit = false;
@@ -1239,7 +1246,7 @@ onServiceUserPickerCancel: function(event){
       },
       method: 'GET',
       success: function (res) {
-        //console.log(res);
+        console.log(res);
         if(res.data == "" || res.statusCode != 200){
           initProInfo(_this);
           _this.setData({
@@ -1248,12 +1255,18 @@ onServiceUserPickerCancel: function(event){
           wx.hideLoading();
           return;
         }
+        _this.setEqpRepairArea(res.data.position2.position);
         _this.setData({
           assetno: res.data.formid,
           itemdsc: res.data.assetDesc,
           itemno: res.data.assetItem.itemno,
+          serviceuser: res.data.repairuser == null ? _this.data.serviceuser : res.data.repairuser,
+          serviceusername: res.data.repairusername == null ? _this.data.serviceusername : res.data.repairusername,
+          assetCardId: res.data.id,
+          assetPosition: res.data.position1.name + res.data.position2.name,
           show:{queryInfo:false}
         });
+
         wx.hideLoading();
       },
       fail: function (fail) {
@@ -1473,7 +1486,7 @@ onServiceUserPickerCancel: function(event){
         });
       }
     }
-    else if(event.currentTarget.dataset.selector == "repairArea" && this.data.itemdsc == "其他设备"){
+    else if(event.currentTarget.dataset.selector == "repairArea" && this.data.itemno == "9"){
       if("枫泾厂" == value.repairAreaValue || "枫泾总部" == value.repairAreaValue){
         this.setData({
           serviceuser: 'C0567',
@@ -1536,10 +1549,20 @@ onServiceUserPickerCancel: function(event){
     this.closeSelectorPopup(event);
   },
 
-  setEqpRepairArea:function(positionName){
+  setEqpRepairArea:function(positionCode){
+    var positionName = '';
+    var positionNameOld = '';
+    if(positionCode == 'C0-1'){
+      positionName = '枫泾厂';
+      positionNameOld = '枫泾总部';
+    }
+    else{
+      positionName = '兴塔厂'
+      positionNameOld = '枫泾一厂';
+    }
     var repairAreaListTemp = this.data.repairAreaList;
     for(var i = 0;i < repairAreaListTemp.length;i++){
-      if(positionName == repairAreaListTemp[i].repairAreaValue){
+      if((positionName == repairAreaListTemp[i].repairAreaValue) || (positionNameOld == repairAreaListTemp[i].repairAreaValue)){
         this.setData({
           repairAreaObj: repairAreaListTemp[i]
         });

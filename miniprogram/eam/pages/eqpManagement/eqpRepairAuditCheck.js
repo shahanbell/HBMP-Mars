@@ -590,7 +590,7 @@ upload: function(e) {
         },
         method: 'GET',
         success: function (res) {
-          //console.log(res);
+          console.log(res);
           if(res.data == "" || res.statusCode != 200){
             //console.log("no Data");
             wx.hideLoading();
@@ -611,7 +611,7 @@ upload: function(e) {
             newItem.spareNo = spareListDta[i].spareno;
             newItem.spareDesc = spareListDta[i].sparedesc;
             newItem.spareNum = spareListDta[i].sparenum;
-            newItem.uPrice = spareListDta[i].uprice;
+            newItem.uPrice = '100';
             newItem.brand = spareListDta[i].brand;
             newItem.unit = spareListDta[i].unit.id;
             newItem.spareUserName = app.globalData.employeeName;

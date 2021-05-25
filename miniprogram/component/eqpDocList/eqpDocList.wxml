@@ -152,7 +152,6 @@
   </view>
   </swiper-item>
 </swiper>
-
 <!-- <van-tabs swipeable animated>
   <van-tab wx:for="{{navTabPro}}" wx:key="{{value}}" title="{{item.value}}">
     <view id="start" class='startView'></view>

@@ -38,7 +38,7 @@ Page({
         interval_getBacklog: interval
       });
     }
-    this.getRepairBacklogInfo(app.globalData.employeeId);
+    //this.getRepairBacklogInfo(app.globalData.employeeId);
   },
 
   onShow: function(options){
@@ -169,6 +169,7 @@ Page({
   },
 
   getRepairBacklogInfo: function (res) {
+    console.log('getBackLogInfoTest');
     var _this = this;
     var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/getRepairBacklogInfo';
     if(app.globalData.defaultDeptId.indexOf("1P000") >= 0){
@@ -231,10 +232,13 @@ Page({
         console.log(fail.data);
         Dialog.alert({
           title: '系统消息',
-          message: fail.data + "-" + fail.statusCode + "-" + fail.header + "-" + fail.cookies,
+          message: '检测到系统已离线，请重新登录!',
         }).then(() => {
           // on close
           //initProInfo(_this);
+          wx.reLaunch({
+            url: '../../../pages/index/index'
+          })
         });
       }
     });
