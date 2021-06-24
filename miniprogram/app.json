@@ -37,7 +37,8 @@
     "van-collapse-item": "component/vant/collapse-item/index",
     "van-overlay": "component/vant/overlay/index",
     "van-checkbox": "component/vant/checkbox/index",
-    "van-checkbox-group": "component/vant/checkbox-group/index"
+    "van-checkbox-group": "component/vant/checkbox-group/index",
+    "van-toast": "component/vant/toast/index"
   },
   "pages": [
     "pages/index/index",
@@ -61,7 +62,7 @@
     "pages/customercomplaint/complaintdetail",
     "pages/maintainmodule/maintainModule",
     "pages/maintainmodule/mataindescribe/maintainDescribe",
-    "pages/maintainmodule/mataindescribe/maintainNumberselect"   
+    "pages/maintainmodule/mataindescribe/maintainNumberselect"
   ],
   "subpackages": [
     {
@@ -92,7 +93,11 @@
         "pages/eqpManagement/eqpRepairDutyResponse",
         "pages/eqpManagement/eqpRepairStop",
         "pages/eqpManagement/eqpRepairChangeServiceUser",
-        "pages/eqpManagement/eqpRepairDetailCheck"
+        "pages/eqpManagement/eqpRepairDetailCheck",
+        "pages/spareManagement/spareManagementIndex",
+        "pages/spareManagement/spareDeliveryStart",
+        "pages/spareManagement/spareDeliveryVerify",
+        "pages/spareManagement/spareDeliveryRetreat"
       ]
     }
   ],

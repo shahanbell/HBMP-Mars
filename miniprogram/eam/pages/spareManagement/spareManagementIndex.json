@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+  "spareDocList": "../../../component/spareDocList/spareDocList",
+  "eqpRepairBacklogList": "../../../component/eqpRepairBacklogList/eqpRepairBacklogList"
+  }
+}

@@ -1,0 +1,210 @@
+<!--miniprogram/eam/pages/spareManagement/spareDeliveryRetreat.wxml-->
+<view class="pagePro" style="height:100%;" xmlns:wx="http://www.w3.org/1999/xhtml">
+
+	<!-- 触发时才显示的组件_Start -->
+
+	<van-popup id="spareSelectPopup" show="{{ show.eqpSelectorPopup }}" z-index='1000' position="right" round custom-style="height: 95%;width: 95%;" bind:close="closeEqpSelectorPopup">
+
+		<van-cell-group>
+
+			<van-cell-group>
+
+                    <van-search id="proSearchBar" value="{{ searchBarDta }}" shape="round" placeholder="请输入搜索关键词" bind:search="onEqpSearchStart" use-action-slot use-right-icon-slot>
+
+					    <van-icon class="searchRightIcon" slot="right-icon" name="scan" color="blue" size="20px" bind:click="startScanCode" />
+
+				    </van-search>
+
+			</van-cell-group>
+
+            <view class="scrollTest" id="eqpListTest">
+
+            <scroll-view id="eqpList2" class="scrollWrap" scroll-y="true" style='height:{{eqpListHeight}}px;'>
+					<view class="eqpListWrap">
+					</view>
+					<my-noData wx:if="{{spareList.length<1&&!loading}}" nodata="{{nodataType}}"></my-noData>
+					<view class="spareList" wx:for="{{spareList}}" wx:key="index" data-item="{{item}}" bindtap='eqpCardSelect' id='spareListIndex_{{index}}'>
+						<view class="shop">
+							<view class="shop_name">
+								备件品号:{{item.spareNo}}
+							</view>
+							<!-- <text class="state {{item.origin=='TaoBao' ? 'state_taobao' : item.origin=='PinDuoDuo' ? 'state_pdd' : item.origin=='JDCOM' ? 'state_jd' : ''}}">{{item.orderstate}}</text> -->
+						</view>
+						<view class="proInfo">
+							<image class="proInfo_img" src='{{item.pictureurl==""?defaultImg:item.pictureurl}}' mode='widthFix' lazy-load='true' binderror="errorFn" data-errorimg="{{index}}"></image>
+							<view class="proInfo_right">
+								<view class="proInfo_text">
+									<view class="proInfo_text_title">
+										<text wx:if="{{item.origin==='TaoBao'}}" class="iconfont icon-tianmaot"></text>
+										<text wx:elif="{{item.origin==='PinDuoDuo'}}" class="iconfont icon-pin"></text>
+										<text wx:elif="{{item.origin==='JDCOM'}}" class="iconfont icon-JD"></text>
+										{{item.itemDisplayName}}
+									</view>
+									<text class="iconfont icon-qianjinjiantou"></text>
+								</view>
+								<view class="proInfo_text">
+									<view class="proInfo_text_dtt">{{item.spareDesc}}</view>
+                                    <!-- <view style="display : flex ; flex-flow : row;">
+                                        <van-icon name="arrow-left" custom-style="padding-right:5px"/>
+                                        <input class="spareInfo_text_acount" value="{{item.qty}}" type="number" />
+                                        <van-icon name="arrow"  custom-style="padding-left:5px"/>
+                                    </view> -->
+									<text class="proInfo_text_acount">×{{item.maxQty}}</text>
+								</view>
+                                <view class="proInfo_text">
+									<view class="proInfo_text_dtt">备件规格:{{item.spareModel}}</view>
+								</view>
+							</view>
+						</view>
+						<view class="orderNum">
+							<view>总价:<text class="totalCost">{{item.totalPrice}}元</text></view>
+							<view>可退总数:<text>{{item.maxQty}}</text></view>
+						</view>
+
+					</view>
+
+				</scroll-view>
+            </view>
+
+
+			<view class="eqpSelectorButtonBlock">
+				<van-button round color="#DCDCDC" size="small" custom-style="color:#696969;width:80px;" bind:click="onEqpSelResetClick">重置</van-button>
+				<van-button round type="info" size="small" custom-style="margin-left:30px;width:80px;" bind:click="onEqpSelBackClick">返回</van-button>
+			</view>
+
+
+		</van-cell-group>
+	</van-popup>
+
+  <van-popup id="spareDetailPopup" z-index='1000' closeable close-icon="close" show="{{ show.spareDetailPopup }}" custom-style="height: 60%;width:70%;padding-top:3px;" round bind:close="closeSpareDetailPopup">
+    <view class="page__hd">
+      <view class="proTitle">详细信息</view>
+    </view>
+    <view class="spareDetailScrollView" id="eqpListTest">
+
+            <scroll-view id="eqpList2" class="scrollWrap" scroll-y="true" style="height:100%;">
+					<view class="eqpListWrap">
+					</view>
+					<my-noData wx:if="{{spareList.length<1&&!loading}}" nodata="{{nodataType}}"></my-noData>
+					<view class="spareList" style="height: 255rpx;" wx:for="{{spareDetailList}}" wx:key="index" data-item="{{item}}" id='spareListIndex_{{index}}'>
+						<view class="shop">
+							<view class="shop_name">
+								备件品号:{{item.sparenum.sparenum}}
+							</view>
+						</view>
+						<view class="proInfo" style="padding-top:5rpx;padding-bottom:0px;">
+							<image class="proInfo_img" src='{{item.pictureurl==""?defaultImg:item.pictureurl}}' mode='widthFix' lazy-load='true' binderror="errorFn" data-errorimg="{{index}}"></image>
+							<view class="proInfo_right">
+								<view class="proInfo_text">
+									<view class="proInfo_text_dtt">{{item.sparenum.sparedesc}}</view>
+									<text class="proInfo_text_acount">×{{item.cqty}}</text>
+								</view>
+                                <view class="proInfo_text">
+									<view class="proInfo_text_dtt">存放储位:{{item.slocation}}</view>
+								</view>
+							</view>
+						</view>
+						<view class="orderNum">
+							<view>单价:<text class="totalCost">{{item.uprice}}元</text></view>
+						</view>
+
+					</view>
+
+				</scroll-view>
+            </view>
+  </van-popup>
+
+	<!-- 触发时才显示的组件_End -->
+
+	<van-tabs line-width="0px" active="{{ tabActive }}" bind:change="onTabChange" z-index='100' sticky>
+
+  <van-tab title="备件退料明细">
+
+<!-- <view class="scrollTest" id="eqpListTest2"> -->
+
+				<!-- <scroll-view id="eqpList2" class="scrollWrap" scroll-y="true" style='height:{{eqpListHeight-44}}px;'> -->
+					<view class="eqpListWrap">
+					</view>
+					<van-empty wx:if="{{spareUsedList.length<1}}" image="/images/empty-image-search.png" description="请添加备件"/>
+					<my-noData wx:if="{{spareList.length<1&&!loading}}" nodata="{{nodataType}}"></my-noData>
+					<view class="spareList" wx:for="{{spareUsedList}}" wx:key="index" data-item="{{item}}" bindtap='spareCardSelect' id='spareUsedListIndex_{{index}}'>
+						<view class="shop">
+							<view class="shop_name">
+								备件品号:{{item.spareNo}}
+							</view>
+                            <van-icon name="clear" data-itemindex="{{index}}" catchtap="onClearSpareIconClick" color="#999"/>
+							<!-- <text class="state {{item.origin=='TaoBao' ? 'state_taobao' : item.origin=='PinDuoDuo' ? 'state_pdd' : item.origin=='JDCOM' ? 'state_jd' : ''}}">{{item.orderstate}}</text> -->
+						</view>
+						<view class="proInfo">
+							<image class="proInfo_img" src='{{item.pictureurl==""?defaultImg:item.pictureurl}}' mode='widthFix' lazy-load='true' binderror="errorFn" data-errorimg="{{index}}"></image>
+							<view class="proInfo_right">
+								<view class="proInfo_text">
+									<view class="proInfo_text_title">
+										<text wx:if="{{item.origin==='TaoBao'}}" class="iconfont icon-tianmaot"></text>
+										<text wx:elif="{{item.origin==='PinDuoDuo'}}" class="iconfont icon-pin"></text>
+										<text wx:elif="{{item.origin==='JDCOM'}}" class="iconfont icon-JD"></text>
+										{{item.itemDisplayName}}
+									</view>
+									<text class="iconfont icon-qianjinjiantou"></text>
+								</view>
+								<view class="proInfo_text">
+									<view class="proInfo_text_dtt">{{item.spareDesc}}</view>
+                                    <view style="display : flex ; flex-flow : row;">
+                                        <van-icon name="minus" data-itemindex="{{index}}" catchtap="onSpareLeftIconClick" bindblur="inputConfirmTest" style="padding-right:10px"/>
+                                        <input class="spareInfo_text_acount" data-itemindex="{{index}}" value="{{item.qty}}" bindinput="onSpareQtyInput" type="number" disabled="true" />
+                                        <van-icon name="plus" data-itemindex="{{index}}" catchtap="onSpareRightIconClick" style="padding-left:10px"/>
+                                    </view>
+									<!-- <text class="proInfo_text_acount">×{{item.productcount}}</text> -->
+								</view>
+                                <view class="proInfo_text">
+									<view class="proInfo_text_dtt">备件规格:{{item.spareModel}}</view>
+								</view>
+							</view>
+						</view>
+						<view class="orderNum">
+							<view>总价:<text class="totalCost">{{item.uPrice}}元</text></view>
+							<!-- <view>使用人:<text>{{item.spareUserName}}</text></view> -->
+              <van-button data-itemindex="{{index}}" type="info" bind:click="showSpareDetailPopup" custom-style="height:50rpx;width:120rpx;font-size:11px;margin-bottom:10rpx">查看详情</van-button>
+						</view>
+
+					</view>
+
+				<!-- </scroll-view> -->
+
+			<!-- </view> -->
+
+  <view class="submitWrap_fix">
+    <view style="width:100%;position:fixed;bottom:0px;z-index:100">
+      <van-button data-subtype="repairAudit" data-opedesc="提交" icon="passed" type="info" custom-style="height:40px;width:50%;margin-right:0px;border-radius:0px;" bind:click="spareDeliveryFormSubmit">提交</van-button>
+      <van-button data-subtype="spareSelector" data-opedesc="选择备件" icon="add-o" color="rgb(255, 123, 0)" custom-style="height:40px;width:50%;margin-left:0px;border-radius:0px;" bind:click="onEqpSelectorTap">添加备件</van-button>
+    </view>
+  </view>
+
+  </van-tab>
+
+</van-tabs>
+
+
+<van-popup
+    show="{{ show.repairAreaSelectorPopup }}"
+    position="bottom"
+    bind:close="closeRepairAreaSelectorPopup"
+>
+
+  <van-picker
+    show-toolbar
+    title="所属厂区"
+    columns="{{repairAreaList}}"
+    value-key="repairAreaDesc"
+    bind:change="onRepairAreaPickerChange"
+    bind:confirm="onRepairAreaPickerConfirm"
+    bind:cancel="onRepairAreaPickerCancel"
+  />
+
+</van-popup>
+
+
+<van-dialog id="van-dialog"/>
+<van-toast id="van-toast" />
+
+</view>

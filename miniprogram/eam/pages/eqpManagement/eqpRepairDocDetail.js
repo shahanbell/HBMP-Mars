@@ -51,6 +51,8 @@ Page({
       stopRepairBtn: false,
       startRepairBtn: false,
       changeServiceUserBtn: false,
+      spareDeliveryBtn: false,
+      spareRetreatBtn: false
     },
     disableBtn:{
       arrivalCheckBtn: false,
@@ -989,113 +991,22 @@ upload: function(e) {
     });
   },
 
-  eqpRepairFormSubmit: function(e){
-    var that = this;
-    //console.log(this.data.uploaderList);
-    const FileSystemManager = wx.getFileSystemManager();
-    //console.log(this.data);
-    //var canSubmit = this.checkFormDtaBeforeSubmit();
-    var canSubmit = true;
-    var errmsg = '';
-    if (!app.globalData.authorized) {
-      canSubmit = false;
-      errmsg += '账号未授权\r\n';
-    }
-    if (canSubmit) {
-      // wx.showModal({
-      //   title: '系统提示',
-      //   content: '确定提交吗',
-      //   success: function (res) {
-      //     if (res.confirm) {
-            
-      //     }
-      //   }
-      // });
-      Dialog.confirm({
-        title: '系统提示',
-        message: '确认提交吗?',
-      })
-        .then(() => {
-
-          //console.log(that.data);
-
-          // on confirm
-          wx.showLoading({
-            title: 'Sending',
-            mask: true
-          });
-          wx.request({
-            url: app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/createEqpRepairHad?' + app.globalData.restAuth + '&itemno=' + that.data.itemno + "&assetCardId=" + that.data.assetCardId,
-            //url: 'http://325810l80q.qicp.vip' + '/Hanbell-JRS/api/shbeam/equipmentinventory/insertStockInfo4MicroApp?' + app.globalData.restAuth,
-            data: {
-              company: "C",
-              assetno: that.data.assetno,
-              //itemno: that.data.itemno,
-              repairuser: app.globalData.employeeId,
-              repairusername: app.globalData.employeeName,
-              formdate: new Date(that.data.formdateTS),
-              troublefrom: that.data.troubleFrom,
-              serviceusername: that.data.serviceusername,
-              serviceuser: that.data.serviceuser,
-              creator: app.globalData.employeeId,
-            },
-            header: {
-              'content-type': 'application/json'
-            },
-            method: 'POST',
-            success: function (res) {
-              //wx.hideLoading();
-              var resMsg = '';
-              //console.log(res);
-              if(res.statusCode == 200 && res.data.msg != null){
-                //resMsg = '提交成功';
-                that.setData({
-                  docFormidId: res.data.msg
-                });
-                that.fileUpLoadByQueue(FileSystemManager,0);
-              }
-              else{
-                resMsg = '提交失败';
-              }
-              // Dialog.alert({
-              //   title: '系统消息',
-              //   message: resMsg,
-              // }).then(() => {
-              //   // on close
-              //   initProInfo(that);
-              // });
-              // wx.showModal({
-              //   title: '系统消息',
-              //   content: res.data.msg,
-              //   content: '提交成功',
-              //   showCancel: false,
-              //   success: function (res) {
-              //     initProInfo(that);
-              //   }
-              // });
-            },
-            fail: function (fail) {
-              wx.hideLoading();
-              wx.showModal({
-                title: '系统提示',
-                content: "请联系管理员:" + fail,
-                showCancel: false
-              });
-            }
-          });
-        })
-        .catch(() => {
-          // on cancel
-        });
-    } else {
-      // wx.showModal({
-      //   title: '系统提示!',
-      //   content: errmsg,
-      //   showCancel: false
-      // });
-      return;
-    }
+  onSpareDeliveryBtnClick: function(e){
+    let that = this;
+    //console.log(e);
+    wx.navigateTo({
+      url: '../spareManagement/spareDeliveryStart?docFormid=' + that.data.docFormidId + '&docId=' + that.data.docId
+    });
   },
+
+  onSpareRetreatBtnClick: function(e){
+    let that = this;
+    //console.log(e);
+    wx.navigateTo({
+      url: '../spareManagement/spareDeliveryRetreat?docFormid=' + that.data.docFormidId + '&docId=' + that.data.docId
+    });
+  },
+
 
   fileUpLoadByQueue:function(FileSystemManager,imageListIndex){
     if(imageListIndex == this.data.uploaderList.length){
@@ -1454,21 +1365,26 @@ upload: function(e) {
           if(repairDocDta.rstatus >= "20" && repairDocDta.rstatus < "30" && repairDocDta.rstatus != "28"){
             _this.data.showBtn.saveRepairInfoBtn = true;
             _this.data.showBtn.stopRepairBtn = true;
+            _this.data.showBtn.spareDeliveryBtn = true;
+            _this.data.showBtn.spareRetreatBtn = true;
             stepCode = 1;
           }
           if(repairDocDta.rstatus == "28"){
             _this.data.showBtn.saveRepairInfoBtn = true;
             _this.data.showBtn.startRepairBtn = true;
             _this.data.disableBtn.saveRepairInfoBtn = true;
+            _this.data.showBtn.spareRetreatBtn = true;
             stepCode = 1;
             _this.data.steps[stepCode].text = "暂停维修"
           }
           if(repairDocDta.rstatus == "30"){
             _this.data.showBtn.startAuditBtn = true;
+            _this.data.showBtn.spareRetreatBtn = true;
             stepCode = 2;
           }
           if(repairDocDta.rstatus == '40'){
             _this.data.showBtn.startAuditBtn = true;
+            _this.data.showBtn.spareRetreatBtn = true;
             stepCode = 3;
           }
           if(repairDocDta.rstatus == '50'){

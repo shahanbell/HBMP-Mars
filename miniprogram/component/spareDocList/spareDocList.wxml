@@ -9,7 +9,7 @@
 >
 <van-cell-group border="{{ false }}">
 
-  <van-cell title="报修单状态" is-link value="{{statusFilterObj.statusDesc}}" arrow-direction="down" bind:click="onStatusFilterCellClick" />
+  <van-cell title="单据类型" is-link value="{{typeFilterObj.typeDesc}}" arrow-direction="down" bind:click="onTypeFilterCellClick" />
 
   <van-cell border="{{ true }}" class="haTimeCell" title="部门所有单据" value="{{ date }}">
    
@@ -60,19 +60,19 @@
 </van-popup>
 
 <van-popup
-    show="{{ show.statusFilterPopup }}"
+    show="{{ show.typeFilterPopup }}"
     position="bottom"
-    bind:close="closeStatusFilterPopup"
+    bind:close="closeTypeFilterPopup"
 >
 
   <van-picker
   show-toolbar
-  title="报修单状态"
-  columns="{{ statusFilterData }}"
-  value-key="statusDesc"
-  bind:cancel="onStatusFilterPickerCancel"
-  bind:confirm="onStatusFilterPickerConfirm"
-  bind:change="onStatusFilterPickerChange"
+  title="单据类型"
+  columns="{{ typeFilterData }}"
+  value-key="typeDesc"
+  bind:cancel="onTypeFilterPickerCancel"
+  bind:confirm="onTypeFilterPickerConfirm"
+  bind:change="onTypeFilterPickerChange"
   />
 
 </van-popup>
@@ -87,7 +87,7 @@
   shape="round"
   placeholder="请输入搜索关键词"
   bind:change="bindData"
-  bind:search="pullDownTest"
+  bind:search="onSearchStart"
   use-action-slot
   use-right-icon-slot
 >
@@ -103,7 +103,7 @@
 </van-cell-group>
 
 <view class="swiper-tab" id="proTopTab">
-  <view wx:for="{{navTab}}" wx:key="{{index}}" class="swiper-tab-list {{currentTab==index ? 'on_pdd' : ''}}" data-current="{{index}}" bindtap="switchNav">{{item}}</view>
+  <view wx:for="{{navTab}}" wx:key="{{index}}" class="swiper-tab-list {{currentTab==index ? 'navTabItem' : ''}}" data-current="{{index}}" bindtap="switchNav">{{item}}</view>
 </view>
 <view id="start" class='startView'></view>
 
@@ -113,36 +113,36 @@
   <swiper-item wx:for="{{navTabPro}}" wx:key="{{value}}">
   <view class="scrollTest">
 
-    <scroll-view wx:if="{{item.showScrollBar}}" class="scrollWrap" scroll-y="true" refresher-enabled="{{enablePullDown}}" refresher-triggered="{{refreshTrigger}}" bindrefresherrefresh="pullDownTest" style='height:{{winHeight}}px;'>
-      <view class="eqpListWrap">
+    <scroll-view wx:if="{{item.showScrollBar}}" class="scrollWrap" scroll-y="true" refresher-enabled="{{enablePullDown}}" refresher-triggered="{{refreshTrigger}}" bindrefresherrefresh="onSearchStart" style='height:{{winHeight}}px;'>
+      <view class="proListWrap">
       </view>
       <van-empty wx:if="{{showDocEmpty}}" image="/images/empty-image-search.png" description="请下拉搜索"/>
       <my-noData wx:if="{{orderList.length<1&&!loading}}" nodata="{{nodataType}}"></my-noData>
-      <view class="orderList" wx:for="{{repairDocListArray[currentTab]}}" wx:key="index" data-item="{{item}}" bindtap='docCardSelect'>
-        <view class="shop">
-          <view class="shop_name">
-            报修单号:{{item.shop}}
+      <view class="proList" wx:for="{{spareDocListArray[currentTab]}}" wx:key="index" data-item="{{item}}" bindtap='docCardSelect'>
+        <view class="proTitle">
+          <view class="proTitle_id">
+            {{item.docType}}:{{item.docId}}
           </view>
-          <text class="state {{item.origin=='TaoBao' ? 'state_taobao' : item.origin=='PinDuoDuo' ? 'state_pdd' : item.origin=='JDCOM' ? 'state_jd' : ''}}">{{item.orderstate}}</text>
+          <text class="state {{item.origin=='normal' ? 'state_normal' : item.origin=='highLight' ? 'state_highLight' : ''}}">{{item.docState}}</text>
         </view>
         <view class="proInfo">
           <image class="proInfo_img" src='{{item.pictureurl==""?defaultImg:item.pictureurl}}' mode='widthFix' lazy-load='true' binderror="errorFn" data-errorimg="{{index}}"></image>
           <view class="proInfo_right">
             <view class="proInfo_text">
               <view class="proInfo_text_title">
-                {{item.couponname}}
+                {{item.locationText}}
               </view>
               <text class="iconfont icon-qianjinjiantou"></text>
             </view>
             <view class="proInfo_text">
-              <view class="proInfo_text_dtt">{{item.orderdtt}}</view> 
-              <text class="proInfo_text_acount">×{{item.productcount}}</text>
+              <view class="proInfo_text_dtt">{{item.slocation}}</view> 
+              <text class="proInfo_text_acount">{{item.sarea}}</text>
             </view>
           </view>
         </view>
-        <view class="orderNum">
-          <view>故障发生时间:{{item.ordernum}}</view>
-          <view>报修人:<text>{{item.payamount}}</text></view>
+        <view class="proFoot">
+          <view>申请时间:{{item.credate}}</view>
+          <view>申请人:<text>{{item.creator}}</text></view>
         </view>
  
       </view>

@@ -1,0 +1,26 @@
+<!-- 触发时才显示的组件 -->
+<van-notify id="van-notify" />
+<van-dialog id="van-dialog"/>
+<!-- 触发时才显示的组件 -->
+
+<view wx:if="{{active === tabData[0]}}" class="menuView" style="{{menuViewStyle}}">
+  <view id="menuStart" class='startView'></view>
+  <van-button id="menuBtnTemp" icon="bulb-o" type="default" custom-style="{{menuBtnStyle}}" bind:click="startSpareDelivery">备件出库</van-button>
+  <van-button type="default" icon="notes-o" custom-style="{{menuBtnStyle}}" bind:click="onSearchDocBtnClick">我的出库单</van-button>
+  <!-- <van-button type="default" icon="orders-o" custom-style="{{menuBtnStyle}}" bind:click="onVerifyBtnClick">>出库审核测试</van-button> -->
+</view>
+
+<spareDocList wx:if="{{active === tabData[1]}}" endHeight="{{endHeight}}"></spareDocList>
+
+<eqpRepairBacklogList wx:if="{{active === tabData[2]}}" endHeight="{{endHeight}}"></eqpRepairBacklogList>
+
+<van-tabbar id="proBottomTab" active="{{ active }}" fixed="{{true}}" bind:change="onTabbarChange">
+  <view id="end" class='endView'></view>
+  <van-tabbar-item name="home" icon="home-o">主页</van-tabbar-item>
+  <van-tabbar-item name="search" icon="search">查询</van-tabbar-item>
+  <!-- <van-tabbar-item name="friends" icon="friends-o" dot="{{showBacklogDot}}">待办</van-tabbar-item> -->
+  <!-- <van-tabbar-item name="setting" icon="setting-o">设置</van-tabbar-item> -->
+</van-tabbar>
+
+
+

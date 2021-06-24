@@ -57,6 +57,7 @@ Page({
     eqpRepairInfoList:[],
     spareList: [],
     spareUsedList:[],
+    spareDetailList:[],
     serviceUserList:[], 
     hitchDutyList:[],
     abraseHitchList:[{abraseHitchId : '01',abraseHitchDesc: '使用不当'},
@@ -827,6 +828,33 @@ upload: function(e) {
     });
   },
 
+  /**
+   * 打开备件详细信息弹窗
+   */
+  showSpareDetailPopup: function(e){
+    console.log(e);
+    var itemStockCurrentListTemp = this.data.spareUsedList[e.currentTarget.dataset.itemindex].equipmentSpareRecodeDtaList;
+    console.log(itemStockCurrentListTemp);
+    this.setData({
+      show:{
+        spareDetailPopup: true
+      },
+      spareDetailList:itemStockCurrentListTemp
+    });
+  },
+
+  /**
+   * 备件详细信息弹窗关闭事件
+   */
+  closeSpareDetailPopup: function(){
+    //console.log("eqpListClose!");
+    this.setData({
+      show:{
+        spareDetailPopup: false
+      }
+    });
+  },
+
   onDateFilterInput(event){
     //console.log(event);
     let dateTemp = this.dateFormatForFilter(event.detail);
@@ -1156,7 +1184,8 @@ upload: function(e) {
     var repairCostTemp = isNaN(parseFloat(this.data.repairCost)) ? 0 : parseFloat(this.data.repairCost);
     var laborCostTemp = isNaN(parseFloat(this.data.laborCost)) ? 0 : parseFloat(this.data.laborCost);
     for(var i = 0 ; i < spareListTemp.length ; i++){
-      totalPrice = totalPrice + spareListTemp[i].uPrice * spareListTemp[i].qty;
+      //totalPrice = totalPrice + spareListTemp[i].uPrice * spareListTemp[i].qty;
+      totalPrice = totalPrice + spareListTemp[i].totalPrice;
     }
     spareCostTemp = totalPrice;
     totalPrice = (totalPrice + repairCostTemp + laborCostTemp).toFixed(2) * 100;
@@ -1325,20 +1354,20 @@ upload: function(e) {
             }
           }
 
-          for(var i= 0;i<eqpSpareListInfo.length;i++){
-            let newItem = {id:'', spareNo: "A119-01", shopurl: "/images/1.jpg", origin: "TaoBao", orderstate: "", pictureurl: "/images/1.jpg", itemDisplayName: "备件名称", spareDesc: "副齿轮检验轴AA-2600I", productcount: 1, spareNum: "SDFA1111", uPrice:100, spareUserName: "技术员", userNo:'' , qty: 1};
-            newItem.Id = eqpSpareListInfo[i].id;
-            newItem.spareNo = eqpSpareListInfo[i].spareno;
-            newItem.spareDesc = eqpSpareListInfo[i].sparenum.sparedesc;
-            newItem.spareNum = eqpSpareListInfo[i].sparenum.sparenum;
-            newItem.uPrice = eqpSpareListInfo[i].uprice;
-            newItem.brand = eqpSpareListInfo[i].brand;
-            newItem.qty = eqpSpareListInfo[i].qty;
-            newItem.unit = eqpSpareListInfo[i].unit;
-            newItem.spareUserName = eqpSpareListInfo[i].userno;
-            newItem.userNo = eqpSpareListInfo[i].userno;
-            _this.data.spareUsedList.push(newItem);
-          }
+          // for(var i= 0;i<eqpSpareListInfo.length;i++){
+          //   let newItem = {id:'', spareNo: "A119-01", shopurl: "/images/1.jpg", origin: "TaoBao", orderstate: "", pictureurl: "/images/1.jpg", itemDisplayName: "备件名称", spareDesc: "副齿轮检验轴AA-2600I", productcount: 1, spareNum: "SDFA1111", uPrice:100, spareUserName: "技术员", userNo:'' , qty: 1};
+          //   newItem.Id = eqpSpareListInfo[i].id;
+          //   newItem.spareNo = eqpSpareListInfo[i].spareno;
+          //   newItem.spareDesc = eqpSpareListInfo[i].sparenum.sparedesc;
+          //   newItem.spareNum = eqpSpareListInfo[i].sparenum.sparenum;
+          //   newItem.uPrice = eqpSpareListInfo[i].uprice;
+          //   newItem.brand = eqpSpareListInfo[i].brand;
+          //   newItem.qty = eqpSpareListInfo[i].qty;
+          //   newItem.unit = eqpSpareListInfo[i].unit;
+          //   newItem.spareUserName = eqpSpareListInfo[i].userno;
+          //   newItem.userNo = eqpSpareListInfo[i].userno;
+          //   _this.data.spareUsedList.push(newItem);
+          // }
 
           var dataLen = res.data[2].length;
           var imagePathArray = [];
@@ -1368,7 +1397,7 @@ upload: function(e) {
             hitchSort01Obj: {troubleName: eqpRepairInfo.hitchsort1 == null ? '' : eqpRepairInfo.hitchsort1},
 
             uploaderList:imagePathArray,
-            spareUsedList: _this.data.spareUsedList,
+            spareUsedList: eqpSpareListInfo,
           });
 
           _this.updateDownTime(_this.data.exceptTime);
