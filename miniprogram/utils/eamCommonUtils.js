@@ -94,3 +94,24 @@ export function dateFormatForFilter(date){
   let dayTemp = year + "/" + month + "/" + day + "  " + hour + ":" + minute;
   return dayTemp;
 }
+
+/**
+ *  获取备件备库单据类型
+ * @param {string} acceptType 类型代码
+ */
+export function getSpareFormType(acceptType){
+  switch(acceptType) {
+    case "10":
+        return "手工入库单";
+    case "20":
+        return "手工出库单";
+    case "25":
+        return "维修领料单";
+    case "30":
+        return "手工退库单";
+    case "35":
+        return "维修退料单";
+    default:
+        return;
+  }
+}

@@ -152,6 +152,22 @@
               bind:change="onExSearchItemChange"
             />
           </van-field>
+          <van-cell
+            title="其它设备"
+            data-name="searchItemList[2].searchItemValue"
+            catch:tap="noop"
+          >
+            <van-checkbox
+              class="checkboxes-{{ index }}"
+              name="{{ item.searchItemName }}"
+              data-itemindex="2"
+              value="{{ searchItemList[2].itemSelected }}"
+              shape="square"
+              style="padding-right:5px;"
+              slot="icon"
+              bind:change="onExSearchItemChange"
+            />
+          </van-cell>
         </van-cell-group>
 
         <view catchtap="noop" style="height:15px;"></view>
@@ -205,6 +221,7 @@
     value="{{ itemdsc }}"
     data-name="itemdsc"
     bind:change="bindData"
+    readonly
   />
 
   <van-field
@@ -212,6 +229,7 @@
     value="{{ itemno }}"
     data-name="itemno"
     bind:change="bindData"
+    readonly
   />
 
   <!-- <van-field

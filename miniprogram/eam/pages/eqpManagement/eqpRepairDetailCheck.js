@@ -63,6 +63,7 @@ Page({
     eqpRepairInfoList:[],
     spareList: [],
     spareUsedList:[],
+    spareDetailList:[],
     serviceUserList:[], 
     hitchDutyList:[],
     repairHisList:[],
@@ -1516,6 +1517,33 @@ upload: function(e) {
 
   },
 
+  /**
+   * 打开备件详细信息弹窗
+   */
+  showSpareDetailPopup: function(e){
+    console.log(e);
+    var itemStockCurrentListTemp = this.data.spareUsedList[e.currentTarget.dataset.itemindex].equipmentSpareRecodeDtaList;
+    console.log(itemStockCurrentListTemp);
+    this.setData({
+      show:{
+        spareDetailPopup: true
+      },
+      spareDetailList:itemStockCurrentListTemp
+    });
+  },
+
+  /**
+   * 备件详细信息弹窗关闭事件
+   */
+  closeSpareDetailPopup: function(){
+    //console.log("eqpListClose!");
+    this.setData({
+      show:{
+        spareDetailPopup: false
+      }
+    });
+  },
+
   inputConfirmTest:function(e){
     console.log(e);
   },
@@ -1528,7 +1556,8 @@ upload: function(e) {
     var repairCostTemp = isNaN(parseFloat(this.data.repairCost)) ? 0 : parseFloat(this.data.repairCost);
     var laborCostTemp = isNaN(parseFloat(this.data.laborCost)) ? 0 : parseFloat(this.data.laborCost);
     for(var i = 0 ; i < spareListTemp.length ; i++){
-      totalPrice = totalPrice + spareListTemp[i].uPrice * spareListTemp[i].qty;
+      //totalPrice = totalPrice + spareListTemp[i].uPrice * spareListTemp[i].qty;
+      totalPrice = totalPrice + spareListTemp[i].totalPrice;
     }
     spareCostTemp = totalPrice;
     totalPrice = (totalPrice + repairCostTemp + laborCostTemp).toFixed(2) * 100;
@@ -1797,21 +1826,21 @@ upload: function(e) {
             uploaderObjInfoList.push({fileId:fileUploadList[i].id,fileName:fileUploadList[i].filename,type:'1'});
           }
 
-          for(var i = 0;i < spareUsedList.length; i++){
-            let newItem = {id:'', spareNo: "A119-01", shopurl: "/images/1.jpg", origin: "TaoBao", orderstate: "", pictureurl: "/images/1.jpg", itemDisplayName: "备件名称", spareDesc: "副齿轮检验轴AA-2600I", productcount: 1, spareNum: "SDFA1111", uPrice:100, spareUserName: "技术员", userNo:'' , qty: 1};
-            newItem.Id = '';
-            newItem.docId = spareUsedList[i].id;
-            newItem.spareNo = spareUsedList[i].spareno;
-            newItem.spareDesc = spareUsedList[i].sparenum.sparedesc;
-            newItem.spareNum = spareUsedList[i].sparenum.sparenum;
-            newItem.uPrice = spareUsedList[i].uprice;
-            newItem.brand = spareUsedList[i].brand;
-            newItem.unit = spareUsedList[i].unit;
-            newItem.qty = spareUsedList[i].qty;
-            newItem.spareUserName = app.globalData.employeeName;
-            newItem.userNo = app.globalData.employeeId;
-            _this.data.spareUsedList.push(newItem);
-          }
+          // for(var i = 0;i < spareUsedList.length; i++){
+          //   let newItem = {id:'', spareNo: "A119-01", shopurl: "/images/1.jpg", origin: "TaoBao", orderstate: "", pictureurl: "/images/1.jpg", itemDisplayName: "备件名称", spareDesc: "副齿轮检验轴AA-2600I", productcount: 1, spareNum: "SDFA1111", uPrice:100, spareUserName: "技术员", userNo:'' , qty: 1};
+          //   newItem.Id = '';
+          //   newItem.docId = spareUsedList[i].id;
+          //   newItem.spareNo = spareUsedList[i].spareno;
+          //   newItem.spareDesc = spareUsedList[i].sparenum.sparedesc;
+          //   newItem.spareNum = spareUsedList[i].sparenum.sparenum;
+          //   newItem.uPrice = spareUsedList[i].uprice;
+          //   newItem.brand = spareUsedList[i].brand;
+          //   newItem.unit = spareUsedList[i].unit;
+          //   newItem.qty = spareUsedList[i].qty;
+          //   newItem.spareUserName = app.globalData.employeeName;
+          //   newItem.userNo = app.globalData.employeeId;
+          //   _this.data.spareUsedList.push(newItem);
+          // }
 
           for(var i = 0;i < repairHelperList.length; i++){
             if(repairHelperList[i].rtype != "0"){
@@ -1862,7 +1891,7 @@ upload: function(e) {
 
             uploaderList:imagePathArray,
             uploaderObjInfoList:uploaderObjInfoList,
-            spareUsedList: _this.data.spareUsedList,
+            spareUsedList: spareUsedList,
             repairHelperList:_this.data.repairHelperList,
 
             uploaderNum: _this.data.uploaderNum,

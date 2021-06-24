@@ -152,15 +152,21 @@ Page({
       }).exec();
   },
 
-  startEqpRepair: function(){
+  startSpareDelivery: function(){
     wx.navigateTo({
-      url: '../eqpManagement/startEqpRepair'
+      url: '../spareManagement/spareDeliveryStart'
     })
   },
 
   startStockCheck: function(){
     wx.navigateTo({
       url: '../stockCheck/stockCheck'
+    })
+  },
+
+  onVerifyBtnClick: function(){
+    wx.navigateTo({
+      url: '../spareManagement/spareDeliveryVerify?docFormid=CK21050002'
     })
   },
 

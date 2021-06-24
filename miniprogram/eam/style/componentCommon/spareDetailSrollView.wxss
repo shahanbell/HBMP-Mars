@@ -1,0 +1,11 @@
+.spareDetailScrollView{
+  background-color: #F8F8F8;
+  -webkit-flex-shrink: 0;
+  flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  height: 85%;
+  overflow: visible;
+}

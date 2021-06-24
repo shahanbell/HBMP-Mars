@@ -9,7 +9,7 @@ var topTabHeight;
 var bottomTabHeight;
 var dateFilterType;
 var tabClickFlag;
-var repairDocListDta;
+var spareDocListDta;
 
 Component({
   /**
@@ -28,8 +28,8 @@ Component({
   data: {
     nodataType: 7,
     enablePullDown: true,
-    repairDocList: [],    //订单列表数据，接口获取
-    repairDocListArray: [[],[],[]],
+    spareDocList: [],    //订单列表数据，接口获取
+    spareDocListArray: [[],[],[]],
     currentPage: 1,
     isNoMoreData: false,
     orderState: null,
@@ -43,7 +43,7 @@ Component({
     show:{
       filterPopup: false,
       dateFilterPopup: false,
-      statusFilterPopup: false,
+      typeFilterPopup: false,
       dateSelector: false,
     },
     showDocEmpty: true,
@@ -60,17 +60,14 @@ Component({
     endDateFilter: null,
     deptFilterChecked: false,
     dateFilterChecked: false,
-    statusFilterData:[{statusDesc:'请选择',statusCode:null},
-    {statusDesc:'已报修',statusCode:'10'},
-    {statusDesc:'维修到达',statusCode:'20'},
-    {statusDesc:'维修完成',statusCode:'30'},
-    {statusDesc:'维修验收',statusCode:'40'},
-    {statusDesc:'责任回复',statusCode:'50'},
-    {statusDesc:'课长审核',statusCode:'60'},
-    {statusDesc:'经理审核',statusCode:'70'},
-    {statusDesc:'已结案',statusCode:'95'}],
-    statusFilterObj: {statusDesc:'请选择',statusCode:null},
-    statusFilterValue: "请选择",
+    typeFilterData:[{typeDesc:'请选择',typeCode:null},
+    {typeDesc:'手工入库',typeCode:'10'},
+    {typeDesc:'手工出库',typeCode:'20'},
+    {typeDesc:'维修领料',typeCode:'25'},
+    {typeDesc:'手工退库',typeCode:'30'},
+    {typeDesc:'维修退料',typeCode:'35'}],
+    typeFilterObj: {typeDesc:'请选择',typeCode:null},
+    typeFilterValue: "请选择",
     barCodeId: null,
     formatter(type, value) {
       if (type === 'year') {
@@ -90,7 +87,7 @@ Component({
 
       //写你自己的接口
       this.setData({
-        repairDocList: []
+        spareDocList: []
       })
   
     },
@@ -103,11 +100,9 @@ Component({
       this.swiperChange(isSelect);
     },
   
-    pullDownTest(){
-      //console.log("test");
+    onSearchStart(){
 
-      this.getRepairDocListInfo(app.globalData.employeeId);
-
+      this.getSpareDocListInfo(app.globalData.employeeId);
       this.setData({
         refreshTrigger: false,
         showDocEmpty: false
@@ -171,9 +166,8 @@ Component({
         showBefore = true;
       }
 
-      //console.log("repairDocListArray_Length:" + this.data.repairDocListArray.length);
       var showEmpty = false;
-      if(this.data.repairDocListArray[isSelect].length < 1){
+      if(this.data.spareDocListArray[isSelect].length < 1){
         showEmpty = true;
       }
 
@@ -181,7 +175,6 @@ Component({
         isNoMoreData: false,
         loading: true,
         currentTab: isSelect,
-        //repairDocList: this.data.repairDocListArray[isSelect],
         //active: 'home',
         [current]: showCurrent,
         [before]: showBefore,
@@ -191,7 +184,7 @@ Component({
       //console.log(this.data);
 
       if(showEmpty){
-        this.pullDownTest();
+        this.onSearchStart();
       }
       //this.initData(1)
     },
@@ -200,7 +193,7 @@ Component({
       //console.log(e);
       //console.log(e.currentTarget.dataset.item.shop);
       wx.navigateTo({
-        url: '../eqpManagement/eqpRepairDocDetail?docFormidId=' + e.currentTarget.dataset.item.shop
+        url: '../spareManagement/spareDeliveryVerify?docFormid=' + e.currentTarget.dataset.item.docId
       })
     },
   
@@ -214,7 +207,7 @@ Component({
       this.setData({
         loading: true
       })
-      if (!this.data.isNoMoreData && this.data.repairDocList.length > 0) {
+      if (!this.data.isNoMoreData && this.data.spareDocList.length > 0) {
         this.initData(++this.data.currentPage);
       }
     },
@@ -423,49 +416,49 @@ Component({
       return dayTemp;
     },
   
-    onStatusFilterCellClick(event){
-      //console.log("onStatusFilterCellClick");
+    onTypeFilterCellClick(event){
+      //console.log("onTypeFilterCellClick");
       this.setData({
         show:{
-          statusFilterPopup: true,
+          typeFilterPopup: true,
           filterPopup:true,
         }
       });
     },
   
-    closeStatusFilterPopup(event){
-      //console.log("closeStatusFilterPopup");
+    closeTypeFilterPopup(event){
+      //console.log("closeTypeFilterPopup");
       this.setData({
         show:{
-          statusFilterPopup:false,
+          typeFilterPopup:false,
           filterPopup:true,
         }
       });
     },
   
-    onStatusFilterPickerChange(event){
+    onTypeFilterPickerChange(event){
       const { picker, value, index } = event.detail;
       //Toast(`当前值：${value}, 当前索引：${index}`);
       this.setData({
-        statusFilterObj: value
+        typeFilterObj: value
       });
     },
   
-    onStatusFilterPickerConfirm(event){
-      //console.log("onStatusFilterPickerConfirm");
+    onTypeFilterPickerConfirm(event){
+      //console.log("ontypeFilterPickerConfirm");
       this.setData({
         show:{
-          statusFilterPopup:false,
+          typeFilterPopup:false,
           filterPopup:true,
         },
       });
     },
     
-    onStatusFilterPickerCancel(event){
-      //console.log("onStatusFilterPickerCancel");
+    onTypeFilterPickerCancel(event){
+      //console.log("ontypeFilterPickerCancel");
       this.setData({
         show:{
-          statusFilterPopup:false,
+          typeFilterPopup:false,
           filterPopup:true,
         },
       });
@@ -474,8 +467,8 @@ Component({
     onFilterResetClick(event){
       //console.log("onFilterResetClick");
       this.setData({
-        statusFilterValue: "请选择",
-        statusFilterObj: {statusDesc:'请选择',statusCode:null},
+        typeFilterValue: "请选择",
+        typeFilterObj: {typeDesc:'请选择',typeCode:null},
         deptFilterChecked: false,
         dateFilterChecked: false,
         startDateFilter: null,
@@ -484,26 +477,16 @@ Component({
     },
   
     onFilterConfirmClick(event){
-      this.pullDownTest();
+      this.onSearchStart();
       //console.log("onFilterResetClick");
       this.setData({
         show:{filterPopup: false}
       });
     },
 
-    getRepairDocListInfo: function (res) {
+    getSpareDocListInfo: function (res) {
       var _this = this;
-      // restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/assetcardtest';
-      //var restUrl = 'http://localhost:8480' + '/Hanbell-JRS/api/shbeam/equipmentrepair/getRepairDocList';
-      var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/getRepairDocList';
-      //var restUrl = 'http://325810l80q.qicp.vip' + '/Hanbell-JRS/api/shbeam/assetcardtest';
-      // if (options.employeeid) {
-      //     restUrl += '/f;users.id=' + options.employeeid + '/s';
-      // }
-      // else {
-      //     restUrl += '/f/s';
-      // }
-      //restUrl += '/f;deptno=' + '13000' + '/s';
+      var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/sparemanagement/getSpareRecodeDocList';
 
       if(app.globalData.defaultDeptId.indexOf("1P000") >= 0){
         restUrl += '/f';
@@ -513,24 +496,22 @@ Component({
           restUrl += '/f';
         }
         else{
-          restUrl += '/f;repairdeptno=' + app.globalData.defaultDeptId;
+          restUrl += '/f;deptno=' + app.globalData.defaultDeptId;
         }
       }
-      else if(app.globalData.defaultDeptId.indexOf("1W3") >= 0 || app.globalData.defaultDeptId.indexOf("131") >= 0){
-        restUrl += '/f;serviceuser=' + res;
-      }
       else{
-        restUrl += '/f;repairuser=' + res;
+        restUrl += '/f;creator=' + res;
       }
 
       if(this.data.currentTab == '2'){
-        restUrl += ';rstatus=95';
-      }
-      else if(this.data.statusFilterObj.statusCode != null &&  this.data.statusFilterObj.statusCode != ''){
-        restUrl += ';rstatus=' + this.data.statusFilterObj.statusCode;
+        restUrl += ';status=V';
       }
       else if(this.data.currentTab == '0'){
-        restUrl += ';ALL=ALL';
+        restUrl += ';BackLog=BackLog';
+      }
+
+      if(this.data.typeFilterObj.typeCode != null &&  this.data.typeFilterObj.typeCode != ''){
+        restUrl += ';accepttype=' + this.data.typeFilterObj.typeCode;
       }
 
       if(this.data.dateFilterChecked == true){
@@ -571,18 +552,15 @@ Component({
         },
         method: 'GET',
         success: function (res) {
-          //console.log(res);
+          console.log(res);
 
           var currentTemp = _this.data.currentTab;
-          var repairDocListArrayTemp = "repairDocListArray[" + currentTemp + "]";   //注意：这里不用写this.data.
+          var spareDocListArrayTemp = "spareDocListArray[" + currentTemp + "]";   //注意：这里不用写this.data.
 
-          repairDocListDta = null;
-          // _this.setData({
-          //   repairDocList: []
-          // });
+          spareDocListDta = null;
 
           _this.setData({
-            [repairDocListArrayTemp]: []
+            [spareDocListArrayTemp]: []
           });
 
           if(res.data == "" || res.statusCode != 200){
@@ -594,30 +572,27 @@ Component({
             return;
           }
 
-          repairDocListDta = res.data;
+          spareDocListDta = res.data;
           var dataLen = res.data.length;
-          // if(dataLen > 10){
-          //   dataLen = 10;
-          // }
 
           for(var i = 0;i < dataLen; i++){
-            let newItem = { shop: "A119-01", shopurl: "/images/1.jpg", origin: "TaoBao", orderstate: "", pictureurl: "/images/1.jpg", couponname: "", orderdtt: "副齿轮检验轴AA-2600I", productcount: 1, ordernum: "202054654654466", type: "维修", payamount: "技术员" };
-            newItem.shop = repairDocListDta[i].formid;
-            newItem.orderstate = _this.getDocStatus(repairDocListDta[i].rstatus);
-            newItem.orderdtt = repairDocListDta[i].assetno == null ? '其他设备' : repairDocListDta[i].assetno.assetDesc;
-            newItem.couponname = '品名';
-            newItem.productcount = repairDocListDta[i].assetno == null ? '1' : repairDocListDta[i].assetno.qty;
-            newItem.ordernum = util.utcInit(repairDocListDta[i].hitchtime);
-            newItem.payamount = repairDocListDta[i].repairusername;
-            _this.data.repairDocListArray[currentTemp].push(newItem);
+            let newItem = {docType:"", docId: "A119-01", shopurl: "/images/1.jpg", origin: "normal", docState: "", pictureurl: "/images/1.jpg", locationText: "", slocation: "副齿轮检验轴AA-2600I", sarea: "", credate: "202054654654466", type: "维修", creator: "技术员" };
+            newItem.docType = util.getSpareFormType(spareDocListDta[i].accepttype);
+            newItem.docId = spareDocListDta[i].formid;
+            newItem.docState = _this.getDocStatus(spareDocListDta[i].status);
+            newItem.slocation = spareDocListDta[i].slocation == null ? '无' : spareDocListDta[i].slocation;
+            newItem.locationText = '储位编号';
+            newItem.sarea = spareDocListDta[i].sarea == null ? ' ' : spareDocListDta[i].sarea;
+            newItem.credate = util.utcInit(spareDocListDta[i].credate);
+            newItem.creator = spareDocListDta[i].creator;
+            _this.data.spareDocListArray[currentTemp].push(newItem);
           }
 
-          _this.setData({
-            //repairDocList: _this.data.repairDocList,
-            [repairDocListArrayTemp]: _this.data.repairDocListArray[currentTemp],
-          });
 
-          //console.log(_this.data.repairDocListArray);
+          _this.setData({
+            //spareDocList: _this.data.spareDocList,
+            [spareDocListArrayTemp]: _this.data.spareDocListArray[currentTemp],
+          });
 
           wx.hideLoading();
         },
@@ -651,36 +626,19 @@ Component({
         });
       }).exec();
     },
-    getDocStatus: function(statusCode){
-      switch(statusCode) {
-        case "10":
-            return "已报修";
-        case "15":
-            return "已受理";
-        case "20":
-            return "维修到达";
-        case "25":
-            return "维修中";
-        case "28":
-            return "维修暂停";
-        case "30":
-            return "维修完成";
-        case "40":
-            return "维修验收";
-        case "50":
-            return "责任回复";
-        case "60":
-            return "课长审核";
-        case "70":
-            return "经理审核";
-        case "95":
-            return "报修结案";
-        case "98":
+    getDocStatus: function(typeCode){
+      switch(typeCode) {
+        case "N":
+            return "待审核";
+        case "V":
+            return "已审核";
+        case "Z":
             return "已作废";
         default:
             return;
       } 
     },
+
     getDocStatusCodeByTabId: function(currentTab){
       switch(currentTab) {
         case "1":
@@ -748,22 +706,18 @@ Component({
     ready: function(){
       //视图层布局完成
       //this.getSearchBarRect();
-      var statusFilterValueTemp = "请选择";
-      var statusFilterObjTemp = {statusDesc:'请选择',statusCode:null};
+      var typeFilterValueTemp = "请选择";
+      var typeFilterObjTemp = {typeDesc:'请选择',typeCode:null};
       this.getStartViewHeight();
-      if(app.globalData.defaultDeptId.indexOf("1P000") >= 0){
-        statusFilterValueTemp = "经理审核";
-        statusFilterObjTemp = {statusDesc:'经理审核',statusCode:'70'};
-      }
       this.setData({
-        statusFilterValue: statusFilterValueTemp,
-        statusFilterObj: statusFilterObjTemp,
+        typeFilterValue: typeFilterValueTemp,
+        typeFilterObj: typeFilterObjTemp,
         deptFilterChecked: false,
         dateFilterChecked: false,
         startDateFilter: null,
         endDateFilter:null
       });
-      this.pullDownTest();
+      this.onSearchStart();
     },
     detached: function() {
       // 在组件实例被从页面节点树移除时执行
@@ -774,7 +728,7 @@ Component({
     // 组件所在页面的生命周期函数
     show: function () {
       //console.log('component show');
-      this.pullDownTest();
+      this.onSearchStart();
      },
     hide: function () { },
     resize: function () { },
