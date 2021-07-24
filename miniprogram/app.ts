@@ -99,8 +99,29 @@ App<IMyApp>({
                     showCancel: false
                   })
                 }
-              })
-
+              });
+              var _this=this
+              //后台登录已授权
+              _this.globalData.userInfo = res.userInfo;
+              if (_this.userInfoReadyCallback) {
+                _this.userInfoReadyCallback(res.userInfo);
+              }
+            }else {
+              //获取权限失败需要认证
+              this.globalData.userInfo = false;
+              wx.getUserProfile({
+                success: function (res) {
+                  wx.getUserInfo({
+                    success: function (res) {
+                    }
+                  });
+                },
+                fail: function (res) {
+                  wx.switchTab({
+                    url: '/pages/profile/profile'
+                  });
+                }
+              });
             }
             if (this.sessionInfoReadyCallback) {
               this.sessionInfoReadyCallback(res.data)
@@ -112,31 +133,8 @@ App<IMyApp>({
         })
       }
     })
-    // 获取用户信息
-    wx.getSetting({
-      success: (res) => {
-        if (res.authSetting['scope.userInfo']) {
-          // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-          wx.getUserInfo({
-            success: res => {
-              // 可以将 res 发送给后台解码出 unionId
-              this.globalData.userInfo = res.userInfo
-              // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-              // 所以此处加入 callback 以防止这种情况
-              if (this.userInfoReadyCallback) {
-                this.userInfoReadyCallback(res.userInfo)
-              }
-            }
-          })
-        } else {
-          // 还未授权
-          wx.switchTab({
-            url: '/pages/profile/profile'
-          })
-        }
-      }
-    })
      //获取手机屏幕,状态栏的高度
+
     wx.getSystemInfo({
       success: res => {
         this.globalData.screenHeight = res.screenHeight
