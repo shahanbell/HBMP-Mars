@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+  "eqpAutoMaintainDocList": "../../../component/eqpAutoMaintainDocList/eqpAutoMaintainDocList",
+  "eqpRepairBacklogList": "../../../component/eqpRepairBacklogList/eqpRepairBacklogList"
+  }
+}

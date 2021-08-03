@@ -97,7 +97,9 @@
         "pages/spareManagement/spareManagementIndex",
         "pages/spareManagement/spareDeliveryStart",
         "pages/spareManagement/spareDeliveryVerify",
-        "pages/spareManagement/spareDeliveryRetreat"
+        "pages/spareManagement/spareDeliveryRetreat",
+        "pages/maintenanceManagement/eqpMaintainIndex",
+        "pages/maintenanceManagement/eqpMaintainStart"
       ]
     }
   ],
