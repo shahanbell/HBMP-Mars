@@ -1,0 +1,148 @@
+<!--miniprogram/eam/pages/maintenanceManagement/eqpMaintainStart.wxml-->
+<view class="itemInfoCard">
+	<view class="cardWrapTop">
+	</view>
+	<view class="mainInfo" style="height:315rpx">
+		<view class="mainInfo_header">
+			<view class="mainInfo_text_normal">
+				保全单号:{{infoCard.formId}}
+			</view>
+			<View class="mainInfo_text_normal">所属部门:{{infoCard.deptName}}</View>
+		</view>
+		<view class="mainInfo_body">
+			<image class="mainInfo_body_img" src='{{infoCard.pictureurl==""?defaultImg:infoCard.pictureurl}}' mode='widthFix' lazy-load='true' binderror="errorFn" data-errorimg=""></image>
+			<view class="mainInfo_body_right">
+				<view class="mainInfo_body_text">
+					<view class="mainInfo_body_text_title">
+						{{infoCard.displayType}}:{{infoCard.assetDesc}}
+					</view>
+					<text class="mainInfo_body_text_acount"></text>
+				</view>
+				<view class="mainInfo_body_text">
+					<view class="mainInfo_body_text_dtt">资产编号:{{infoCard.assetFormId}}</view>
+				</view>
+			</view>
+		</view>
+		<view class="mainInfo_foot">
+			<view>计划保养日期:{{infoCard.formDate}}</view>
+			<view>保养人:<text>{{infoCard.maintainUserName}}</text></view>
+		</view>
+	</view>
+</view>
+
+<van-sticky>
+	<van-cell center title="保全项目">
+		<view class="cellValue">
+			<view class="cellValue_text">进度：</view>
+			<van-tag class="cellValue_tag" type="{{progressInfo.tagType}}" size="medium">{{progressInfo.doneCount}} / {{progressInfo.totalCount}}</van-tag>
+		</view>
+	</van-cell>
+</van-sticky>
+
+<view class="detailListView" style="min-height:{{detailListViewHeight}}px;">
+	<view class="cardWrapTop">
+	</view>
+	<view class="dataList" wx:for="{{eqpMaintainDetailList}}" wx:key="index" data-item="{{item}}">
+		<view class="itemInfoCard">
+			<van-collapse value="{{ activeNames[index] }}" data-selector="{{index}}" custom-class="detailCardCollapse" bind:change="onCollapseCellClick">
+				<van-collapse-item name="{{index}}">
+					<view class="collapseTitle" slot="title">
+						<van-tag class="collapseTitle_tag" type="{{item.tagType}}" size="medium">{{item.result}}</van-tag>
+						<view>{{item.checkArea}}</view>
+					</view>
+					<van-switch class="cellSwitchPro" slot="value" size="18px" checked="{{ expandFlag[index] }}" />
+					<view class="detailOperateInfo" style="height:315rpx">
+						<view class="detailOperateInfo_header">
+							<view class="detailOperateInfo_text_normal">
+								保养内容:{{item.checkContent}}
+							</view>
+							<View class="detailOperateInfo_text_normal"></View>
+						</view>
+						<view class="detailOperateInfo_header">
+							<view class="detailOperateInfo_text_normal">
+								判定标准:{{item.judgeStandard}}
+							</view>
+							<View class="detailOperateInfo_text_normal"></View>
+						</view>
+						<view class="detailOperateInfo_body">
+							<!-- <image class="detailOperateInfo_body_img" src='{{infoCard.pictureurl==""?defaultImg:infoCard.pictureurl}}' mode='widthFix' lazy-load='true' binderror="errorFn" data-errorimg=""></image> -->
+							<view class="detailOperateInfo_body_right">
+								<view class="detailOperateInfo_body_text">
+									<view class="detailOperateInfo_body_text_title">
+										保养方法:{{item.method}}
+									</view>
+									<text class="detailOperateInfo_body_text_acount"></text>
+								</view>
+								<view class="detailOperateInfo_body_text">
+									<view class="detailOperateInfo_body_text_title">使用工具:{{item.methodName}}</view>
+								</view>
+								<view class="detailOperateInfo_body_text">
+									<view class="detailOperateInfo_body_text_title">停机时间:{{item.downTime}}(小时)</view>
+								</view>
+							</view>
+							<image class="detailOperateInfo_body_img" src='{{item.areaImage==""?infoCard.pictureurl:item.areaImage}}' data-selector="{{index}}" bindtap='showImg' mode='widthFix' lazy-load='true' binderror="errorFn" data-errorimg=""></image>
+						</view>
+						<view class="detailOperateInfo_foot"></view>
+					</view>
+					<van-field label="异常描述" data-name="eqpMaintainDetailList[{{index}}].exception" value="{{item.exception}}" bind:change="bindData"  readonly = "{{formReadOnly}}"/>
+					<van-field label="问题处理" data-name="eqpMaintainDetailList[{{index}}].problemSolve" value="{{item.problemSolve}}" bind:change="bindData" readonly = "{{formReadOnly}}" />
+					<van-cell title="审批结果">
+						<van-radio-group value="{{ maintainResult[index] }}" data-selector="{{index}}" name="resultRadio" bind:change="onResultChange" style="display:flex;flex-flow:row nowarp;justify-content:flex-end;" disabled = "{{formReadOnly}}">
+							<van-radio name="正常" style="margin-right:30rpx;">正常</van-radio>
+							<van-radio name="异常">异常</van-radio>
+						</van-radio-group>
+					</van-cell>
+				</van-collapse-item>
+			</van-collapse>
+		</view>
+	</view>
+
+	<!-- <view class="itemInfoCard">
+		<van-collapse value="{{ activeNames }}" custom-class="detailCardCollapse" bind:change="onCollapseCellClick">
+			<van-collapse-item title="机器整体" name="1">
+				<van-switch class="cellSwitchPro" slot="value" size="24px" checked="{{ supplementFlag }}" />
+				<view class="detailOperateInfo" style="height:315rpx">
+					<view class="detailOperateInfo_header">
+						<view class="detailOperateInfo_text_normal">
+							保养内容:检查机器外观是否干净整洁无油污
+						</view>
+						<View class="detailOperateInfo_text_normal"></View>
+					</view>
+					<view class="detailOperateInfo_header">
+						<view class="detailOperateInfo_text_normal">
+							判定标准:干净整洁无油污
+						</view>
+						<View class="detailOperateInfo_text_normal"></View>
+					</view>
+					<view class="detailOperateInfo_body">
+						<view class="detailOperateInfo_body_right">
+							<view class="detailOperateInfo_body_text">
+								<view class="detailOperateInfo_body_text_title">
+									保养方法:目视
+								</view>
+								<text class="detailOperateInfo_body_text_acount"></text>
+							</view>
+							<view class="detailOperateInfo_body_text">
+								<view class="detailOperateInfo_body_text_title">使用工具:抹布</view>
+							</view>
+							<view class="detailOperateInfo_body_text">
+								<view class="detailOperateInfo_body_text_title">停机时间(h):0</view>
+							</view>
+						</view>
+						<image class="detailOperateInfo_body_img" src='{{infoCard.pictureurl==""?defaultImg:infoCard.pictureurl}}' mode='widthFix' lazy-load='true' binderror="errorFn" data-errorimg=""></image>
+					</view>
+					<view class="detailOperateInfo_foot"></view>
+				</view>
+				<van-field label="异常描述" value="" data-selector="suppleStartDate" />
+				<van-field label="问题处理" value="" data-selector="suppleStartDate" />
+				<van-field label="保养结果" value="{{ suppleCompleteDateObj.dateFormatStr }}" right-icon="arrow-down" data-selector="suppleCompleteDate" bindtap='showSelectorPopup' readonly />
+			</van-collapse-item>
+		</van-collapse>
+	</view> -->
+</view>
+
+<view class="submitWrap_fix">
+<van-button wx:if="{{!formReadOnly}}" type="info" icon="passed" form-type="submit" style="width:100%;position:fixed;bottom:0px;z-index:2;" bind:click="eqpMaintainFormSubmit" block>提交</van-button>
+</view>
+
+<van-dialog id="van-dialog"/>

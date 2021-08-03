@@ -1,0 +1,62 @@
+.collapseTitle{
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.collapseTitle_tag{
+  display: flex;
+  margin-right:15rpx;
+}
+
+.cellSwitchPro{
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.van-icon-arrow{
+  display: none !important;
+  opacity: 0 !important;
+}
+
+.van-cell__right-icon-wrap{
+  margin-left: 0px !important;
+}
+
+.detailCardCollapse{
+  box-shadow: 2px 2px 2px 2px #F0F0F0;
+  border-radius:10px;
+  width: 90%;
+  margin-bottom: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
+/* .collapse-item-index--van-cell van-cell van-cell--clickable{
+  border-radius:5px;
+} */
+
+/* .collapse-item-index--van-cell{
+  border-top-left-radius:10px;
+  border-top-right-radius:10px;
+} */
+
+/* .collapse-item-index--van-cell van-cell van-cell--borderless van-cell--clickable{
+  border-radius:10px;
+} */
+
+.van-collapse-item__title .van-cell--borderless{
+  border-radius:10px;
+}
+
+.van-collapse-item__title--expanded .collapse-item-index--van-cell{
+  border-top-left-radius:10px;
+  border-top-right-radius:10px;
+}
+
+.van-collapse-item__wrapper{
+  border-bottom-right-radius:10px;
+  border-bottom-left-radius:10px;
+}

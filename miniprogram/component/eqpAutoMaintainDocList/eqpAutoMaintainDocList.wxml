@@ -1,0 +1,154 @@
+<!--component/eqpDocList/eqpDocList.wxml-->
+<!-- 触发时才显示的组件 -->
+<van-popup
+    show="{{ show.filterPopup }}"
+    position="right"
+    round
+    custom-style="height: 95%;width: 95%;"
+    bind:close="closeSearchFilterPopup"
+>
+<van-cell-group border="{{ false }}">
+
+  <van-cell title="单据类型" is-link value="{{typeFilterObj.typeDesc}}" arrow-direction="down" bind:click="onTypeFilterCellClick" />
+
+  <van-cell border="{{ true }}" class="haTimeCell" title="所有单据" value="{{ date }}">
+   
+    <van-switch size="22px" active-color="#7232dd" checked="{{ deptFilterChecked }}" bind:change="onDeptFilterSwitchChange" />
+
+  </van-cell>
+
+  <van-cell border="{{ false }}" class="haTimeCell" title="保养计划日期" value="{{ date }}">
+   
+    <van-switch size="22px" active-color="#7232dd" checked="{{ dateFilterChecked }}" bind:change="onDateFilterSwitchChange" />
+
+  </van-cell>
+
+
+<view class="timeFilterBlock">
+  <input value="{{ startDateFilter }}" disabled="true" class="filterInput" placeholder="起始日" placeholder-class="center" placeholder-style="font-size: 0.8em;" ontap="onStartFilterTap" bindinput="passWdInput" />
+  <view class='line'></view>
+  <input value="{{ endDateFilter }}" disabled="true" class="filterInput" placeholder="结束日" placeholder-class="center" placeholder-style="font-size: 0.8em;" ontap="onEndFilterTap" bindinput="passWdInput" />
+</view>
+
+</van-cell-group>
+
+<view class="buttonBlock">
+  <van-button round color="#DCDCDC" size="small" custom-style="color:#696969;width:80px;" bind:click="onFilterResetClick" >重置</van-button>
+  <van-button round color="#9565E6" size="small" custom-style="margin-left:30px;width:80px;" bind:click="onFilterConfirmClick" >确定</van-button>
+</view>
+
+</van-popup>
+
+<van-popup
+    show="{{ show.dateFilterPopup }}"
+    position="bottom"
+    bind:close="closeDateFilterPopup"
+>
+
+  <van-datetime-picker
+  type="date"
+  id = "picker1"
+  value="{{ currentDate }}"
+  bind:cancel="onDateFilterCancel"
+  bind:confirm="onDateFilterConfirm"
+  bind:input="onDateFilterInput"
+  min-date="{{minDate}}"
+  max-date="{{currentDate}}"
+  formatter="{{ formatter }}"
+  />
+
+</van-popup>
+
+<van-popup
+    show="{{ show.typeFilterPopup }}"
+    position="bottom"
+    bind:close="closeTypeFilterPopup"
+>
+
+  <van-picker
+  show-toolbar
+  title="单据类型"
+  columns="{{ typeFilterData }}"
+  value-key="typeDesc"
+  bind:cancel="onTypeFilterPickerCancel"
+  bind:confirm="onTypeFilterPickerConfirm"
+  bind:change="onTypeFilterPickerChange"
+  />
+
+</van-popup>
+<!-- 触发时才显示的组件-end -->
+
+<van-cell-group>
+
+<van-search
+  id="proSearchBar"
+  value="{{extraFilterValue}}"
+  data-name="extraFilterValue"
+  shape="round"
+  placeholder="请输入搜索关键词"
+  bind:change="bindData"
+  bind:search="onSearchStart"
+  use-action-slot
+  use-right-icon-slot
+>
+
+
+    <van-button round slot="action" color="#9565E6" icon="filter-o" size="small" bind:click="onSearchFilterButtonClick">筛选</van-button>
+
+    <van-icon class="searchRightIcon" slot="right-icon" name="scan" color="red" size="20px" bind:click="startScanCode"/>
+
+
+</van-search>
+
+</van-cell-group>
+
+<view class="swiper-tab" id="proTopTab">
+  <view wx:for="{{navTab}}" wx:key="{{index}}" class="swiper-tab-list {{currentTab==index ? 'navTabItem' : ''}}" data-current="{{index}}" bindtap="switchNav">{{item}}</view>
+</view>
+<view id="start" class='startView'></view>
+
+<view class="c_t60"></view> 
+
+<swiper current="{{currentTab}}" class="swiper-box" duration="300" style="height:{{winHeight}}px" bindchange="bindChange">
+  <swiper-item wx:for="{{navTabPro}}" wx:key="{{value}}">
+  <view class="scrollTest">
+
+    <scroll-view wx:if="{{item.showScrollBar}}" class="scrollWrap" scroll-y="true" refresher-enabled="{{enablePullDown}}" refresher-triggered="{{refreshTrigger}}" bindrefresherrefresh="onSearchStart" style='height:{{winHeight}}px;'>
+      <view class="proListWrap">
+      </view>
+      <van-empty wx:if="{{showDocEmpty}}" image="/images/empty-image-search.png" description="请下拉搜索"/>
+      <my-noData wx:if="{{orderList.length<1&&!loading}}" nodata="{{nodataType}}"></my-noData>
+      <view class="proList" wx:for="{{maintainDocListArray[currentTab]}}" wx:key="index" data-item="{{item}}" bindtap='docCardSelect'>
+        <view class="proTitle">
+          <view class="proTitle_id">
+            {{item.docType}}:{{item.docId}}
+          </view>
+          <text class="state {{item.origin=='normal' ? 'state_normal' : item.origin=='highLight' ? 'state_highLight' : ''}}">{{item.docState}}</text>
+        </view>
+        <view class="proInfo">
+          <image class="proInfo_img" src='{{item.pictureurl==""?defaultImg:item.pictureurl}}' mode='widthFix' lazy-load='true' binderror="errorFn" data-errorimg="{{index}}"></image>
+          <view class="proInfo_right">
+            <view class="proInfo_text">
+              <view class="proInfo_text_title">
+                {{item.assetNoText}}
+              </view>
+              <text class="iconfont icon-qianjinjiantou"></text>
+            </view>
+            <view class="proInfo_text">
+              <view class="proInfo_text_dtt">{{item.assetNo}}</view> 
+              <text class="proInfo_text_acount">{{item.analysisResult}}</text>
+            </view>
+          </view>
+        </view>
+        <view class="proFoot">
+          <view>保养计划日期:{{item.formDate}}</view>
+          <view>所属部门:<text>{{item.deptName}}</text></view>
+        </view>
+ 
+      </view>
+
+    </scroll-view>
+
+  </view>
+  </swiper-item>
+</swiper>
