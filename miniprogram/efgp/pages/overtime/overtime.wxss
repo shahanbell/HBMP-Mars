@@ -1,1 +1,4 @@
 /* miniprogram/pages/overtime/overtime.wxss */
+.van-cell__title{
+  color: #999
+}

@@ -5,20 +5,37 @@
   </view>
   <view class="page__bd">
     <view class="weui-cells weui-cells_after-title">
-      <radio-group bindchange="bindUserSelected">
+    
+      <van-checkbox-group value="{{ result }}" bind:change="bindUserSelected">
         <label class="weui-cell weui-check__label" wx:for="{{dataList}}" wx:key="{{item.id}}">
           <radio class="weui-check " value="{{item.id}}" checked="{{item.id==selectedKey}}" />
           <view class="weui-cell__hd ">
-            <view class="weui-label ">{{item.id}}</view>
+            <view class="weui-label ">
+            <van-checkbox name="{{item.id}}"></van-checkbox>
+          </view>
+          </view>
+         <view class="weui-cell__bd">
+            <view class="weui-label">{{item.id}}</view>
           </view>
           <view class="weui-cell__bd">
             <view class="weui-label">{{item.userName}}</view>
           </view>
-          <view class="weui-cell__ft weui-cell__ft_in-radio" wx:if="{{item.id==selectedKey}}">
-            <icon class="weui-icon-radio" type="success_no_circle" size="16"></icon>
-          </view>
         </label>
-      </radio-group>
+     </van-checkbox-group>
     </view>
   </view>
+
+
+      <view style="width:100%;position:fixed;bottom:0px;z-index:100">
+
+<van-radio-group value="{{selectAll}}">
+  <van-cell-group>
+    <van-cell clickable data-name="1"  bind:click="bindClickSelectAll">
+      <van-radio slot="right-icon" name="1" >全选</van-radio>
+    </van-cell>
+  </van-cell-group>
+
+</van-radio-group>
+      <van-button  type="info"custom-style="height:40px;width:100%;margin-right:0px;border-radius:0px;" bind:click="submitForm">确定</van-button>
+    </view>
 </view>

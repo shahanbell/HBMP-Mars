@@ -25,13 +25,13 @@
         <van-field label="出差性质" value="{{businessPropertyDesc}}" required icon="search" placeholder="请选择出差性质" bindtap="bindBusinessProperty" readonly/>
       </van-cell-group>
       <van-cell-group>
-        <van-field label="其他性质" clearable value="{{otherType}}" placeholder="请填写其他性质" border="{{ false }}" bind:change="bindOtherTypeChange" />
+        <van-field label="其他性质" clearable value="{{otherType}}" placeholder="请填写其他性质" border="{{ false }}"  required="{{isBusinesstripRequired}}" bind:change="bindOtherTypeChange" />
       </van-cell-group>
       <van-cell-group>
         <van-field label="交通工具" value="{{vehicleDesc}}" required icon="search" placeholder="请选择交通工具" bindtap="bindVehicle" readonly/>
       </van-cell-group>
       <van-cell-group>
-        <van-field label="其他交通" clearable value="{{otherVehicle}}" placeholder="请填写其他交通工具" border="{{ false }}" bind:change="bindOtherVehicleChange" />
+        <van-field label="其他交通" clearable value="{{otherVehicle}}" placeholder="请填写其他交通工具" border="{{ false }}"   required="{{isTrafficRequired}}" bind:change="bindOtherVehicleChange" />
       </van-cell-group>
       <van-cell-group>
         <van-field label="目的地" value="{{destinationDesc}}" required icon="search" placeholder="请选择目的地" bindtap="bindDestination" readonly />
@@ -54,7 +54,7 @@
 </van-popup>
       <van-cell-group>
         <van-cell title="出差天数" required>
-          <van-stepper value="{{ daysTotal }}" step="1" integer bind:change="bindDaysTotalChange"/>
+          <van-stepper value="{{ daysTotal }}" min="0.5" max="12" step="0.5" bind:change="bindDaysTotalChange"/>
         </van-cell>
       </van-cell-group>
       <view class="weui-cells__title">出差明细</view>

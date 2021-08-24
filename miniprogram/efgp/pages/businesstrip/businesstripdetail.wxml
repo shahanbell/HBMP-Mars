@@ -43,6 +43,7 @@
       <van-cell-group>
         <van-field
           label = "客户名称"
+          required
           value="{{ bizObject }}"
           placeholder="请输入客户名称"
           border="{{ false }}"

@@ -18,18 +18,26 @@ Page({
     this.requestUserSelect(option);
   },
   requestUserSelect(options?: any) {
-    restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/efgp/users'
+    restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/efgp/users/f'
+
+    //搜索人员部分
     if (options.userInfo) {
       let reg = /^[\u3220-\uFA29]+$/;
       if (!reg.test(options.userInfo)){
-        restUrl += '/f;id=' + options.userInfo + '/s'
+        restUrl += ';id=' + options.userInfo
       }else{
-        restUrl += '/f;userName=' + options.userInfo + '/s'
-      }
-  
-    } else {
-      restUrl += '/f/s'
+        restUrl += ';userName=' + options.userInfo 
+    } 
     }
+//通过部门带出所有人
+      if (options.dept){
+        restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/efgp/users/functions/organizationunit/f'
+        restUrl += ';organizationUnit.id=' + options.dept
+
+}
+
+      restUrl += '/s'
+   
     restUrl += '/' + this.data.offset + '/' + this.data.pageSize
     //console.log(restUrl)
     wx.request({
@@ -51,6 +59,7 @@ Page({
         console.log(fail)
       }
     })
+    
   },
   sltwordInput(e) {
     this.setData!({

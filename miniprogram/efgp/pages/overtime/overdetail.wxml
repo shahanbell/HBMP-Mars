@@ -4,11 +4,26 @@
   </view>
   <view class="page__bd">
     <form bindreset="formReset">
+
       <van-cell-group>
-        <van-field label="申请人员" value="{{ employeeName }}" placeholder="请输入申请人员" required border="{{ false }}" readonly="true" />
+        <van-field label="所在部门" value="{{ deptName }}" required clearable icon="search" placeholder="请选择所在部门" bindtap="bindDeptSelect" readonly />
       </van-cell-group>
       <van-cell-group>
-        <van-field label="所在部门" value="{{ deptName }}" required clearable icon="search" placeholder="请输入所在部门" bindtap="bindDeptSelect" readonly />
+        <van-field label="加班人员" value="{{ employeeName }}" required clearable icon="search" placeholder="请选择加班人员" bindtap="bindUserSelect" readonly>
+        </van-field>
+        <van-collapse value="{{ activeNames }}" bind:change="onChange">
+          <van-collapse-item title="详细人员" name="1">
+            <view class="weui-panel weui-panel_access" wx:for="{{listEmployees}}" wx:key="id">
+              <van-field readonly value="{{item.id}}_{{item.userName}}"></van-field>
+            </view>
+          
+          </van-collapse-item>
+        </van-collapse>
+
+
+
+
+
       </van-cell-group>
       <view class="weui-cells__title">是否用餐</view>
       <van-cell-group>
@@ -22,7 +37,7 @@
       <view class="weui-cells__title">加班时间</view>
       <!-- 日期选择弹窗 -->
       <van-popup show="{{ showDate }}" position="bottom" bind:close="bindCloseDate">
-        <van-datetime-picker type="date" id="picker1" value="{{showInitDate}}" bind:cancel="bindDateCancel" bind:confirm="bindDateConfirm"  formatter="{{formatter}}" />
+        <van-datetime-picker type="date" id="picker1" value="{{showInitDate}}" bind:cancel="bindDateCancel" bind:confirm="bindDateConfirm" formatter="{{formatter}}" />
       </van-popup>
       <van-cell-group>
         <van-field label="加班日期" required value="{{date1}}" use-button-slot readonly bindtap='bindPickerDate'>
@@ -31,22 +46,22 @@
       </van-cell-group>
 
       <van-cell-group>
-          <van-field label="开始时间" required value="{{time1}}" id='time1' use-button-slot readonly bindtap='bindPickerTime1'>
-            <van-icon slot="button" name="arrow" />
-          </van-field>
+        <van-field label="开始时间" required value="{{time1}}" id='time1' use-button-slot readonly bindtap='bindPickerTime1'>
+          <van-icon slot="button" name="arrow" />
+        </van-field>
       </van-cell-group>
-    <van-popup show="{{ showTime1 }}" position="bottom" bind:close="bindCloseTime1">
-        <van-datetime-picker type="time" value="{{time1}}" bind:cancel="bindTime1Cencel" bind:confirm="bindTime1Confirm"  formatter="{{formatter}}" />
+      <van-popup show="{{ showTime1 }}" position="bottom" bind:close="bindCloseTime1">
+        <van-datetime-picker type="time" value="{{time1}}" bind:cancel="bindTime1Cencel" bind:confirm="bindTime1Confirm" formatter="{{formatter}}" />
       </van-popup>
 
       <van-cell-group>
-          <van-field label="截止时间" required value="{{time2}}" id='time2' use-button-slot readonly bindtap='bindPickerTime2'>
-            <van-icon slot="button" name="arrow" />
-          </van-field>
+        <van-field label="截止时间" required value="{{time2}}" id='time2' use-button-slot readonly bindtap='bindPickerTime2'>
+          <van-icon slot="button" name="arrow" />
+        </van-field>
       </van-cell-group>
 
-   <van-popup show="{{ showTime2 }}" position="bottom" bind:close="bindCloseTime2">
-        <van-datetime-picker type="time"  value="{{time2}}" bind:cancel="bindTime2Cencel" bind:confirm="bindTime2Confirm"  formatter="{{formatter}}" />
+      <van-popup show="{{ showTime2 }}" position="bottom" bind:close="bindCloseTime2">
+        <van-datetime-picker type="time" value="{{time2}}" bind:cancel="bindTime2Cencel" bind:confirm="bindTime2Confirm" formatter="{{formatter}}" />
       </van-popup>
 
       <van-cell-group>

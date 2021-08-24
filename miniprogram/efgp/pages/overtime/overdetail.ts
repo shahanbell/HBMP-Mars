@@ -18,7 +18,7 @@ Page({
     hour: 0.5 as number,
     content: '',
     isNew: false,
-    showTime1:false,
+    showTime1: false,
     showTime2: false,
     showDate: false,
     showInitDate: new Date().getTime(),
@@ -32,7 +32,10 @@ Page({
       }
       return value;
     },
-    conpomentid: ''
+    conpomentid: '',
+    activeNames: ['0'],
+    listEmployees: [],
+    employeeNames: ''
   },
   onLoad() {
     wx.showLoading({
@@ -45,16 +48,18 @@ Page({
     eventChannel.on('openDetail', (res) => {
       if (res.isNew) {
         this.setData!({
-          employeeId: res.data.employeeId,
-          employeeName: res.data.employeeName,
-          deptId: res.data.deptId,
-          deptName: res.data.deptName,
           isNew: res.isNew,
         })
+        if (app.globalData.defaultDeptId) {
+          this.setData!({
+            deptId: app.globalData.defaultDeptId,
+            deptName: app.globalData.defaultDeptId + '-' + app.globalData.defaultDeptName
+          });
+        }
       } else {
+        console.info('1912h2===' + JSON.stringify(res.data))
         var str = res.data.date1.replace(/-/g, '/');
         var date = new Date(str)
-    
         this.setData!({
           employeeId: res.data.employeeId,
           employeeName: res.data.employeeName,
@@ -68,7 +73,8 @@ Page({
           isNew: res.isNew,
           showInitDate: date.getTime(),
           time1: res.data.time1,
-          time2: res.data.time2
+          time2: res.data.time2,
+          listEmployees: res.data.listEmployees
         })
       }
     })
@@ -76,7 +82,7 @@ Page({
   bindDeptSelect(e) {
     let _this = this
     wx.navigateTo({
-      url: '../../../pages/deptSelect/deptSelect?employeeid=' + app.globalData.employeeId,
+      url: '../../../pages/deptSelect/deptSelect',
       events: {
         returnDeptSelect: function (res) {
           if (res) {
@@ -84,6 +90,33 @@ Page({
               deptId: res.k,
               deptName: res.k + '-' + res.v
             })
+          }
+        }
+      },
+      success(res) {
+        console.log(res)
+      }
+    })
+  },
+  bindUserSelect(e) {
+
+    let _this = this
+    wx.navigateTo({
+      url: '../../../pages/multiUserSelect/multiUserSelect?dept='+this.data.deptId,
+      events: {
+        returnUserSelect: function (res) {
+          if (res) {
+            
+            var employeeNames='';
+            res.forEach((o, i) => {
+              employeeNames += o.id + '_' + o.userName + ';'
+            });
+            _this.setData({
+              employeeId: res[0].id,
+              employeeName: res[0].id + '-' + res[0].userName,
+              listEmployees: res,
+              employeeNames: employeeNames
+            });
           }
         }
       },
@@ -127,7 +160,7 @@ Page({
   bindDateConfirm(e) {
     this.setData!({
       date1: this.dateFormatForYYMMDD(e.detail)
-    })  
+    })
     this.closePickerDate();
   },
   openPickerDate() {
@@ -177,7 +210,7 @@ Page({
       showTime1: false
     })
   },
-//截止时间的组件事件
+  //截止时间的组件事件
   bindPickerTime2(e) {
     this.openPickerTime2();
   },
@@ -193,7 +226,7 @@ Page({
     })
     this.closePickerTime2();
   },
- 
+
   openPickerTime2() {
     this.setData!({
       showTime2: true
@@ -204,7 +237,11 @@ Page({
       showTime2: false
     })
   },
-
+  onChange(event) {
+    this.setData({
+      activeNames: event.detail,
+    });
+  },
 
   formSubmit(e) {
     let canSubmit = true
@@ -230,7 +267,9 @@ Page({
         time1: this.data.time1,
         time2: this.data.time2,
         hour: this.data.hour,
-        content: this.data.content
+        content: this.data.content,
+        listEmployees:this.data.listEmployees,
+        employeeNames: this.data.employeeNames
       }
       eventChannel = this.getOpenerEventChannel();
       eventChannel.emit('returnDetail', { data: newObject, isNew: this.data.isNew })
