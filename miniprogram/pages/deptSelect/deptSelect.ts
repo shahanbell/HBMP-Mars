@@ -7,6 +7,7 @@ let eventChannel;
 
 Page({
   data: {
+    keyword:null,
     offset: 0 as number,
     pageSize: 20 as number,
     dataList: [],
@@ -17,13 +18,28 @@ Page({
     this.requestDeptSelect(option);
   },
   requestDeptSelect(options?: any) {
-    restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/efgp/functions'
+    restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/efgp/functions/f'
+
+  //用于人可直接带出部门
     if (options.employeeid) {
-      restUrl += '/f;users.id=' + options.employeeid + '/s'
-    } else {
-      restUrl += '/f/s'
+      restUrl += ';users.id=' + options.employeeid
     }
+    //搜索功能
+    
+    if (options.dept){
+      let reg = /^[\u3220-\uFA29]+$/;
+      //非中文默认为部门编号查找
+      if (!reg.test(options.dept)) {
+        restUrl += ';organizationUnit.id=' + options.dept
+      } else {
+        //中文默认使用部门名称查找
+        restUrl += ';organizationUnit.organizationUnitName=' + options.dept
+      }
+
+    }
+    restUrl+='/s'
     restUrl += '/' + this.data.offset + '/' + this.data.pageSize
+    
     wx.request({
       url: restUrl,
       data: {
@@ -43,6 +59,17 @@ Page({
         console.log(fail)
       }
     })
+  },
+
+  sltwordInput(e) {
+    this.setData!({
+      keyword: e.detail.value
+    })
+  },
+  bindDeptQuery(e) {
+    console.log("查找");
+    var word = this.data.keyword;
+    this.requestDeptSelect({ 'dept': word });
   },
   bindDeptSelected(e) {
     this.setData!({

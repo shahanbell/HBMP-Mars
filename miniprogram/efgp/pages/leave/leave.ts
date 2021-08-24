@@ -16,6 +16,7 @@ Page({
     showRowTime: null,
     date1: null,
     date2: null,
+    yearDays:0,
     time1: "08:00",
     time2: "17:10",
     formType: '1',
@@ -46,38 +47,51 @@ Page({
   },
   onLoad() {
     var that = this;
-    wx.showLoading({
-      title: 'Loading',
-    })
-    setTimeout(function () {
-      wx.hideLoading()
-    }, 2000)
-    let dateTemp = new Date(new Date().getTime());
-    let year = dateTemp.getFullYear();
-    let month = dateTemp.getMonth() + 1;
-    let day = dateTemp.getDate();
-    let dayTemp = year + "-" + month + "-" + day;
-    that.setData!({
-      date1: this.dateFormatForYYMMDD(new Date().getTime()),
-      date2: this.dateFormatForYYMMDD(new Date().getTime()),
-    })
-    if (app.globalData.openId) {
-      this.setData!({
-        hasOpenId: true
-      })
-    }
-    if (app.globalData.authorized) {
-      this.setData!({
-        employeeId: app.globalData.employeeId,
-        employeeName: app.globalData.employeeName
-      })
-    }
-    if (app.globalData.defaultDeptId) {
-      this.setData!({
-        deptId: app.globalData.defaultDeptId,
-        deptName: app.globalData.defaultDeptId + '-' + app.globalData.defaultDeptName
-      })
-    }
+    wx.request({
+     
+      // url: that.globalData.restAdd + '/Hanbell-WCO/api/prg9f247ab6d5e4/session',
+      url: app.globalData.restAdd+'/Hanbell-JRS/api/shberp/nianjia/' + app.globalData.employeeId+'?'+ app.globalData.restAuth,
+      header: {
+        'content-type': 'application/json'
+      },
+      method: 'GET',
+      success: res => {
+        console.info("剩余年休假="+JSON.stringify(res))
+        wx.showLoading({
+          title: 'Loading',
+        })
+        setTimeout(function () {
+          wx.hideLoading()
+        }, 2000)
+        let dateTemp = new Date(new Date().getTime());
+        let year = dateTemp.getFullYear();
+        let month = dateTemp.getMonth() + 1;
+        let day = dateTemp.getDate();
+        let dayTemp = year + "-" + month + "-" + day;
+        that.setData!({
+          date1: this.dateFormatForYYMMDD(new Date().getTime()),
+          date2: this.dateFormatForYYMMDD(new Date().getTime()),
+          yearDays:res.data.object
+        })
+        if (app.globalData.openId) {
+          this.setData!({
+            hasOpenId: true
+          })
+        }
+        if (app.globalData.authorized) {
+          this.setData!({
+            employeeId: app.globalData.employeeId,
+            employeeName: app.globalData.employeeName
+          })
+        }
+        if (app.globalData.defaultDeptId) {
+          this.setData!({
+            deptId: app.globalData.defaultDeptId,
+            deptName: app.globalData.defaultDeptId + '-' + app.globalData.defaultDeptName
+          })
+        }
+      }
+    });
   },
   bindDeptSelect(e) {
     let that = this

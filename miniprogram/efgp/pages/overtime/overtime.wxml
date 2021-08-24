@@ -5,26 +5,10 @@
   <view class="page__bd">
     <form bindreset="formReset">
       <van-cell-group>
-        <van-field
-          label = "申请人员"
-          value="{{ employeeName }}"
-          placeholder="请输入申请人员"
-          required
-          readonly="true"
-          border="{{ false }}"
-        />
+        <van-field label="申请人员" value="{{ employeeName }}" placeholder="请输入申请人员" required readonly="true" border="{{ false }}" />
       </van-cell-group>
       <van-cell-group>
-      <van-field
-        label="申请部门"
-        value="{{ deptName }}"
-        required
-        clearable
-        readonly
-        icon="search"
-        placeholder="请输入申请部门"
-        bindtap="bindDeptSelect"
-      />
+        <van-field label="申请部门" value="{{ deptName }}" required clearable readonly icon="search" placeholder="请输入申请部门" bindtap="bindDeptSelect" />
       </van-cell-group>
       <view class="weui-cells__title">加班类别</view>
       <van-radio-group value="{{ formType }}" bind:change="onChange">
@@ -35,9 +19,9 @@
         </van-cell-group>
       </van-radio-group>
       <view class="weui-cells__title">加班明细</view>
-      <view class="weui-panel weui-panel_access" wx:for="{{detailList}}" wx:key="seq">
+      <view class="weui-panel weui-panel_access" wx:for="{{detailList}}" wx:key="seq" wx:for-item="detail">
         <view class="weui-panel__hd">
-          <view>明细{{item.seq}}
+          <view>明细{{detail.seq}}
             <view class="button-warn" bindtap="bindRemoveDetailTap" data-index="{{index}}">删除</view>
             <view class="button-default" bindtap="bindEditDetailTap" data-index="{{index}}">修改</view>
           </view>
@@ -45,16 +29,25 @@
         <view class="weui-panel__bd">
           <view class="weui-form-preview__bd">
             <view class="weui-form-preview__item">
-              <view class="weui-form-preview__label">{{item.date1}}</view>
-              <view class="weui-form-preview__value">{{item.hour}}小时</view>
+              <view class="weui-form-preview__label">{{detail.date1}}</view>
+              <view class="weui-form-preview__value">{{detail.hour}}小时</view>
             </view>
           </view>
           <view class="weui-form-preview__bd">
             <view class="weui-form-preview__item">
               <view class="weui-form-preview__label">工作内容</view>
-              <view class="weui-form-preview__value">{{item.content}}</view>
+              <view class="weui-form-preview__value">{{detail.content}}</view>
             </view>
           </view>
+
+          <van-collapse data-index='{{detail.seq}}' value="{{ detail.openFold }}" bind:change="onChange1">
+            <van-collapse-item title='加班人员' name="1" >
+              <view class="weui-panel weui-panel_access" wx:for="{{detail.listEmployees}}" wx:key="id">
+                <van-field readonly value="{{item.id}}_{{item.userName}}"></van-field>
+              </view>
+
+            </van-collapse-item>
+          </van-collapse>
         </view>
       </view>
       <view style="text-align:center;margin-bottom:12px">

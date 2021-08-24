@@ -22,7 +22,8 @@ Page({
     employeeName: null,
     deptId: null,
     deptName: null,
-    canSubmit: false
+    canSubmit: false,
+    employees:''
   },
   onLoad() {
     wx.showLoading({
@@ -80,7 +81,8 @@ Page({
           details.push(res.data)
           details.forEach((o, i) => {
             o.seq = i + 1
-          })
+          });
+         
           _this.setData({
             detailList: details,
             canSubmit: true
@@ -134,7 +136,8 @@ Page({
             time1: currentObject.time1,
             time2: currentObject.time2,
             hour: currentObject.hour,
-            content: currentObject.content
+            content: currentObject.content,
+            listEmployees: currentObject.listEmployees
           }, isNew: false
         })
       }
@@ -150,6 +153,20 @@ Page({
     this.setData!({
       detailList: details
     })
+  },
+  onChange1(event){
+    var index = event.target.dataset.index;
+    var _this=this
+    _this.data.detailList.forEach(function (o, i) {
+      console.info('进入循环')
+      if (o.seq == index) {
+        console.info('进入判断')
+        o.openFold = event.detail;
+      }
+    });
+    _this.setData({
+      detailList: this.data.detailList
+    });
   },
   formSubmit(e) {
     let canSubmit = true
@@ -180,13 +197,23 @@ Page({
             wx.showLoading({
               title: 'Sending'
             })
+            //明细拆分
+            var index=0;
+            var detailDatas=[];
+            _this.data.detailList.forEach((o, i) => {
+              o.listEmployees.forEach((m,index)=>{
+                index = index+1;
+                detailDatas.push({ seq: index, ...o, employeeId: m.id, employeeName: m.id +'-'+ m.userName});
+              })
+            })
+            console.info('detaillist==' + JSON.stringify(detailDatas))
             wx.request({
-              url: app.globalData.restAdd + '/Hanbell-JRS/api/efgp/hkgl034/wechat?' + app.globalData.restAuth,
+              url: app.globalData.restAdd +'/Hanbell-JRS/api/efgp/hkgl034/wechat?' + app.globalData.restAuth,
               data: {
                 employee: _this.data.employeeId,
                 formType: _this.data.formType,
                 formTypeDesc: _this.data.formTypeDesc,
-                detailList: _this.data.detailList
+                detailList: detailDatas
               },
               header: {
                 'content-type': 'application/json'

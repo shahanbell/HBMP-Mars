@@ -203,6 +203,9 @@ Page({
 
   formSubmit(e) {
     let canSubmit = true
+    if (this.data.bizObject == '' || this.data.bizAddress== '' || this.data.bizContent==''){
+      canSubmit=false
+    }
     if (canSubmit) {
       let newObject = {
         bizEmployee: this.data.bizEmployee,
