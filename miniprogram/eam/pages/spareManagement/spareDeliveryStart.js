@@ -20,8 +20,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    repairDocIdReadOnly: false,
     collapseActiveNames: [],
-
     repairBasicInfoCardHeight: '400',
     completeFlag:true,
     totalPrice:null,
@@ -897,6 +897,8 @@ Page({
             //url: 'http://325810l80q.qicp.vip' + '/Hanbell-JRS/api/shbeam/equipmentinventory/insertStockInfo4MicroApp?' + app.globalData.restAuth,
             data: {
               company: app.globalData.defaultCompany,
+              deptno: app.globalData.defaultDeptId,
+              deptname: app.globalData.defaultDeptName,
               sarea: that.data.repairAreaObj.repairAreaValue,
               remark: that.data.deliveryRemark,
               relano: that.data.docFormid,
@@ -914,7 +916,8 @@ Page({
               if(res.statusCode == 200 && res.data.msg != null){
                 resMsg = '提交成功';
                 if(res.data.code != "200"){
-                  resMsg = '提交失败，请重试';
+                  //resMsg = '提交失败，请重试';
+                  resMsg = res.data.msg;
                   Dialog.alert({
                     title: '系统消息',
                     message: resMsg,
@@ -1081,10 +1084,14 @@ Page({
    */
   onLoad: function (options) {
     // let heightTemp = app.globalData.windowHeight-that.data.searchBarHeight-that.data.topTabHeight;
-
+    var repairDocIdReadOnlyFlag = false;
+    if(options.docFormid != null && options.docFormid != ''){
+      repairDocIdReadOnlyFlag = true;
+    }
     this.setData({
       docId: options.docId,
       docFormid: options.docFormid,
+      repairDocIdReadOnly: repairDocIdReadOnlyFlag
     })
 
     let _this = this;
