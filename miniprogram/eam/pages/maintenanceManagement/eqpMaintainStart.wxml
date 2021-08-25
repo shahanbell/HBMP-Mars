@@ -77,7 +77,7 @@
 									<view class="detailOperateInfo_body_text_title">使用工具:{{item.methodName}}</view>
 								</view>
 								<view class="detailOperateInfo_body_text">
-									<view class="detailOperateInfo_body_text_title">停机时间:{{item.downTime}}(小时)</view>
+									<view class="detailOperateInfo_body_text_title">停机时间:{{item.downTime}}({{item.downUnit}})</view>
 								</view>
 							</view>
 							<image class="detailOperateInfo_body_img" src='{{item.areaImage==""?infoCard.pictureurl:item.areaImage}}' data-selector="{{index}}" bindtap='showImg' mode='widthFix' lazy-load='true' binderror="errorFn" data-errorimg=""></image>

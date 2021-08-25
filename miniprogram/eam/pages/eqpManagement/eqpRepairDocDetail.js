@@ -1405,9 +1405,15 @@ upload: function(e) {
           }
         }
         else if(repairDocDta.serviceuser == app.globalData.employeeId && repairDocDta.repairmethodtype == "2"){
+          if(repairDocDta.rstatus == "10"){
+            _this.data.showBtn.changeServiceUserBtn = true;
+            stepCode = 0;
+          }
           if(repairDocDta.rstatus >= "20" && repairDocDta.rstatus < "30" && repairDocDta.rstatus != "28"){
             _this.data.showBtn.saveRepairInfoBtn = true;
             _this.data.showBtn.stopRepairBtn = true;
+            _this.data.showBtn.spareDeliveryBtn = true;
+            _this.data.showBtn.spareRetreatBtn = true;
             stepCode = 1;
           }
           if(repairDocDta.rstatus == "28"){

@@ -126,6 +126,7 @@
 					<view class="orderList" style="height:100%"  wx:key="index"  id='eqpListIndex_{{index}}'>
             <van-cell title="出库时间" value="{{formCreDate}}" />
             <van-cell title="出库人" value="{{formCreator}}" />
+						<van-field label="报修单号" input-align="right" data-name="docFormid" value="{{docFormid}}" bind:change="bindData" readonly = "{{repairDocIdReadOnly}}" />
             <van-cell title="所属厂区" value="{{ repairAreaObj.repairAreaDesc }}" data-name="repairAreaDesc" bind:change="bindData" right-icon="arrow-down" bindtap='onRepairAreaCellTap'>
               <van-icon slot="right-icon" name="arrow-down" class="custom-icon" style="padding-left:10px;" />
             </van-cell>

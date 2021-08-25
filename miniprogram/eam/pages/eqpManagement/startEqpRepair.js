@@ -26,6 +26,7 @@ var startVal = null;
 var canLoadNewData = true;
 var eqpListDta = null;
 var serviceUserDta = null;
+var autonoRepairUserDta = null;
 var troubleReasonDta = null;
 var hitchUrgencyDta = null;
 var repairAreaDta = null;
@@ -45,6 +46,8 @@ Page({
     nodataType: 7,
     orderList: [],    //订单列表数据，接口获取
     serviceUserList:[{userId:null,userName:'请选择',userInfo:'请选择'}], 
+    repairServiceUserList:[{userId:null,userName:'请选择',userInfo:'请选择'}], 
+    autonoServiceUserList:[{userId:null,userName:'请选择',userInfo:'请选择'}], 
     troubleReasonList:[],
     hitchUrgencyList:[{hitchUrgencyDesc:'请选择',hitchUrgencyId:'-1'}],
     repairAreaList:[{repairAreaDesc:'请选择',repairAreaValue:'-1'}],
@@ -121,6 +124,7 @@ Page({
     supplementFlag: false,
     activeNames: [],
     disableServiceUser: false,
+    autonoRepairFlag: false,
 
     formatter(type, value) {
       if (type === 'year') {
@@ -970,9 +974,11 @@ onServiceUserPickerCancel: function(event){
       // }
       //restUrl += '/f;deptno=' + '13000' + '/s';
       //restUrl += '/f;formid=' + res + '/s';
-      restUrl += '/f' + '/s';
+      var userDeptNo = app.globalData.defaultDeptId;
+      restUrl += '/f;deptno=' + userDeptNo + '/s';
+      //restUrl += '/f;deptno=1P100' + '/s';
       restUrl += '/' + 0 + '/' + 20;
-      //console.log(restUrl);
+      console.log(restUrl);
       wx.showLoading({
         title: 'Sending',
         mask: true
@@ -988,7 +994,7 @@ onServiceUserPickerCancel: function(event){
         },
         method: 'GET',
         success: function (res) {
-          //console.log(res);
+          console.log(res);
           if(res.data == "" || res.statusCode != 200){
             //console.log("no Data");
             wx.hideLoading();
@@ -999,6 +1005,7 @@ onServiceUserPickerCancel: function(event){
             troubleReasonDta = res.data[1];
             hitchUrgencyDta = res.data[2];
             repairAreaDta = res.data[3];
+            autonoRepairUserDta = res.data[5];
             //dateTemp = new Date(util.utcInit(res.data[4]));
             dateTemp = res.data.length < 5 ? new Date() : new Date(util.utcInit(res.data[4]));
           }
@@ -1013,7 +1020,15 @@ onServiceUserPickerCancel: function(event){
             newItem.userId = serviceUserDta[i].userid;
             newItem.userName = serviceUserDta[i].username;
             newItem.userInfo = serviceUserDta[i].userid + "-" + serviceUserDta[i].username;
-            _this.data.serviceUserList.push(newItem);
+            _this.data.repairServiceUserList.push(newItem);
+          }
+
+          for(var i = 0;i < autonoRepairUserDta.length; i++){
+            let newItem = { userId: "" , userName: "" , userInfo:""};
+            newItem.userId = autonoRepairUserDta[i].cvalue;
+            newItem.userName = autonoRepairUserDta[i].cdesc;
+            newItem.userInfo = autonoRepairUserDta[i].cvalue + "-" + autonoRepairUserDta[i].cdesc;
+            _this.data.autonoServiceUserList.push(newItem);
           }
 
           for(var i = 0;i < troubleReasonDta.length; i++){
@@ -1037,8 +1052,13 @@ onServiceUserPickerCancel: function(event){
             _this.data.repairAreaList.push(newItem);
           }
 
+          _this.data.serviceUserList = _this.data.repairServiceUserList;
+          //_this.data.serviceUserList = _this.data.autonoServiceUserList;
+
           _this.setData({
             serviceUserList: _this.data.serviceUserList,
+            repairServiceUserList: _this.data.repairServiceUserList,
+            autonoServiceUserList: _this.data.autonoServiceUserList,
             troubleReasonList: _this.data.troubleReasonList,
             hitchUrgencyList: _this.data.hitchUrgencyList,
             repairAreaList: _this.data.repairAreaList,
@@ -1475,16 +1495,22 @@ onServiceUserPickerCancel: function(event){
   pickerChangeDapter:function(event){
     const { picker, value, index } = event.detail;
     if(event.currentTarget.dataset.selector == "repairMethod"){
+      var serviceUserListTemp = [];
+      var disableServiceUserTemp = false;
       if(value.repairMethodValue == '2'){
-        this.setData({
-          disableServiceUser: true,
-        });
+        serviceUserListTemp = this.data.autonoServiceUserList;
+        disableServiceUserTemp = serviceUserListTemp.length > 1 ? false : true;
       }
       else{
-        this.setData({
-          disableServiceUser: false,
-        });
+        serviceUserListTemp = this.data.repairServiceUserList;
+        disableServiceUserTemp = false;
       }
+      this.setData({
+        disableServiceUser: disableServiceUserTemp,
+        serviceUserList: serviceUserListTemp,
+        serviceuser: serviceUserListTemp[0].userId,
+        serviceusername: serviceUserListTemp[0].userName,
+      });
     }
     else if(event.currentTarget.dataset.selector == "repairArea" && this.data.itemno == "9"){
       if("枫泾厂" == value.repairAreaValue || "枫泾总部" == value.repairAreaValue){

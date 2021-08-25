@@ -345,6 +345,7 @@ Page({
               methodName: '',
               areaImage:'',
               downTime: '',
+              downUnit:'',
               result: '',
               tagType: '',
               exception: '',
@@ -360,6 +361,7 @@ Page({
             newItem.methodName = maintainDetailListTemp[i].methodname;
             newItem.areaImage = (maintainDetailListTemp[i].areaimage == null || maintainDetailListTemp[i].areaimage == '') ? '' : app.globalData.restAdd + ":443/Hanbell-EAM/" + maintainDetailListTemp[i].areaimage.replace(new RegExp('../../', 'g'), '');
             newItem.downTime = maintainDetailListTemp[i].downtime;
+            newItem.downUnit = maintainDetailListTemp[i].downunit;
             newItem.exception = maintainDetailListTemp[i].exception == null ? '':maintainDetailListTemp[i].exception;
             newItem.problemSolve = maintainDetailListTemp[i].problemsolve == null ? '':maintainDetailListTemp[i].problemsolve;
             newItem.sDate = maintainDetailListTemp[i].sdate == null ? '' : util.utcInit(maintainDetailListTemp[i].sdate);
