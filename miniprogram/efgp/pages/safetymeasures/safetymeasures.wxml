@@ -1,0 +1,106 @@
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+  <view class="page__hd">
+    <view class="page__title">安全隐患整改通知单</view>
+  </view>
+  <view class="page__bd">
+    <form bindreset="formReset">
+
+      <view class="weui-cells__title"></view>
+
+      <van-cell-group>
+        <van-field label="稽核人员" value="{{ applyUserName }}" border="{{ false }}" readonly="true" />
+      </van-cell-group>
+
+      <van-cell-group>
+        <van-field label="单位安全员" value="{{ safetyOfficeName }}" placeholder="请选择安全人员" border="{{ false }}" required icon="search" readonly="true" bindtap="bindSafetyOfficeSelect" />
+      </van-cell-group>
+
+      <van-cell-group>
+        <van-field label="改正单位" value="{{ safetyDeptName }}" border="{{ false }}" readonly="true" />
+      </van-cell-group>
+
+      <van-cell-group>
+        <van-field label="部门主管" value="{{ deptManager1Name }}" border="{{ false }}" readonly="true" />
+      </van-cell-group>
+
+      <van-cell-group>
+        <van-field label="单位主管" value="{{ deptManager2Name }}" border="{{ false }}" readonly="true" />
+      </van-cell-group>
+
+      <van-cell-group>
+        <van-field label="地点" value="{{ address }}" placeholder="请输入地点" border="{{ false }}" bind:change="bindAddressChange" />
+      </van-cell-group>
+
+      <van-cell-group>
+        <van-field label="当月安全课长" value="{{ monthSafetyOfficeName }}" placeholder="请选择当月安全课长" border="{{ false }}" icon="search" readonly="true" bindtap="bindMonthSafetyOfficeSelect" />
+      </van-cell-group>
+
+      <van-cell-group>
+        <van-field label="安全隐患描述" value="{{ describe }}" type="textarea" placeholder="请输入安全隐患描述" autosize border="{{ false }}" bind:change="bindDescribehange" />
+      </van-cell-group>
+
+      <van-cell-group>
+        <van-field label="责令" value="{{ chargeName }}" border="{{ false }}" required icon="arrow_down" readonly="true" bindtap="bindChargeShow" />
+      </van-cell-group>
+
+      <van-popup show="{{ isChargeShow}}" position="bottom" data-selector="chargesSelect" bind:close="bindChargesClose">
+        <van-picker show-toolbar title="责令" columns="{{ charges }}" value-key="name" data-selector="chargesSelect" bind:confirm="bindChargesSelect" bind:cancel="bindChargesClose" />
+      </van-popup>
+
+
+      <van-cell-group show="false">
+        <van-field label="整改截止时间" required value="{{endDate}}" id='1' use-button-slot readonly bindtap='bindOpenDate'>
+          <van-icon slot="button" name="arrow" />
+        </van-field>
+      </van-cell-group>
+
+      <van-popup show="{{ isDateShow }}" position="bottom" bind:close="bindCloseDate">
+        <van-datetime-picker type="date" value="{{showDateInit}}" bind:cancel="bindCloseDate" bind:confirm="bindDateConfirm" formatter="{{formatter}}" />
+      </van-popup>
+
+
+
+      <van-cell-group>
+        <van-field label="施工方" value="{{ constructionSide }}" placeholder="请输入施工方" border="{{ false }}" bind:change="bindConstructionSideChange" />
+      </van-cell-group>
+
+
+      <van-cell-group>
+        <van-field label="工程项目" value="{{ constructionProject }}" placeholder="请输入工程项目" border="{{ false }}" bind:change="bindConstructionProjectChange" />
+      </van-cell-group>
+
+      <van-cell-group>
+        <van-field label="扣款金额" value="{{ deduction  }}" type='number' placeholder="请输入扣款金额" border="{{ false }}" bind:change="bindDeductionChange" />
+      </van-cell-group>
+
+      <van-cell title="图片上传" use-label-slot>
+
+
+        <view slot="label" class='ui_uploader_cell'>
+          <!-- 根据已选择的图片临时路径数组展示图片-->
+          <view class='ui_uploader_item' wx:for="{{uploaderList}}" wx:key="{{index}}">
+            <!-- 删除-->
+            <icon class='ui_uploader_item_icon' bindtap='clearImg' data-index="{{index}}" type="clear" size="20" color="red" />
+            <!-- 图片-->
+            <image bindtap='showImg' data-index="{{index}}" src='{{item}}'></image>
+          </view>
+          <!-- 上传按钮+框 -->
+          <view class='ui_uploader' bindtap='upload' wx:if="{{showUpload}}"></view>
+        </view>
+
+      </van-cell>
+
+
+
+
+
+      <van-button custom-class="submitbtn" type="info" icon="passed" form-type="submit" bind:click="formSubmit">提交</van-button>
+    </form>
+  </view>
+
+
+</view>
+
+<van-overlay show="{{ ajaxShow }}" c>
+  <van-loading size="24px" vertical="true" class='Loading'>加载中...</van-loading>
+</van-overlay>
