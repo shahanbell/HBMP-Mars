@@ -201,9 +201,77 @@ export function getSpareFormType(acceptType){
  * @param {string} formid 单号
  */
 export function getEqpMaintainFormType(formid){
-  if(formid.indexOf("BQ") > -1){
+  if(formid.indexOf("一级") > -1){
     return "自主保全单";
   }
   else
     return "计划保全单";
+}
+
+/**
+ *  检查是否是维修课长
+ * @param {string} employeeId 部门代号
+ */
+export function checkRepairDeptManger(employeeId){
+  if(employeeId.indexOf("C0235") >= 0 || employeeId.indexOf("H0092") >= 0 || employeeId.indexOf("H0692") >= 0){
+    return true;
+  }
+  else
+    return false;
+}
+
+/**
+ *  检查是否是维修课人员
+ * @param {string} deptno 部门代号
+ */
+export function checkEqpRepairDepartment(deptno){
+  if(deptno.indexOf("1W3") >= 0 || deptno.indexOf("2A8") >= 0 || deptno.indexOf("7A3") >= 0){
+    return true;
+  }
+  else
+    return false;
+}
+
+/**
+ *  获取维修课对应公司别过滤参数
+ * @param {string} deptno 部门代号
+ */
+export function getRepairDeptCompanyFilter(deptno){
+  if(deptno.indexOf("1W3") >= 0){
+    return ";RepairCompanyFilter=HANBELL";
+  }
+  else if(deptno.indexOf("2A8") >= 0){
+    return ";RepairCompanyFilter=HANSON";
+  }
+  else if(deptno.indexOf("7A3") >= 0){
+    return ";RepairCompanyFilter=HANYOUNG";
+  }
+}
+
+/**
+ *  检查是否是维修经理
+ * @param {string} employeeId 工号
+ */
+export function checkEqpRepairManager(employeeId){
+  if(employeeId.indexOf("C0016") >= 0 || employeeId.indexOf("Y0080") >= 0 || employeeId.indexOf("H0752") >= 0){
+    return true;
+  }
+  else
+    return false;
+}
+
+/**
+ *  获取维修经理对应公司别过滤参数
+ * @param {string} employeeId 工号
+ */
+export function getRepairManagerCompanyFilter(employeeId){
+  if(employeeId.indexOf("C0016") >= 0){
+    return ";RepairCompanyFilter=HANBELL";
+  }
+  else if(employeeId.indexOf("Y0080") >= 0){
+    return ";RepairCompanyFilter=HANYOUNG";
+  }
+  else if(employeeId.indexOf("H0752") >= 0){
+    return ";RepairCompanyFilter=HANSON";
+  }
 }

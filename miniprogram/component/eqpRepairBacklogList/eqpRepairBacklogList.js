@@ -32,10 +32,11 @@ Component({
       var repairBacklogList = null;
       var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/getRepairBacklogList';
 
-      if(app.globalData.defaultDeptId.indexOf("1P000") >= 0){
-        restUrl += '/f;rstatus=70';
+      if(util.checkEqpRepairManager(app.globalData.employeeId)){
+        var repairManagerCompanyFilter = util.getRepairManagerCompanyFilter(app.globalData.employeeId);
+        restUrl += '/f;rstatus=70' + repairManagerCompanyFilter;
       }
-      else if(app.globalData.defaultDeptId.indexOf("1W3") >= 0){
+      else if(util.checkEqpRepairDepartment(app.globalData.defaultDeptId)){
         restUrl += '/f;serviceuser=' + res;
       }
       else{
@@ -44,8 +45,9 @@ Component({
 
       restUrl += ';ALL=ALL';
 
-      if(app.globalData.defaultDeptId.indexOf("1W300") >= 0){
-        restUrl += ';ManagerCheck=ManagerCheck';
+      if(util.checkRepairDeptManger(app.globalData.employeeId)){
+        var repairDeptCompanyFilter = util.getRepairDeptCompanyFilter(app.globalData.defaultDeptId);
+        restUrl += ';ManagerCheck=ManagerCheck' + repairDeptCompanyFilter;
       }
 
       restUrl += '/s/' + 0 + '/' + 20;

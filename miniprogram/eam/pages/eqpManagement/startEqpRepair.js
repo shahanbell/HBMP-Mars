@@ -54,6 +54,9 @@ Page({
     repairMethodList:[{repairMethodDesc:'维修课维修',repairMethodValue:'1'},
                       {repairMethodDesc:'现场自主维修',repairMethodValue:'2'},
                       {repairMethodDesc:'委外维修',repairMethodValue:'3'}],
+    needSpareList:[{needSpareDesc:'请选择',needSpareValue:'-1'},
+                      {needSpareDesc:'领用',needSpareValue:'Y'},
+                      {needSpareDesc:'不领用',needSpareValue:'N'}],
     searchItemList:[{itemSelected:false,searchItemName:'formid',searchItemDesc:'编号',searchItemValue:''},
                     {itemSelected:false,searchItemName:'assetSpec',searchItemDesc:'规格',searchItemValue:''},
                     {itemSelected:false,searchItemName:'otherEqp',searchItemDesc:'其它设备',searchItemValue:''}],
@@ -75,6 +78,7 @@ Page({
       suppleStartDateSelectorPopup:false,
       suppleCompleteDateSelectorPopup: false,
       repairAreaSelectorPopup:false,
+      needSpareSelectorPopup:false,
       dateFilterPopup: false,
       statusFilterPopup: false,
       dateSelector: false,
@@ -109,6 +113,7 @@ Page({
     hitchUrgencyDesc:null,
     repairMethodObj:null,
     repairAreaObj:null,
+    needSpareObj:{needSpareDesc:'请选择',needSpareValue:'-1'},
     formdate: null,
     formdateTS: null,
     suppleStartDateObj:{},
@@ -787,7 +792,7 @@ onServiceUserPickerCancel: function(event){
             url: app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/createEqpRepairHad?' + app.globalData.restAuth + "&assetCardId=" + that.data.assetCardId + "&openId=oJJhp5GvX45x3nZgoX9Ae9DyWak4" + "&sessionKey=ca80bf276a4948909ff4197095f1103a",
             //url: 'http://325810l80q.qicp.vip' + '/Hanbell-JRS/api/shbeam/equipmentinventory/insertStockInfo4MicroApp?' + app.globalData.restAuth,
             data: {
-              company: "C",
+              company: app.globalData.defaultCompany,
               //assetno: that.data.assetno,
               itemno: that.data.itemno,
               repairuser: app.globalData.employeeId,
@@ -803,6 +808,7 @@ onServiceUserPickerCancel: function(event){
               repairdeptname: app.globalData.defaultDeptName,
               hitchurgency: that.data.hitchUrgencyId,
               repairmethodtype: that.data.repairMethodObj.repairMethodValue,
+              isneedspare: that.data.needSpareObj.needSpareValue,
               remark: that.data.reRepairFlag.toString(),
               servicearrivetime: startDateTemp,
               completetime: completeDateTemp,
@@ -954,7 +960,7 @@ onServiceUserPickerCancel: function(event){
   onLoad: function (options) {
     // let heightTemp = app.globalData.windowHeight-that.data.searchBarHeight-that.data.topTabHeight;
     let _this = this;
-    //console.log(app.globalData);
+    console.log(app.globalData);
     //console.log("windowsHeightTemp:" + app.globalData.windowHeight);
     //let heightTemp = app.globalData.windowHeight - 100;
     let heightTemp = app.globalData.screenHeight - 90 - app.globalData.statusBarHeight;
@@ -975,7 +981,8 @@ onServiceUserPickerCancel: function(event){
       //restUrl += '/f;deptno=' + '13000' + '/s';
       //restUrl += '/f;formid=' + res + '/s';
       var userDeptNo = app.globalData.defaultDeptId;
-      restUrl += '/f;deptno=' + userDeptNo + '/s';
+      //restUrl += '/f;deptno=' + userDeptNo + '/s';
+      restUrl += '/f;deptno=' + userDeptNo + ';company=' + app.globalData.defaultCompany + '/s';
       //restUrl += '/f;deptno=1P100' + '/s';
       restUrl += '/' + 0 + '/' + 20;
       console.log(restUrl);
@@ -1323,7 +1330,7 @@ onServiceUserPickerCancel: function(event){
       return false;
     }
     console.log(this.data.serviceuser);
-    if(this.data.troubleFrom == null || this.data.formdateTS == null || (this.data.serviceuser == null && !this.data.disableServiceUser) || this.data.troubleDetailInfo == null || this.data.uploaderList.length < 1 || this.data.repairAreaObj.repairAreaValue == '-1' || this.data.hitchUrgencyId == "-1"){
+    if(this.data.troubleFrom == null || this.data.formdateTS == null || (this.data.serviceuser == null && !this.data.disableServiceUser) || this.data.troubleDetailInfo == null || this.data.uploaderList.length < 1 || this.data.repairAreaObj.repairAreaValue == '-1' || this.data.hitchUrgencyId == "-1" || this.data.needSpareObj.needSpareValue == '-1'){
       Dialog.alert({
         title: '系统消息',
         message: "请将信息填写完整",

@@ -20,6 +20,10 @@ Component({
       type: Number,
       value: 0
     },
+    defaultFormType:{
+      type: String,
+      value: ""
+    }
   },
 
   /**
@@ -512,6 +516,9 @@ Component({
 
       if(this.data.typeFilterObj.typeCode != null &&  this.data.typeFilterObj.typeCode != ''){
         restUrl += ';MaintainType=' + this.data.typeFilterObj.typeCode;
+        if(this.data.typeFilterObj.typeCode == 'JH' && this.data.deptFilterChecked == false && app.globalData.defaultDeptId.indexOf("1W3") < 0){
+          restUrl += ';AnalysisUser=' + app.globalData.employeeId;
+        }
       }
 
       if(this.data.dateFilterChecked == true){
@@ -578,7 +585,7 @@ Component({
           for(var i = 0;i < dataLen; i++){
             let newItem = {Id:"",docType:"", docId: "A119-01", origin: "normal", docState: "", pictureurl: "https://jrs.hanbell.com.cn:443/Hanbell-EAM/resources/app/res/CNCEQP_DefaultImage.jpg", locationText: "", slocation: "副齿轮检验轴AA-2600I", sarea: "", credate: "202054654654466", type: "维修", creator: "技术员" };
             newItem.Id = maintainDocListDta[i].id;
-            newItem.docType = util.getEqpMaintainFormType(maintainDocListDta[i].formid);
+            newItem.docType = util.getEqpMaintainFormType(maintainDocListDta[i].standardlevel);
             newItem.docId = maintainDocListDta[i].formid;
             newItem.docState = _this.getDocStatus(maintainDocListDta[i].status);
             newItem.assetNo = maintainDocListDta[i].assetno == null ? '无' : maintainDocListDta[i].assetno;
@@ -673,6 +680,10 @@ Component({
       //this.getSearchBarRect();
       var typeFilterValueTemp = "自主保全单";
       var typeFilterObjTemp = {typeDesc:'自主保全单',typeCode:'BQ'};
+      if(this.properties.defaultFormType == "JH"){
+        typeFilterValueTemp = "计划保全单";
+        typeFilterObjTemp = {typeDesc:'计划保全单',typeCode:'JH'};
+      }
       this.getStartViewHeight();
       this.setData({
         typeFilterValue: typeFilterValueTemp,

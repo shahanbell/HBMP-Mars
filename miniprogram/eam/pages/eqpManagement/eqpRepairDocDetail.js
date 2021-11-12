@@ -783,29 +783,38 @@ upload: function(e) {
               //console.log(res);
               if(res.statusCode == 200 && res.data.msg != null){
                 resMsg = '提交成功';
+                if(res.data.code != "200"){
+                  //resMsg = '提交失败，请重试';
+                  resMsg = res.data.msg;
+                  Dialog.alert({
+                    zIndex: 1000,
+                    title: '系统消息',
+                    message: resMsg,
+                    }).then(() => {
+                      // on close
+                    });
+                  return;
+                }
+                wx.hideLoading();
+                  Dialog.alert({
+                  zIndex: 1000,
+                  title: '系统消息',
+                  message: "提交成功",
+                  }).then(() => {
+                    // on close
+                      wx.navigateBack({delta: 1});
+                  });
               }
               else{
                 resMsg = '提交失败';
-              }
-              Dialog.alert({
-                title: '系统消息',
-                zIndex: 1000,
-                mask:false,
-                message: resMsg,
+                Dialog.alert({
+                  zIndex: 1000,
+                  title: '系统消息',
+                  message: resMsg,
                   }).then(() => {
-                   // on close
-                   //initProInfo(_this);
-                   wx.navigateBack({delta: 1});
-                });
-              // wx.showModal({
-              //   title: '系统消息',
-              //   content: res.data.msg,
-              //   content: '提交成功',
-              //   showCancel: false,
-              //   success: function (res) {
-              //     initProInfo(that);
-              //   }
-              // });
+                    // on close
+                  });
+              }
             },
             fail: function (fail) {
               wx.hideLoading();
@@ -1234,7 +1243,7 @@ upload: function(e) {
     // }
     //restUrl += '/f;deptno=' + '13000' + '/s';
     //restUrl += '/f;repairuser=' + userId + ';';
-    restUrl += '/f;formid=' + formid + ';userId=' + userId + '/s';
+    restUrl += '/f;formid=' + formid + ';userId=' + userId + ';company=' + app.globalData.defaultCompany + '/s';
     restUrl += '/' + 0 + '/' + 20;
     //console.log(restUrl);
     wx.showLoading({
@@ -1313,6 +1322,7 @@ upload: function(e) {
 
         _this.data.showBtn.detailCheckBtn = true;
 
+        console.log(app.globalData);
         if(app.globalData.defaultDeptId.indexOf(repairDocDta.repairdeptno.substring(0,3)) >= 0){
           _this.data.steps = _this.data.steps_info;
           if(repairDocDta.rstatus == "10"){
@@ -1425,7 +1435,7 @@ upload: function(e) {
           }
         }
 
-        if(app.globalData.defaultDeptId == "1W300" || app.globalData.defaultDeptId == "13130"){
+        if(eamUtil.checkRepairDeptManger(app.globalData.employeeId)){
           if(repairDocDta.rstatus < "30"){
             _this.data.showBtn.deleteBtn = true;
           }

@@ -5,6 +5,7 @@ var util = require("../../../utils/eamCommonUtils.js");
 var detailTotalCount = 0;
 var detailDoneCount = 0;
 var progressTagType = 'warning';
+var analysisUserSelectIndex = -1;
 
 Page({
 
@@ -13,6 +14,8 @@ Page({
    */
   data: {
     formReadOnly: true,
+    userListHeight: null,
+    nodataType: 7,
     activeNames: [],
     infoCard: {
       // formId: 'BQ21070003',
@@ -26,7 +29,10 @@ Page({
     expandFlag: false,
     suppleStartDateObj: {},
     suppleCompleteDateObj: {},
+    analysisUserList: [],
     eqpMaintainDetailList: [],
+    eqpMaintainDetailList_maintain: [],
+    eqpMaintainDetailList_dispatch: [],
     maintainResult: [],
     progressInfo: {
       doneCount: '0',
@@ -34,6 +40,21 @@ Page({
       tagType: 'warning'
     },
     activeDateTemp: null,
+    showItem:{
+      dispatchBtn:false
+    },
+    show:{
+      analysisUserSelectPopup:false
+    },
+    dispatchMode: false,
+    dispatchBtnInfo: {
+      type:'warning',
+      name:'派工'
+    },
+    submitBtnInfo:{
+      type:'info',
+      name:'提交'
+    },
   },
 
   /**
@@ -47,9 +68,13 @@ Page({
       }
     });
 
+    let heightTemp = app.globalData.screenHeight - 90 - app.globalData.statusBarHeight;
+    heightTemp = heightTemp * 0.95 - 64;
+
     this.getEqpMaintainInitDta(options.docId);
     this.setData({
       detailListViewHeight: windowHeight - 10 - 44 - 44,
+      userListHeight: heightTemp,
       progressInfo: {
         doneCount: detailDoneCount,
         totalCount: detailTotalCount,
@@ -122,9 +147,77 @@ Page({
     //   });
   },
 
+  onDispatchBtnClick:function(event){
+    var _this = this;
+    var dispatchModeTemp = this.data.dispatchMode;
+    var dispatchBtnInfoTemp = this.data.dispatchBtnInfo;
+    var submitBtnInfoTemp = this.data.submitBtnInfo;
+    dispatchModeTemp = !dispatchModeTemp;
+    if(dispatchModeTemp){
+      dispatchBtnInfoTemp.type = 'info';
+      dispatchBtnInfoTemp.name = '作业';
+      submitBtnInfoTemp.type = 'warning';
+      submitBtnInfoTemp.name = '派工';
+      _this.data.eqpMaintainDetailList = this.data.eqpMaintainDetailList_dispatch;
+    }
+    else{
+      dispatchBtnInfoTemp.type = 'warning';
+      dispatchBtnInfoTemp.name = '派工';
+      submitBtnInfoTemp.type = 'info';
+      submitBtnInfoTemp.name = '提交';
+      _this.data.eqpMaintainDetailList = this.data.eqpMaintainDetailList_maintain;
+    }
+    this.setData({
+      dispatchMode: dispatchModeTemp,
+      dispatchBtnInfo: dispatchBtnInfoTemp,
+      submitBtnInfo: submitBtnInfoTemp,
+      eqpMaintainDetailList: _this.data.eqpMaintainDetailList
+    });
+  },
+
+  
+  /**
+   * 保养人信息单元格点击事件
+   */
+  onAnalysisUserCellTap: function(event){
+    analysisUserSelectIndex = event.currentTarget.dataset.itemindex;
+    this.setData({
+      show:{
+        analysisUserselectPopup: true
+      }
+    });
+  },
+
+  /**
+   * 设备信息选择弹窗关闭事件
+   */
+  closeAnalysisUserSelectPopup: function(){
+    //console.log("HitchDutyListClose!");
+    this.setData({
+      show:{
+        analysisUserselectPopup: false
+      }
+    });
+  },
+
+  onAnalysisUserSelectBackClick: function(){
+    this.closeAnalysisUserSelectPopup();
+  },
+
+  onAnalysisUserSelectResetClick(){
+    //逻辑
+    this.closeAnalysisUserSelectPopup();
+  },
+
   eqpMaintainFormSubmit: function (event) {
     var dataTemp = this.data.eqpMaintainDetailList;
+    var dispatchModeTemp = this.data.dispatchMode;
+    var apiName = 'autonomous-maintain-start';
+    if(dispatchModeTemp){
+      apiName = 'autonomous-maintain-dispatch';
+    }
     console.log(dataTemp);
+    console.log(apiName);
 
     var _this = this;
     //var canSubmit = this.checkFormDtaBeforeSubmit();
@@ -156,7 +249,7 @@ Page({
           jsonArray.push(_this.data.eqpMaintainDetailList);
           console.log(JSON.stringify(jsonArray));
           wx.request({
-            url: app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/eqpmaintenance/autonomous-maintain-start' + '?' + app.globalData.restAuth,
+            url: app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/eqpmaintenance/' + apiName + '?' + app.globalData.restAuth,
             data: {
               id: _this.data.infoCard.docId,
               formid: _this.data.infoCard.formId,
@@ -228,7 +321,78 @@ Page({
       // });
       return;
     }
+  },
 
+  onAnalysisUserSearchStart:function(e){
+    let res = e.detail;
+    this.getAnalysisUserListInfo(res);
+  },
+
+  getAnalysisUserListInfo: function (res) {
+    if(res==null || res=='')
+      return;
+    var _this = this;
+    var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/getHitchDutyList';
+    restUrl += '/f;basicInfo=' + res + '/s';
+    restUrl += '/' + 0 + '/' + 20;
+    restUrl = encodeURI(restUrl);
+    //console.log(restUrl);
+    wx.showLoading({
+      title: 'Sending',
+      mask: true
+    });
+    wx.request({
+      url: restUrl,
+      data: {
+        appid: app.globalData.restId,
+        token: app.globalData.restToken
+      },
+      header: {
+        'content-type': 'application/json'
+      },
+      method: 'GET',
+      success: function (res) {
+        //console.log(res);
+        if(res.data == "" || res.statusCode != 200){
+          //console.log("no Data");
+          wx.hideLoading();
+          return;
+        }
+
+        var dataLen = res.data.length;
+        if(dataLen > 30){
+          dataLen = 30;
+        }
+
+        for(var i = 0;i < dataLen; i++){
+          let newItem = { userId: '', userName:'', dept: '', deptNo: '', phone:'', email: ''};
+          newItem.userId = res.data[i].userid;
+          newItem.userName = res.data[i].username;
+          newItem.dept = res.data[i].dept == null ? '' : res.data[i].dept.dept;
+          newItem.deptNo = res.data[i].dept == null ? '' : res.data[i].dept.deptno;
+          newItem.phone = res.data[i].phone;
+          newItem.email = res.data[i].email;
+          _this.data.analysisUserList.push(newItem);
+        }
+
+        _this.setData({
+          analysisUserList: _this.data.analysisUserList
+        });
+
+        wx.hideLoading();
+      },
+      fail: function (fail) {
+        wx.hideLoading();
+        //console.log(fail.data);
+        Dialog.alert({
+          title: '系统消息',
+          message: fail.data + "-" + fail.statusCode + "-" + fail.header + "-" + fail.cookies,
+        }).then(() => {
+          // on close
+          //initProInfo(_this);
+        });
+      }
+    });
   },
 
   updateFormProgressInfo: function () {
@@ -313,6 +477,8 @@ Page({
         if (res.data.length > 1) {
           var maintainInfoTemp = res.data[0];
           var maintainDetailListTemp = res.data[1];
+          var autoMaintainFlag = maintainInfoTemp.standardlevel.indexOf("一级") > -1 ? true : false;
+          console.log(autoMaintainFlag);
           let newInfoItem = {
             docId: '',
             formId: '',
@@ -366,6 +532,8 @@ Page({
             newItem.problemSolve = maintainDetailListTemp[i].problemsolve == null ? '':maintainDetailListTemp[i].problemsolve;
             newItem.sDate = maintainDetailListTemp[i].sdate == null ? '' : util.utcInit(maintainDetailListTemp[i].sdate);
             newItem.eDate = maintainDetailListTemp[i].edate == null ? '' : util.utcInit(maintainDetailListTemp[i].edate);
+            newItem.analysisUser = maintainDetailListTemp[i].analysisuser == null ? '':maintainDetailListTemp[i].analysisuser;
+            newItem.analysisUserName = maintainDetailListTemp[i].lastanalysisuser == null ? '':maintainDetailListTemp[i].lastanalysisuser;
             if (maintainDetailListTemp[i].analysisresult != null && (maintainDetailListTemp[i].analysisresult == '正常' || maintainDetailListTemp[i].analysisresult == '异常')) {
               newItem.result = maintainDetailListTemp[i].analysisresult;
               newItem.tagType = _this.getTagType(maintainDetailListTemp[i].analysisresult);
@@ -373,15 +541,28 @@ Page({
               _this.data.formReadOnly = false;
               newItem.result = '待检';
               newItem.tagType = 'warning';
+              _this.data.eqpMaintainDetailList_dispatch.push(newItem);
             }
-            _this.data.maintainResult.push(maintainDetailListTemp[i].analysisresult);
-            _this.data.eqpMaintainDetailList.push(newItem);
+            
+            if(autoMaintainFlag || (maintainDetailListTemp[i].analysisuser != null && app.globalData.employeeId == maintainDetailListTemp[i].analysisuser)){
+              _this.data.maintainResult.push(maintainDetailListTemp[i].analysisresult);
+              _this.data.eqpMaintainDetailList_maintain.push(newItem);
+            }
           }
+
+
+          if(!autoMaintainFlag){
+            _this.data.showItem.dispatchBtn = true;
+          }
+
           _this.setData({
             formReadOnly: _this.data.formReadOnly,
             infoCard: newInfoItem,
-            eqpMaintainDetailList: _this.data.eqpMaintainDetailList,
-            maintainResult: _this.data.maintainResult
+            eqpMaintainDetailList_maintain:_this.data.eqpMaintainDetailList_maintain,
+            eqpMaintainDetailList_dispatch:_this.data.eqpMaintainDetailList_dispatch,
+            eqpMaintainDetailList: _this.data.eqpMaintainDetailList_maintain,
+            maintainResult: _this.data.maintainResult,
+            showItem: _this.data.showItem
           });
           _this.updateFormProgressInfo();
         }
@@ -399,6 +580,19 @@ Page({
         });
       }
     });
+  },
+
+  analysisUserCardSelect:function(event){
+    console.log(event);
+    var item = event.currentTarget.dataset.item;
+    var userIdVarName = "eqpMaintainDetailList[" + analysisUserSelectIndex + "].analysisUser";
+    var userNameVarName = "eqpMaintainDetailList[" + analysisUserSelectIndex + "].analysisUserName";
+    this.setData({
+      [userIdVarName]:item.userId,
+      [userNameVarName]:item.userName
+    });
+    analysisUserSelectIndex = -1;
+    this.closeAnalysisUserSelectPopup();
   },
 
   getTagType: function (resultInfo) {

@@ -4,6 +4,7 @@ var topTabHeight;
 var bottomTabHeight;
 var dateFilterType;
 var backlogCount = -1;
+var util = require("../../../utils/eamCommonUtils.js");
 import Dialog from '../../../component/vant/dialog/dialog';
 Page({
   data: {
@@ -172,15 +173,18 @@ Page({
     console.log('getBackLogInfoTest');
     var _this = this;
     var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/getRepairBacklogInfo';
-    if(app.globalData.defaultDeptId.indexOf("1P000") >= 0){
-      restUrl += '/f;repairmanager=' + res;
+
+    if(util.checkEqpRepairManager(app.globalData.employeeId)){
+      var repairManagerCompanyFilter = util.getRepairManagerCompanyFilter(app.globalData.employeeId);
+      restUrl += '/f;repairmanager=' + res + repairManagerCompanyFilter;
     }
-    else if(app.globalData.defaultDeptId.indexOf("1W3") >= 0){
+    else if(util.checkEqpRepairDepartment(app.globalData.defaultDeptId)){
       restUrl += '/f;serviceuser=' + res;
     }
     else{
       restUrl += '/f;repairuser=' + res;
     }
+
     restUrl += ';ALL=ALL';
     restUrl += '/s/' + 0 + '/' + 20;
 

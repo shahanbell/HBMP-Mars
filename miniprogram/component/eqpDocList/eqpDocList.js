@@ -493,30 +493,22 @@ Component({
 
     getRepairDocListInfo: function (res) {
       var _this = this;
-      // restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/assetcardtest';
-      //var restUrl = 'http://localhost:8480' + '/Hanbell-JRS/api/shbeam/equipmentrepair/getRepairDocList';
       var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/getRepairDocList';
-      //var restUrl = 'http://325810l80q.qicp.vip' + '/Hanbell-JRS/api/shbeam/assetcardtest';
-      // if (options.employeeid) {
-      //     restUrl += '/f;users.id=' + options.employeeid + '/s';
-      // }
-      // else {
-      //     restUrl += '/f/s';
-      // }
-      //restUrl += '/f;deptno=' + '13000' + '/s';
 
-      if(app.globalData.defaultDeptId.indexOf("1P000") >= 0){
-        restUrl += '/f';
+      if(util.checkEqpRepairManager(app.globalData.employeeId)){
+        var managerCompanyFilter = util.getRepairManagerCompanyFilter(app.globalData.employeeId);
+        restUrl += '/f' + managerCompanyFilter;
       }
       else if(this.data.deptFilterChecked == true){
-        if(app.globalData.defaultDeptId.indexOf("1W3") >= 0){
-          restUrl += '/f';
+        if(util.checkEqpRepairDepartment(app.globalData.defaultDeptId)){
+          var repairDeptCompanyFilter = util.getRepairDeptCompanyFilter(app.globalData.defaultDeptId);
+          restUrl += '/f' + repairDeptCompanyFilter;
         }
         else{
           restUrl += '/f;repairdeptno=' + app.globalData.defaultDeptId;
         }
       }
-      else if(app.globalData.defaultDeptId.indexOf("1W3") >= 0 || app.globalData.defaultDeptId.indexOf("131") >= 0){
+      else if(util.checkEqpRepairDepartment(app.globalData.defaultDeptId)){
         restUrl += '/f;serviceuser=' + res;
       }
       else{
