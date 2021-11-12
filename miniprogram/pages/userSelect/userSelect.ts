@@ -41,7 +41,7 @@ Page({
     restUrl += '/' + this.data.offset + '/' + this.data.pageSize
     //console.log(restUrl)
     wx.request({
-      url: restUrl,
+      url: encodeURI(restUrl),
       data: {
         appid: app.globalData.restId,
         token: app.globalData.restToken
