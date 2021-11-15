@@ -19,6 +19,7 @@ Page({
     repairBacklogList:[{pId:'PR20090064',userNo:'C2090',creDate:'2020/09/14 14:50',contenct:'责任回复',isRead:'N'},
                        {pId:'PR20090054',userNo:'C2090',creDate:'2020/09/13 14:50',contenct:'维修完成',isRead:'Y'}],
     showBacklogDot:false,
+    defaultFormType:'BQ',
   },
 
   /**
@@ -170,8 +171,18 @@ Page({
     })
   },
 
-  onSearchDocBtnClick: function(){
-    this.setData({ active: "search" });
+  onAutoMaintainBtnClick: function(){
+    this.setData({
+       active: "search" ,
+       defaultFormType: 'BQ'
+      });
+  },
+
+  onScheMaintainBtnClick: function(){
+    this.setData({
+       active: "search" ,
+       defaultFormType: 'JH'
+      });
   },
 
   getRepairBacklogInfo: function (res) {

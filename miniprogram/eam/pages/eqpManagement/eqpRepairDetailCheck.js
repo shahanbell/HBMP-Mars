@@ -1721,7 +1721,7 @@ upload: function(e) {
     //restUrl += '/f;deptno=' + '13000' + '/s';
     // restUrl += '/f;repairuser=' + userId + ';';
     // restUrl += 'docId=' + docId + '/s';
-    restUrl += '/f;docId=' + docId + '/s';
+    restUrl += '/f;docId=' + docId + ';company=' + app.globalData.defaultCompany + '/s';
     restUrl += '/' + 0 + '/' + 20;
     //console.log(restUrl);
     wx.showLoading({

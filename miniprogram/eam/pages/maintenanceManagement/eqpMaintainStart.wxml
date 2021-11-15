@@ -25,16 +25,22 @@
 		</view>
 		<view class="mainInfo_foot">
 			<view>计划保养日期:{{infoCard.formDate}}</view>
-			<view>保养人:<text>{{infoCard.maintainUserName}}</text></view>
+			<view>
+				保养人:<text>{{infoCard.maintainUserName}}</text>
+				<van-button round type="{{dispatchBtnInfo.type}}" wx:if="{{showItem.dispatchBtn}}" custom-class="dispatchBtn" bind:click="onDispatchBtnClick">{{dispatchBtnInfo.name}}</van-button>
+			</view>
 		</view>
 	</view>
 </view>
 
 <van-sticky>
 	<van-cell center title="保全项目">
-		<view class="cellValue">
+		<view wx:if="{{!dispatchMode}}" class="cellValue">
 			<view class="cellValue_text">进度：</view>
 			<van-tag class="cellValue_tag" type="{{progressInfo.tagType}}" size="medium">{{progressInfo.doneCount}} / {{progressInfo.totalCount}}</van-tag>
+		</view>
+		<view wx:if="{{dispatchMode}}" class="cellValue">
+			<view class="cellValue_text">派工模式</view>
 		</view>
 	</van-cell>
 </van-sticky>
@@ -47,7 +53,7 @@
 			<van-collapse value="{{ activeNames[index] }}" data-selector="{{index}}" custom-class="detailCardCollapse" bind:change="onCollapseCellClick">
 				<van-collapse-item name="{{index}}">
 					<view class="collapseTitle" slot="title">
-						<van-tag class="collapseTitle_tag" type="{{item.tagType}}" size="medium">{{item.result}}</van-tag>
+						<van-tag wx:if="{{!dispatchMode}}" class="collapseTitle_tag" type="{{item.tagType}}" size="medium">{{item.result}}</van-tag>
 						<view>{{item.checkArea}}</view>
 					</view>
 					<van-switch class="cellSwitchPro" slot="value" size="18px" checked="{{ expandFlag[index] }}" />
@@ -84,14 +90,26 @@
 						</view>
 						<view class="detailOperateInfo_foot"></view>
 					</view>
-					<van-field label="异常描述" data-name="eqpMaintainDetailList[{{index}}].exception" value="{{item.exception}}" bind:change="bindData"  readonly = "{{formReadOnly}}"/>
-					<van-field label="问题处理" data-name="eqpMaintainDetailList[{{index}}].problemSolve" value="{{item.problemSolve}}" bind:change="bindData" readonly = "{{formReadOnly}}" />
-					<van-cell title="审批结果">
+					<view wx:if="{{!dispatchMode}}">
+						<van-field label="异常描述" data-name="eqpMaintainDetailList[{{index}}].exception" value="{{item.exception}}" bind:change="bindData" readonly="{{formReadOnly}}" />
+						<van-field label="问题处理" data-name="eqpMaintainDetailList[{{index}}].problemSolve" value="{{item.problemSolve}}" bind:change="bindData" readonly="{{formReadOnly}}" />
+						<van-cell title="审批结果">
+							<van-radio-group value="{{ maintainResult[index] }}" data-selector="{{index}}" name="resultRadio" bind:change="onResultChange" style="display:flex;flex-flow:row nowarp;justify-content:flex-end;" disabled="{{formReadOnly}}">
+								<van-radio name="正常" style="margin-right:30rpx;">正常</van-radio>
+								<van-radio name="异常">异常</van-radio>
+							</van-radio-group>
+						</van-cell>
+					</view>
+					<van-field wx:if="{{dispatchMode}}" label="保养人" data-itemindex="{{index}}" value="{{item.analysisUser}}-{{item.analysisUserName}}" input-align="center" right-icon="arrow" bindtap="onAnalysisUserCellTap" readonly />
+					<!-- <van-field wx:if="{{!dispatchMode}}" label="异常描述" data-name="eqpMaintainDetailList[{{index}}].exception" value="{{item.exception}}" bind:change="bindData"  readonly = "{{formReadOnly}}"/>
+					<van-field wx:if="{{!dispatchMode}}" label="问题处理" data-name="eqpMaintainDetailList[{{index}}].problemSolve" value="{{item.problemSolve}}" bind:change="bindData" readonly = "{{formReadOnly}}" />
+					<van-cell wx:if="{{!dispatchMode}}" title="审批结果">
 						<van-radio-group value="{{ maintainResult[index] }}" data-selector="{{index}}" name="resultRadio" bind:change="onResultChange" style="display:flex;flex-flow:row nowarp;justify-content:flex-end;" disabled = "{{formReadOnly}}">
 							<van-radio name="正常" style="margin-right:30rpx;">正常</van-radio>
 							<van-radio name="异常">异常</van-radio>
 						</van-radio-group>
 					</van-cell>
+					<van-field wx:if="{{dispatchMode}}" label="责任单位" data-name="eqpMaintainDetailList[{{index}}].exception" value="{{item.exception}}" bind:change="bindData" right-icon="arrow" readonly /> -->
 				</van-collapse-item>
 			</van-collapse>
 		</view>
@@ -142,7 +160,53 @@
 </view>
 
 <view class="submitWrap_fix">
-<van-button wx:if="{{!formReadOnly}}" type="info" icon="passed" form-type="submit" style="width:100%;position:fixed;bottom:0px;z-index:2;" bind:click="eqpMaintainFormSubmit" block>提交</van-button>
+	<van-button wx:if="{{!formReadOnly}}" type="{{submitBtnInfo.type}}" icon="passed" form-type="submit" style="width:100%;position:fixed;bottom:0px;z-index:2;" bind:click="eqpMaintainFormSubmit" block>{{submitBtnInfo.name}}</van-button>
 </view>
 
-<van-dialog id="van-dialog"/>
+<van-dialog id="van-dialog" />
+
+<!-- 弹出层 -->
+<van-popup id="analysisUserSelectPopup" show="{{ show.analysisUserselectPopup }}" z-index='1000' position="right" round custom-style="height: 95%;width: 95%;" bind:close="closeAnalysisUserSelectPopup">
+	<van-cell-group class="userSelectPopup">
+		<van-cell-group>
+			<van-search id="proSearchBar" value="{{ searchBarDta }}" shape="round" placeholder="请输入搜索关键词" bind:search="onAnalysisUserSearchStart" use-action-slot use-right-icon-slot>
+				<van-icon class="searchRightIcon" slot="right-icon" name="scan" color="blue" size="20px" />
+			</van-search>
+		</van-cell-group>
+		<view class="userSelectScrollView">
+			<scroll-view id="userListScollView" class="scrollWrap" scroll-y="true" style='height:{{userListHeight}}px;'>
+				<view class="userListWrap">
+				</view>
+				<my-noData wx:if="{{hitchDutyList.length<1&&!loading}}" nodata="{{nodataType}}"></my-noData>
+				<view class="userList" wx:for="{{analysisUserList}}" wx:key="index" data-item="{{item}}" bindtap='analysisUserCardSelect' id='analysisUserListIndex_{{index}}'>
+					<view class="userInfo_header">
+						<view class="userInfo_text_normal">
+							工号:{{item.userId}}
+						</view>
+						<view class="userInfo_text_normal">
+							部门:{{item.deptNo}}-{{item.dept}}
+						</view>
+					</view>
+					<view class="userInfo_body">
+						<view class="userInfo_text_normal">
+							姓名:{{item.userName}}
+						</view>
+						<view class="userInfo_text_normal">
+							邮箱:{{item.email}}
+						</view>
+					</view>
+					<view class="userInfo_foot">
+						<view></view>
+						<view>联系电话:<text>{{item.phone}}</text></view>
+					</view>
+				</view>
+			</scroll-view>
+		</view>
+
+		<view class="userSelectButtonBlock">
+			<van-button round color="#DCDCDC" size="small" custom-style="color:#696969;width:80px;" bind:click="onAnalysisUserSelectResetClick">清空</van-button>
+			<van-button round type="info" size="small" custom-style="margin-left:30px;width:80px;" bind:click="onAnalysisUserSelectBackClick">返回</van-button>
+		</view>
+
+	</van-cell-group>
+</van-popup>

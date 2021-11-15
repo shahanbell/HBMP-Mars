@@ -1,6 +1,7 @@
 @import "../../style/componentCommon/itemInfoBasicView.wxss";
 @import "../../style/componentCommon/customCellView.wxss";
 @import "../../style/componentCommon/collapseSwitchView.wxss";
+@import "../../style/componentCommon/userSelectScrollView.wxss";
 
 .detailListView .mainInfo {
   box-shadow: 2px 2px 2px 2px #F0F0F0;
@@ -123,4 +124,12 @@
 
 .progressTag{
   font-size: 20px;
+}
+
+.dispatchBtn{
+  /* margin-top: 7px; */
+  height: 27px !important;
+  width: 60px;
+  margin-left:10px;
+  margin-bottom:3px;
 }

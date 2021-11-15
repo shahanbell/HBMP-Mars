@@ -1676,7 +1676,7 @@ upload: function(e) {
     var _this = this;
     // restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/assetcardtest';
     var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/getRepairAuditInitDta';
-    restUrl += '/f;docId=' + docId + '/s';
+    restUrl += '/f;docId=' + docId + ';company=' + app.globalData.defaultCompany + '/s';
     restUrl += '/' + 0 + '/' + 20;
     //console.log(restUrl);
     wx.showLoading({

@@ -315,6 +315,15 @@
     readonly
   />
 
+  <van-field
+    label="领用备件"
+    value="{{needSpareObj.needSpareDesc}}"
+    right-icon="arrow-down"
+    data-selector="needSpare"
+    bindtap='showSelectorPopup'
+    readonly
+  />
+
   <van-cell center title="重复维修">
     <van-switch class="cellSwitchPro" size="24px" checked="{{ reRepairFlag }}" bind:change="on2ndRepairChange" />
   </van-cell>
@@ -497,6 +506,26 @@
     columns="{{ repairAreaList }}"
     value-key="repairAreaDesc"
     data-selector="repairArea"
+    bind:change="onPickerChange"
+    bind:confirm="onPickerConfirm"
+    bind:cancel="onPickerCancel"
+  />
+
+</van-popup>
+
+<van-popup
+    show="{{ show.needSpareSelectorPopup }}"
+    position="bottom"
+    data-selector="needSpare"
+    bind:close="closeSelectorPopup"
+>
+
+  <van-picker
+    show-toolbar
+    title="领用备件"
+    columns="{{ needSpareList }}"
+    value-key="needSpareDesc"
+    data-selector="needSpare"
     bind:change="onPickerChange"
     bind:confirm="onPickerConfirm"
     bind:cancel="onPickerCancel"
