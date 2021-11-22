@@ -77,7 +77,8 @@
         "pages/carapp/carappdetail",
         "pages/loan/loan",
         "pages/loan/loanPropertySelect",
-        "pages/dine/dine"
+        "pages/dine/dine",
+        "pages/safetymeasures/safetymeasures"
       ]
     },
     {
