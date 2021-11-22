@@ -15,7 +15,7 @@ Page({
     selectedObject: {}
   },
   onLoad(option) {
-    var _this=this
+    var _this = this
     var o = [{ "username": "周成", "userid": "C0208" },
     { "username": "蔡惠强", "userid": "C0347" },
     { "username": "倪华伟", "userid": "C0049" },
@@ -34,9 +34,10 @@ Page({
     { "username": "唐剑", "userid": "C0779" },
     { "username": "俞江华", "userid": "C0048" },
     { "username": "杨称峰", "userid": "C0313" },
-    { "username": "陆迎春", "userid": "C0054" }];
+    { "username": "陆迎春", "userid": "C0054" },
+    { "username": "沈军", "userid": "C0044" }];
     _this.setData({
-      dataList:o
+      dataList: o
     })
   },
   bindSafeManagerSelect(e) {
