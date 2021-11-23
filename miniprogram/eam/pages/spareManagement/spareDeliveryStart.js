@@ -974,7 +974,8 @@ Page({
   getFormInitData:function(){
       var _this = this;
       var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/getRepairUserList';
-      restUrl += '/f' + '/s';
+      //restUrl += '/f' + '/s';
+      restUrl += '/f;company=' + app.globalData.defaultCompany + '/s';
       restUrl += '/' + 0 + '/' + 20;
       //console.log(restUrl);
       wx.showLoading({
