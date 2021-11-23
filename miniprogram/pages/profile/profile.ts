@@ -197,7 +197,7 @@ Page({
             content: res.data.msg,
             showCancel: false,
             success(res) {
-              if (app.globalData.authorized = true) {
+              if (app.globalData.authorized) {
                 wx.switchTab({
                   url: '/pages/index/index'
                 })
