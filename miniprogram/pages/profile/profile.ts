@@ -55,7 +55,12 @@ Page({
       },
       method: 'POST',
       success: res => {
-        //console.log(res)
+        if (res.data.code == '202') {
+          app.globalData.authorized = true
+          wx.switchTab({
+            url: '/pages/index/index'
+          })
+        }
       },
       fail: fail => {
         console.log(fail)
