@@ -180,8 +180,8 @@ Page({
 
         if (data.code == '200') {
           _this.setData({
-            deptManager1Id: data.object.id,
-            deptManager1Name: data.object.userName,
+            deptManager2Id: data.object.id,
+            deptManager2Name: data.object.userName,
           })
         } else {
           _this.setData({
@@ -220,8 +220,8 @@ Page({
         var data = res.data;
         if (data.code == '200') {
           _this.setData({
-            deptManager2Id: data.object.id,
-            deptManager2Name: data.object.userName,
+            deptManager1Id: data.object.id,
+            deptManager1Name: data.object.userName,
             ajaxShow: false
 
           })

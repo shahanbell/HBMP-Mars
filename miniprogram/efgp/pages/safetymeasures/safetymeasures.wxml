@@ -20,11 +20,11 @@
       </van-cell-group>
 
       <van-cell-group>
-        <van-field label="部门主管" value="{{ deptManager1Name }}" border="{{ false }}" readonly="true" />
+        <van-field label="单位主管" value="{{ deptManager2Name }}" border="{{ false }}" readonly="true" />
       </van-cell-group>
 
       <van-cell-group>
-        <van-field label="单位主管" value="{{ deptManager2Name }}" border="{{ false }}" readonly="true" />
+        <van-field label="部门主管" value="{{ deptManager1Name }}" border="{{ false }}" readonly="true" />
       </van-cell-group>
 
       <van-cell-group>
