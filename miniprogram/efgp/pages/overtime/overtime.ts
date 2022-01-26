@@ -13,7 +13,7 @@ Page({
       formTypeDesc: '双休加班'
     }, {
       formType: '3',
-      formTypeDesc: '节日加班'
+      formTypeDesc: '法定假日加班'
     }],
     formType: '1',
     formTypeDesc: '平日加班',

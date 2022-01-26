@@ -21,9 +21,9 @@
       <van-cell-group>
         <van-field label="请假班别" value="{{ workTypeDesc }}" required clearable icon="search" bindtap="bindWorkTypeSelect" readonly/>
       </van-cell-group>
-     <van-cell-group>
+     <!-- <van-cell-group>
         <van-field label="剩余年休假" value="{{ yearDays }}"  border="{{ false }}" readonly="true" />
-      </van-cell-group>
+      </van-cell-group> -->
       <view class="weui-cells__title">请假时间</view>
       <van-cell-group>
         <van-field label="开始日期" required value="{{date1}}" id='date1' use-button-slot readonly bindtap='bindPickerDate1'>
