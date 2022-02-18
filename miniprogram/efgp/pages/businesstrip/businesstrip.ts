@@ -44,6 +44,7 @@ Page({
       }
       return value;
     },
+    country:''
   },
   onLoad() {
     wx.showLoading({
@@ -192,6 +193,11 @@ Page({
   bindOtherTypeChange(e) {
     this.setData!({
       otherType: e.detail
+    })
+  },
+  bindCountryChange(e) {
+    this.setData!({
+      country: e.detail
     })
   },
   bindOtherVehicleChange(e) {
@@ -442,6 +448,10 @@ Page({
       canSubmit = false
       errmsg += "交通工具选择其他时，必须填写其他工具\r\n"
     }
+    if (this.data.destination == '3' && this.data.country == '') {
+      canSubmit = false
+      errmsg += "目的地选择国外时，必须填写出差国家\r\n"
+    }
     if (canSubmit) {
       let _this = this
       wx.showModal({
@@ -470,6 +480,7 @@ Page({
                 startDate: _this.data.dayBegin,
                 endDate: _this.data.dayEnd,
                 days: _this.data.daysTotal,
+                country: _this.country,
                 detailList: _this.data.detailList
               },
               header: {
