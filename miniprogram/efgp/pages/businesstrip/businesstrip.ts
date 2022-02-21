@@ -480,7 +480,7 @@ Page({
                 startDate: _this.data.dayBegin,
                 endDate: _this.data.dayEnd,
                 days: _this.data.daysTotal,
-                country: _this.country,
+                country: _this.data.country,
                 detailList: _this.data.detailList
               },
               header: {
