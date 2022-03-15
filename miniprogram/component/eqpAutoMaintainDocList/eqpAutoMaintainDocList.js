@@ -505,13 +505,13 @@ Component({
       }
 
       if(this.data.currentTab == '2'){
-        restUrl += ';status=V';
+        restUrl += ';A.status=V';
       }
       else if(this.data.currentTab == '1'){
-        restUrl += ';status=S';
+        restUrl += ';A.status=S';
       }
       else if(this.data.currentTab == '0'){
-        restUrl += ';status=N';
+        restUrl += ';A.status=N';
       }
 
       if(this.data.typeFilterObj.typeCode != null &&  this.data.typeFilterObj.typeCode != ''){
@@ -520,7 +520,7 @@ Component({
           restUrl += ';AnalysisUser=' + app.globalData.employeeId;
         }
       }
-
+      restUrl += ';A.company=' + app.globalData.defaultCompany;
       if(this.data.dateFilterChecked == true){
         if(this.data.startDateFilter != null && this.data.startDateFilter != ''){
           var startDateTemp = this.data.startDateFilter.replace(new RegExp('/', 'g'), '-');
@@ -583,7 +583,7 @@ Component({
           var dataLen = res.data.length;
 
           for(var i = 0;i < dataLen; i++){
-            let newItem = {Id:"",docType:"", docId: "A119-01", origin: "normal", docState: "", pictureurl: "https://jrs.hanbell.com.cn:443/Hanbell-EAM/resources/app/res/CNCEQP_DefaultImage.jpg", locationText: "", slocation: "副齿轮检验轴AA-2600I", sarea: "", credate: "202054654654466", type: "维修", creator: "技术员" };
+            let newItem = {Id:"",docType:"", docId: "A119-01", origin: "normal", docState: "", pictureurl: "https://jrs.hanbell.com.cn:443/Hanbell-EAM/resources/app/res/CNCEQP_DefaultImage.jpg", locationText: "", slocation: "副齿轮检验轴AA-2600I", sarea: "", credate: "202054654654466", type: "维修",remark: "",  creator: "技术员" };
             newItem.Id = maintainDocListDta[i].id;
             newItem.docType = util.getEqpMaintainFormType(maintainDocListDta[i].standardlevel);
             newItem.docId = maintainDocListDta[i].formid;
@@ -593,6 +593,7 @@ Component({
             newItem.analysisResult = maintainDocListDta[i].analysisresult == null ? ' ' : maintainDocListDta[i].analysisresult;
             newItem.formDate = util.utcInit2Date(maintainDocListDta[i].formdate);
             newItem.deptName = maintainDocListDta[i].deptname;
+            newItem.remark=maintainDocListDta[i].remark;
             _this.data.maintainDocListArray[currentTemp].push(newItem);
           }
 
