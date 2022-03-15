@@ -39,6 +39,7 @@ Page({
   data: {
     result: [],
     searchBarDta:'',
+    isShow:'none',
     showExSearchOverlay: false,
     eqpIntoViewTest: null,
     eqpListScrollTop: 0,
@@ -1330,7 +1331,7 @@ onServiceUserPickerCancel: function(event){
       return false;
     }
     console.log(this.data.serviceuser);
-    if(this.data.troubleFrom == null || this.data.formdateTS == null || (this.data.serviceuser == null && !this.data.disableServiceUser) || this.data.troubleDetailInfo == null || this.data.uploaderList.length < 1 || this.data.repairAreaObj.repairAreaValue == '-1' || this.data.hitchUrgencyId == "-1" || this.data.needSpareObj.needSpareValue == '-1'){
+    if(this.data.troubleFrom == null || this.data.formdateTS == null || (this.data.serviceuser == null && !this.data.disableServiceUser) || this.data.troubleDetailInfo == null || this.data.uploaderList.length < 1 || this.data.repairAreaObj.repairAreaValue == '-1' || this.data.hitchUrgencyId == "-1" ){
       Dialog.alert({
         title: '系统消息',
         message: "请将信息填写完整",
@@ -1504,19 +1505,23 @@ onServiceUserPickerCancel: function(event){
     if(event.currentTarget.dataset.selector == "repairMethod"){
       var serviceUserListTemp = [];
       var disableServiceUserTemp = false;
+      var isShowTemp="none";
       if(value.repairMethodValue == '2'){
         serviceUserListTemp = this.data.autonoServiceUserList;
         disableServiceUserTemp = serviceUserListTemp.length > 1 ? false : true;
+        isShowTemp="block";
       }
       else{
         serviceUserListTemp = this.data.repairServiceUserList;
         disableServiceUserTemp = false;
+        isShowTemp="none";
       }
       this.setData({
         disableServiceUser: disableServiceUserTemp,
         serviceUserList: serviceUserListTemp,
         serviceuser: serviceUserListTemp[0].userId,
         serviceusername: serviceUserListTemp[0].userName,
+        isShow:isShowTemp,
       });
     }
     else if(event.currentTarget.dataset.selector == "repairArea" && this.data.itemno == "9"){
