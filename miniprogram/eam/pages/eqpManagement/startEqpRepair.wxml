@@ -315,14 +315,15 @@
     readonly
   />
 
-  <van-field
+  <!-- <van-field
     label="领用备件"
     value="{{needSpareObj.needSpareDesc}}"
     right-icon="arrow-down"
     data-selector="needSpare"
     bindtap='showSelectorPopup'
+    style="display: {{isShow}};"
     readonly
-  />
+  /> -->
 
   <van-cell center title="重复维修">
     <van-switch class="cellSwitchPro" size="24px" checked="{{ reRepairFlag }}" bind:change="on2ndRepairChange" />
@@ -520,7 +521,7 @@
     bind:close="closeSelectorPopup"
 >
 
-  <van-picker
+  <!-- <van-picker
     show-toolbar
     title="领用备件"
     columns="{{ needSpareList }}"
@@ -529,7 +530,7 @@
     bind:change="onPickerChange"
     bind:confirm="onPickerConfirm"
     bind:cancel="onPickerCancel"
-  />
+  /> -->
 
 </van-popup>
 

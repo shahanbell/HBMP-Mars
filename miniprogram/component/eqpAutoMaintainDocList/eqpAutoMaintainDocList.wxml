@@ -136,7 +136,9 @@
             </view>
             <view class="proInfo_text">
               <view class="proInfo_text_dtt">{{item.assetNo}}</view> 
+              <view class="proInfo_text_dtt">{{item.remark}}</view> 
               <text class="proInfo_text_acount">{{item.analysisResult}}</text>
+              
             </view>
           </view>
         </view>
