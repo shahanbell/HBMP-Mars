@@ -44,7 +44,8 @@ Page({
       }
       return value;
     },
-    country:''
+    country:'',
+    safeplace: false
   },
   onLoad() {
     wx.showLoading({
@@ -107,6 +108,11 @@ Page({
       success(res) {
         console.log(res)
       }
+    })
+  },
+  bindSafeplaceChange(e) {
+    this.setData!({
+      safeplace: e.detail
     })
   },
   bindBusinessProperty(e) {
@@ -481,6 +487,7 @@ Page({
                 endDate: _this.data.dayEnd,
                 days: _this.data.daysTotal,
                 country: _this.data.country,
+                safeplace: _this.data.safeplace,
                 detailList: _this.data.detailList
               },
               header: {

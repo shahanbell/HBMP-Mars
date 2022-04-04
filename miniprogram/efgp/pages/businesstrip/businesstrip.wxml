@@ -43,6 +43,12 @@
       </van-cell-group>
  </view>
 
+   <van-cell-group>
+    <van-cell title="是否中高险地区" required>
+          <van-switch checked="{{ safeplace }}" bind:change="bindSafeplaceChange" />
+        </van-cell>
+      </van-cell-group>
+
       <van-cell-group>
           <van-field label="开始日期" required value="{{dayBegin}}" id='dayBegin' use-button-slot readonly bindtap='bindPickerDate2'>
             <van-icon slot="button" name="arrow" />
