@@ -61,6 +61,9 @@
           <view class="shop_name">
             品号:{{item.shop}}
           </view>
+          <view class="shop_name">
+             {{item.remark}}
+          </view>
           <text class="state {{item.origin=='TaoBao' ? 'state_taobao' : item.origin=='PinDuoDuo' ? 'state_pdd' : item.origin=='JDCOM' ? 'state_jd' : ''}}">{{item.orderstate}}</text>
         </view>
         <view class="proInfo">
@@ -82,7 +85,7 @@
           </view>
         </view>
         <view class="orderNum">
-          <view>资产编号:{{item.ordernum}}</view>
+          <view>资产编号:{{item.ordernum}} </view>
           <view>使用人:<text>{{item.payamount}}</text></view>
         </view>
  
