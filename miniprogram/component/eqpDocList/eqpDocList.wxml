@@ -123,6 +123,9 @@
           <view class="shop_name">
             报修单号:{{item.shop}}
           </view>
+          <view class="shop_name">
+            {{item.remark}}
+          </view>
           <text class="state {{item.origin=='TaoBao' ? 'state_taobao' : item.origin=='PinDuoDuo' ? 'state_pdd' : item.origin=='JDCOM' ? 'state_jd' : ''}}">{{item.orderstate}}</text>
         </view>
         <view class="proInfo">
