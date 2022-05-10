@@ -593,7 +593,7 @@ Component({
           // }
 
           for(var i = 0;i < dataLen; i++){
-            let newItem = { shop: "A119-01", shopurl: "/images/1.jpg", origin: "TaoBao", orderstate: "", pictureurl: "/images/1.jpg", couponname: "", orderdtt: "副齿轮检验轴AA-2600I", productcount: 1, ordernum: "202054654654466", type: "维修", payamount: "技术员" };
+            let newItem = { shop: "A119-01", shopurl: "/images/1.jpg", origin: "TaoBao", orderstate: "", pictureurl: "/images/1.jpg", couponname: "", orderdtt: "副齿轮检验轴AA-2600I", productcount: 1, ordernum: "202054654654466", type: "维修", payamount: "技术员",remark:"MC" };
             newItem.shop = repairDocListDta[i].formid;
             newItem.orderstate = _this.getDocStatus(repairDocListDta[i].rstatus);
             newItem.orderdtt = repairDocListDta[i].assetno == null ? '其他设备' : repairDocListDta[i].assetno.assetDesc;
@@ -601,6 +601,7 @@ Component({
             newItem.productcount = repairDocListDta[i].assetno == null ? '1' : repairDocListDta[i].assetno.qty;
             newItem.ordernum = util.utcInit(repairDocListDta[i].hitchtime);
             newItem.payamount = repairDocListDta[i].repairusername;
+            newItem.remark = repairDocListDta[i].assetno.remark;
             _this.data.repairDocListArray[currentTemp].push(newItem);
           }
 

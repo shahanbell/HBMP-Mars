@@ -353,12 +353,13 @@ upload: function(e) {
       });
 
       for(var i = 0;i < newCount; i++){
-        let newItem = { shop: "A119-01", shopurl: "/images/1.jpg", origin: "TaoBao", orderstate: "", pictureurl: "/images/1.jpg", couponname: "品名", orderdtt: "副齿轮检验轴AA-2600I", productcount: 1, ordernum: "202054654654466", type: "维修", payamount: "技术员" };
+        let newItem = { shop: "A119-01", shopurl: "/images/1.jpg", origin: "TaoBao", orderstate: "", pictureurl: "/images/1.jpg", couponname: "品名", orderdtt: "副齿轮检验轴AA-2600I", productcount: 1, ordernum: "202054654654466", type: "维修", payamount: "技术员" ,remark:"MC"};
         let index = len + i;
         newItem.shop = eqpListDta[index].assetItem.itemno;
         newItem.orderdtt = eqpListDta[index].assetDesc;
         newItem.productcount = eqpListDta[index].qty;
         newItem.ordernum = eqpListDta[index].formid;
+        newItem.remark = eqpListDta[index].remark;
         newItem.payamount = eqpListDta[index].username;
         this.data.orderList.push(newItem);
       }
@@ -443,11 +444,12 @@ upload: function(e) {
       if(res.indexOf('其他') > -1 || res.indexOf('其它') > -1 || otherEqpSelectFlag){
         let otherItem = {id:"-1",assetDesc:"其它设备",formid:"无",assetItem:{itemno:'9'},repairuser:'',repairusername:'',username:'无',qty:'1',position1:{name:'无'},position2:{name:''}};
         eqpListDta = new Array(otherItem);
-        let newItem = { shop: "A119-01", shopurl: "/images/1.jpg", origin: "TaoBao", orderstate: "", pictureurl: "/images/1.jpg", couponname: "品名", orderdtt: "副齿轮检验轴AA-2600I", productcount: 1, ordernum: "202054654654466", type: "维修", payamount: "技术员" };
+        let newItem = { shop: "A119-01", shopurl: "/images/1.jpg", origin: "TaoBao", orderstate: "", pictureurl: "/images/1.jpg", couponname: "品名", orderdtt: "副齿轮检验轴AA-2600I", productcount: 1, ordernum: "202054654654466", type: "维修", payamount: "技术员" ,remark:"MC" };
         newItem.shop = eqpListDta[0].assetItem.itemno;
         newItem.orderdtt = eqpListDta[0].assetDesc;
         newItem.productcount = eqpListDta[0].qty;
         newItem.ordernum = eqpListDta[0].formid;
+        newItem.remark = eqpListDta[0].remark;
         newItem.payamount = eqpListDta[0].username;
         _this.data.orderList.push(newItem);
 
@@ -492,11 +494,12 @@ upload: function(e) {
           }
 
           for(var i = 0;i < dataLen; i++){
-            let newItem = { shop: "A119-01", shopurl: "/images/1.jpg", origin: "TaoBao", orderstate: "", pictureurl: "/images/1.jpg", couponname: "品名", orderdtt: "副齿轮检验轴AA-2600I", productcount: 1, ordernum: "202054654654466", type: "维修", payamount: "技术员" };
+            let newItem = { shop: "A119-01", shopurl: "/images/1.jpg", origin: "TaoBao", orderstate: "", pictureurl: "/images/1.jpg", couponname: "品名", orderdtt: "副齿轮检验轴AA-2600I", productcount: 1, ordernum: "202054654654466", type: "维修", payamount: "技术员" ,remark:"MC"};
             newItem.shop = eqpListDta[i].assetItem.itemno;
             newItem.orderdtt = eqpListDta[i].assetDesc;
             newItem.productcount = eqpListDta[i].qty;
             newItem.ordernum = eqpListDta[i].formid;
+            newItem.remark = eqpListDta[i].remark;
             newItem.payamount = eqpListDta[i].username;
             _this.data.orderList.push(newItem);
           }
