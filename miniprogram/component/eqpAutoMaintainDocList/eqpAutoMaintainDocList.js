@@ -594,6 +594,7 @@ Component({
             newItem.formDate = util.utcInit2Date(maintainDocListDta[i].formdate);
             newItem.deptName = maintainDocListDta[i].deptname;
             newItem.remark=maintainDocListDta[i].remark;
+            newItem.creator=maintainDocListDta[i].creator=='停机'?'停机':'';
             _this.data.maintainDocListArray[currentTemp].push(newItem);
           }
 

@@ -123,6 +123,7 @@
           <view class="proTitle_id">
             {{item.docType}}:{{item.docId}}
           </view>
+          <view class="proInfo_text_dtt">{{item.creator}}</view> 
           <text class="state {{item.origin=='normal' ? 'state_normal' : item.origin=='highLight' ? 'state_highLight' : ''}}">{{item.docState}}</text>
         </view>
         <view class="proInfo">
@@ -132,6 +133,7 @@
               <view class="proInfo_text_title">
                 {{item.assetNoText}}
               </view>
+              
               <text class="iconfont icon-qianjinjiantou"></text>
             </view>
             <view class="proInfo_text">
