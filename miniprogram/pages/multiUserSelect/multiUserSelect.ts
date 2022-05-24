@@ -35,7 +35,7 @@ Page({
     }
 
     restUrl += '/s'
-    restUrl += '/' +0 + '/' + 200
+    restUrl += '/' + this.data.offset + '/' + this.data.pageSize
     //console.log(restUrl)
     wx.request({
       url: restUrl,

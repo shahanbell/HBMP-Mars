@@ -4,8 +4,9 @@ var app = getApp();
 Page({
     data: {
         menu: [
-            { id: 'menu01', name: '维修单身', imgUrl: '../../images/mantainbody.png', url: '/pages/maintain/maintain', parentid: -1 },
+           
             { id: 'menu02', name: '维修描述', imgUrl: '../../images/maintaindescribe.png', url: '/pages/maintainmodule/mataindescribe/maintainDescribe', parentid: -1 },
+            { id: 'menu01', name: '维修单身', imgUrl: '../../images/mantainbody.png', url: '/pages/maintain/maintain', parentid: -1 },
         ]
     },
     onLoad: function (option) {

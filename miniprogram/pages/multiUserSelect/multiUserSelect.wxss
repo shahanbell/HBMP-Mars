@@ -1,4 +1,1 @@
 /* miniprogram/pages/multiUserSelect/multiUserSelect.wxss */
-.page__bd {
-padding-bottom: 100px;
-}

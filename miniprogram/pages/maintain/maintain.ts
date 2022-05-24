@@ -74,6 +74,14 @@ Page({
         deptName: app.globalData.defaultDeptId + '-' + app.globalData.defaultDeptName
       })
     }
+    
+    //if (this.data.maintainer) {
+      this.setData!({
+        maintainer: app.globalData.employeeId,
+        maintaineId: app.globalData.employeeId+ '-' + app.globalData.employeeName
+      })
+   // }
+
   },
   bindMaintainTypeSelect(e) {
     let that = this
