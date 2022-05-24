@@ -80,20 +80,6 @@
       </van-cell-group>
       <van-cell-group>
         <van-field
-          label="紧急度"
-          value="{{ emergencyDrgreeId }}"
-          readonly="true"
-        />
-      </van-cell-group>
-      <van-cell-group>
-        <van-field
-          label="紧急名称"
-          value="{{ emergencyDrgreeName }}"
-          readonly="true"
-        />
-      </van-cell-group>
-      <van-cell-group>
-        <van-field
           label="区域别"
           value="{{ areaName }}"
           required
@@ -114,6 +100,21 @@
           bind:click-icon="bindProductSelect"
           bindtap="bindProductSelect"
           readonly
+        />
+      </van-cell-group>
+    
+      <van-cell-group>
+        <van-field
+          label="紧急度"
+          value="{{ emergencyDrgreeId }}"
+          readonly="true"
+        />
+      </van-cell-group>
+      <van-cell-group>
+        <van-field
+          label="紧急名称"
+          value="{{ emergencyDrgreeName }}"
+          readonly="true"
         />
       </van-cell-group>
       <van-cell-group>

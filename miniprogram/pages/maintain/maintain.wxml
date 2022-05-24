@@ -62,11 +62,11 @@
       <van-cell-group>
         <van-field custom-style="height:100px" label="备注" value="{{ remark }}" type="textarea" placeholder="请输入备注" autosize />
       </van-cell-group>
-      <van-cell-group>
+     <!-- <van-cell-group>
         <van-cell title="是否添加录入库存交易单">
           <van-switch checked="{{ hasWartb }}" bind:change="bindHasWartb" />
         </van-cell>
-      </van-cell-group>
+      </van-cell-group>  -->
       <view wx:if="{{hasWartb==true}}">
       <view class="weui-cells__title" >录入库存交易单</view>
       <van-cell-group>
