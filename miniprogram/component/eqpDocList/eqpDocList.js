@@ -601,7 +601,7 @@ Component({
             newItem.productcount = repairDocListDta[i].assetno == null ? '1' : repairDocListDta[i].assetno.qty;
             newItem.ordernum = util.utcInit(repairDocListDta[i].hitchtime);
             newItem.payamount = repairDocListDta[i].repairusername;
-            newItem.remark = repairDocListDta[i].assetno.remark;
+            newItem.remark = repairDocListDta[i].assetno == null ? '1': repairDocListDta[i].assetno.remark;
             _this.data.repairDocListArray[currentTemp].push(newItem);
           }
 
