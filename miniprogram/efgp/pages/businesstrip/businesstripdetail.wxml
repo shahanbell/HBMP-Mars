@@ -33,7 +33,7 @@
         <van-datetime-picker type="time"  value="{{bizTime1}}" bind:cancel="bindTime1Cencel" bind:confirm="bindTime1Confirm" formatter="{{formatter}}" />
       </van-popup>
       <van-cell-group>
-          <van-field label="截止日期" required value="{{bizTime2}}" id='bizTime2' use-button-slot readonly bindtap='bindPickerTime2'>
+          <van-field label="截止时间" required value="{{bizTime2}}" id='bizTime2' use-button-slot readonly bindtap='bindPickerTime2'>
             <van-icon slot="button" name="arrow" />
           </van-field>  
       </van-cell-group>
