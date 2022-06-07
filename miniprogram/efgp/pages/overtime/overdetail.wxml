@@ -66,7 +66,7 @@
 
       <van-cell-group>
         <van-cell title="加班时数">
-          <van-stepper value="{{ hour }}" min="0.5" max="12" step="0.5" bindchange="bindOvertimeChange" />
+          <van-stepper value="{{ hour }}" min="0.5" max="24" step="0.5" bindchange="bindOvertimeChange" />
         </van-cell>
       </van-cell-group>
       <view class="weui-cells__title">工作内容</view>
