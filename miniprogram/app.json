@@ -53,6 +53,7 @@
     "pages/coin/coin",
     "pages/userSelect/userSelect",
     "pages/sendjob/sendjob",
+    "pages/sendjob/senddetail",
     "pages/sendjob/repairKind",
     "pages/multiUserSelect/multiUserSelect",
     "pages/sendjob/stationKind",
@@ -61,8 +62,11 @@
     "pages/customercomplaint/selectSearch",
     "pages/customercomplaint/complaintdetail",
     "pages/maintainmodule/maintainModule",
+    "pages/maintain/maintain",
+    "pages/maintain/maintainDetail",
     "pages/maintainmodule/mataindescribe/maintainDescribe",
-    "pages/maintainmodule/mataindescribe/maintainNumberselect"
+    "pages/maintainmodule/mataindescribe/maintainNumberselect",
+    "pages/maintain/productQualitySelect"
   ],
   "subpackages": [
     {
@@ -77,8 +81,7 @@
         "pages/carapp/carappdetail",
         "pages/loan/loan",
         "pages/loan/loanPropertySelect",
-        "pages/dine/dine",
-        "pages/safetymeasures/safetymeasures"
+        "pages/dine/dine"
       ]
     },
     {
