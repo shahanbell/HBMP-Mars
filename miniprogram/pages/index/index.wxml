@@ -1,4 +1,7 @@
 <!--index.wxml-->
+<loading hidden="{{loadingHidden}}">
+ 加载中...
+</loading>
 <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" circular="true">
   <block wx:for="{{imgUrls}}" wx:key="item">
     <swiper-item>
@@ -6,14 +9,11 @@
     </swiper-item>
   </block>
 </swiper>
-<view class="weui-grids" wx:if="{{hasUserInfo && authorized}}">
+<view class="weui-grids">
   <block wx:for="{{menu}}" wx:key="id">
     <navigator id="{{item.id}}" url="{{item.url}}" class="weui-grid" hover-class="weui-grid_active">
       <image class="weui-grid__icon" src="{{item.imgUrl}}" model="scaleToFill"></image>
       <text class="weui-grid__label">{{item.name}}</text>
     </navigator>
   </block>
-</view>
-<view class="view-authorize" wx:else>
-  <button class="weui-btn" type="primary" wx:if="{{!hasUserInfo}}" bindtap="bindAuthorizeTap">前往授权</button>
 </view>

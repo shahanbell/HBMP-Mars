@@ -62,7 +62,8 @@
     "pages/customercomplaint/complaintdetail",
     "pages/maintainmodule/maintainModule",
     "pages/maintainmodule/mataindescribe/maintainDescribe",
-    "pages/maintainmodule/mataindescribe/maintainNumberselect"
+    "pages/maintainmodule/mataindescribe/maintainNumberselect",
+    "pages/maintain/productQualitySelect"
   ],
   "subpackages": [
     {
