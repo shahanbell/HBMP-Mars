@@ -1,0 +1,5 @@
+/* miniprogram/pages/leanProductionScan/leanProductionScan.wxss */
+#scannerPic{
+  width: 100%;
+  height: 280px;
+}
