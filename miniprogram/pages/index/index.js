@@ -21,6 +21,7 @@ Page({
             { id: 'menu09', name: '设备管理', imgUrl: '../../images/eqpManagement.png', url: '../../eam/pages/eqpManagement/eqpManageIndex', parentid: -1 },
             { id: 'menu10', name: '备件管理', imgUrl: '../../images/spareManagement.png', url: '../../eam/pages/spareManagement/spareManagementIndex', parentid: -1 },
             { id: 'menu11', name: '设备保全', imgUrl: '../../images/eqpMaintenance.png', url: '../../eam/pages/maintenanceManagement/eqpMaintainIndex', parentid: -1 },
+          { id: 'menu12', name: '扫码签到', imgUrl: '../../images/leanProduction.png', url: '../../pages/leanProductionScan/leanProductionScan', parentid: -1 },
         ],
         menu: [],
         indicatorDots: false,
@@ -39,6 +40,7 @@ Page({
 
       }).catch(err =>{
       })
+     
     },
     onShow: function () {
       console.info('1234564')
@@ -104,6 +106,7 @@ Page({
                       success: function (res) {
                         var that = _this_1;
                         var data = res.data;
+                        app.globalData.mainLoadingHidden = true;
                         if (data.length != 0) {
                           var list = that.data.menu1;
                           for (var _i = 0, _a = data; _i < _a.length; _i++) {
