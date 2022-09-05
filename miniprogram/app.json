@@ -68,6 +68,7 @@
     "pages/maintainmodule/mataindescribe/maintainNumberselect",
     "pages/maintain/productQualitySelect",
     "pages/leanProductionScan/leanProductionScan"
+
   ],
   "subpackages": [
     {
