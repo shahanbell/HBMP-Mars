@@ -123,7 +123,7 @@
           <view class="proTitle_id">
             {{item.docType}}:{{item.docId}}
           </view>
-          <view class="proInfo_text_dtt">{{item.creator}}</view> 
+          <view class="proInfo_text_dtt">{{item.creator=='停机'?'停机':''}}</view> 
           <text class="state {{item.origin=='normal' ? 'state_normal' : item.origin=='highLight' ? 'state_highLight' : ''}}">{{item.docState}}</text>
         </view>
         <view class="proInfo">
@@ -139,6 +139,7 @@
             <view class="proInfo_text">
               <view class="proInfo_text_dtt">{{item.assetNo}}</view> 
               <view class="proInfo_text_dtt">{{item.remark}}</view> 
+              <view class="proInfo_text_dtt">{{item.isspotcheck=='Y'?'抽检':''}}</view> 
               <text class="proInfo_text_acount">{{item.analysisResult}}</text>
               
             </view>
