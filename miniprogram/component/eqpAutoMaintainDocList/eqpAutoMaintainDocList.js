@@ -191,7 +191,14 @@ Component({
     },
 
     docCardSelect(e) {
-      console.log(e);
+      if (e.currentTarget.dataset.item.isspotcheck=='Y'&&e.currentTarget.dataset.item.creator!=app.globalData.employeeId) {
+        wx.showToast({
+          title: '抽检单只有创建人才能点选！',
+          icon: 'none',
+          duration: 2000//持续的时间
+        })
+        return;
+      }
       //console.log(e.currentTarget.dataset.item.shop);
       wx.navigateTo({
         url: '../maintenanceManagement/eqpMaintainStart?docId=' + e.currentTarget.dataset.item.Id
@@ -583,7 +590,7 @@ Component({
           var dataLen = res.data.length;
 
           for(var i = 0;i < dataLen; i++){
-            let newItem = {Id:"",docType:"", docId: "A119-01", origin: "normal", docState: "", pictureurl: "https://jrs.hanbell.com.cn:443/Hanbell-EAM/resources/app/res/CNCEQP_DefaultImage.jpg", locationText: "", slocation: "副齿轮检验轴AA-2600I", sarea: "", credate: "202054654654466", type: "维修",remark: "",  creator: "技术员" };
+            let newItem = {Id:"",docType:"", docId: "A119-01", origin: "normal", docState: "", pictureurl: "https://jrs.hanbell.com.cn:443/Hanbell-EAM/resources/app/res/CNCEQP_DefaultImage.jpg", locationText: "", slocation: "副齿轮检验轴AA-2600I", sarea: "", credate: "202054654654466", type: "维修",remark: "",isspotcheck: "",  creator: "技术员" };
             newItem.Id = maintainDocListDta[i].id;
             newItem.docType = util.getEqpMaintainFormType(maintainDocListDta[i].standardlevel);
             newItem.docId = maintainDocListDta[i].formid;
@@ -594,7 +601,8 @@ Component({
             newItem.formDate = util.utcInit2Date(maintainDocListDta[i].formdate);
             newItem.deptName = maintainDocListDta[i].deptname;
             newItem.remark=maintainDocListDta[i].remark;
-            newItem.creator=maintainDocListDta[i].creator=='停机'?'停机':'';
+            newItem.isspotcheck=maintainDocListDta[i].isspotcheck;
+            newItem.creator=maintainDocListDta[i].creator=='停机'?'停机':maintainDocListDta[i].creator;
             _this.data.maintainDocListArray[currentTemp].push(newItem);
           }
 

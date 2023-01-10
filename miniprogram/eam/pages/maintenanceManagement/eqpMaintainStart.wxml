@@ -48,15 +48,15 @@
 <view class="detailListView" style="min-height:{{detailListViewHeight}}px;">
 	<view class="cardWrapTop">
 	</view>
-	<view class="dataList" wx:for="{{eqpMaintainDetailList}}" wx:key="index" data-item="{{item}}">
+	<view class="dataList" wx:for="{{eqpMaintainDetailList}}"  wx:for-index="index1" wx:key="index" data-item="{{item}}">
 		<view class="itemInfoCard">
-			<van-collapse value="{{ activeNames[index] }}" data-selector="{{index}}" custom-class="detailCardCollapse" bind:change="onCollapseCellClick">
-				<van-collapse-item name="{{index}}">
+			<van-collapse value="{{ activeNames[index1] }}" data-selector="{{index1}}" custom-class="detailCardCollapse" bind:change="onCollapseCellClick">
+				<van-collapse-item name="{{index1}}">
 					<view class="collapseTitle" slot="title">
 						<van-tag wx:if="{{!dispatchMode}}" class="collapseTitle_tag" type="{{item.tagType}}" size="medium">{{item.result}}</van-tag>
 						<view>{{item.checkArea}}</view>
 					</view>
-					<van-switch class="cellSwitchPro" slot="value" size="18px" checked="{{ expandFlag[index] }}" />
+					<van-switch class="cellSwitchPro" slot="value" size="18px" checked="{{ expandFlag[index1] }}" />
 					<view class="detailOperateInfo" style="height:315rpx">
 						<view class="detailOperateInfo_header">
 							<view class="detailOperateInfo_text_normal">
@@ -86,20 +86,36 @@
 									<view class="detailOperateInfo_body_text_title">停机时间:{{item.downTime}}({{item.downUnit}})</view>
 								</view>
 							</view>
-							<image class="detailOperateInfo_body_img" src='{{item.areaImage==""?infoCard.pictureurl:item.areaImage}}' data-selector="{{index}}" bindtap='showImg' mode='widthFix' lazy-load='true' binderror="errorFn" data-errorimg=""></image>
+							<image class="detailOperateInfo_body_img" src='{{item.areaImage==""?infoCard.pictureurl:item.areaImage}}' data-selector="{{index1}}" bindtap='showImg' mode='widthFix' lazy-load='true' binderror="errorFn" data-errorimg=""></image>
 						</view>
 						<view class="detailOperateInfo_foot"></view>
 					</view>
 					<view wx:if="{{!dispatchMode}}">
-						<van-field label="异常描述" data-name="eqpMaintainDetailList[{{index}}].exception" value="{{item.exception}}" bind:change="bindData" readonly="{{formReadOnly}}" />
-						<van-field label="问题处理" data-name="eqpMaintainDetailList[{{index}}].problemSolve" value="{{item.problemSolve}}" bind:change="bindData" readonly="{{formReadOnly}}" />
+						<van-field label="异常描述" data-name="eqpMaintainDetailList[{{index1}}].exception" value="{{item.exception}}" bind:change="bindData" readonly="{{formReadOnly}}" />
+						<van-field label="问题处理" data-name="eqpMaintainDetailList[{{index1}}].problemSolve" value="{{item.problemSolve}}" bind:change="bindData" readonly="{{formReadOnly}}" />
 						<van-cell title="审批结果">
-							<van-radio-group value="{{ maintainResult[index] }}" data-selector="{{index}}" name="resultRadio" bind:change="onResultChange" style="display:flex;flex-flow:row nowarp;justify-content:flex-end;" disabled="{{formReadOnly}}">
+							<van-radio-group value="{{ maintainResult[index1] }}" data-selector="{{index1}}" name="resultRadio" bind:change="onResultChange" style="display:flex;flex-flow:row nowarp;justify-content:flex-end;" disabled="{{formReadOnly}}">
 								<van-radio name="正常" style="margin-right:30rpx;">正常</van-radio>
 								<van-radio name="异常">异常</van-radio>
 							</van-radio-group>
 						</van-cell>
+						
+  <van-cell title="图片上传" use-label-slot>
+    <view slot="label" class='ui_uploader_cell'>
+        <!-- 根据已选择的图片临时路径数组展示图片-->
+        <view class='ui_uploader_item' wx:for="{{item.uploadList}}" wx:key="index3" >
+            <!-- 删除-->
+            <icon class='ui_uploader_item_icon' data-selector="{{index1}}" bindtap='clearImg' type="clear" size="20" color="red" />
+            <!-- 图片-->
+            <image bindtap='showImg2' data-selector="{{index1}}" data-index="{{index}}" src='{{item}}'></image>
+        </view>
+        <!-- 上传按钮+框 -->
+        <view class='ui_uploader' data-selector="{{index1}}"   bindtap='upload' wx:if="{{item.uploadList==null?true:false}}"></view>
+    </view>
+
+</van-cell>
 					</view>
+					
 					<van-field wx:if="{{dispatchMode}}" label="保养人" data-itemindex="{{index}}" value="{{item.analysisUser}}-{{item.analysisUserName}}" input-align="center" right-icon="arrow" bindtap="onAnalysisUserCellTap" readonly />
 					<!-- <van-field wx:if="{{!dispatchMode}}" label="异常描述" data-name="eqpMaintainDetailList[{{index}}].exception" value="{{item.exception}}" bind:change="bindData"  readonly = "{{formReadOnly}}"/>
 					<van-field wx:if="{{!dispatchMode}}" label="问题处理" data-name="eqpMaintainDetailList[{{index}}].problemSolve" value="{{item.problemSolve}}" bind:change="bindData" readonly = "{{formReadOnly}}" />
