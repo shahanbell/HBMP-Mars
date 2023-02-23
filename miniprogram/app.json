@@ -145,6 +145,7 @@
       }
     ]
   },
+  "requiredPrivateInfos":["chooseLocation","getLocation"],
   "sitemapLocation": "sitemap.json",
   "permission": {
     "scope.userLocation": {
