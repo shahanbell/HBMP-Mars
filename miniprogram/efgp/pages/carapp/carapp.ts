@@ -39,6 +39,7 @@ Page({
       }
       return value;
     },
+    mksystem:'N'
   },
   onLoad() {
     wx.showLoading({
@@ -232,6 +233,17 @@ Page({
       detailList: details
     })
   },
+  bindMKsystemChange(e) {
+    if (e.detail) {
+      this.setData({
+        mksystem:'Y'
+      })
+    } else {
+      this.setData({
+        mksystem: 'N'
+      })
+    }
+  },
   bindTelcontactChange(e) {
     this.setData({
       telcontact: e.detail
@@ -371,7 +383,8 @@ Page({
                 purposeDesc: _this.data.purposeDesc,
                 telcontact: _this.data.telcontact,
                 hmark1: _this.data.hmark1,
-                detailList: _this.data.detailList
+                detailList: _this.data.detailList,
+                mksystem: _this.data.mksystem
               },
               header: {
                 'content-type': 'application/json'
