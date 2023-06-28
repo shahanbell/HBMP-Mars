@@ -481,11 +481,17 @@ Page({
       // if (options.employeeid) {
       //     restUrl += '/f;users.id=' + options.employeeid + '/s';
       // }
+
+      
       // else {
       //     restUrl += '/f/s';
       // }
       //restUrl += '/f;deptno=' + '13000' + '/s';
-      restUrl += '/f;basicInfo=' + res;
+      restUrl += '/f;basicInfo=' + res+';company='+app.globalData.defaultCompany; 
+    
+    
+    
+      
       // restUrl += '/f' + '/s';
       //restUrl += '/' + 0 + '/' + 20;
       restUrl = encodeURI(restUrl);
