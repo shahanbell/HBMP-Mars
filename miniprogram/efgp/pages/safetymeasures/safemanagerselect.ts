@@ -36,7 +36,9 @@ Page({
     { "username": "杨称峰", "userid": "C0313" },
     { "username": "陆迎春", "userid": "C0054" },
     { "username": "沈军", "userid": "C0044" },
-    { "username": "俞培君", "userid": "C0067" }];
+    { "username": "俞培君", "userid": "C0067" },
+    { "username": "李小风", "userid": "C0852" },
+    { "username": "吕海斌", "userid": "C0278" }];
     _this.setData({
       dataList: o
     })

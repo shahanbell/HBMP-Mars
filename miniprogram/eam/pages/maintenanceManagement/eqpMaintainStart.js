@@ -16,6 +16,9 @@ Page({
     formReadOnly: true,
     userListHeight: null,
     nodataType: 7,
+    showUpload:true,
+    uploaderNum:0,
+    uploaderList: [],
     activeNames: [],
     infoCard: {
       // formId: 'BQ21070003',
@@ -67,10 +70,10 @@ Page({
         windowHeight = res.windowHeight;
       }
     });
-
+   
     let heightTemp = app.globalData.screenHeight - 90 - app.globalData.statusBarHeight;
     heightTemp = heightTemp * 0.95 - 64;
-
+    
     this.getEqpMaintainInitDta(options.docId);
     this.setData({
       detailListViewHeight: windowHeight - 10 - 44 - 44,
@@ -84,17 +87,32 @@ Page({
   },
 
   onCollapseCellClick(event) {
-    console.log(event);
+    // console.log(event);
     var index = event.currentTarget.dataset.selector;
+    var eqpMaintainDetailList = this.data.eqpMaintainDetailList;
+    var nowList = [];//新数据
+  
+    if(eqpMaintainDetailList[index].filePath!=null&&eqpMaintainDetailList[index].filePath!='')
+    {
+      //imagePathArray = imagePathArray.concat([app.globalData.restAdd + ":443/Hanbell-EAM/resources/app/res/" + pathArray.pop()]);
+      // nowList=nowList.concat([app.globalData.restAdd + ":443/Hanbell-EAM/resources/app/res/" + eqpMaintainDetailList[index].filePath]);
+      var pathArray = eqpMaintainDetailList[index].filePath.split("/");
+      nowList = nowList.concat([app.globalData.restAdd + ":443/Hanbell-EAM/resources/app/res/" + pathArray.pop()]);
+      eqpMaintainDetailList[index].uploadList=nowList;
+     
+    }
+
     var expandFlag = true;
     if (event.detail.length == 0) {
       expandFlag = false;
     }
     var activeNamesTemp = "activeNames[" + index + "]";
     var expandFlagTemp = "expandFlag[" + index + "]";
+
     //this.updateDetailDataStartDate(index);
     this.setData({
       [activeNamesTemp]: event.detail,
+      eqpMaintainDetailList:eqpMaintainDetailList,
       [expandFlagTemp]: expandFlag,
       //activeNames:event.detail,
       //supplementFlag:supplementFlag,
@@ -104,8 +122,72 @@ Page({
     });
   },
 
+  
+  // 删除图片
+  clearImg:function(e){
+    var index =e.currentTarget.dataset.selector;
+    // console.log(index);
+    var eqpMaintainDetailList = this.data.eqpMaintainDetailList;
+    eqpMaintainDetailList[index].filePath=null;
+    eqpMaintainDetailList[index].uploadList=null;
+    // for (let i = 0; i < uploaderList.length;i++){
+    //     if (i == e.currentTarget.dataset.index){
+    //         continue;
+    //     }else{
+    //         nowList.push(uploaderList[i])
+    //     }
+    // }
+    this.setData({
+        eqpMaintainDetailList:eqpMaintainDetailList,
+    })
+},
+//展示图片
+showImg2:function(e){
+    var that=this;
+    var index = e.currentTarget.dataset.selector;
+    wx.previewImage({
+       // urls: that.data.uploaderList,
+        urls: that.data.eqpMaintainDetailList[index].filePath,
+        current: that.data.eqpMaintainDetailList[index].filePath
+       // current: that.data.uploaderList[e.currentTarget.dataset.index]
+    })
+},
+//上传图片
+upload: function(e) {
+  var that = this;
+  //console.log("upload Test");
+  var eqpMaintainDetailListTemp= this.data.eqpMaintainDetailList;
+  var index = e.currentTarget.dataset.selector;
+ 
+ 
+ 
+  wx.chooseImage({
+      count: 3 - that.data.uploaderNum, // 默认9
+      sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+      success: function(res) {
+      
+          //console.log(that.data.uploaderNum);
+          // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+          let tempFilePaths = res.tempFilePaths;
+            eqpMaintainDetailListTemp[index].filePath=tempFilePaths[0];
+          let uploaderList = that.data.uploaderList.concat(tempFilePaths);
+          eqpMaintainDetailListTemp[index].uploadList=uploaderList
+          if (eqpMaintainDetailListTemp[index]!=null||eqpMaintainDetailListTemp[index]!=''){
+              that.setData({
+                  showUpload:false,
+                  eqpMaintainDetailList:eqpMaintainDetailListTemp
+              })
+          }
+          that.setData({
+              uploaderNum: uploaderList.length,
+              eqpMaintainDetailList:eqpMaintainDetailListTemp,
+          })
+      }
+  })
+},
   onResultChange: function (e) {
-    console.log(e);
+  
     var index = e.currentTarget.dataset.selector;
     var resultTemp = "maintainResult[" + index + "]";
     var detailResultTemp = "eqpMaintainDetailList[" + index + "].result";
@@ -212,12 +294,33 @@ Page({
   eqpMaintainFormSubmit: function (event) {
     var dataTemp = this.data.eqpMaintainDetailList;
     var dispatchModeTemp = this.data.dispatchMode;
+    const FileSystemManager = wx.getFileSystemManager();
+    var nowList = [];//新数据//转换后的数据
+     for (let i = 0; i < dataTemp.length;i++){
+      var filepath =dataTemp[i].filePath ;
+      filepath=filepath.substring(0,4)
+        if(dataTemp[i].uploadList!=null){
+          FileSystemManager.readFile({ //读文件
+            filePath: dataTemp[i].uploadList[0],
+            encoding: 'base64',
+            success(res) {
+              if (res.data) {
+                var obj = res.data;
+                dataTemp[i].filePath=obj;
+              }
+            },
+            fail(err) {
+              console.log('读取失败', err)
+              reject(err)
+            }
+          })
+
+        }
+    }
     var apiName = 'autonomous-maintain-start';
     if(dispatchModeTemp){
       apiName = 'autonomous-maintain-dispatch';
     }
-    console.log(dataTemp);
-    console.log(apiName);
 
     var _this = this;
     //var canSubmit = this.checkFormDtaBeforeSubmit();
@@ -226,8 +329,6 @@ Page({
 
     var jsonArrayTemp = [];
     jsonArrayTemp.push(_this.data.eqpMaintainDetailList);
-    console.log(jsonArrayTemp);
-
     if (!app.globalData.authorized) {
       canSubmit = false;
       errmsg += '账号未授权\r\n';
@@ -240,14 +341,14 @@ Page({
           zIndex: 1000,
         })
         .then(() => {
-          console.log(_this.data);
+         // console.log(_this.data);
           wx.showLoading({
             title: 'Sending',
             mask: true
           });
           var jsonArray = [];
           jsonArray.push(_this.data.eqpMaintainDetailList);
-          console.log(JSON.stringify(jsonArray));
+         
           wx.request({
             url: app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/eqpmaintenance/' + apiName + '?' + app.globalData.restAuth,
             data: {
@@ -255,6 +356,7 @@ Page({
               formid: _this.data.infoCard.formId,
               company: app.globalData.defaultCompany,
               optuser: app.globalData.employeeId,
+              upload:nowList,
               status: JSON.stringify(jsonArray),
             },
             header: {
@@ -264,7 +366,7 @@ Page({
             success: function (res) {
               wx.hideLoading();
               var resMsg = '';
-              console.log(res);
+             
               if (res.statusCode == 200 && res.data.msg != null) {
                 resMsg = '提交成功';
                 if (res.data.code != "200") {
@@ -412,6 +514,7 @@ Page({
         progressTagType = 'success';
       }
     });
+    
     this.setData({
       progressInfo: {
         doneCount: detailDoneCount,
@@ -450,7 +553,7 @@ Page({
     var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/eqpmaintenance/autonomous-maintain-detailinfo';
     restUrl += '/f;docId=' + docId + '/s';
     restUrl += '/' + 0 + '/' + 20;
-    //console.log(restUrl);
+    // console.log("aaaaaa"+restUrl);
     wx.showLoading({
       title: '获取中...',
       mask: true
@@ -467,7 +570,6 @@ Page({
       method: 'GET',
       success: function (res) {
         console.log(res);
-
         if (res.data == "" || res.statusCode != 200) {
           //console.log("no Data");
           wx.hideLoading();
@@ -478,7 +580,7 @@ Page({
           var maintainInfoTemp = res.data[0];
           var maintainDetailListTemp = res.data[1];
           var autoMaintainFlag = maintainInfoTemp.standardlevel.indexOf("一级") > -1 ? true : false;
-          console.log(autoMaintainFlag);
+          // console.log(autoMaintainFlag);
           let newInfoItem = {
             docId: '',
             formId: '',
@@ -487,6 +589,7 @@ Page({
             assetDesc: '',
             assetFormId: '',
             pictureurl: '',
+            isspotcheck: '',
             formDate: '',
             maintainUserId: '',
             maintainUserName: ''
@@ -497,6 +600,7 @@ Page({
           newInfoItem.displayType = '品名';
           newInfoItem.assetDesc = maintainInfoTemp.assetdesc;
           newInfoItem.assetFormId = maintainInfoTemp.assetno;
+          newInfoItem.isspotcheck = maintainInfoTemp.isspotcheck;
           newInfoItem.pictureurl = app.globalData.restAdd + ":443/Hanbell-EAM/resources/app/res/CNCEQP_DefaultImage.jpg";
           newInfoItem.formDate = util.utcInit2Date(maintainInfoTemp.formdate);
           newInfoItem.maintainUserId = app.globalData.employeeId;
@@ -516,9 +620,12 @@ Page({
               tagType: '',
               exception: '',
               problemSolve: '',
+              filePath: '',
+              uploadList:[],
               sDate: '',
               eDate: ''
             };
+            // console.log(maintainDetailListTemp);
             newItem.Id = maintainDetailListTemp[i].id;
             newItem.checkArea = maintainDetailListTemp[i].checkarea;
             newItem.checkContent = maintainDetailListTemp[i].checkcontent;
@@ -530,6 +637,8 @@ Page({
             newItem.downUnit = maintainDetailListTemp[i].downunit;
             newItem.exception = maintainDetailListTemp[i].exception == null ? '':maintainDetailListTemp[i].exception;
             newItem.problemSolve = maintainDetailListTemp[i].problemsolve == null ? '':maintainDetailListTemp[i].problemsolve;
+            newItem.filePath = maintainDetailListTemp[i].filepath == null ? '':maintainDetailListTemp[i].filepath;
+            newItem.uploadList = maintainDetailListTemp[i].uploadList == null ? null:maintainDetailListTemp[i].uploadList;
             newItem.sDate = maintainDetailListTemp[i].sdate == null ? '' : util.utcInit(maintainDetailListTemp[i].sdate);
             newItem.eDate = maintainDetailListTemp[i].edate == null ? '' : util.utcInit(maintainDetailListTemp[i].edate);
             newItem.analysisUser = maintainDetailListTemp[i].analysisuser == null ? '':maintainDetailListTemp[i].analysisuser;
@@ -583,7 +692,7 @@ Page({
   },
 
   analysisUserCardSelect:function(event){
-    console.log(event);
+    // console.log(event);
     var item = event.currentTarget.dataset.item;
     var userIdVarName = "eqpMaintainDetailList[" + analysisUserSelectIndex + "].analysisUser";
     var userNameVarName = "eqpMaintainDetailList[" + analysisUserSelectIndex + "].analysisUserName";
