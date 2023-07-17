@@ -225,7 +225,7 @@ export function checkRepairDeptManger(employeeId){
  * @param {string} deptno 部门代号
  */
 export function checkEqpRepairDepartment(deptno){
-  if(deptno.indexOf("1W3") >= 0 || deptno.indexOf("2C5") >= 0 || deptno.indexOf("7A3") >= 0){
+  if(deptno.indexOf("1W3") >= 0 || deptno.indexOf("2C5") >= 0 || deptno.indexOf("7C2") >= 0){
     return true;
   }
   else
@@ -243,10 +243,11 @@ export function getRepairDeptCompanyFilter(deptno){
   else if(deptno.indexOf("2A8") >= 0){
     return ";RepairCompanyFilter=HANSON";
   }
-  else if(deptno.indexOf("7A3") >= 0){
+  else if(deptno.indexOf("7C2") >= 0){
     return ";RepairCompanyFilter=HANYOUNG";
   }
 }
+
 
 /**
  *  检查是否是维修经理
