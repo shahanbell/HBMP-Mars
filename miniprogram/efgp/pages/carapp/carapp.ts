@@ -39,7 +39,23 @@ Page({
       }
       return value;
     },
-    mksystem:'N'
+    mksystems: [
+      {
+        key: '0',
+        name: '请选择',
+      },
+      {
+        key: 'Y',
+        name: '是',
+      },
+      {
+        key: 'N',
+        name: '否',
+      },
+    ],
+    mksystemKey:'0',
+    mksystemName:'',
+    isMkShow:false
   },
   onLoad() {
     wx.showLoading({
@@ -233,17 +249,7 @@ Page({
       detailList: details
     })
   },
-  bindMKsystemChange(e) {
-    if (e.detail) {
-      this.setData({
-        mksystem:'Y'
-      })
-    } else {
-      this.setData({
-        mksystem: 'N'
-      })
-    }
-  },
+
   bindTelcontactChange(e) {
     this.setData({
       telcontact: e.detail
@@ -298,7 +304,28 @@ Page({
     let dayTemp = year + "-" + month + "-" + day;
     return dayTemp;
   },
-
+  bindMkShow() {
+    var _this = this;
+    if (!_this.data.isMkShow) {
+      _this.setData({
+        isMkShow: true
+      })
+    }
+  },
+  bindMkSelect(e) {
+    var _this = this;
+    _this.setData({
+      mksystemKey: e.detail.value.key,
+      mksystemName: e.detail.value.name,
+      isMkShow: false
+    })
+  },
+  bindMkClose() {
+    var _this = this;
+    _this.setData({
+      isMkShow: false
+    })
+  },
 
   formSubmit(e) {
 
@@ -355,6 +382,15 @@ Page({
       canSubmit = false
       errmsg += "请填写明细资料\r\n"
     }
+    if (this.data.clxz == "2" && this.data.mksystemKey == "0") {
+      canSubmit = false
+      errmsg += "请选择是否每刻报销\r\n"
+    }
+    if (this.data.clxz != "2" && this.data.mksystemKey == "Y") {
+      canSubmit = false
+      errmsg += "私车公用才能每刻报销,请调整！\r\n"
+    }
+
     if (canSubmit) {
       let _this = this
       wx.showModal({
@@ -368,7 +404,7 @@ Page({
             console.log(_this.data)
             console.log(e)
             wx.request({
-              url: app.globalData.restAdd + '/Hanbell-JRS/api/efgp/hkgl037/wechat?' + app.globalData.restAuth,
+              url: 'http://172.16.10.118:8480' + '/Hanbell-JRS/api/efgp/hkgl037/wechat?' + app.globalData.restAuth,
               data: {
                 employeeId: _this.data.employeeId,
                 employeeName: _this.data.employeeName,
@@ -384,7 +420,7 @@ Page({
                 telcontact: _this.data.telcontact,
                 hmark1: _this.data.hmark1,
                 detailList: _this.data.detailList,
-                mksystem: _this.data.mksystem
+                mksystem: _this.data.mksystemKey
               },
               header: {
                 'content-type': 'application/json'
