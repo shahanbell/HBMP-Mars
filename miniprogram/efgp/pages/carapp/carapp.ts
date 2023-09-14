@@ -55,34 +55,55 @@ Page({
     ],
     mksystemKey:'0',
     mksystemName:'',
-    isMkShow:false
+    isMkShow:false,
+    hdnDept: "",
   },
   onLoad() {
-    wx.showLoading({
-      title: 'Loading',
-    })
-    setTimeout(function () {
-      wx.hideLoading()
-    }, 2000)
-    if (app.globalData.openId) {
-      this.setData!({
-        hasOpenId: true
-      })
-    }
-    if (app.globalData.authorized) {
-      this.setData!({
-        employeeId: app.globalData.employeeId,
-        employeeName: app.globalData.employeeName
-      })
-    }
-    if (app.globalData.defaultDeptId) {
-      this.setData!({
-        deptId: app.globalData.defaultDeptId,
-        deptName: app.globalData.defaultDeptId + '-' + app.globalData.defaultDeptName,
-        company: app.globalData.defaultCompany + '-' + app.globalData.defaultCompanyName
-      })
+    wx.request({
+     
+      // url: that.globalData.restAdd + '/Hanbell-WCO/api/prg9f247ab6d5e4/session',
+      url: app.globalData.restAdd+'/Hanbell-JRS/api/efgp/functions/functionlevel/manager/'+app.globalData.employeeId+ '/经理级'+'?'+ app.globalData.restAuth,
+      header: {
+        'content-type': 'application/json'
+      },
+      method: 'GET',
+      success: res => {
+        wx.showLoading({
+          title: 'Loading',
+        })
+    
+        console.info("主管领导是="+JSON.stringify(res))
 
-    }
+        this.setData!({
+          hdnDept: res.data.object.id
+        })
+        console.info(this.data.hdnDept)
+
+        setTimeout(function () {
+          wx.hideLoading()
+        }, 2000)
+        if (app.globalData.openId) {
+          this.setData!({
+            hasOpenId: true
+          })
+        }
+        if (app.globalData.authorized) {
+          this.setData!({
+            employeeId: app.globalData.employeeId,
+            employeeName: app.globalData.employeeName
+          })
+        }
+        if (app.globalData.defaultDeptId) {
+          this.setData!({
+            deptId: app.globalData.defaultDeptId,
+            deptName: app.globalData.defaultDeptId + '-' + app.globalData.defaultDeptName,
+            company: app.globalData.defaultCompany + '-' + app.globalData.defaultCompanyName
+          })
+    
+        }
+      }
+    });
+   
   },
   bindDeptSelect(e) {
     let that = this
@@ -420,7 +441,8 @@ Page({
                 telcontact: _this.data.telcontact,
                 hmark1: _this.data.hmark1,
                 detailList: _this.data.detailList,
-                mksystem: _this.data.mksystemKey
+                mksystem: _this.data.mksystemKey,
+                hdnDept:  _this.data.hdnDept
               },
               header: {
                 'content-type': 'application/json'
