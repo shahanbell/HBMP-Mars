@@ -35,7 +35,12 @@ Page({
     { "username": "俞江华", "userid": "C0048" },
     { "username": "杨称峰", "userid": "C0313" },
     { "username": "陆迎春", "userid": "C0054" },
-    { "username": "沈军", "userid": "C0044" }];
+    { "username": "沈军", "userid": "C0044" },
+    { "username": "俞培君", "userid": "C0067" },
+    { "username": "李小风", "userid": "C0852" },
+    { "username": "吕海斌", "userid": "C0278" },
+    { "username": "王峰", "userid": "K0152" },
+    { "username": "陈海英", "userid": "C0201" }];
     _this.setData({
       dataList: o
     })

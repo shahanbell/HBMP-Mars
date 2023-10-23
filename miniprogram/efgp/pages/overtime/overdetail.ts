@@ -254,6 +254,10 @@ Page({
       canSubmit = false
       errmsg += '请输入工作内容'
     }
+    if (!this.data.listEmployees || this.data.listEmployees.length == 0) {
+      canSubmit = false
+      errmsg += '请选择加班人员'
+    }
     if (canSubmit) {
       let newObject = {
         employeeId: this.data.employeeId,

@@ -148,8 +148,9 @@ App<IMyApp>({
   },
   globalData: {
     authData: [],//页面缓存数据
-    //restAdd:'https://jrs.hanbell.com.cn',
-     restAdd: 'https://i2.hanbell.com.cn',
+    restAdd:'https://jrs.hanbell.com.cn',
+    restEdw:'https://edw.hanbell.com.cn/platfm.webapi',
+    // restAdd: 'https://i2.hanbell.com.cn',
     // restAdd: 'http://localhost:8480',
     //URL转码
     weChatCallBack: 'https%3a%2f%2fi2.hanbell.com.cn%2fHanbell-WCO%2fAuthCallBackServlet',

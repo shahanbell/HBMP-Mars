@@ -54,6 +54,7 @@ Page({
     dealer: '',
     warrantyStart:'',
     warrantyEnd:'',
+    responsibilitiesId:'',
   },
   onLoad() {
     wx.showLoading({
@@ -264,7 +265,8 @@ Page({
               problemTypeId: res.key,
               problemTypeName: res.value,
               emergencyDrgreeId: res.value1,
-              emergencyDrgreeName: res.value2
+              emergencyDrgreeName: res.value2,
+              responsibilitiesId: res.value3,
             })
           }
         }
@@ -488,7 +490,8 @@ Page({
                 emergencyDrgreeId: _this.data.emergencyDrgreeId,
                 problemTypeId: _this.data.problemTypeId,
                 problemTypeName: _this.data.problemTypeName,
-                sercadetails: _this.data.detailList
+                sercadetails: _this.data.detailList,
+                responsibilitiesId: _this.data.responsibilitiesId
               },
               header: {
                 'content-type': 'application/json'

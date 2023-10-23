@@ -66,7 +66,7 @@
 
       <van-cell-group>
         <van-cell title="请假天数">
-          <van-stepper value="{{ leaveDay }}" min="0" max="7" bindchange="bindLeaveDayChange" integer />
+          <van-stepper value="{{ leaveDay }}" min="0" max="200" bindchange="bindLeaveDayChange" integer />
         </van-cell>
       </van-cell-group>
       <van-cell-group>
@@ -83,6 +83,23 @@
       <van-cell-group>
         <van-field custom-style="height:100px" value="{{ reason }}" type="textarea" placeholder="请输入请假原因" autosize required bindblur="bindReasonChange" />
       </van-cell-group>
+      
+            <van-cell title="图片上传" use-label-slot>
+
+
+        <view slot="label" class='ui_uploader_cell'>
+          <!-- 根据已选择的图片临时路径数组展示图片-->
+          <view class='ui_uploader_item' wx:for="{{uploaderList}}" wx:key="{{index}}">
+            <!-- 删除-->
+            <icon class='ui_uploader_item_icon' bindtap='clearImg' data-index="{{index}}" type="clear" size="20" color="red" />
+            <!-- 图片-->
+            <image bindtap='showImg' data-index="{{index}}" src='{{item}}'></image>
+          </view>
+          <!-- 上传按钮+框 -->
+          <view class='ui_uploader' bindtap='upload' wx:if="{{showUpload}}"></view>
+        </view>
+
+      </van-cell>
       <van-button custom-class="submitbtn" type="info" icon="passed" form-type="submit" bind:click="formSubmit">提交</van-button>
     </form>
   </view>

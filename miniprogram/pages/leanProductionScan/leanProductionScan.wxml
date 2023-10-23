@@ -1,0 +1,5 @@
+<loading hidden="{{loadingHidden}}">
+ 加载中...
+</loading>
+<image src='../../images/scanner.jpg' id='scannerPic'></image>
+<van-button type="info" round size='large' bind:click='leanProductionScanOnClick'>扫码签到</van-button>

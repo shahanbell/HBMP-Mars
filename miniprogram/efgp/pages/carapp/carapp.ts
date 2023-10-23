@@ -39,33 +39,71 @@ Page({
       }
       return value;
     },
+    mksystems: [
+      {
+        key: '0',
+        name: '请选择',
+      },
+      {
+        key: 'Y',
+        name: '是',
+      },
+      {
+        key: 'N',
+        name: '否',
+      },
+    ],
+    mksystemKey:'0',
+    mksystemName:'',
+    isMkShow:false,
+    hdnDept: "",
   },
   onLoad() {
-    wx.showLoading({
-      title: 'Loading',
-    })
-    setTimeout(function () {
-      wx.hideLoading()
-    }, 2000)
-    if (app.globalData.openId) {
-      this.setData!({
-        hasOpenId: true
-      })
-    }
-    if (app.globalData.authorized) {
-      this.setData!({
-        employeeId: app.globalData.employeeId,
-        employeeName: app.globalData.employeeName
-      })
-    }
-    if (app.globalData.defaultDeptId) {
-      this.setData!({
-        deptId: app.globalData.defaultDeptId,
-        deptName: app.globalData.defaultDeptId + '-' + app.globalData.defaultDeptName,
-        company: app.globalData.defaultCompany + '-' + app.globalData.defaultCompanyName
-      })
+    wx.request({
+     
+      // url: that.globalData.restAdd + '/Hanbell-WCO/api/prg9f247ab6d5e4/session',
+      url: app.globalData.restAdd+'/Hanbell-JRS/api/efgp/functions/functionlevel/manager/'+app.globalData.employeeId+ '/经理级'+'?'+ app.globalData.restAuth,
+      header: {
+        'content-type': 'application/json'
+      },
+      method: 'GET',
+      success: res => {
+        wx.showLoading({
+          title: 'Loading',
+        })
+    
+        console.info("主管领导是="+JSON.stringify(res))
 
-    }
+        this.setData!({
+          hdnDept: res.data.object.id
+        })
+        console.info(this.data.hdnDept)
+
+        setTimeout(function () {
+          wx.hideLoading()
+        }, 2000)
+        if (app.globalData.openId) {
+          this.setData!({
+            hasOpenId: true
+          })
+        }
+        if (app.globalData.authorized) {
+          this.setData!({
+            employeeId: app.globalData.employeeId,
+            employeeName: app.globalData.employeeName
+          })
+        }
+        if (app.globalData.defaultDeptId) {
+          this.setData!({
+            deptId: app.globalData.defaultDeptId,
+            deptName: app.globalData.defaultDeptId + '-' + app.globalData.defaultDeptName,
+            company: app.globalData.defaultCompany + '-' + app.globalData.defaultCompanyName
+          })
+    
+        }
+      }
+    });
+   
   },
   bindDeptSelect(e) {
     let that = this
@@ -232,6 +270,7 @@ Page({
       detailList: details
     })
   },
+
   bindTelcontactChange(e) {
     this.setData({
       telcontact: e.detail
@@ -286,7 +325,28 @@ Page({
     let dayTemp = year + "-" + month + "-" + day;
     return dayTemp;
   },
-
+  bindMkShow() {
+    var _this = this;
+    if (!_this.data.isMkShow) {
+      _this.setData({
+        isMkShow: true
+      })
+    }
+  },
+  bindMkSelect(e) {
+    var _this = this;
+    _this.setData({
+      mksystemKey: e.detail.value.key,
+      mksystemName: e.detail.value.name,
+      isMkShow: false
+    })
+  },
+  bindMkClose() {
+    var _this = this;
+    _this.setData({
+      isMkShow: false
+    })
+  },
 
   formSubmit(e) {
 
@@ -343,6 +403,15 @@ Page({
       canSubmit = false
       errmsg += "请填写明细资料\r\n"
     }
+    if (this.data.clxz == "2" && this.data.mksystemKey == "0") {
+      canSubmit = false
+      errmsg += "请选择是否每刻报销\r\n"
+    }
+    if (this.data.clxz != "2" && this.data.mksystemKey == "Y") {
+      canSubmit = false
+      errmsg += "私车公用才能每刻报销,请调整！\r\n"
+    }
+
     if (canSubmit) {
       let _this = this
       wx.showModal({
@@ -371,7 +440,9 @@ Page({
                 purposeDesc: _this.data.purposeDesc,
                 telcontact: _this.data.telcontact,
                 hmark1: _this.data.hmark1,
-                detailList: _this.data.detailList
+                detailList: _this.data.detailList,
+                mksystem: _this.data.mksystemKey,
+                hdnDept:  _this.data.hdnDept
               },
               header: {
                 'content-type': 'application/json'

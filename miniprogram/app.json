@@ -42,27 +42,38 @@
   },
   "pages": [
     "pages/index/index",
-    "pages/task/task",
-    "pages/task/taskdetail",
-    "pages/echart/echart",
-    "pages/profile/profile",
-    "pages/companySelect/companySelect",
-    "pages/deptSelect/deptSelect",
-    "pages/workTypeSelect/workTypeSelect",
     "pages/budgetacc/budgetacc",
     "pages/coin/coin",
-    "pages/userSelect/userSelect",
-    "pages/sendjob/sendjob",
-    "pages/sendjob/repairKind",
-    "pages/multiUserSelect/multiUserSelect",
-    "pages/sendjob/stationKind",
+    "pages/companySelect/companySelect",
     "pages/customercomplaint/customercomplaint",
+    "pages/customercomplaint/complaintdetail",
     "pages/customercomplaint/select",
     "pages/customercomplaint/selectSearch",
-    "pages/customercomplaint/complaintdetail",
+    "pages/deptSelect/deptSelect",
+    "pages/echart/echart",
+    "pages/employee/employee",
+    "pages/leanProductionScan/leanProductionScan",
+    "pages/maintain/maintain",
+    "pages/maintain/maintainDetail",
+    "pages/maintain/productQualitySelect",
     "pages/maintainmodule/maintainModule",
     "pages/maintainmodule/mataindescribe/maintainDescribe",
-    "pages/maintainmodule/mataindescribe/maintainNumberselect"
+    "pages/maintainmodule/mataindescribe/maintainNumberselect",
+    "pages/maintainmodule/mataindescribe/photoUpload",
+    "pages/multiUserSelect/multiUserSelect",
+    "pages/profile/profile",
+    "pages/receivingpersonnel/receivingpersonnel",
+    "pages/repairKind/repairKind",
+    "pages/sendjob/customerno",
+    "pages/sendjob/repairKind",
+    "pages/sendjob/senddetail",
+    "pages/sendjob/sendjob",
+    "pages/sendjob/stationKind",
+    "pages/stationKind/stationKind",
+    "pages/task/task",
+    "pages/task/taskdetail",
+    "pages/userSelect/userSelect",
+    "pages/workTypeSelect/workTypeSelect"
   ],
   "subpackages": [
     {
@@ -70,7 +81,10 @@
       "pages": [
         "pages/leave/leave",
         "pages/overtime/overtime",
+        "pages/overtime/overdetail",
         "pages/businesstrip/businesstrip",
+        "pages/businesstrip/businessProperty",
+        "pages/businesstrip/vehicle",
         "pages/carapp/carapp",
         "pages/carapp/carType",
         "pages/carapp/purpose",
@@ -79,12 +93,7 @@
         "pages/loan/loanPropertySelect",
         "pages/dine/dine",
         "pages/safetymeasures/safetymeasures",
-        "pages/safetymeasures/hiddenCheck",
-          "pages/safetymeasures/hiddenDanger",
-          "pages/safetymeasures/hiddenDangerDetail",
-          "pages/safetymeasures/postSecureInspect",
-          "pages/safetymeasures/postSecureInspectDetail",
-        "pages/safetymeasures/safetyManagement"
+
       ]
     },
     {
@@ -146,6 +155,7 @@
       }
     ]
   },
+  "requiredPrivateInfos":["chooseLocation","getLocation"],
   "sitemapLocation": "sitemap.json",
   "permission": {
     "scope.userLocation": {
