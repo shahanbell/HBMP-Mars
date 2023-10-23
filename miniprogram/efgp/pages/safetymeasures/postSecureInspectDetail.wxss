@@ -1,0 +1,133 @@
+@import "../style/componentCommon/itemInfoBasicView.wxss";
+@import "../style/componentCommon/customCellView.wxss";
+@import "../style/componentCommon/collapseSwitchView.wxss";
+@import "../style/componentCommon/userSelectScrollView.wxss";
+
+.detailListView .mainInfo {
+  box-shadow: 2px 2px 2px 2px #F0F0F0;
+}
+.itemInfoCard .detailOperateInfo {
+  /* height: 485rpx; */
+  background-color: rgb(255, 255, 255);
+  margin-left: auto;
+  margin-right: auto;
+  /* padding: 30rpx 24rpx 0 24rpx; */
+  box-sizing: border-box;
+}
+
+.itemInfoCard .detailOperateInfo_header,
+.detailOperateInfo_body,
+.detailOperateInfo_foot {
+  display: flex;
+  justify-content: space-between;
+}
+
+.itemInfoCard .detailOperateInfo_text_normal {
+  font-size: 26rpx;
+  color: #333;
+}
+
+.itemInfoCard .detailOperateInfo_text_normal image {
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 15rpx;
+  position: relative;
+  top: 8rpx;
+  /* margin-top: 15rpx; */
+}
+
+.itemInfoCard .detailOperateInfo .state {
+  font-size: 26rpx;
+  color: #FF4B0A;
+}
+
+
+.itemInfoCard .detailOperateInfo_body {
+  padding: 30rpx 0;
+  box-sizing: border-box;
+}
+
+.itemInfoCard .detailOperateInfo_body_img {
+  width: 150rpx;
+  height: 150rpx;
+  border-radius: 10rpx;
+  overflow: hidden;
+  /* background-color: pink; */
+}
+
+.itemInfoCard .detailOperateInfo_body_right {
+  width: 522rpx;
+  padding-top: 12rpx;
+  box-sizing: border-box;
+}
+
+.itemInfoCard .detailOperateInfo_body_text {
+  display: flex;
+  vertical-align: middle;
+  justify-content: space-between;
+  justify-items: middle;
+}
+
+.itemInfoCard .detailOperateInfo_body_text_title {
+  font-size: 28rpx;
+  color: #000;
+  line-height: 45rpx;
+  white-space: nowrap;
+  max-width: 480rpx;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-bottom: 10rpx;
+}
+
+.itemInfoCard .detailOperateInfo_body_text_title .iconfont {
+  font-size: 30rpx;
+}
+
+.itemInfoCard .detailOperateInfo_body_text_dtt {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.itemInfoCard .detailOperateInfo_body_text_btt {
+  font-size: 24rpx;
+  color: #000;
+}
+
+.itemInfoCard .detailOperateInfo_body_text_acount {
+  font-size: 26rpx;
+  color: #999;
+}
+
+.itemInfoCard .detailOperateInfo_foot {
+  font-size: 24rpx;
+  color: #333;
+  line-height: 82rpx;
+  border-top: 2rpx solid #eee;
+  white-space: nowrap;
+}
+
+.itemInfoCard .detailOperateInfo_foot text {
+  position: relative;
+  font-size: 26rpx;
+  color: #000;
+}
+
+.cardWrapTop {
+  width: 100%;
+  height: 10px;
+}
+
+.submitWrap_fix{
+  height:44px;
+}
+
+.progressTag{
+  font-size: 20px;
+}
+.dispatchBtn{
+  /* margin-top: 7px; */
+  height: 27px !important;
+  width: 60px;
+  margin-left:10px;
+  margin-bottom:3px;
+}

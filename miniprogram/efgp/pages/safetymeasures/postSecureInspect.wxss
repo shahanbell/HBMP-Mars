@@ -1,0 +1,36 @@
+@import '../../../style/docList.wxss';
+.proTitle_id{
+  font-size: 30rpx;
+  margin-top:20rpx;
+  color: #333;
+  }
+  .proList{
+    width: 710rpx;
+    height: 250rpx;
+    border-radius:16rpx;
+    background-color: #fff; 
+    margin-bottom: 20rpx;
+    margin-left:auto;
+    margin-right:auto;
+    padding: 30rpx 24rpx 0 24rpx;
+    box-sizing: border-box;
+    }
+  .proName{
+    font-size: 30rpx;
+  
+    color: #333;
+    }
+
+
+  .proTitle,.proInfo,.proFoot{
+    display: flex;
+    justify-content: space-between;
+    }
+
+  .proFoot{
+    font-size: 30rpx;
+    color: #333; 
+    line-height: 82rpx;
+
+    white-space: nowrap;
+    }

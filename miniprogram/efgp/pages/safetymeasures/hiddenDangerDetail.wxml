@@ -1,0 +1,297 @@
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+<van-cell-group >
+  
+  <van-field   
+    label="提报人:"
+    value="{{presentingName}}"
+    data-name="presentingName"
+    bind:change="bindData"
+    readonly
+  />
+
+  <van-field
+    label="隐患来源"
+    value="{{hiddenSource}}"
+    data-name="hiddenSource"
+    bind:change="bindData"
+    data-show="false"
+    readonly
+  />
+  <van-field
+    label="提报日期"
+    value="{{ createTime }}"
+    data-name="createTime"
+    bind:change="bindData"
+    readonly
+  />
+
+  <van-field
+    label="隐患地点"
+    value="{{ hiddenLocation}}"
+    data-name="hiddenLocation"
+    bind:change="bindData"
+    readonly="{{chechke1}}"
+  />
+  <van-cell-group>
+    <van-cell title="隐患描述" border="{{false}}" use-label-slot></van-cell>
+    <view class='textarea_pro' data-show="hiddenDescribe" bindtap="ifshowArea">
+        <textarea wx:if="{{showTextArea.hiddenDescribe}}" 
+        class='areaInput' bindblur="ifshowArea" data-show="hiddenDescribe" value="{{hiddenDescribe}}" 
+        maxlength="200" 
+        placeholder="请输入问题的正文内容" 
+        placeholder-style="color:#b3b3b3;font-size:14px;" 
+        auto-focus="true" 
+        disabled="{{chechke1}}"
+        bindinput="textAreaProInput"/>
+        <view wx:if="{{!showTextArea.hiddenDescribe}}" 
+        class='areaTest' 
+        style='color:{{hiddenDescribe==""?"#999":"#2b2b2b"}}; word-break:break-all; white-space:pre-line;'>
+            <view wx:if="{{hiddenDescribe==''}}" style='color:#b3b3b3;font-size:14px;'>请输入问题的正文内容</view>{{hiddenDescribe}}
+        </view>
+        <view class="textarea-counter">{{hiddenDescribe.length}}/200</view>
+        
+    </view>
+</van-cell-group>
+
+<van-cell title="隐患图片" use-label-slot>
+  
+
+  <view slot="label" class='ui_uploader_cell'>
+      <!-- 根据已选择的图片临时路径数组展示图片-->
+      <view class='ui_uploader_item' wx:for="{{uploaderList}}" wx:key="{{index}}">
+          <!-- 删除-->
+          <icon class='ui_uploader_item_icon' bindtap='clearImg' data-index="{{index}}" type="clear" size="20" color="red" wx:if="{{showUpload}}"/>
+          <!-- 图片-->
+          <image bindtap='showImg' data-index="{{index}}" src='{{item}}'></image>
+      </view>
+      <!-- 上传按钮+框 -->
+      <view class='ui_uploader' bindtap='upload' wx:if="{{showUpload}}"></view>
+  </view>
+
+</van-cell>
+
+  <van-field
+    label="整改人"
+    value="{{ rectifierParameterName }}"
+    data-name="rectifierParameterName"
+    bind:change="bindData"
+    right-icon="arrow-down"
+    bindtap='showRectifierSelectorPopup'
+    readonly
+  />
+  <view wx:if="{{showConfirm}}">
+
+  <van-field
+    label="隐患分类"
+    value="{{ hiddenParameterName }}"
+    data-name="hiddenParameterName"
+    bind:change="bindData"
+    right-icon="arrow-down"
+    bindtap='showSelectorPopup'
+    readonly
+  />
+
+
+  <van-field
+    label="整改类型"
+    value="{{ rectificationParameterName }}"
+    data-name="rectificationParameterName"
+    bind:change="bindData"
+    right-icon="arrow-down"
+    bindtap='showRectificationSelectorPopup'
+    readonly
+  />
+
+  <!-- <van-field
+    label="整改期限:"
+    value="{{ rectificationDeadline }}"
+    data-name="rectificationDeadline"
+    right-icon="arrow-down"
+    bindtap='showRectificationDeadlineMethodSelectorPopup'
+    readonly
+  /> -->
+  <van-field
+  id='applyDate'
+        label="整改期限"
+        value="{{ rectificationDeadline }}"
+        right-icon="arrow-down"
+        data-selector="suppleStartDate"
+        bindtap='showSelectorDtaPopup'
+        
+        readonly
+      />
+  <van-cell-group>
+    <van-cell title="整改对策" border="{{false}}" use-label-slot></van-cell>
+    <view class='textarea_pro' data-show="rectificationMeasures" bindtap="ifshowArea">
+        <textarea wx:if="{{showTextArea.rectificationMeasures}}" 
+        class='areaInput' bindblur="ifshowArea" data-show="rectificationMeasures" value="{{rectificationMeasures}}" 
+        maxlength="200" 
+        placeholder="请输入问题的正文内容" 
+        placeholder-style="color:#b3b3b3;font-size:14px;" 
+        auto-focus="true" 
+        disabled="{{chechke2?false:true}}"
+        bindinput="textAreaProInput"/>
+        <view wx:if="{{!showTextArea.rectificationMeasures}}" 
+        class='areaTest' 
+        style='color:{{rectificationMeasures==""?"#999":"#2b2b2b"}}; word-break:break-all; white-space:pre-line;'>
+            <view wx:if="{{troubleDetailInfo==''}}" style='color:#b3b3b3;font-size:14px;'>请输入问题的正文内容</view>{{rectificationMeasures}}
+        </view>
+        <view class="textarea-counter">{{rectificationMeasures.length}}/200</view>
+    </view>
+</van-cell-group>
+</view>
+<view wx:if="{{showRectification}}">
+<van-field
+    label="整改完成日期"
+    value="{{ rectificationCompletionDate }}"
+    data-name="formdate"
+    bind:change="bindData"
+    right-icon="arrow-down"
+    bindtap='onFormDateCellTap'
+    readonly
+  />
+ 
+
+  <van-cell title="整改完成图片" use-label-slot>
+  
+
+  <view slot="label" class='ui_uploader_cell'>
+      <!-- 根据已选择的图片临时路径数组展示图片-->
+      <view class='ui_uploader_item' wx:for="{{uploaderRectificationList}}" wx:key="{{index}}">
+          <!-- 删除-->
+          <icon class='ui_uploader_item_icon' bindtap='clearImgRectification' data-index="{{index}}" type="clear" size="20" color="red"  wx:if="{{showRectificationUpload}}"/>
+          <!-- 图片-->
+          <image bindtap='showImgRectification' data-index="{{index}}" src='{{item}}'></image>
+      </view>
+      <!-- 上传按钮+框 -->
+      <view class='ui_uploader' bindtap='uploadRectification' wx:if="{{showRectificationUpload}}"></view>
+  </view>
+</van-cell>
+
+</view>
+<view wx:if="{{showCheck}}">
+<van-cell-group>
+    <van-cell title="验收意见" border="{{false}}" use-label-slot></van-cell>
+    <view class='textarea_pro' data-show="acceptanceOpinions" bindtap="ifshowArea">
+        <textarea wx:if="{{showTextArea.acceptanceOpinions}}" 
+        class='areaInput' bindblur="ifshowArea" data-show="acceptanceOpinions" value="{{acceptanceOpinions}}" 
+        maxlength="200" 
+        placeholder="请输入问题的正文内容" 
+        placeholder-style="color:#b3b3b3;font-size:14px;" 
+        auto-focus="true" 
+        disabled="{{chechkeAccepted?false:true}}"
+        bindinput="textAreaProInput"/>
+        <view wx:if="{{!showTextArea.acceptanceOpinions}}" 
+        class='areaTest' 
+        style='color:{{acceptanceOpinions==""?"#999":"#2b2b2b"}}; word-break:break-all; white-space:pre-line;'>
+            <view wx:if="{{acceptanceOpinions==''}}" style='color:#b3b3b3;font-size:14px;'>请输入问题的正文内容</view>{{acceptanceOpinions}}
+        </view>
+        <view class="textarea-counter">{{acceptanceOpinions.length}}/200</view>
+    </view>
+</van-cell-group>
+</view>
+
+<view wx:if="{{chechke3}}">
+<van-cell-group>
+    <van-cell title="复核意见" border="{{false}}" use-label-slot></van-cell>
+    <view class='textarea_pro' data-show="checkOpinions" bindtap="ifshowArea">
+        <textarea wx:if="{{showTextArea.checkOpinions}}" 
+        class='areaInput' bindblur="ifshowArea" data-show="checkOpinions" value="{{checkOpinions}}" 
+        maxlength="200" 
+        placeholder="请输入问题的正文内容" 
+        placeholder-style="color:#b3b3b3;font-size:14px;" 
+        auto-focus="true" 
+        disabled="{{chechkeOpinions?false:true}}"
+        bindinput="textAreaProInput"/>
+        <view wx:if="{{!showTextArea.checkOpinions}}" 
+        class='areaTest' 
+        style='color:{{checkOpinions==""?"#999":"#2b2b2b"}}; word-break:break-all; white-space:pre-line;'>
+            <view wx:if="{{checkOpinions==''}}" style='color:#b3b3b3;font-size:14px;'>请输入问题的正文内容</view>{{checkOpinions}}
+        </view>
+        <view class="textarea-counter">{{checkOpinions.length}}/200</view>
+    </view>
+</van-cell-group>
+</view>
+</van-cell-group>
+
+
+<van-popup
+    show="{{ show.hiddenMethodSelectorPopup }}"
+    position="bottom"
+    bind:close="closeHiddenSelectorPopup"
+>
+
+  <van-picker
+    show-toolbar
+    title="隐患类型"
+    columns="{{ hiddenTypeList }}"
+    value-key="hiddenParameterName"
+    bind:change="onHiddenPickerChange"
+    bind:confirm="onHiddenPickerConfirm"
+    bind:cancel="onHiddenPickerCancel"
+  />
+
+</van-popup>
+
+
+<van-popup
+    show="{{ show.rectifierMethodSelectorPopup }}"
+    position="bottom"
+    bind:close="closeRectifierSelectorPopup"
+>
+
+  <van-picker
+    show-toolbar
+    title="整改人"
+    columns="{{ rectifierList }}"
+    value-key="rectifierParameterName"
+    bind:change="onRectifierPickerChange"
+    bind:confirm="onRectifierPickerConfirm"
+    bind:cancel="closeRectifierSelectorPopup"
+  />
+
+</van-popup>
+
+
+<van-popup
+    show="{{ show.rectificationMethodSelectorPopup }}"
+    position="bottom"
+    bind:close="closeRectificationSelectorPopup"
+>
+  <van-picker
+    show-toolbar
+    title="整改类型"
+    columns="{{ rectificationTypeList }}"
+    value-key="rectificationParameterName"
+    bind:change="onRectificationPickerChange"
+    bind:confirm="onRectificationPickerConfirm"
+    bind:cancel="closeRectificationSelectorPopup"
+  />
+
+</van-popup>
+<van-popup
+    show="{{ show.rectificationDeadlineMethodSelectorPopup }}"
+    position="bottom"
+    bind:close="closeRectificationSelectorPopup"
+>
+
+  <van-datetime-picker
+  type="date" 
+    id = "picker1"
+    value="{{minCompleteDate}}"
+    cancel-button-text="清空"
+    data-selector="rectificationDeadline"
+    bind:confirm="onDatePickerConfirm"
+    bind:input="onDatePickerInput"
+    min-date="{{minCompleteDate}}"
+    max-date="{{currentDate}}"
+    formatter="{{formatter}}"
+  />
+
+</van-popup>
+<view class="submitWrap_fix">
+<van-button  wx:if="{{showSubBtn}}" type="info" icon="passed" form-type="submit" style="width:100%;position:fixed;bottom:0px;z-index:2;" bind:click="hiddenFormSubmit" block>提交</van-button>
+</view>
+<van-dialog id="van-dialog"/>
+
+</view>
