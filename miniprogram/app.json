@@ -78,7 +78,13 @@
         "pages/loan/loan",
         "pages/loan/loanPropertySelect",
         "pages/dine/dine",
-        "pages/safetymeasures/safetymeasures"
+        "pages/safetymeasures/safetymeasures",
+        "pages/safetymeasures/hiddenCheck",
+          "pages/safetymeasures/hiddenDanger",
+          "pages/safetymeasures/hiddenDangerDetail",
+          "pages/safetymeasures/postSecureInspect",
+          "pages/safetymeasures/postSecureInspectDetail",
+        "pages/safetymeasures/safetyManagement"
       ]
     },
     {

@@ -1,0 +1,79 @@
+.userSelectScrollView {
+  background-color: #F8F8F8;
+  -webkit-flex-shrink: 0;
+  flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  height: 100%;
+  overflow: visible;
+}
+
+.userSelectScrollView .userListWrap {
+  width: 100%;
+  height: 20rpx;
+}
+
+.userSelectScrollView .userList {
+  width: 95%;
+  height: 246rpx;
+  border-radius: 16rpx;
+  background-color: rgb(255, 255, 255);
+  margin-bottom: 20rpx;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 30rpx 24rpx 0 24rpx;
+  box-sizing: border-box;
+}
+
+.userSelectScrollView .userInfo_header,
+.userInfo_body,
+.userInfo_foot {
+  display: flex;
+  justify-content: space-between;
+}
+
+.userSelectScrollView .userInfo_body{
+  padding: 30rpx 0;
+  box-sizing: border-box;
+  }
+
+.userSelectScrollView .userInfo_text_normal {
+  font-size: 26rpx;
+  color: #333;
+}
+
+.userSelectScrollView .userInfo_foot{
+  font-size: 24rpx;
+  color: #333; 
+  line-height: 82rpx;
+  border-top: 2rpx solid #eee;
+  white-space: nowrap;
+  }
+
+.userSelectScrollView .userInfo_foot text{
+  position: relative;
+  font-size: 26rpx;
+  color: #000; 
+  }
+
+.userSelectPopup .userSelectButtonBlock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border-top:0px; */
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+}
+
+.userSelectPopup .searchRightIcon{
+  display: flex;
+  justify-content: center;
+}

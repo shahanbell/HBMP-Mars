@@ -1,0 +1,34 @@
+<!-- 触发时才显示的组件 -->
+<van-notify id="van-notify" />
+<van-dialog id="van-dialog"/>
+<!-- 触发时才显示的组件 -->
+
+
+<view wx:if="{{active === tabData[0]}}" class="menuView" style="{{menuViewStyle}}">
+  <view id="menuStart" class='startView'></view>
+  <van-button type="default" icon="notes-o" custom-style="{{menuBtnStyle}}" bind:click="onScheMaintainBtnClick">我的安全隐患单</van-button>
+  <van-button type="default" icon="notes-o" custom-style="{{menuBtnStyle}}" bind:click="onSecurityCheckBtnClick">岗位安全自查</van-button>
+  <van-button type="default" icon="notes-o" custom-style="{{menuBtnStyle}}" bind:click="onClassBtnClick">班组日安全巡查</van-button>
+  <van-button type="default" icon="notes-o" custom-style="{{menuBtnStyle}}" bind:click="onCourseBtnClick">课长周安全巡查</van-button>
+
+  <van-button type="default" icon="notes-o" custom-style="{{menuBtnStyle}}" bind:click="onRotationCourseBtnClick">轮值安全课长周安全巡查</van-button>
+
+  <van-button type="default" icon="notes-o" custom-style="{{menuBtnStyle}}" bind:click="onSafetyOfficerBtnClick">安全员周安全巡查</van-button>
+
+  <van-button type="default" icon="notes-o" custom-style="{{menuBtnStyle}}" bind:click="onCommissionerBtnClick">安全专员巡查</van-button>
+</view>
+
+<eqpAutoMaintainDocList wx:if="{{active === tabData[1]}}" endHeight="{{endHeight}}" defaultFormType="{{defaultFormType}}"></eqpAutoMaintainDocList>
+
+<eqpRepairBacklogList wx:if="{{active === tabData[2]}}" endHeight="{{endHeight}}"></eqpRepairBacklogList>
+
+<van-tabbar id="proBottomTab" active="{{ active }}" fixed="{{true}}" bind:change="onTabbarChange">
+  <view id="end" class='endView'></view>
+  <van-tabbar-item name="home" icon="home-o">主页</van-tabbar-item>
+  <van-tabbar-item name="search" icon="search">查询</van-tabbar-item>
+  <!-- <van-tabbar-item name="friends" icon="friends-o" dot="{{showBacklogDot}}">待办</van-tabbar-item> -->
+  <!-- <van-tabbar-item name="setting" icon="setting-o">设置</van-tabbar-item> -->
+</van-tabbar>
+
+
+
