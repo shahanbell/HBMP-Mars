@@ -46,6 +46,7 @@ Page({
       saveRepairInfoBtn:false,
       responseDutyBtn:false,
       approveAuditBtn:false,
+      leaderAuditBtn:false,
       examAuditBtn: false,
       detailCheckBtn: false,
       stopRepairBtn: false,
@@ -161,6 +162,10 @@ Page({
       },
       {
         text: '责任回复',
+        //desc: '描述信息',
+      },
+      {
+        text: '组长审核',
         //desc: '描述信息',
       },
       {
@@ -1265,7 +1270,7 @@ upload: function(e) {
 
         repairDocDta = null;
         var repairManagerInfo = null;
-
+        var leaderManagerInfo = null;
         if(res.data == "" || res.statusCode != 200){
           //console.log("no Data");
           wx.hideLoading();
@@ -1278,9 +1283,10 @@ upload: function(e) {
           wx.hideLoading();
           return;
         }
-
+        console.log(res)
         repairDocDta = res.data[0];
         repairManagerInfo = res.data[1];
+     
         repairUserInfo = null;
         serviceUserInfo = null;
         if(res.data.length > 2){
@@ -1434,7 +1440,7 @@ upload: function(e) {
             _this.data.steps[stepCode].text = "暂停维修"
           }
         }
-
+      
         if(eamUtil.checkRepairDeptManger(app.globalData.employeeId)){
           if(repairDocDta.rstatus < "30"){
             _this.data.showBtn.deleteBtn = true;
@@ -1444,12 +1450,18 @@ upload: function(e) {
           }
         }
 
+        if(app.globalData.employeeId == "C2079"){
+          if(repairDocDta.rstatus == "55"){
+            _this.data.showBtn.leaderAuditBtn = true;
+          }
+        }
         if(app.globalData.employeeId == repairManagerInfo.cvalue){
           if(repairDocDta.rstatus == "70"){
             _this.data.showBtn.examAuditBtn = true;
           }
         }
-
+        
+        
         if(repairDocDta.rstatus == "95"){
           _this.data.steps = _this.data.steps_info;
           _this.data.showBtn.detailCheckBtn = true;

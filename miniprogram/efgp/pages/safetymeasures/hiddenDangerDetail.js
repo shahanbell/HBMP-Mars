@@ -143,7 +143,11 @@ Page({
       // currentDate: new Date(2024 ,1, 1).getTime(), 
       // minCompleteDate: new Date(2023 ,1, 1).getTime(), 
       docFormidId:options.docFormidId,
+      createTime:util.dateFormatForFilter(new Date()),
       presentingId:app.globalData.employeeId,
+      hiddenDescribe:'',
+      rectificationMeasures:'',
+      acceptanceOpinions:'',
       presentingName:app.globalData.employeeName,
       hiddenSource:options.docType,
       docPid:options.docPid,
@@ -161,16 +165,15 @@ Page({
 
   
     this.getHiddenDocInfo(this.data.docFormidId)
-    this.getHiddenDocImageInfo(this.data.docFormidId)
+    this.getHiddenDocImageInfo(this.data.docFormidId,this.data.hiddenSource)
 
   },
-
   
-  getHiddenDocImageInfo: function (formid) {
+  getHiddenDocImageInfo: function (formid,docType) {
     var _this = this;
     // restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/assetcardtest';
     var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbedw/hiddendanger/getHiddenDocImageInfo';
-    restUrl += '/f;pid=' + formid + ';company=' + app.globalData.defaultCompany;
+    restUrl += '/f;pid=' + formid + ';company=' + app.globalData.defaultCompany+ ';deptno=' + app.globalData.defaultDeptId+ ';docType=' + docType;
     restUrl += '/s/' + 0 + '/' + 20;
     restUrl = encodeURI(restUrl);
     //console.log(restUrl);
@@ -400,6 +403,51 @@ Page({
       });
     }
  
+},
+
+bindSafetyOfficeSelect: function () {
+  var checkItem='';
+  if(hiddenDocDta)
+  {
+    if(hiddenDocDta.rstatus>='10')
+    {
+      return;
+    }
+   
+  }
+  if(this.data.hiddenSource=='岗位自查'||this.data.hiddenSource=='班组巡查'||this.data.hiddenSource=='课长巡查')
+  {
+    console.log("checkItem")
+    checkItem='?deptNo='+app.globalData.defaultDeptId.slice(0,2)
+  }
+  console.log(this.data.hiddenSource)
+  console.log(checkItem)
+  var _this = this;
+  wx.navigateTo({
+      url: '../../../pages/userSelect/safetySelect'+checkItem,
+      events: {
+          returnUserSelect: function (res) {
+              if (res) {
+                  console.info("===");
+                  var _wx = wx;
+                  _wx.showLoading({
+                      title: '加载中'
+                  });
+                  console.log("ZZZZZZZZZZZZZZZZZZZZZZ")
+                  console.log(res)
+                  _this.setData({
+                    rectifierParameterId: res.k,
+                      rectifierParameterName: res.k + '-' + res.v,
+                      rectifierId: res.k ,
+                      rectifierName: res.k + '-' + res.v,
+                      ajaxShow: true
+                  });
+              }
+          }
+      },
+      success: function (res) {
+      }
+  });
 },
 
 closeRectifierSelectorPopup: function(){
@@ -652,6 +700,12 @@ dateFormatForFilter(date){
         {
           if(hiddenDocDta.rstatus=="10"||hiddenDocDta.rstatus=="30"||hiddenDocDta.rstatus=="95")
           {
+            if(hiddenDocDta.rstatus=="30")
+            {
+            
+         
+              console.log( _this.data.rectificationCompletion)
+            }
             _this.data.showSubBtn=false;
           }else{
             _this.data.showSubBtn=true;
@@ -703,7 +757,8 @@ dateFormatForFilter(date){
             }
           }
       
-
+          if(hiddenDocDta.createTime=='null')
+          console.log("hiddenDocDta")
           console.log(hiddenDocDta)
         _this.setData({
           minDate: new Date(dateTemp.getFullYear() -1 ,dateTemp.getMonth(), 1).getTime(),
@@ -747,7 +802,7 @@ dateFormatForFilter(date){
       },
       fail: function (fail) {
         wx.hideLoading();
-        console.log(fail.data);
+        console.log("fail.data");
         Dialog.alert({
           title: '系统消息',
           message: fail.data + "-" + fail.statusCode + "-" + fail.header + "-" + fail.cookies,

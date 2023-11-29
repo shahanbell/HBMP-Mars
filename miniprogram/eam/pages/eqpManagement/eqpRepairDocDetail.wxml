@@ -225,6 +225,7 @@
     <van-button round wx:if="{{showBtn.spareDeliveryBtn}}" custom-class="repairDetailBtn" type="info" size="small" bind:click="onSpareDeliveryBtnClick">备件领用</van-button>
     <van-button round wx:if="{{showBtn.spareRetreatBtn}}" custom-class="repairDetailBtn" type="info" size="small" bind:click="onSpareRetreatBtnClick">备件退料</van-button>
     <van-button round wx:if="{{showBtn.responseDutyBtn}}" custom-class="repairDetailBtn" type="info" size="small" bind:click="onDutyResBtnClick">责任回复</van-button>
+    <van-button round wx:if="{{showBtn.leaderAuditBtn}}" custom-class="repairDetailBtn" type="info" size="small" bind:click="onApproveBtnClick">组长审核</van-button>
     <van-button round wx:if="{{showBtn.approveAuditBtn}}" custom-class="repairDetailBtn" type="info" size="small" bind:click="onApproveBtnClick">课长审核</van-button>
     <van-button round wx:if="{{showBtn.examAuditBtn}}" custom-class="repairDetailBtn" type="info" size="small" bind:click="onApproveBtnClick">经理审核</van-button>
   </view>
