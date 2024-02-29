@@ -135,7 +135,7 @@ Page({
   //轮值课长巡查跳转
   onRotationCourseBtnClick: function(){
     wx.navigateTo({
-      url: '../safetymeasures/postSecureInspect?docType=' + "轮值课长安全巡查"
+      url: '../safetymeasures/postSecureInspect?docType=' + "安全课长巡查"
     })
   }, 
    //安全员巡查跳转

@@ -111,6 +111,7 @@ Component({
     //console.log('test scan code');
     var that = this;
     // 允许从相机和相册扫码
+    
     wx.scanCode({
       success(res) {
         //console.log(res);
@@ -185,9 +186,10 @@ Component({
     },
     
     docCardSelect(e) {
-      //console.log(e.currentTarget.dataset.item.shop);
+      console.log("EEEEEEEEEEEEEE");
+      console.log(e);
       wx.navigateTo({
-        url: '../safetymeasures/hiddenDangerDetail?docFormidId=' + e.currentTarget.dataset.item.id
+        url: '../safetymeasures/hiddenDangerDetail?docFormidId=' + e.currentTarget.dataset.item.id+"&docType="+ e.currentTarget.dataset.item.hiddenSource
       })
     },
   

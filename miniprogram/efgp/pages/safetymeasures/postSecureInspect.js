@@ -110,6 +110,7 @@ Component({
 
   
     onSearchStart(){
+      console.log("BBBBBBBBBBBB")
       this.getPostSecureInspectModel(this.data.docType);
       this.setData({
         refreshTrigger: false,
@@ -119,7 +120,8 @@ Component({
 
 //生成岗位自查单
 createPostForm:function (index) {
-  console.log(app)
+  console.log("333")
+  console.log(index)
       var apiName = 'createPost';
       var _this = this;
       if (!app.globalData.authorized) {
@@ -147,46 +149,50 @@ createPostForm:function (index) {
         },
         method: 'POST',
         success: function (res) {
-          wx.hideLoading();
-          var resMsg = '';
-          if (res.statusCode == 200 && res.data.msg != null) {
-            resMsg = '生成成功';
-            if (res.data.code != "200") {
-              resMsg = '生成失败，请重试';
-              Dialog.alert({
-                title: '系统消息',
-                message: resMsg,
-              }).then(() => {
-             
-                // on close
-              });
-              return;
-            }
        
-            wx.hideLoading();
-            Dialog.alert({
-              title: '系统消息',
-              message: "生成成功",
-            }).then(() => {
-           
-            });
-          } else {
-            resMsg = '提交失败';
+          var resMsg = '';
+            var resMsg = '';
+            if(res.statusCode == 200 && res.data.msg != null){
+             
+              resMsg = '生成成功';
+              _this.getPostSecureInspectModel(_this.data.docType);
+              _this.setData({
+             
+              });
+            }
+            else{
+              resMsg = '生成失败';
+            }
+         
+         
             Dialog.alert({
               title: '系统消息',
               message: resMsg,
             }).then(() => {
+              console.log("AAAAAAAAAAAAAAAAAAA")
+                 wx.navigateBack({
+                    delta: 0
+                  });
               // on close
             });
-          }
-        },
-        fail: function (fail) {
-          wx.hideLoading();
-          wx.showModal({
-            title: '系统提示',
-            content: "网络异常请重试:" + fail,
-            showCancel: false
-          });
+            wx.hideLoading();
+            // wx.showModal({
+            //   title: '系统消息',
+            //   content: res.data.msg,
+            //   content: '提交成功',
+            //   showCancel: false,
+            //   success: function (res) {
+            //     initProInfo(that);
+            //   }
+            // });
+          },
+          fail: function (fail) {
+            wx.hideLoading();
+            wx.showModal({
+              title: '系统提示',
+              content: "请联系管理员:" + fail,
+              showCancel: false
+            });
         }
       });
         
@@ -270,7 +276,8 @@ createPostForm:function (index) {
     },
     
     docCardSelect(e) {
-      //console.log(e.currentTarget.dataset.item.shop);
+      console.log("AAAAAAAAAAAAA");
+      
       wx.navigateTo({
         url: '../safetymeasures/postSecureInspectDetail?docFormidId=' + e.currentTarget.dataset.item.id
       })

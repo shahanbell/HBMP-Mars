@@ -83,6 +83,7 @@ Page({
     chechke3:false,
     chechkeAccepted:false,
     chechkeOpinions:false,
+    chechkeRectDta:false,
     docId: null,
     docPid:null,
     id: null,
@@ -139,11 +140,16 @@ Page({
    */
   onLoad(options) {
     dateTemp = new Date();
+    console.log(options)
     this.setData({
       // currentDate: new Date(2024 ,1, 1).getTime(), 
       // minCompleteDate: new Date(2023 ,1, 1).getTime(), 
       docFormidId:options.docFormidId,
+      createTime:util.dateFormatForFilter(new Date()),
       presentingId:app.globalData.employeeId,
+      hiddenDescribe:'',
+      rectificationMeasures:'',
+      acceptanceOpinions:'',
       presentingName:app.globalData.employeeName,
       hiddenSource:options.docType,
       docPid:options.docPid,
@@ -161,16 +167,17 @@ Page({
 
   
     this.getHiddenDocInfo(this.data.docFormidId)
-    this.getHiddenDocImageInfo(this.data.docFormidId)
+    this.getHiddenDocImageInfo(this.data.docFormidId,this.data.hiddenSource)
 
   },
-
   
-  getHiddenDocImageInfo: function (formid) {
+  getHiddenDocImageInfo: function (formid,docType) {
     var _this = this;
+    console.log("docType")
+    console.log(docType)
     // restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/assetcardtest';
     var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbedw/hiddendanger/getHiddenDocImageInfo';
-    restUrl += '/f;pid=' + formid + ';company=' + app.globalData.defaultCompany;
+    restUrl += '/f;pid=' + formid + ';company=' + app.globalData.defaultCompany+ ';deptno=' + app.globalData.defaultDeptId+ ';docType=' + docType;
     restUrl += '/s/' + 0 + '/' + 20;
     restUrl = encodeURI(restUrl);
     //console.log(restUrl);
@@ -252,7 +259,6 @@ Page({
           }
           _this.data.rectifierList.push(newItem);
         }
-        console.log(res.data)
         if(hiddenDocDta)
         {
         if(res.data[5][0].secureId==app.globalData.employeeId)
@@ -271,7 +277,8 @@ Page({
           }
         }
       }
-        console.log(_this.data.rectifierList)
+      console.log("ccccccccccc")
+        console.log(res.data)
         _this.setData({
           showSubBtn: _this.data.showSubBtn,
           hiddenParameterValue:_this.data.hiddenParameterValue,
@@ -339,7 +346,7 @@ Page({
   showSelectorDtaPopup: function(event){
     var selectorTemp = {};
     selectorTemp[event.currentTarget.dataset.selector + "SelectorPopup"] = true;
-    if(this.data.chechke2){ 
+    if(this.data.chechkeRectDta){ 
     this.setData({
       show:{rectificationDeadlineMethodSelectorPopup:true}
     });
@@ -355,11 +362,22 @@ Page({
    * 隐患类型选择弹出层开启
    */
   showHiddenSelectorPopup: function(){
+    if(this.data.chechkeRectDta){
     this.setData({
       show:{hiddenMethodSelectorPopup:true}
     });
+  }
 },
+ /**
+  * 隐患类型选择弹出层关闭
+  */
+ closeHiddenSelectorPopup: function(){
+ 
+  this.setData({
+    show:{hiddenMethodSelectorPopup:false}
+  });
 
+},
   onHiddenPickerChange: function(event){
     //  console.log(event);
     const { picker, value, index } = event.detail;
@@ -381,25 +399,80 @@ Page({
   onHiddenPickerCancel: function(event){
     this.closeHiddenSelectorPopup();
   },
- /**
-  * 隐患类型选择弹出层关闭
-  */
- closeHiddenSelectorPopup: function(){
-  this.setData({
-    show:{hiddenMethodSelectorPopup:false}
-  });
-},
+
 
   /**
    * 整改人选择弹出层开启
    */
   showRectifierSelectorPopup: function(){
-    if(!this.data.chechke1){
+    if(this.data.chechkeRectDta){
       this.setData({
         show:{rectifierMethodSelectorPopup:true}
       });
     }
  
+},
+
+bindSafetyOfficeSelect: function () {
+  var checkItem='';
+  var chekeDept=false;//判断验收部门
+
+  if(hiddenDocDta)
+  {
+    if(hiddenDocDta.rstatus>='10')
+    {
+      return;
+    }
+   
+  }
+  if(this.data.hiddenSource=='岗位自查'||this.data.hiddenSource=='班组巡查'||this.data.hiddenSource=='课长巡查')
+  {
+    chekeDept=true;
+ 
+    checkItem='?deptNo='+app.globalData.defaultDeptId.slice(0,2)
+    console.log("ccccccccccccccccccccca")
+    console.log(checkItem)
+  }
+  // console.log(this.data.hiddenSource)
+  // console.log(checkItem)
+  var _this = this;
+  wx.navigateTo({
+      url: '../../../pages/userSelect/safetySelect'+checkItem,
+      events: {
+          returnUserSelect: function (res) {
+         if(chekeDept)//判断是否由整改人所在课长验收还是由提报人验收
+         {
+          for(var i = 0;i < _this.data.secureList.length; i++){
+          if(_this.data.secureList[i].deptNo.slice(0,3)==res.deptNo.slice(0,3))
+          {
+            _this.data.acceptedId=_this.data.secureList[i].secureId
+            _this.data.acceptedName=_this.data.secureList[i].secureName
+          }
+        }
+         }else{
+          _this.data.acceptedId=res.k
+          _this.data.acceptedName=res.v
+         }
+              if (res) {
+                  var _wx = wx;
+                  _wx.showLoading({
+                      title: '加载中'
+                  });
+                  _this.setData({
+                    rectifierParameterId: res.k,
+                      rectifierParameterName: res.k + '-' + res.v,
+                      rectifierId: res.k ,
+                      rectifierName: res.k + '-' + res.v,
+                      acceptedId:_this.data.acceptedId,
+                      acceptedName:_this.data.acceptedName,
+                      ajaxShow: true
+                  });
+              }
+          }
+      },
+      success: function (res) {
+      }
+  });
 },
 
 closeRectifierSelectorPopup: function(){
@@ -409,7 +482,7 @@ closeRectifierSelectorPopup: function(){
 },
 
 onRectifierPickerChange: function(event){
-  //  console.log(event);
+    // console.log("000000000000000000000");
   const { picker, value, index } = event.detail;
   this.setData({
     rectifierParameterName: value.rectifierParameterName,
@@ -451,7 +524,7 @@ onRectifierPickerConfirm: function(event){
    * 整改类型选择弹出层开启
    */
   showRectificationSelectorPopup: function(){
-    if(this.data.chechke2){ 
+    if(this.data.chechkeRectDta){ 
     this.setData({
       show:{rectificationMethodSelectorPopup:true}
     });
@@ -473,6 +546,7 @@ onRectificationPickerChange: function(event){
   });
 },
 onRectificationPickerConfirm: function(event){
+
   const { picker, value, index } = event.detail;
   if(value.rectificationParameterValue=='01')
   {
@@ -498,14 +572,16 @@ handleContentInput:function(e){
  * 整改期限弹出框
  */
 showRectificationDeadlineMethodSelectorPopup: function(){
+
   this.setData({
     show:{rectificationDeadlineMethodSelectorPopup:true}
   });
+
 },
 
 
 onDatePickerCancel: function(event){
-  console.log("111123232")
+  // console.log("111123232")
   var selectorName = event.currentTarget.dataset.selector + "Obj";
   this.setData({
     [selectorName]:{}
@@ -622,9 +698,10 @@ dateFormatForFilter(date){
           hiddenShow=false;
           _this.data.showConfirm=true;
           _this.data.chechke1=true;
+          _this.data.chechkeRectDta=true;
         }  
         if(hiddenDocDta.rstatus == "10"|| hiddenDocDta.rstatus == "30"){
-          _this.data.chechke1=true;
+         
           _this.data.showConfirm=true;
           if(hiddenDocDta.rectifierId==app.globalData.employeeId){
             _this.data.showSubBtn=true;
@@ -636,6 +713,7 @@ dateFormatForFilter(date){
         } 
        
         if(hiddenDocDta.rstatus >= "30"){
+          _this.data.chechkeRectDta=false;
           _this.data.showUpload=false;
           show2=true;
           _this.data.showRectificationUpload=false;
@@ -652,6 +730,12 @@ dateFormatForFilter(date){
         {
           if(hiddenDocDta.rstatus=="10"||hiddenDocDta.rstatus=="30"||hiddenDocDta.rstatus=="95")
           {
+            if(hiddenDocDta.rstatus=="30")
+            {
+            
+         
+              console.log( _this.data.rectificationCompletion)
+            }
             _this.data.showSubBtn=false;
           }else{
             _this.data.showSubBtn=true;
@@ -703,7 +787,8 @@ dateFormatForFilter(date){
             }
           }
       
-
+          if(hiddenDocDta.createTime=='null')
+          console.log("hiddenDocDta")
           console.log(hiddenDocDta)
         _this.setData({
           minDate: new Date(dateTemp.getFullYear() -1 ,dateTemp.getMonth(), 1).getTime(),
@@ -738,6 +823,7 @@ dateFormatForFilter(date){
           showRectificationUpload:rectificationShow,
           showSubBtn: _this.data.showSubBtn,
           chechke1: _this.data.chechke1,
+          chechkeRectDta: _this.data.chechkeRectDta,
           chechkeAccepted: _this.data.chechkeAccepted,
           chechkeOpinions: _this.data.chechkeOpinions,
           chechke2: _this.data.chechke2,
@@ -747,7 +833,7 @@ dateFormatForFilter(date){
       },
       fail: function (fail) {
         wx.hideLoading();
-        console.log(fail.data);
+        console.log("fail.data");
         Dialog.alert({
           title: '系统消息',
           message: fail.data + "-" + fail.statusCode + "-" + fail.header + "-" + fail.cookies,
@@ -1092,7 +1178,7 @@ checkFormDtaBeforeSubmit: function(){
       return false;
     }
   }
-  if(this.data.rstatus==30)
+  if(this.data.rstatus==30&&this.data.rectificationType!='03')
   {
     if(this.data.uploaderRectificationList.length == 0){
       Dialog.alert({
@@ -1122,8 +1208,9 @@ checkFormDtaBeforeSubmit: function(){
       return false;
     }
   }
-  if(this.data.rstatus>10)
+  if(this.data.rstatus>10&&this.data.rectificationType!='03')
   {
+    
     if(this.data.rectificationDeadline == null){
       Dialog.alert({
         title: '系统消息',
