@@ -73,6 +73,7 @@
     "pages/task/task",
     "pages/task/taskdetail",
     "pages/userSelect/userSelect",
+    "pages/userSelect/safetySelect",
     "pages/workTypeSelect/workTypeSelect"
   ],
   "subpackages": [
