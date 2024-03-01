@@ -24,7 +24,12 @@
 
 .itemInfoCard .detailOperateInfo_text_normal {
   font-size: 26rpx;
-  color: #333;
+  color: #000;
+}
+
+.postTextArea {
+
+  color: #000;
 }
 
 .itemInfoCard .detailOperateInfo_text_normal image {
@@ -85,7 +90,7 @@
 
 .itemInfoCard .detailOperateInfo_body_text_dtt {
   font-size: 24rpx;
-  color: #999;
+  color: #000;
 }
 
 .itemInfoCard .detailOperateInfo_body_text_btt {
@@ -95,12 +100,12 @@
 
 .itemInfoCard .detailOperateInfo_body_text_acount {
   font-size: 26rpx;
-  color: #999;
+  color: #000;
 }
 
 .itemInfoCard .detailOperateInfo_foot {
   font-size: 24rpx;
-  color: #333;
+  color: #000;
   line-height: 82rpx;
   border-top: 2rpx solid #eee;
   white-space: nowrap;
