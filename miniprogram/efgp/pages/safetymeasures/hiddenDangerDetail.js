@@ -344,9 +344,12 @@ Page({
    * 选择弹出层开启Pro
    */
   showSelectorDtaPopup: function(event){
+    console.log("整改期限弹出")
+    // console.log(this.data.rectificationType)
+    
     var selectorTemp = {};
     selectorTemp[event.currentTarget.dataset.selector + "SelectorPopup"] = true;
-    if(this.data.chechkeRectDta){ 
+    if(this.data.chechkeRectDta&&this.data.rectificationType!="01"){ 
     this.setData({
       show:{rectificationDeadlineMethodSelectorPopup:true}
     });
@@ -572,11 +575,9 @@ handleContentInput:function(e){
  * 整改期限弹出框
  */
 showRectificationDeadlineMethodSelectorPopup: function(){
-
   this.setData({
     show:{rectificationDeadlineMethodSelectorPopup:true}
   });
-
 },
 
 
