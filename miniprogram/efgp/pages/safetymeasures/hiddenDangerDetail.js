@@ -272,7 +272,6 @@ Page({
         if(hiddenDocDta.hiddenSource=='安全专员巡查')
         {
           if(hiddenDocDta.rstatus>='75'){
-           
             _this.data.chechke3=true;
           }
         }
@@ -428,12 +427,12 @@ bindSafetyOfficeSelect: function () {
     }
    
   }
-  if(this.data.hiddenSource=='岗位自查'||this.data.hiddenSource=='班组巡查'||this.data.hiddenSource=='课长巡查')
+  if(this.data.hiddenSource=='岗位自查'||this.data.hiddenSource=='班组巡查'||this.data.hiddenSource=='安全课长巡查')
   {
     chekeDept=true;
  
     checkItem='?deptNo='+app.globalData.defaultDeptId.slice(0,2)
-    console.log("ccccccccccccccccccccca")
+
     console.log(checkItem)
   }
   // console.log(this.data.hiddenSource)
@@ -443,8 +442,10 @@ bindSafetyOfficeSelect: function () {
       url: '../../../pages/userSelect/safetySelect'+checkItem,
       events: {
           returnUserSelect: function (res) {
-         if(chekeDept)//判断是否由整改人所在课长验收还是由提报人验收
-         {
+            
+        //  if(chekeDept)//判断是否由整改人所在课长验收还是由提报人验收
+        //  {
+          console.log(_this.data.secureList)
           for(var i = 0;i < _this.data.secureList.length; i++){
           if(_this.data.secureList[i].deptNo.slice(0,3)==res.deptNo.slice(0,3))
           {
@@ -452,11 +453,12 @@ bindSafetyOfficeSelect: function () {
             _this.data.acceptedName=_this.data.secureList[i].secureName
           }
         }
-         }else{
-          _this.data.acceptedId=res.k
-          _this.data.acceptedName=res.v
-         }
+        //  }else{
+        //   _this.data.acceptedId=res.k
+        //   _this.data.acceptedName=res.v
+        //  }
               if (res) {
+               
                   var _wx = wx;
                   _wx.showLoading({
                       title: '加载中'
@@ -485,7 +487,7 @@ closeRectifierSelectorPopup: function(){
 },
 
 onRectifierPickerChange: function(event){
-    // console.log("000000000000000000000");
+     console.log("000000000000000000000");
   const { picker, value, index } = event.detail;
   this.setData({
     rectifierParameterName: value.rectifierParameterName,
@@ -495,19 +497,17 @@ onRectifierPickerChange: function(event){
 onRectifierPickerConfirm: function(event){
   console.log("999999999999999")
   const { picker, value, index } = event.detail;
-  if(this.data.hiddenSource=='岗位自查'||this.data.hiddenSource=='班组巡查'||this.data.hiddenSource=='课长巡查'){//选择整改人时带出验收人,注:
+//选择整改人时带出验收人或会签人
   for(var i = 0;i < this.data.secureList.length; i++){
    if(this.data.secureList[i].deptNo==value.rectifierParameterDept)
    {
-     
+    console.log("999999999999999")
+     console.log(this.data.secureList)
       this.data.acceptedId=this.data.secureList[i].secureId
       this.data.acceptedName=this.data.secureList[i].secureName
    }
   }
-  }else{
-    this.data.acceptedId=this.data.rectifierId
-    this.data.acceptedName=this.data.rectifierName
-  }
+
   this.setData({
     rectifierId:value.rectifierParameterValue,
     rectifierName:value.rectifierParameterName,
@@ -731,12 +731,6 @@ dateFormatForFilter(date){
         {
           if(hiddenDocDta.rstatus=="10"||hiddenDocDta.rstatus=="30"||hiddenDocDta.rstatus=="95")
           {
-            if(hiddenDocDta.rstatus=="30")
-            {
-            
-         
-              console.log( _this.data.rectificationCompletion)
-            }
             _this.data.showSubBtn=false;
           }else{
             _this.data.showSubBtn=true;
