@@ -129,7 +129,31 @@
         bindtap='showSelectorDtaPopup'
         readonly
       />
-  <van-cell-group>
+         
+   
+<van-cell-group>
+    <van-cell title="整改原因" border="{{false}}" use-label-slot></van-cell>
+    <view class='textarea_pro' data-show="rectificationReasons" bindtap="ifshowArea">
+        <textarea wx:if="{{showTextArea.rectificationReasons}}" 
+        class='areaInput' bindblur="ifshowArea" data-show="rectificationReasons" value="{{rectificationReasons}}" 
+        maxlength="200" 
+        placeholder="请输入问题的正文内容" 
+        placeholder-style="color:#b3b3b3;font-size:14px;" 
+        auto-focus="true" 
+        disabled="{{chechke2?false:true}}"
+        bindinput="textAreaProInput"/>
+        <view wx:if="{{!showTextArea.rectificationReasons}}" 
+        class='areaTest' 
+        style='color:{{rectificationReasons==""?"#999":"#2b2b2b"}}; word-break:break-all; white-space:pre-line;'>
+            <view wx:if="{{troubleDetailInfo==''}}" style='color:#b3b3b3;font-size:14px;'>请输入问题的正文内容</view>{{rectificationReasons}}
+        </view>
+        <view class="textarea-counter">{{rectificationReasons.length}}/200</view>
+    </view>
+</van-cell-group>
+</view>
+
+
+<van-cell-group>
     <van-cell title="整改对策" border="{{false}}" use-label-slot></van-cell>
     <view class='textarea_pro' data-show="rectificationMeasures" bindtap="ifshowArea">
         <textarea wx:if="{{showTextArea.rectificationMeasures}}" 
@@ -148,7 +172,10 @@
         <view class="textarea-counter">{{rectificationMeasures.length}}/200</view>
     </view>
 </van-cell-group>
-</view>
+
+
+
+
 <view wx:if="{{showRectification}}">
 <van-field
     label="整改完成日期"
