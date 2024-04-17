@@ -1097,6 +1097,10 @@ hiddenFormSubmit: function(e){
   }
 },
 checkFormDtaBeforeSubmit: function(){
+  if(this.data.rectificationType=='03')
+  {
+    return true;
+  }
   if(this.data.hiddenLocation == null){
     Dialog.alert({
       title: '系统消息',
