@@ -150,8 +150,6 @@
         <view class="textarea-counter">{{rectificationReasons.length}}/200</view>
     </view>
 </van-cell-group>
-</view>
-
 
 <van-cell-group>
     <van-cell title="整改对策" border="{{false}}" use-label-slot></van-cell>
@@ -172,6 +170,10 @@
         <view class="textarea-counter">{{rectificationMeasures.length}}/200</view>
     </view>
 </van-cell-group>
+
+</view>
+
+
 
 
 
