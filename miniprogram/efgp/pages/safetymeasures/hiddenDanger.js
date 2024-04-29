@@ -37,8 +37,8 @@ Component({
     winHeight: 400,
     currentTab: 0,     //当前显示tab的下标
     extraFilterValue:'', //查询页面主页搜索框
-    navTab: ['待处理', '处理中', '全部'],
-    navTabPro: [{value:'待处理',showScrollBar:true}, {value:'处理中',showScrollBar:false}, {value:'全部',showScrollBar:false}],
+    navTab: ['待处理', '处理中', '已完成'],
+    navTabPro: [{value:'待处理',showScrollBar:true}, {value:'处理中',showScrollBar:false}, {value:'已完成',showScrollBar:false}],
     loading: true,
     refreshTrigger: false,
     show:{
@@ -186,7 +186,6 @@ Component({
     },
     
     docCardSelect(e) {
-      console.log("EEEEEEEEEEEEEE");
       console.log(e);
       wx.navigateTo({
         url: '../safetymeasures/hiddenDangerDetail?docFormidId=' + e.currentTarget.dataset.item.id+"&docType="+ e.currentTarget.dataset.item.hiddenSource
