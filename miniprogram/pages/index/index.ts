@@ -6,8 +6,8 @@ const app = getApp<IMyApp>()
 
 Page({
   data: {
-    hasUserInfo: false,
     authorized: false,
+    canSubmit: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     imgUrls: [
       'https://images.unsplash.com/photo-1551334787-21e6bd3ab135?w=640',
@@ -32,76 +32,132 @@ Page({
     duration: 1000
   },
   onLoad() {
-    var that=this;
-    if (app.globalData.userInfo) {
-      this.setData!({
-        hasUserInfo: true
-      })
-    } else if (this.data.canIUse || app.globalData.auth.length == undefined) {
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 app 方法，可以在 app.ts 中 callback 以防止这种情况
-      app.userInfoReadyCallback = (res) => {
-        this.setData!({
-          hasUserInfo: true
-        })
-      }
-    } 
-    else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          app.globalData.userInfo = res.userInfo
-          this.setData!({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          })
-        }
-      })
-    }
-    if (app.globalData.openId) {
-      this.setData!({
-        authorized: app.globalData.authorized
-      })
-    } else {
-      app.sessionInfoReadyCallback = (data) => {
-        this.setData!({
-          authorized: data.authorized
-        })
-      }
-    }
-     if (app.globalData.authData.length==0) {
-        app.authInfoReadyCallback = function (date) {
-          var list = that.data.menu;
-          for (var _i = 0, _a = date; _i < _a.length; _i++) {
-            var entry = _a[_i];
-            list.push(entry);
+    var that = this;
+    wx.showLoading({
+      title: 'Loading',
+    })
+    wx.login({
+      success: _res => {
+        // 发送 _res.code 到后台换取 openId, sessionKey, unionId
+        wx.request({
+          url: app.globalData.restAdd + '/Hanbell-WCO/api/prg9f247ab6d5e4/session',
+          data: {
+            code: _res.code
+          },
+          header: {
+            'content-type': 'application/json'
+          },
+          method: 'GET',
+          success: res => {
+            var that = this;
+            app.globalData.openId = res.data.openId;
+            app.globalData.sessionKey = res.data.sessionKey;
+            app.globalData.authorized = res.data.authorized;
+            if (res.data.authorized) {
+              app.globalData.employeeId = res.data.employeeId;
+              app.globalData.employeeName = res.data.employeeName;
+              app.globalData.profileData = res.data.profile;
+
+              that.loadMenu();
+            } else {
+              that.setData({
+                canSubmit: true
+              });
+              wx.hideLoading()
+            }
+          },
+          fail: fail => {
+            wx.hideLoading()
+            console.log(fail)
           }
-          that.setData({
-            menu: list
-          });
-        };
-      }else{
-        var list = that.data.menu;
-        for (var _i = 0, _a = app.globalData.authData; _i < _a.length; _i++) {
-          var entry = _a[_i];
-          list.push(entry);
-        }
-       that.setData({
-          menu: list
-        });
+        })
       }
+    })
+
   },
   onShow() {
-    if (!this.data.hasUserInfo && app.globalData.userInfo) {
-      this.setData!({
-        hasUserInfo: true
-      })
+    //来源profile跳转验证过来的数据，需要在加载
+    var that = this;
+    if (app.globalData.profileCommit) {
+      that.loadMenu();
+      app.globalData.profileCommit = false;
     }
-    if (!this.data.authorized && app.globalData.authorized) {
-      this.setData!({
-        authorized: true
+    if (!app.globalData.authorized) {
+      that.setData({
+        canSubmit: true,
+        authorized: false
       })
+
     }
+  },
+  loadMenu() {
+    console.info("employeeid="+app.globalData.employeeId)
+    var that = this;
+    wx.request({
+      url: app.globalData.restAdd + '/Hanbell-JRS/api/efgp/users/' + app.globalData.employeeId,
+      data: {
+        appid: app.globalData.restId,
+        token: app.globalData.restToken
+      },
+      header: {
+        'content-type': 'application/json'
+      },
+      method: 'GET',
+      success: res => {
+        console.log("User信息：" + JSON.stringify(res))
+        app.globalData.defaultCompany = res.data.company;
+        app.globalData.defaultCompanyName = res.data.companyName;
+        app.globalData.defaultDeptName = res.data.deptname;
+        app.globalData.defaultDeptId = res.data.deptno;
+        wx.request({
+          url: app.globalData.restAdd + '/Hanbell-WCO/api/prg9f247ab6d5e4/AuthValidation',
+          data: {
+            employeeid: app.globalData.employeeId,
+          },
+          header: {
+            'content-type': 'application/json'
+          },
+          method: 'GET',
+          success: res => {
+            var list = that.data.menu;
+            var authdata = res.data;
+            for (var _i = 0, _a = authdata; _i < _a.length; _i++) {
+              var entry = _a[_i];
+              list.push(entry);
+            }
+      
+            const uniqueArray = list.reduce((accumulator, current) => {
+              const exists = accumulator.find((item) => item.id === current.id);
+              if (!exists) {
+                accumulator.push(current);
+              }
+              return accumulator;
+            }, []);
+            for(var i=0;i<uniqueArray.length;i++){
+              console.info(JSON.stringify(uniqueArray[i]));
+              }
+            that.setData({
+              menu: uniqueArray
+            });
+            that.setData({
+              authorized: true
+            })
+            wx.hideLoading();
+          },
+          fail: fail => {
+            wx.showModal({
+              title: '系统提示',
+              content: "权限获取失败，请联系管理员",
+              showCancel: false
+            })
+          }
+        });
+      },
+      fail: fail => {
+        wx.hideLoading()
+        console.log(fail)
+      }
+    })
   },
   // 事件处理函数
   bindAuthorizeTap(e) {
