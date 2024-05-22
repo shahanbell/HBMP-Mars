@@ -200,8 +200,8 @@ Page({
     });
   },
   bindHmark1Change(e) {
-    this.setData!({
-      hmark1: e.detail.value
+    this.setData({
+      hmark1: e.detail
     })
   },
   formSubmit(e) {
@@ -221,8 +221,8 @@ Page({
     if (this.data.registrationvalue == '') {
       errmsg += "请选择是否临时登记\r\n"
     }
-    if (this.data.telcontact == '') {
-      errmsg += "请输入联系方式\r\n"
+    if (this.data.telcontact == '' || this.data.telcontact.length<5) {
+      errmsg += "请输入联系方式或联系方式字数大于5\r\n"
     }
     if(errmsg!=''){
       wx.showModal({
