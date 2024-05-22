@@ -38,7 +38,8 @@
     "van-overlay": "component/vant/overlay/index",
     "van-checkbox": "component/vant/checkbox/index",
     "van-checkbox-group": "component/vant/checkbox-group/index",
-    "van-toast": "component/vant/toast/index"
+    "van-toast": "component/vant/toast/index",
+    "van-panel": "component/vant/panel/index"
   },
   "pages": [
     "pages/index/index",
@@ -84,6 +85,9 @@
         "pages/overtime/overtime",
         "pages/overtime/overdetail",
         "pages/businesstrip/businesstrip",
+        "pages/businesstrip/businesstripdetail",
+        "pages/businesstrip/carapp",
+        "pages/businesstrip/carappdetail",
         "pages/businesstrip/businessProperty",
         "pages/businesstrip/vehicle",
         "pages/carapp/carapp",
