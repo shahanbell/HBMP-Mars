@@ -43,10 +43,12 @@ Page({
     eventChannel.on('openDetail', (res) => {
       if (res.isNew) {
         this.setData!({
+          ycrq: this.dateFormatForYYMMDD(new Date()),
           employeeId: app.globalData.employeeId,
           employeeName: app.globalData.employeeName,
           deptId: app.globalData.defaultDeptId,
-          deptName: app.globalData.defaultDeptName
+          deptName: app.globalData.defaultDeptName,
+          
         })
       } else {
         this.setData!({
@@ -205,7 +207,7 @@ Page({
     let day = dateTemp.getDate();
     let hour = dateTemp.getHours();
     let minute = dateTemp.getMinutes();
-    let dayTemp = year + "-" + month + "-" + day;
+    let dayTemp = year + "/" + month + "/" + day;
     return dayTemp;
   },
 

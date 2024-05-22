@@ -76,15 +76,17 @@
       <view class="weui-cells__title">备注说明</view>
       <van-cell-group>
         <van-field custom-style="height:100px"
-          value="{{ hmark1 }}"
+        value="{{ hmark1 }}"
           type="textarea"
           placeholder="请填写其他原因"
           autosize
-          bindblur="bindHmark1Change"
+          required
+          bind:change="bindHmark1Change"
         />
-        
       </van-cell-group>
-      <van-button custom-class="submitbtn" type="info" icon="passed" form-type="submit" bind:click="formSubmit">提交</van-button>
+      <view style="text-align:center;margin-top:12px">
+        <van-button color="#0396FF" round form-type="submit" type="info" bind:click="formSubmit">添加</van-button>
+      </view>
     </form>
   </view>
 </view>
