@@ -1,0 +1,90 @@
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+  <view class="page__hd">
+    <view class="page__title">出差派车申请</view>
+  </view>
+  <view class="page__bd">
+    <form bindreset="formReset">
+      <van-cell-group>
+        <van-field
+          label="车辆性质"
+          value="{{ clxzDesc }}"
+          required
+          readonly
+          icon="search"
+          placeholder="请选择车辆性质"
+          bindtap="bindClzx"
+        />
+      </van-cell-group>
+      <van-cell-group>
+        <van-field
+          label="驾驶员"
+          value="{{ privatedriver }}"
+          required
+          readonly
+          icon="search"
+          placeholder="请开窗选取驾驶员"
+          bindtap="bindUserSelect"
+        />
+      </van-cell-group>
+      <van-cell-group>
+          <van-field
+            label = "车牌号"
+            value="{{privatecarno}}"
+            placeholder="请输入车牌号"
+            bind:change="bindPrivatecarnoChange"
+          />
+      </van-cell-group>
+      <van-cell-group>
+        <van-field
+          label="用车原因"
+          value="{{ purposeDesc }}"
+          icon="search"
+          placeholder="请选择用车原因"
+          bindtap="bindPurpose"
+          required
+          readonly
+        />
+      </van-cell-group>
+      <van-cell-group>
+        <van-field label="是否住宿" value="{{ stayValue }}" border="{{ false }}" required icon="arrow_down" readonly="true" bindtap="bindIsStayShow" placeholder="请选择"/>
+      </van-cell-group>
+      <van-popup show="{{ isStayShow }}" position="bottom" data-selector="staySelect" bind:close="bindStayClose">
+        <van-picker show-toolbar title="是否住宿" columns="{{ stays }}" value-key="name" data-selector="staySelect" bind:confirm="bindStaySelect" bind:cancel="bindStayClose" />
+      </van-popup>
+      <van-cell-group>
+        <van-field label="始发地" value="{{ departurevalue }}" border="{{ false }}" required icon="arrow_down"  bindtap="bindDeparturePopShow" placeholder="请选择" />
+      </van-cell-group>
+      <van-popup show="{{ isDeparturePopShow }}" position="bottom" data-selector="departureSelect" bind:close="bindDeparturePopClose">
+        <van-picker show-toolbar title="出发地址" columns="{{ staydepartures }}" value-key="name" data-selector="departureSelect" bind:confirm="bindDepartureSelect" bind:cancel="bindDeparturePopClose" />
+      </van-popup>
+      <van-cell-group>
+        <van-field label="临时登记" value="{{ registrationvalue }}" border="{{ false }}" required icon="arrow_down" readonly="true" bindtap="bindRegistrationPopShow"   />
+      </van-cell-group>
+      <van-popup show="{{ isRegistrationPopShow }}" position="bottom" data-selector="registrationSelect" bind:close="bindRegistrationPopClose">
+        <van-picker show-toolbar title="是否登记" columns="{{ registrations }}" value-key="name" data-selector="registrationSelect" bind:confirm="bindRegistrationSelect" bind:cancel="bindRegistrationPopClose" />
+      </van-popup>
+      <van-cell-group>
+          <van-field
+            label = "联系方式"
+            value="{{telcontact}}"
+            placeholder="请输入手机号"
+            v-model="tel" type="tel"
+            bind:change="bindTelcontactChange"
+            required
+          />
+      </van-cell-group>
+      <view class="weui-cells__title">备注说明</view>
+      <van-cell-group>
+        <van-field custom-style="height:100px"
+          value="{{ hmark1 }}"
+          type="textarea"
+          placeholder="请填写其他原因"
+          autosize
+          bindblur="bindHmark1Change"
+        />
+        
+      </van-cell-group>
+      <van-button custom-class="submitbtn" type="info" icon="passed" form-type="submit" bind:click="formSubmit">提交</van-button>
+    </form>
+  </view>
+</view>
