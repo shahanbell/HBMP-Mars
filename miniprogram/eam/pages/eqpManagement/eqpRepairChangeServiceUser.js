@@ -47,6 +47,7 @@ Page({
     textareaValue:"",
     docId:null,
     docFormid:null,
+    docRepairmethodtype:null,
     eqpInfo: null,
     eqpIntoViewTest: null,
     eqpListScrollTop: 0,
@@ -219,7 +220,7 @@ Page({
 
   changeServiceUserFormSubmit: function(e){
     var that = this;
-    //console.log(e);
+    console.log(that.data.docRepairmethodtype);
     //console.log(this.data.uploaderList);
     const FileSystemManager = wx.getFileSystemManager();
     console.log(this.data);
@@ -258,6 +259,7 @@ Page({
               serviceuser: that.data.serviceuser,
               serviceusername: that.data.serviceusername,
               remark: that.data.changeReason,
+              repairmethodtype:that.data.docRepairmethodtype,
             },
             header: {
               'content-type': 'application/json'
@@ -322,6 +324,7 @@ Page({
     this.setData({
       docId: options.docId,
       docFormid: options.docFormid,
+      docRepairmethodtype:options.docRepairmethodtype
     })
 
     let _this = this;

@@ -47,6 +47,7 @@ Page({
       responseDutyBtn:false,
       approveAuditBtn:false,
       examAuditBtn: false,
+      transferBtn: false,//转单按钮
       detailCheckBtn: false,
       stopRepairBtn: false,
       startRepairBtn: false,
@@ -57,6 +58,7 @@ Page({
     disableBtn:{
       arrivalCheckBtn: false,
       finishCheckBtn:false,
+      transferBtn: false,
       stopRepairBtn: false,
       startRepairBtn: false,
       saveRepairInfoBtn: false,
@@ -87,6 +89,7 @@ Page({
     assetno: null,
     itemdsc: null,
     itemno: null,
+    repairmethodtype: null,
     troubleFrom: null,
     troubleDetailInfo: null,
     formdate: null,
@@ -992,11 +995,11 @@ upload: function(e) {
 
   onChangeServiceUserBtnClick: function(e){
     let that = this;
-    //console.log(e);
+    console.log(repairDocDta.repairmethodtype);
     var eqpInfo = { formId: that.data.docFormidId,displayType: "品名", assetDesc: that.data.itemdsc, productcount: 1, assetFormId: that.data.assetno, repairUserName: that.data.repairUserName,creDate: that.data.formdate,serviceUserName: that.data.serviceusername};
     var eqpInfoObj = JSON.stringify(eqpInfo);
     wx.navigateTo({
-      url: '../eqpManagement/eqpRepairChangeServiceUser?eqpInfo=' + eqpInfoObj + '&docFormid=' + that.data.docFormidId + '&docId=' + that.data.docId
+      url: '../eqpManagement/eqpRepairChangeServiceUser?eqpInfo=' + eqpInfoObj + '&docFormid=' + that.data.docFormidId + '&docId=' + that.data.docId+ '&docRepairmethodtype=' + repairDocDta.repairmethodtype
     });
   },
 
@@ -1333,12 +1336,15 @@ upload: function(e) {
           if(repairDocDta.rstatus >= "20" && repairDocDta.rstatus < "30" && repairDocDta.rstatus != "28"){
             _this.data.showBtn.deleteBtn = true;
             _this.data.showBtn.finishCheckBtn = true;
+            _this.data.showBtn.changeServiceUserBtn = true;  
             stepCode = 1;
           }
           if(repairDocDta.rstatus == "28"){
             _this.data.showBtn.deleteBtn = true;
             _this.data.showBtn.finishCheckBtn = true;
+            _this.data.showBtn.changeServiceUserBtn = true;
             _this.data.disableBtn.finishCheckBtn = true;
+            _this.data.disableBtn.changeServiceUserBtn = true;
             stepCode = 1;
             _this.data.steps[stepCode].text = "暂停维修"
           }
@@ -1377,6 +1383,7 @@ upload: function(e) {
             _this.data.showBtn.stopRepairBtn = true;
             _this.data.showBtn.spareDeliveryBtn = true;
             _this.data.showBtn.spareRetreatBtn = true;
+            _this.data.showBtn.changeServiceUserBtn = true;
             stepCode = 1;
           }
           if(repairDocDta.rstatus == "28"){
@@ -1504,8 +1511,10 @@ upload: function(e) {
           formdate: formDate_bj,
           serviceArriveTime: arrivalDate_bj,
           completeTime: completeDate_bj,
+          
           //formdateTS: null,
           serviceuser: repairDocDta.serviceuser,
+          repairmethodtype: repairDocDta.repairmethodtype,
           serviceusername: repairDocDta.serviceusername,
           serviceuserMobile: _this.data.serviceuserMobile,
           repairStepActive: stepCode,
@@ -1587,7 +1596,8 @@ upload: function(e) {
         var imagePathArray = [];
         for(var i = 0;i < dataLen;i++){
           var pathArray = res.data[i].filepath.split("/");
-          imagePathArray = imagePathArray.concat([app.globalData.restAdd + ":443/Hanbell-EAM/resources/app/res/" + pathArray.pop()]);
+          // imagePathArray = imagePathArray.concat([app.globalData.restAdd + ":443/Hanbell-EAM/resources/app/res/" + pathArray.pop()]);
+          imagePathArray = imagePathArray.concat([app.globalData.restAdd + ":/" + pathArray.pop()]);
         }
 
         //console.log(imagePathArray);
