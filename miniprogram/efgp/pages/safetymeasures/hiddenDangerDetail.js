@@ -1097,10 +1097,7 @@ hiddenFormSubmit: function(e){
   }
 },
 checkFormDtaBeforeSubmit: function(){
-  if(this.data.rectificationType=='03')
-  {
-    return true;
-  }
+ 
   if(this.data.hiddenLocation == null){
     Dialog.alert({
       title: '系统消息',
@@ -1113,7 +1110,7 @@ checkFormDtaBeforeSubmit: function(){
       });
     return false;
   }
-  if(this.data.hiddenDescribe == null){
+  if(this.data.hiddenDescribe == null||this.data.hiddenDescribe == ""){
     Dialog.alert({
       title: '系统消息',
       message: "请输入隐患描述",
@@ -1153,8 +1150,26 @@ checkFormDtaBeforeSubmit: function(){
       });
     return false;
   }
-  if(this.data.rstatus>10)
+  if(this.data.rstatus>=10)
   {
+    if(this.data.rectificationType==null)
+    {
+      Dialog.alert({
+        title: '系统消息',
+        message: "请输入整改类型",
+        zIndex:1000,
+        }).then(() => {
+          this.setData({
+            textareaDisabled:false
+          });
+        });
+      return false;
+    }
+    if(this.data.rectificationType=='03')
+    {
+      console.log("CCCCCCCC")
+      return true;
+    }
     if(this.data.hiddenType == null){
       Dialog.alert({
         title: '系统消息',
@@ -1167,8 +1182,9 @@ checkFormDtaBeforeSubmit: function(){
         });
       return false;
     }
+
   }
-  if(this.data.rstatus>10)
+  if(this.data.rstatus>=10)
   {
     if(this.data.rectificationMeasures == null){
       Dialog.alert({
@@ -1197,8 +1213,33 @@ checkFormDtaBeforeSubmit: function(){
         });
       return false;
     }
+
+    if(this.data.rectificationReasons == null||this.data.rectificationReasons=="" ){
+      Dialog.alert({
+        title: '系统消息',
+        message: "请输入整改原因",
+        zIndex:1000,
+        }).then(() => {
+          this.setData({
+            textareaDisabled:false
+          });
+        });
+      return false;
+    }
+    if(this.data.rectificationMeasures == null||this.data.rectificationMeasures=="" ){
+      Dialog.alert({
+        title: '系统消息',
+        message: "请输入整改对策",
+        zIndex:1000,
+        }).then(() => {
+          this.setData({
+            textareaDisabled:false
+          });
+        });
+      return false;
+    }
   }
-  if(this.data.rstatus>10)
+  if(this.data.rstatus>=10)
   {
     if(this.data.rectificationType == null){
       Dialog.alert({
@@ -1213,7 +1254,7 @@ checkFormDtaBeforeSubmit: function(){
       return false;
     }
   }
-  if(this.data.rstatus>10&&this.data.rectificationType!='03')
+  if(this.data.rstatus>=10&&this.data.rectificationType!='03')
   {
     
     if(this.data.rectificationDeadline == null){
@@ -1229,6 +1270,7 @@ checkFormDtaBeforeSubmit: function(){
       return false;
     }
   }
+  console.log(this.data)
   return true;
 },
 
