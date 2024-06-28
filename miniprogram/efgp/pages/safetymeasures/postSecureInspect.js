@@ -152,16 +152,24 @@ createPostForm:function (index) {
        
           var resMsg = '';
             var resMsg = '';
-            if(res.statusCode == 200 && res.data.msg != null){
-             
+            if(res.data.code == 200 && res.data.msg != null){
+              console.log("UpdateRes");
+             console.log(res.data);
               resMsg = '生成成功';
               _this.getPostSecureInspectModel(_this.data.docType);
+              wx.navigateTo({
+                url: '../safetymeasures/postSecureInspectDetail?docFormidId=' + res.data.msg
+              })
               _this.setData({
              
               });
             }
             else{
               resMsg = '生成失败';
+              Dialog.alert({
+                title: '系统消息',
+                message:resMsg,
+              })
             }
          
          
@@ -207,7 +215,6 @@ createPostForm:function (index) {
     wx.scanCode({
       success(res) {
         that.createPostForm(res.result)//sheng
-    
       }
 
     });

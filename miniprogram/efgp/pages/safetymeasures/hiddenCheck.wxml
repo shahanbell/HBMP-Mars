@@ -8,14 +8,14 @@
   <view id="menuStart" class='startView'></view>
   <van-button type="default" icon="notes-o" custom-style="{{menuBtnStyle}}" bind:click="onScheMaintainBtnClick">我的安全隐患单</van-button>
   <van-button type="default" icon="notes-o" custom-style="{{menuBtnStyle}}" bind:click="onSecurityCheckBtnClick">岗位安全自查</van-button>
-  <van-button type="default" icon="notes-o" custom-style="{{menuBtnStyle}}" bind:click="onClassBtnClick">班组日安全巡查</van-button>
+  <!-- <van-button type="default" icon="notes-o" custom-style="{{menuBtnStyle}}" bind:click="onClassBtnClick">班组日安全巡查</van-button> -->
   <van-button type="default" icon="notes-o" custom-style="{{menuBtnStyle}}" bind:click="onCourseBtnClick">课长周安全巡查</van-button>
 
   <van-button type="default" icon="notes-o" custom-style="{{menuBtnStyle}}" bind:click="onRotationCourseBtnClick">轮值安全课长周安全巡查</van-button>
 
   <van-button type="default" icon="notes-o" custom-style="{{menuBtnStyle}}" bind:click="onSafetyOfficerBtnClick">安全员周安全巡查</van-button>
 
-  <van-button type="default" icon="notes-o" custom-style="{{menuBtnStyle}}" bind:click="onCommissionerBtnClick">安全专员巡查</van-button>
+  <van-button type="default" icon="notes-o" custom-style="{{menuBtnStyle}}" bind:click="onCommissionerBtnClick">随手拍</van-button>
 </view>
 
 <eqpAutoMaintainDocList wx:if="{{active === tabData[1]}}" endHeight="{{endHeight}}" defaultFormType="{{defaultFormType}}"></eqpAutoMaintainDocList>
