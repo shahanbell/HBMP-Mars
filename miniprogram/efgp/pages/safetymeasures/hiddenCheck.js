@@ -42,8 +42,8 @@ Page({
         // console.log("true height:" + heightTemp);
         console.log("CCCCCC")
         let viewStyle = "height:" + rect.bottom + "px";
-        let btnHeight = rect.bottom / 8;
-        let marginTemp = btnHeight / 8;
+        let btnHeight = rect.bottom / 7;
+        let marginTemp = btnHeight / 7;
 
         let btnStyle = that.data.menuBtnStyle + "height:" + btnHeight + "px;margin-top:" + marginTemp + "px;";
         
