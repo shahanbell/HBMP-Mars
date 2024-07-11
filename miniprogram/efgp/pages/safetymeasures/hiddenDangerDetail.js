@@ -212,17 +212,29 @@ Page({
         var imagePathArray = [];
         var imageRectificationPathArray = [];
         for(var i = 0;i < dataLen;i++){
-          
-          if(res.data[0][i].fileType=="隐患图片")
+    
+          if(res.data[0][i][1]=="隐患图片")
           {
-          var pathArray = res.data[0][i].filePath.split("/");
-          imagePathArray = imagePathArray.concat([app.globalData.restAdd + "/Hanbell-EAM/resources/app/res/" + pathArray.pop()]);
+            var pathArray = res.data[0][i][0].replace(/[\r\n]/g, '') ;
+            console.log(pathArray)
+            // imagePathArray = imagePathArray.concat([app.globalData.restAdd + ":443/Hanbell-EAM/resources/app/res/" + pathArray.pop()]);
+            imagePathArray = imagePathArray.concat([pathArray]);
+          // var pathArray = res.data[0][i].filePath.split("/");
+          // // imagePathArray = imagePathArray.concat([app.globalData.restAdd + "/Hanbell-EAM/resources/app/res/" + pathArray.pop()]);
+
+          // imagePathArray = imagePathArray.concat([app.globalData.restAdd +"/"+ pathArray.pop()]);
           }
-          if(res.data[0][i].fileType=="整改图片")
+          if(res.data[0][i][1]=="整改图片")
           {
-          var pathArray = res.data[0][i].filePath.split("/");
-          imageRectificationPathArray = imageRectificationPathArray.concat([app.globalData.restAdd + "/Hanbell-EAM/resources/app/res/" + pathArray.pop()]);
+          // var pathArray = res.data[0][i].filePath.split("/");
+          // // imageRectificationPathArray = imageRectificationPathArray.concat([app.globalData.restAdd + "/Hanbell-EAM/resources/app/res/" + pathArray.pop()]);
+          // imageRectificationPathArray = imageRectificationPathArray.concat([app.globalData.restAdd +"/"+  pathArray.pop()]);
+          var pathArray = res.data[0][i][0].replace(/[\r\n]/g, '') ;
+          console.log(pathArray)
+          // imagePathArray = imagePathArray.concat([app.globalData.restAdd + ":443/Hanbell-EAM/resources/app/res/" + pathArray.pop()]);
+          imageRectificationPathArray = imageRectificationPathArray.concat([pathArray]);
           }
+      
         }
     
 
@@ -281,6 +293,7 @@ Page({
         }
       }
       console.log("ccccccccccc")
+      console.log(imagePathArray)
         console.log(res.data)
         _this.setData({
           showSubBtn: _this.data.showSubBtn,
