@@ -243,6 +243,7 @@ Page({
 },
 //展示图片
 showImg:function(e){
+  console.log("eeeeeeeeeeee")
     var that=this;
     wx.previewImage({
         urls: that.data.uploaderList,
@@ -1591,15 +1592,20 @@ upload: function(e) {
           wx.hideLoading();
           return;
         }
-
+        console.log(res.data)
         var dataLen = res.data.length;
         var imagePathArray = [];
+        // for(var i = 0;i < dataLen;i++){
+        //   var pathArray = res.data[i].filepath.split("/");
+        //   // imagePathArray = imagePathArray.concat([app.globalData.restAdd + ":443/Hanbell-EAM/resources/app/res/" + pathArray.pop()]);
+        //   imagePathArray = imagePathArray.concat([app.globalData.restAdd + ":/" + pathArray.pop()]);
+        // }
         for(var i = 0;i < dataLen;i++){
-          var pathArray = res.data[i].filepath.split("/");
+          var pathArray = res.data[i].replace(/[\r\n]/g, '') ;
+          console.log(pathArray)
           // imagePathArray = imagePathArray.concat([app.globalData.restAdd + ":443/Hanbell-EAM/resources/app/res/" + pathArray.pop()]);
-          imagePathArray = imagePathArray.concat([app.globalData.restAdd + ":/" + pathArray.pop()]);
+          imagePathArray = imagePathArray.concat([pathArray]);
         }
-
         //console.log(imagePathArray);
 
         _this.setData({

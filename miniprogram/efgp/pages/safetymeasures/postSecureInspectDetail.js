@@ -96,15 +96,15 @@ Page({
     var eqpMaintainDetailList = this.data.eqpMaintainDetailList;
     var nowList = [];//新数据
   
-    if(eqpMaintainDetailList[index].filePath!=null&&eqpMaintainDetailList[index].filePath!='')
-    {
-      //imagePathArray = imagePathArray.concat([app.globalData.restAdd + ":443/Hanbell-EAM/resources/app/res/" + pathArray.pop()]);
-      // nowList=nowList.concat([app.globalData.restAdd + ":443/Hanbell-EAM/resources/app/res/" + eqpMaintainDetailList[index].filePath]);
-      var pathArray = eqpMaintainDetailList[index].filePath.split("/");
-      nowList = nowList.concat([app.globalData.restAdd + ":443/Hanbell-EAM/resources/app/res/" + pathArray.pop()]);
-      eqpMaintainDetailList[index].uploadList=nowList;
+    // if(eqpMaintainDetailList[index].filePath!=null&&eqpMaintainDetailList[index].filePath!='')
+    // {
+    //   imagePathArray = imagePathArray.concat([app.globalData.restAdd + ":443/Hanbell-EAM/resources/app/res/" + pathArray.pop()]);
+    //   nowList=nowList.concat([app.globalData.restAdd + ":443/Hanbell-EAM/resources/app/res/" + eqpMaintainDetailList[index].filePath]);
+    //   var pathArray = eqpMaintainDetailList[index].filePath.split("/");
+    //   nowList = nowList.concat([app.globalData.restAdd + ":443/Hanbell-EAM/resources/app/res/" + pathArray.pop()]);
+    //   eqpMaintainDetailList[index].uploadList=nowList;
      
-    }
+    // }
     console.log(this.data.expandFlag)
     var expandFlag = true;
     if (event.detail.length == 0) {
@@ -281,10 +281,11 @@ upload: function(e) {
     var dispatchModeTemp = this.data.dispatchMode;
     var nowList = [];//新数据//转换后的数据
     var apiName = 'updateForm';
-   
+
     var _this = this;
     var canSubmit = true;
     var jsonArrayTemp = [];
+    console.log(_this.data.eqpMaintainDetailList)
     jsonArrayTemp.push(_this.data.eqpMaintainDetailList);
     if (!app.globalData.authorized) {
       canSubmit = false;
@@ -306,7 +307,7 @@ upload: function(e) {
           });
           var jsonArray = [];
           jsonArray.push(_this.data.eqpMaintainDetailList);
-       
+        
           wx.request({
             url: app.globalData.restAdd + '/Hanbell-JRS/api/shbedw/hiddendanger/' + apiName + '?' + app.globalData.restAuth,
             data: {
