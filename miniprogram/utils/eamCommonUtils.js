@@ -225,7 +225,7 @@ export function checkRepairDeptManger(employeeId){
  * @param {string} deptno 部门代号
  */
 export function checkEqpRepairDepartment(deptno){
-  if(deptno.indexOf("1W3") >= 0 || deptno.indexOf("2C5") >= 0 || deptno.indexOf("7C2") >= 0){
+  if(deptno.indexOf("1W3") >= 0 || deptno.indexOf("2F6") >= 0 || deptno.indexOf("7C2") >= 0){
     return true;
   }
   else
