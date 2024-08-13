@@ -50,6 +50,9 @@ Page({
     carResult: {},
     isShowCarResult: false,
     carList: [],
+         uploaderList: [],
+        showUpload: true,
+        hzgl004Files: []
   },
   onLoad() {
     wx.showLoading({
@@ -540,6 +543,79 @@ Page({
     return date.getTime();
   },
 
+  
+  // 删除图片
+  clearImg(e) {
+    var nowList = [];//新数据
+    var uploaderList = this.data.uploaderList;//原数据
+
+    for (let i = 0; i < uploaderList.length; i++) {
+      if (i == e.currentTarget.dataset.index) {
+        continue;
+      } else {
+        nowList.push(uploaderList[i])
+      }
+    }
+    this.setData({
+      uploaderNum: this.data.uploaderNum - 1,
+      uploaderList: nowList,
+      showUpload: true
+    })
+  },
+  //展示图片
+  showImg(e) {
+    var that = this;
+    wx.previewImage({
+      urls: that.data.uploaderList,
+      current: that.data.uploaderList[e.currentTarget.dataset.index]
+    })
+  },
+
+  //上传图片
+  upload(e) {
+    var that = this;
+    console.log("upload Test");
+    wx.chooseImage({
+      count: 3 - that.data.uploaderNum, // 默认9
+      sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+      success: function (res) {
+        //console.log(res)
+        //console.log(that.data.uploaderNum);
+        // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+        let tempFilePaths = res.tempFilePaths;
+        console.info('tempFilePaths==' + JSON.stringify(tempFilePaths))
+        let uploaderList = that.data.uploaderList.concat(tempFilePaths);
+        if (uploaderList.length == 3) {
+          that.setData({
+            showUpload: false
+          })
+        }
+        that.setData({
+          uploaderList: uploaderList,
+          uploaderNum: uploaderList.length,
+        })
+      }
+    })
+  },
+  initFile() {
+    console.info("1111");
+    var nowList = [];
+    var _this = this;
+    var FileSystemManager = wx.getFileSystemManager();
+    _this.data.uploaderList.forEach(function (o, i) {
+      console.info("222");
+      var baselib = FileSystemManager.readFileSync(_this.data.uploaderList[i], 'base64');
+      var imagePathTemp = _this.data.uploaderList[i].split('.');
+      var imageType = imagePathTemp[imagePathTemp.length - 1];
+      var obj = { data: baselib, imageType: imageType };
+      nowList.push(obj);
+    });
+
+    _this.setData({
+      hzgl004Files: nowList
+    })
+  },
   dateFormatForYYMMDD(date) {
     let dateTemp = new Date(date);
     let year = dateTemp.getFullYear();
@@ -599,6 +675,7 @@ Page({
     }
     if (canSubmit) {
       let _this = this
+      this.initFile();
       wx.showModal({
         title: '系统提示',
         content: '确定提交吗',
@@ -628,10 +705,11 @@ Page({
               detailList: _this.data.detailList,
               cardetailList:_this.data.carList,
               useCar:_this.data.useCar ? 'Y' :'N',
+              hzgl004Files: _this.data.hzgl004Files,
               ..._this.data.carResult
             };
             wx.request({
-              url: app.globalData.restAdd +'/Hanbell-JRS/api/efgp/hzgl004/wechat?' + app.globalData.restAuth,
+              url: 'http://localhost:8480/Hanbell-JRS/api/efgp/hzgl004/wechat?' + app.globalData.restAuth,
               data: data,
               header: {
                 'content-type': 'application/json'

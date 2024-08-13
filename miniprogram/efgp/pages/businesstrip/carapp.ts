@@ -23,7 +23,7 @@ Page({
     isDeparturePopShow:false,
     departurekey:"",
     departurevalue:"",
-    staydepartures:[{key:"1",name:"枫泾厂出发"},{key:"2",name:"兴塔产出发"},{key:"3",name:"分公司出发"},{key:"4",name:"汉声厂出发"},{key:"5",name:"汉扬厂出发"}],
+    staydepartures:[{key:"1",name:"枫泾厂出发"},{key:"2",name:"兴塔厂出发"},{key:"3",name:"分公司出发"},{key:"4",name:"汉声厂出发"},{key:"5",name:"汉扬厂出发"}],
     isRegistrationPopShow:false,
     registrationkey:"2",
     registrationvalue:"不办理",
