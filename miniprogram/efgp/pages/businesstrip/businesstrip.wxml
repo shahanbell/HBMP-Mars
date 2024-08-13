@@ -43,11 +43,6 @@
         </van-cell-group>
       </view>
 
-      <van-cell-group>
-        <van-cell title="是否中高险地区" required>
-          <van-switch checked="{{ safeplace }}" bind:change="bindSafeplaceChange" size='20px' />
-        </van-cell>
-      </van-cell-group>
 
       <van-cell-group>
         <van-cell title="是否派车" required>
@@ -182,6 +177,23 @@
           <van-button icon="plus" color="#e6a23c" bindtap="bindAddCarDetailTap" type="primary">添加派车单明细</van-button>
         </view>
       </view>
+      <van-cell title="图片上传" use-label-slot>
+
+
+<view slot="label" class='ui_uploader_cell'>
+  <!-- 根据已选择的图片临时路径数组展示图片-->
+  <view class='ui_uploader_item' wx:for="{{uploaderList}}" wx:key="{{index}}">
+    <!-- 删除-->
+    <icon class='ui_uploader_item_icon' bindtap='clearImg' data-index="{{index}}" type="clear" size="20" color="red" />
+    <!-- 图片-->
+    <image bindtap='showImg' data-index="{{index}}" src='{{item}}'></image>
+  </view>
+  <!-- 上传按钮+框 -->
+  <view class='ui_uploader' bindtap='upload' wx:if="{{showUpload}}"></view>
+</view>
+
+</van-cell>
+
       <van-button custom-class="submitbtn" type="info" icon="passed" form-type="submit" disabled="{{!canSubmit}}" bind:click="formSubmit" block>提交</van-button>
     </form>
   </view>
