@@ -351,6 +351,14 @@
         bindtap='showSelectorPopup'
         readonly
       />
+      <van-field
+        label="停机时间"
+        value="{{ suppleStopDateObj.dateFormatStr }}"
+        right-icon="arrow-down"
+        data-selector="suppleStopDate"
+        bindtap='showSelectorPopup'
+        readonly
+      />
     </van-collapse-item>
   </van-collapse>
 
@@ -564,7 +572,6 @@
     position="bottom"
     bind:close="closeSelectorPopup"
 >
-
   <van-datetime-picker
   type="datetime"
   id = "picker1"
@@ -580,6 +587,30 @@
   />
 
 </van-popup>
+
+
+
+<van-popup
+    show="{{ show.suppleStopDateSelectorPopup }}"
+    position="bottom"
+    bind:close="closeSelectorPopup"
+>
+  <van-datetime-picker
+  type="datetime"
+  id = "picker1"
+  value="{{currentDate}}"
+  cancel-button-text="清空"
+  data-selector="suppleStopDate"
+  bind:cancel="onDatePickerCancel"
+  bind:confirm="onDatePickerConfirm"
+  bind:input="onDatePickerInput"
+  min-date="{{minCompleteDate}}"
+  max-date="{{currentDate}}"
+  formatter="{{formatter}}"
+  />
+
+</van-popup>
+
 
 <view class="submitWrap_fix">
 <van-button type="info" icon="passed" form-type="submit" style="width:100%;position:fixed;bottom:0px;z-index:2;" bind:click="eqpRepairFormSubmit" block>提交</van-button>
