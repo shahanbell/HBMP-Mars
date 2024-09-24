@@ -78,6 +78,7 @@ Page({
       repairMethodSelectorPopup:false,
       suppleStartDateSelectorPopup:false,
       suppleCompleteDateSelectorPopup: false,
+      suppleStopDateSelectorPopup:false,
       repairAreaSelectorPopup:false,
       needSpareSelectorPopup:false,
       dateFilterPopup: false,
@@ -119,6 +120,7 @@ Page({
     formdateTS: null,
     suppleStartDateObj:{},
     suppleCompleteDateObj:{},
+    suppleStopDateObj:{},
     assetCardId: null,
     serviceuser: 'TEST',
     serviceusername: 'CTEST',
@@ -157,6 +159,7 @@ Page({
       supplementFlag:supplementFlag,
       suppleStartDateObj: {},
       suppleCompleteDateObj: {},
+      suppleStopDateObj: {},
     });
   },
 
@@ -778,12 +781,17 @@ onServiceUserPickerCancel: function(event){
           // on confirm
           var startDateTemp = null;
           var completeDateTemp = null;
+          var stopDateTemp = null;
           if(that.data.supplementFlag){
             if(that.data.suppleStartDateObj != null && JSON.stringify(that.data.suppleStartDateObj) != '{}'){
               startDateTemp = new Date(that.data.suppleStartDateObj.dateTS);
             }
             if(that.data.suppleCompleteDateObj != null && JSON.stringify(that.data.suppleCompleteDateObj) != '{}'){
               completeDateTemp = new Date(that.data.suppleCompleteDateObj.dateTS);
+            }
+
+            if(that.data.suppleStopDateObj != null && JSON.stringify(that.data.suppleStopDateObj) != '{}'){
+              stopDateTemp = new Date(that.data.suppleStopDateObj.dateTS);
             }
           }        
 
@@ -816,10 +824,12 @@ onServiceUserPickerCancel: function(event){
               remark: that.data.reRepairFlag.toString(),
               servicearrivetime: startDateTemp,
               completetime: completeDateTemp,
+              downinitiatetime: stopDateTemp,
             },
             header: {
               'content-type': 'application/json'
             },
+            
             method: 'POST',
             success: function (res) {
               //wx.hideLoading();
@@ -1367,10 +1377,24 @@ onServiceUserPickerCancel: function(event){
 
       var startDateTSTemp = (this.data.suppleStartDateObj == null || JSON.stringify(this.data.suppleStartDateObj) === '{}') ? 0 : this.data.suppleStartDateObj.dateTS;
       var completeDateTSTemp = (this.data.suppleCompleteDateObj == null || JSON.stringify(this.data.suppleCompleteDateObj) === '{}') ? 0 : this.data.suppleCompleteDateObj.dateTS;
+
+      var stopDateTSTemp = (this.data.suppleStopDateObj == null || JSON.stringify(this.data.suppleStopDateObj) === '{}') ? 0 : this.data.suppleStopDateObj.dateTS;
       if(startDateTSTemp < this.data.formdateTS || (completeDateTSTemp < startDateTSTemp && completeDateTSTemp != 0)){
         Dialog.alert({
           title: '系统消息',
           message: "请确认故障到达和完成时间是否填写正确",
+          zIndex:1000,
+          }).then(() => {
+            this.setData({
+              textareaDisabled:false
+            });
+          });
+        return false;
+      }
+      if( (stopDateTSTemp < this.data.formdateTS && stopDateTSTemp != 0)||(stopDateTSTemp > completeDateTSTemp && stopDateTSTemp != 0&&completeDateTSTemp!=0)){
+        Dialog.alert({
+          title: '系统消息',
+          message: "请确认停机时间是否填写正确",
           zIndex:1000,
           }).then(() => {
             this.setData({
@@ -1544,6 +1568,7 @@ onServiceUserPickerCancel: function(event){
   },
 
   onPickerConfirm: function(event){
+    console.log("TTTTT")
     const { picker, value, index } = event.detail;
     var selectorName = event.currentTarget.dataset.selector + "Obj";
     this.setData({
