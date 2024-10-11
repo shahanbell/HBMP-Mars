@@ -1329,7 +1329,7 @@ upload: function(e) {
         console.log(app.globalData);
         if(app.globalData.defaultDeptId.indexOf(repairDocDta.repairdeptno.substring(0,3)) >= 0){
           _this.data.steps = _this.data.steps_info;
-          if(repairDocDta.rstatus == "10"){
+          if(repairDocDta.rstatus == "10"||repairDocDta.rstatus == "15"){
             _this.data.showBtn.deleteBtn = true;
             _this.data.showBtn.arrivalCheckBtn = true;
             stepCode = 0;
