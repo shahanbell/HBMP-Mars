@@ -49,6 +49,7 @@ Page({
     hiddenTypeList: [{hiddenParameterName:'请选择',hiddenParameterValue:'-1'}],
     rectificationTypeList: [],
     rectifierList:[],
+    areaList:[{areaParameterName:'请选择',areaParameterValue:'-1'}],
     eqpMaintainDetailList_dispatch: [],
     maintainResult: [],
     secureList:[],
@@ -61,7 +62,7 @@ Page({
     rectifierName: null,
     rectifierId: null,
     checkName: null,
- 
+    area: null,
     hiddenType: null,
     rectificationType: null,
     rectificationDeadline: null,
@@ -93,12 +94,15 @@ Page({
     hiddenParameterName: null,
     rectifierParameterValue: null,
     rectifierParameterName: null,
+    areaParameterValue: null,
+    areaParameterName: null,
     troubleDesc: null,
     uploaderList: [],
     rectificationUploaderList: [],
     show:{
       hiddenMethodSelectorPopup:false,
       rectifierMethodSelectorPopup:false,
+      areaMethodSelectorPopup:false,
       rectificationMethodSelectorPopup:false,
       rectificationDeadlineMethodSelectorPopup:false
     },
@@ -142,8 +146,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    var _this=this ;
     dateTemp = new Date();
-    console.log(options)
+
+
     this.setData({
       // currentDate: new Date(2024 ,1, 1).getTime(), 
       // minCompleteDate: new Date(2023 ,1, 1).getTime(), 
@@ -157,9 +163,13 @@ Page({
       presentingName:app.globalData.employeeName,
       hiddenSource:options.docType,
       docPid:options.docPid,
+      areaParameterName:_this.data.areaParameterName,
+      areaParameterValue: _this.data.areaParameterValue,
+      area: _this.data.area,
       hiddenParameterName:'请选择',
       hiddenParameterValue:'-1',
       rectifierParameterName:'请选择',
+      areaParameterName:'请选择',
       rectifierParameterValue:'-1',
       rectificationParameterName:'请选择',
       rectificationParameterValue:'-1',
@@ -275,16 +285,41 @@ Page({
           }
           _this.data.rectifierList.push(newItem);
         }
+
+        for(var i = 0;i < res.data[6].length; i++){
+          let newItem = { areaParameterName: "" , areaParameterValue: ""};
+          newItem.areaParameterName =res.data[6][i].parameterName;
+          newItem.areaParameterValue = res.data[6][i].parameterValue;
+          if(newItem.areaParameterValue==_this.data.area)
+          {
+            _this.data.areaParameterName=newItem.areaParameterName
+            _this.data.areaParameterName=newItem.areaParameterName
+          }else{
+            if(docType!='安全专员巡查')
+            {
+              
+              _this.data.areaParameterName="枫泾厂"
+              _this.data.areaParameterName="枫泾厂"
+              _this.data.area="枫泾厂"
+            }
+
+          }
+        
+          _this.data.areaList.push(newItem);
+        }
         if(hiddenDocDta)
         {
-        if(res.data[5][0].secureId==app.globalData.employeeId)
-        {
-          if(hiddenDocDta.rstatus=='75')
-          {
-            _this.data.showSubBtn=true;
-            _this.data.chechkeOpinions=true;
+          for(var i = 0;i < res.data[5].length; i++){//只要是对应的月安全课长就可以查看
+            if(res.data[5][i].secureId==app.globalData.employeeId)
+              {
+                if(hiddenDocDta.rstatus=='75')
+                {
+                  _this.data.showSubBtn=true;
+                  _this.data.chechkeOpinions=true;
+                }
+              }
           }
-        }
+      
         if(hiddenDocDta.hiddenSource=='安全专员巡查')
         {
           if(hiddenDocDta.rstatus>='75'){
@@ -292,9 +327,6 @@ Page({
           }
         }
       }
-      console.log("ccccccccccc")
-      console.log(imagePathArray)
-        console.log(res.data)
         _this.setData({
           showSubBtn: _this.data.showSubBtn,
           hiddenParameterValue:_this.data.hiddenParameterValue,
@@ -311,6 +343,10 @@ Page({
           rectifierList:_this.data.rectifierList,
           rectificationTypeList:_this.data.rectificationTypeList,
           hiddenTypeList:_this.data.hiddenTypeList,
+          areaList:_this.data.areaList,
+          areaParameterName:_this.data.areaParameterName,
+          areaParameterValue:_this.data.areaParameterValue,
+          area:_this.data.area,
           chechke3:_this.data.chechke3,
           chechkeOpinions:_this.data.chechkeOpinions,
           docId:_this.data.id,
@@ -406,6 +442,8 @@ Page({
     });
   },
 
+
+  
   onHiddenPickerConfirm: function(event){
     const { picker, value, index } = event.detail;
     this.setData({
@@ -431,7 +469,17 @@ Page({
     }
  
 },
-
+ /**
+   * 厂区选择弹出层开启
+   */
+  showAreaSelectorPopup: function(){
+    if(this.data.chechkeRectDta){
+      this.setData({
+        show:{areaMethodSelectorPopup:true}
+      });
+    }
+ 
+},
 bindSafetyOfficeSelect: function () {
   var checkItem='';
   var chekeDept=false;//判断验收部门
@@ -466,6 +514,7 @@ bindSafetyOfficeSelect: function () {
           for(var i = 0;i < _this.data.secureList.length; i++){
           if(_this.data.secureList[i].deptNo.slice(0,3)==res.deptNo.slice(0,3))
           {
+            console.log("ddddd"+i);
             _this.data.acceptedId=_this.data.secureList[i].secureId
             _this.data.acceptedName=_this.data.secureList[i].secureName
           }
@@ -496,15 +545,44 @@ bindSafetyOfficeSelect: function () {
       }
   });
 },
-
+//整改人选择
 closeRectifierSelectorPopup: function(){
   this.setData({
     show:{rectifierMethodSelectorPopup:false}
   });
 },
+//厂区选择
+closeAreaSelectorPopup: function(){
+  this.setData({
+    show:{areaMethodSelectorPopup:false}
+  });
+},
+onAreaPickerConfirm: function(event){
+  const { picker, value, index } = event.detail;
+  this.setData({
+    area:value.areaParameterValue,
+   areaParameterName: value.areaParameterName,
+    areaParameterValue: value.areaParameterValue,
+  });
 
+  this.closeAreaSelectorPopup();
+},
+
+bindAreaSelect: function(){
+  if(!this.data.chechke1)
+  {
+    this.setData({
+      show:{areaMethodSelectorPopup:true}
+    });
+  }else{
+    this.setData({
+      show:{areaMethodSelectorPopup:false}
+    });
+  }
+ 
+},
 onRectifierPickerChange: function(event){
-     console.log("000000000000000000000");
+  
   const { picker, value, index } = event.detail;
   this.setData({
     rectifierParameterName: value.rectifierParameterName,
@@ -800,7 +878,7 @@ dateFormatForFilter(date){
           }
       
           if(hiddenDocDta.createTime=='null')
-          console.log("hiddenDocDta")
+          console.log("hiddenDocDta111")
           console.log(hiddenDocDta)
         _this.setData({
           minDate: new Date(dateTemp.getFullYear() -1 ,dateTemp.getMonth(), 1).getTime(),
@@ -818,6 +896,8 @@ dateFormatForFilter(date){
           presentingId:hiddenDocDta.presentingId,
           rectifierName:hiddenDocDta.rectifierName,
           rectifierId:hiddenDocDta.rectifierId,
+          areaParameterName:hiddenDocDta.area,
+          area:hiddenDocDta.area,
           rectificationDeadline:util.utcInit2Date(hiddenDocDta.rectificationDeadline),
           rectificationMeasures:hiddenDocDta.rectificationMeasures,
           rectificationReasons:hiddenDocDta.rectificationReasons,
@@ -1024,6 +1104,7 @@ hiddenFormSubmit: function(e){
           data: {
           company: app.globalData.defaultCompany,
           id:that.data.id,
+          area:that.data.area,
           hiddenDescribe:that.data.hiddenDescribe,
           hiddenLocation:that.data.hiddenLocation,
           hiddenSource:that.data.hiddenSource,
@@ -1123,6 +1204,23 @@ checkFormDtaBeforeSubmit: function(){
       });
     return false;
   }
+  if(!this.data.chechke1)
+  {
+    if(this.data.area == null||this.data.area == ""){
+      Dialog.alert({
+        title: '系统消息',
+        message: "请选择所属厂区",
+        zIndex:1000,
+        }).then(() => {
+          this.setData({
+            textareaDisabled:false
+          });
+        });
+      return false;
+    }
+
+  }
+
   if(this.data.hiddenDescribe == null||this.data.hiddenDescribe == ""){
     Dialog.alert({
       title: '系统消息',
