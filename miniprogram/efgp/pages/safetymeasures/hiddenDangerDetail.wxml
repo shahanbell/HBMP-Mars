@@ -33,6 +33,15 @@
     placeholder="请输入隐患地点"
     readonly="{{chechke1}}"
   />
+  <van-field
+    label="所属厂区"
+    value="{{ areaParameterName }}"
+    data-name="areaParameterName"
+    bind:change="bindData"
+    right-icon="arrow-down"
+    bindtap='bindAreaSelect'
+    readonly
+  />
   <van-cell-group>
     <van-cell title="隐患描述" border="{{false}}" use-label-slot></van-cell>
     <view class='textarea_pro' data-show="hiddenDescribe" bindtap="ifshowArea">
@@ -52,6 +61,7 @@
         <view class="textarea-counter">{{hiddenDescribe.length}}/200</view>
         
     </view>
+
 </van-cell-group>
 
 <van-cell title="隐患图片" use-label-slot>
@@ -199,6 +209,7 @@
           <icon class='ui_uploader_item_icon' bindtap='clearImgRectification' data-index="{{index}}" type="clear" size="20" color="red"  wx:if="{{showRectificationUpload}}"/>
           <!-- 图片-->
           <image bindtap='showImgRectification' data-index="{{index}}" src='{{item}}'></image>
+          
       </view>
       <!-- 上传按钮+框 -->
       <view class='ui_uploader' bindtap='uploadRectification' wx:if="{{showRectificationUpload}}"></view>
@@ -276,7 +287,6 @@
     position="bottom"
     bind:close="closeRectifierSelectorPopup"
 >
-
   <van-picker
     show-toolbar
     title="整改人"
@@ -285,6 +295,22 @@
     bind:change="onRectifierPickerChange"
     bind:confirm="onRectifierPickerConfirm"
     bind:cancel="closeRectifierSelectorPopup"
+  />
+</van-popup>
+
+<van-popup
+    show="{{ show.areaMethodSelectorPopup }}"
+    position="bottom"
+    bind:close="closeAreaSelectorPopup"
+>
+  <van-picker
+    show-toolbar
+    title="所属厂区"
+    columns="{{ areaList }}"
+    value-key="areaParameterName"
+    bind:change="onAreaPickerChange"
+    bind:confirm="onAreaPickerConfirm"
+    bind:cancel="closeAreaSelectorPopup"
   />
 
 </van-popup>
