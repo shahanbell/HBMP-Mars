@@ -24,7 +24,7 @@
     <van-field label="名字" value="{{ employeename }}"  size="small" readonly="true"></van-field>
     <van-field label="部门代号" value="{{ deptno }}"  size="small" readonly="true"></van-field>
     <van-field label="部门名称" value="{{ deptname }}" size="small" readonly="true"></van-field>
-  <van-button custom-class="submitbtn" form-type="submit" type="danger"  bind:click="loginout">退出</van-button>
+
 
 </form>
 </view>

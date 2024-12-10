@@ -35,6 +35,7 @@ Page({
     var that = this;
     wx.showLoading({
       title: 'Loading',
+      mask:true
     })
     wx.login({
       success: _res => {
