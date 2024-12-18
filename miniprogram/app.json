@@ -103,9 +103,9 @@
         "pages/safetymeasures/hiddenDangerDetail",
         "pages/safetymeasures/postSecureInspect",
         "pages/safetymeasures/postSecureInspectDetail",
-      "pages/safetymeasures/safetyManagement",
-      "pages/safetymeasures/safemanagerselect"
-
+        "pages/safetymeasures/safetyManagement",
+        "pages/safetymeasures/safemanagerselect",
+        "pages/carapp/startaddress"
       ]
     },
     {
@@ -167,7 +167,10 @@
       }
     ]
   },
-  "requiredPrivateInfos":["chooseLocation","getLocation"],
+  "requiredPrivateInfos": [
+    "chooseLocation",
+    "getLocation"
+  ],
   "sitemapLocation": "sitemap.json",
   "permission": {
     "scope.userLocation": {

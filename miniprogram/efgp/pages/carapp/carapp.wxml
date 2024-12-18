@@ -50,6 +50,18 @@
         <van-picker show-toolbar title="是否每刻报销" columns="{{ mksystems }}" value-key="name" data-selector="mkSelect" bind:confirm="bindMkSelect" bind:cancel="bindMkClose" />
       </van-popup>
 
+      <van-cell-group>
+        <van-field
+          label="始发地"
+          value="{{ departureDesc }}"
+          required
+          readonly
+          icon="search"
+          placeholder="请选择始发地"
+          bindtap="bindDeparture"
+        />
+      </van-cell-group>
+
 
       <van-cell-group>
         <van-field

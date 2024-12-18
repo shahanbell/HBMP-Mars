@@ -709,7 +709,7 @@ Page({
               ..._this.data.carResult
             };
             wx.request({
-              url: 'http://localhost:8480/Hanbell-JRS/api/efgp/hzgl004/wechat?' + app.globalData.restAuth,
+              url: app.globalData.restAdd+ '/Hanbell-JRS/api/efgp/hzgl004/wechat?' + app.globalData.restAuth,
               data: data,
               header: {
                 'content-type': 'application/json'
