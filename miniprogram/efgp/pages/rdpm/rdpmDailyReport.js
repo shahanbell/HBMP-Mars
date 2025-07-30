@@ -178,12 +178,31 @@ Page({
   
   saveReportFormSubmit: function(e){
     var that = this;
-    const FileSystemManager = wx.getFileSystemManager();
-    console.log("FFFFFFFFF")
-    //var errmsg = '';
-
+    var eqpMaintainDetailListTemp = that.data.eqpMaintainDetailList;
+    eqpMaintainDetailListTemp.forEach(function (element) {
+      console.log(element.subjectNo)
+     if(element.subjectNo=='01')
+      {
+      
+        if(parseInt(element.subjectWorkPercent) >10)
+        {
+          bol=true;
+        }
+      }
+    });
+    if(bol){
+      Dialog.alert({
+        title: '系统消息',
+        message: "非研发工作比例不能超过10%",
+        }).then(() => {
+          // on close
+        });
+        return;
+    }
     var jsonArrayTemp = [];
+   
     jsonArrayTemp.push(that.data.eqpMaintainDetailList);
+
     console.log(jsonArrayTemp);
     var  canSubmit=true;
     if (!app.globalData.authorized) {
