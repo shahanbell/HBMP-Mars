@@ -1,0 +1,130 @@
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+  <view class="page__hd">
+    <view class="page__title">用车明细</view>
+  </view>
+  
+  <view class="page__bd">
+    <form bindreset="formReset">
+      <van-cell-group>
+          <van-field
+          label="工号"
+        value="{{employeeId}}-{{employeeName}}"
+        icon="search"
+        placeholder="请选择出差人员"
+        bindtap="bindUserSelect"
+        readonly="true"
+          />
+      </van-cell-group>
+      <van-cell-group>
+          <van-field
+            label = "部门"
+            value="{{ deptId }}-{{deptName}}"
+            placeholder="请选择"
+            bind:change="bindKrChange"
+          />
+      </van-cell-group>
+      <van-cell-group>
+          <van-field
+            label = "乘客"
+            value="{{ kr }}"
+            placeholder="请输入乘客姓名"
+            bind:change="bindKrChange"
+          />
+      </van-cell-group>
+      <van-cell-group>
+          <van-field
+            label = "乘客联系号"
+            value="{{ contact }}"
+            placeholder="请输入乘客联系号"
+            type="tel"
+            bind:change="bindContactChange"
+          />
+      </van-cell-group>
+  <van-popup show="{{ showDate }}" position="bottom" bind:close="bindCloseDate">
+        <van-datetime-picker type="date" id="picker1" value="{{showDateInit}}" bind:cancel="bindDateCancel" bind:confirm="bindDateConfirm"  formatter="{{formatter}}" />
+      </van-popup>
+      <van-cell-group>
+          <van-field label="用车日期" required value="{{ycrq}}" use-button-slot readonly bindtap='bindPickerDate'>
+            <van-icon slot="button" name="arrow" />
+          </van-field>
+      </van-cell-group>
+
+      <van-cell-group>
+          <van-field
+            label = "出发省份"
+            value="{{ cfsf }}"
+            placeholder="请输入出发省份"
+            bind:change="bindCfsfChange"
+            required
+          />
+      </van-cell-group>
+      <van-cell-group>
+          <van-field
+            label = "出发城市"
+            value="{{ cfcs }}"
+            placeholder="请输入出发城市"
+            bind:change="bindCfcsChange"
+            required
+          />
+      </van-cell-group>
+      <van-cell-group>
+          <van-field
+            label = "详细地址(始)"
+            value="{{ address1 }}"
+            placeholder="详细地址"
+            bind:change="bindAddress1Change"
+            required
+          />
+      </van-cell-group>
+      <van-cell-group>
+          <van-field
+            label = "目的省份"
+            value="{{ mdsf }}"
+            placeholder="目的省份"
+            bind:change="bindMdsfChange"
+            required
+          />
+      </van-cell-group>
+      <van-cell-group>
+          <van-field
+            label = "目的城市"
+            value="{{ mdcs }}"
+            required
+            placeholder="目的城市"
+            bind:change="bindMdcsChange"
+          />
+      </van-cell-group>
+      <van-cell-group>
+          <van-field
+            label = "详细地址(终)"
+            value="{{ address2 }}"
+            placeholder="详细地址"
+            bind:change="bindAddress2Change"
+            required
+          />
+      </van-cell-group>
+      <van-cell-group>
+          <van-field
+            label = "公司名称"
+            value="{{ company }}"
+            placeholder="公司名称"
+            bind:change="bindCompanyChange"
+          />
+      </van-cell-group>
+      <view class="weui-cells__title">派车事由</view>
+      <van-cell-group>
+        <van-field custom-style="height:100px"
+          model:value="{{ sy }}"
+          type="textarea"
+          placeholder="请输入派车事由"
+          bindblur="bindSyChange"
+          autosize
+          required
+        />
+      </van-cell-group>
+      <view style="text-align:center;margin-top:12px">
+        <van-button color="#0396FF" round form-type="submit" bind:click="formSubmit" type="primary">添加</van-button>
+      </view>
+    </form>
+  </view>
+</view>

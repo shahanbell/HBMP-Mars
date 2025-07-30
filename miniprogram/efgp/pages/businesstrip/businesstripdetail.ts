@@ -217,9 +217,8 @@ Page({
         bizAddress: this.data.bizAddress,
         bizContent: this.data.bizContent
       }
-      // console.log(newObject)
       eventChannel = this.getOpenerEventChannel()
-      eventChannel.emit('returnDetail', { data: newObject, isNew: this.data.isNew })
+      eventChannel.emit('returnDetail', { data: newObject, isNew:false})
       wx.navigateBack({
         delta: 1
       })
