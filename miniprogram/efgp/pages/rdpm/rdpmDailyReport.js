@@ -178,12 +178,12 @@ Page({
   
   saveReportFormSubmit: function(e){
     var that = this;
+    var bol=false;
     var eqpMaintainDetailListTemp = that.data.eqpMaintainDetailList;
     eqpMaintainDetailListTemp.forEach(function (element) {
       console.log(element.subjectNo)
      if(element.subjectNo=='01')
       {
-      
         if(parseInt(element.subjectWorkPercent) >10)
         {
           bol=true;
