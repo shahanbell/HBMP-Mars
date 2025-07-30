@@ -1,227 +1,144 @@
 //profile.ts
 //获取应用实例
 import { IMyApp } from '../../app'
-
 const app = getApp<IMyApp>()
-
 Page({
   data: {
     userInfo: {},
-    hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    wechatUser: {
-      employeeId: '',
-      employeeName: '',
-      mobile: ''
-    },
-    checkCode: '',
-    btnSendDisplay: '获取验证码',
-    canSendCode: true,
-    canSubmit: false
+    isAuth: true,
+    canIUse: wx.canIUse('button.open-type.chooseAvatar'),
+    imgData: "",
+    isShowInfo:false,
+    phone:"",
+    employeeid:"",
+    employeename:"",
+    deptno:"",
+    deptname:""
   },
-  onLoad() {
-    if (app.globalData.userInfo) {
+  onLoad(){
+    if (app.globalData.authorized) {
       this.setData!({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
+        isAuth: false,
+        imgData: app.globalData.profileData,
+        isShowInfo:true,
+        employeeid:app.globalData.employeeId,
+        employeename:app.globalData.employeeName,
+        deptno:app.globalData.defaultDeptId,
+        deptname:app.globalData.defaultDeptName
+      })
+
+    }
+  },
+  onShow(){
+    if (app.globalData.authorized) {
+      this.setData!({
+        isAuth: false,
+        imgData: app.globalData.profileData,
+        isShowInfo:true,
+        employeeid:app.globalData.employeeId,
+        employeename:app.globalData.employeeName,
+        deptno:app.globalData.defaultDeptId,
+        deptname:app.globalData.defaultDeptName
       })
     }
-    wx.getStorage({
-      key: 'wechatUser',
-      success: res => {
-        this.setData!({
-          wechatUser: res.data
-        })
-      }
-    })
   },
-  getUserInfo(e) {
-    app.globalData.userInfo = e.detail.userInfo
-    let mobile = 'wechatUser.mobile';
-    this.setData!({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true,
-      // [mobile]: e.detail.userInfo.mobile
+  onTabBarSwitch() {
+    if (app.globalData.authorized) {
+      this.setData!({
+        isAuth: false
+      })
+    }
+  },
+  onChooseAvatar(e) {
+    var that=this;
+    var fileManager = wx.getFileSystemManager();
+    fileManager.readFile({
+      filePath: e.detail.avatarUrl, 
+      encoding: 'base64',
+      success: function(res) {
+          // 输出base64码
+          var base64Data = res.data;
+          that.setData({
+            isAuth: false,
+            imgData: base64Data
+          })
+      }
+    });
+      
+  },
+  bindVailPhone(e) {
+    var that=this;
+    console.info("e.detail.code="+JSON.stringify(e.detail))
+    wx.showLoading({
+      title: 'Loading',
     })
-    //授权后存储openid
+        let urlStr =  app.globalData.restAdd +'/Hanbell-WCO/api/prg9f247ab6d5e4/wechatuser/' +e.detail.code + '?sessionkey=' + app.globalData.sessionKey;
+        wx.request({
+          url: urlStr,
+          header: {
+            'content-type': 'application/json'
+          },
+          method: 'PUT',
+          data: {
+            openId: app.globalData.openId,
+            profile: this.data.imgData
+          },
+          success:res => {
+       
+            if(res.data.code==200){
+              console.info("赋值成功")
+              console.info("res.data="+JSON.stringify(res.data))
+              app.globalData.authorized = res.data.authorized;
+              app.globalData.employeeId = res.data.employeeId;
+              app.globalData.employeeName = res.data.employeeName;
+              app.globalData.profileData=res.data.profile;
+              app.globalData.profileCommit=true;
+              wx.hideLoading();
+      
+              wx.switchTab({
+                url: '/pages/index/index'
+              })
+            }else{
+              wx.showModal({
+                title: '系统提示',
+                content: res.data.msg,
+                showCancel: false
+              });
+              wx.hideLoading();
+            }
+          },
+          fail:res =>{
+            wx.hideLoading();
+          }
+        })
+  },
+  loginout(){
+    var that=this;
     wx.request({
-      url: app.globalData.restAdd + '/Hanbell-WCO/api/prg9f247ab6d5e4/wechatuser',
-      data: {
-        openId: app.globalData.openId,
-        nickName: app.globalData.userInfo.nickName
-      },
+      url: app.globalData.restAdd +'/Hanbell-WCO/api/prg9f247ab6d5e4/wechatuser/logout/' +app.globalData.openId + '?sessionkey=' + app.globalData.sessionKey,
       header: {
         'content-type': 'application/json'
       },
-      method: 'POST',
-      success: res => {
-        if (res.data.code == '202') {
-          app.globalData.authorized = true
-          wx.switchTab({
-            url: '/pages/index/index'
-          })
-        }
+      method: 'PUT',
+      data: {
+        openId: app.globalData.openId,
+        profile: this.data.imgData
       },
-      fail: fail => {
-        console.log(fail)
+      success:res => {
+        app.globalData.authorized = false;
+        app.globalData.employeeId = "";
+        app.globalData.employeeName = "";
+        app.globalData.profileData="";
+        that.setData({
+          isShowInfo:false,
+          isAuth:true
+        })
+        wx.switchTab({
+          url: '/pages/index/index'
+        })
       }
-    })
-  },
-  bindEmployeeIdChange(e) {
-    let employeeId = 'wechatUser.employeeId';
-    this.setData!({
-      [employeeId]: e.detail
-    })
-  },
-  bindEmployeeNameChange(e) {
-    let employeeName = 'wechatUser.employeeName';
-    this.setData!({
-      [employeeName]: e.detail
-    })
-  },
-  bindMobileChange(e) {
-    let mobile = 'wechatUser.mobile';
-    this.setData!({
-      [mobile]: e.detail
-    })
-  },
-  bindCheckCodeChange(e) {
-    this.setData!({
-      checkCode: e.detail
-    })
-  },
-  bindSendCodeTap(e) {
-    let canSend = true
-    let errmsg = ''
-    // let reg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1})|(17[0-9]{1}))+\d{8})$/
-    if (!this.data.wechatUser.mobile || this.data.wechatUser.mobile == '' || this.data.wechatUser.mobile.length != 11) {
-      canSend = false;
-      errmsg += '手机号码长度错误\r\n'
-    }
-    // if (!reg.test(this.data.wechatUser.mobile)) {
-    //   canSend = false
-    //   errmsg += '手机号码格式错误\r\n'
-    // }
-    if (canSend) {
-      let waits: number = 60
-      let fn = setInterval(() => {
-        waits--
-        let v = '等待(' + waits + ')秒'
-        this.setData!({
-          btnSendDisplay: v
-        })
-      }, 1000, waits)
-      setTimeout(() => {
-        this.setData!({
-          btnSendDisplay: '获取验证码',
-          canSendCode: true
-        })
-        clearInterval(fn)
-      }, 60000)
-      // 获取校验码
-      wx.request({
-        url: app.globalData.restAdd + '/Hanbell-WCO/api/prg9f247ab6d5e4/checkcode',
-        data: {
-          openid: app.globalData.openId,
-          sessionkey: app.globalData.sessionKey,
-          mobile: this.data.wechatUser.mobile
-        },
-        header: {
-          'content-type': 'application/json'
-        },
-        method: 'GET',
-        success: res => {
-          // console.log(res.data)
-          this.setData!({
-            canSubmit: true,
-            canSendCode: false
-          })
-        },
-        fail: fail => {
-          console.log(fail.errMsg)
-        }
-      })
-    } else {
-      wx.showModal({
-        title: '系统提示',
-        content: errmsg,
-        showCancel: false
-      })
-    }
-  },
-  formSubmit(e) {
-    let canSend = true
-    let errmsg = ''
-    //更新用户状态
-    if (!app.globalData.userInfo) {
-      canSend = false;
-      errmsg += 'UserInfo错误\r\n'
-    }
-    if (!app.globalData.sessionKey || app.globalData.sessionKey == '') {
-      canSend = false;
-      errmsg += 'SessionKey错误\r\n'
-    }
-    if (!this.data.checkCode || this.data.checkCode == '') {
-      canSend = false;
-      errmsg += '验证码错误\r\n'
-    }
-    if (canSend) {
-      let urlStr = app.globalData.restAdd + '/Hanbell-WCO/api/prg9f247ab6d5e4/wechatuser/' + app.globalData.openId + '?sessionkey=' + app.globalData.sessionKey + '&checkcode=' + this.data.checkCode;
-      wx.request({
-        url: urlStr,
-        data: {
-          openid: app.globalData.openId,
-          nickName: app.globalData.userInfo.nickName,
-          employeeId: this.data.wechatUser.employeeId,
-          employeeName: this.data.wechatUser.employeeName,
-          mobile: this.data.wechatUser.mobile
-        },
-        header: {
-          'content-type': 'application/json'
-        },
-        method: 'PUT',
-        success: res => {
-          // console.log(res)
-          if (res.data.code == '200') {
-            app.globalData.authorized = res.data.authorized
-            app.globalData.employeeId = res.data.employeeId
-            app.globalData.employeeName = res.data.employeeName
-            app.globalData.defaultDeptId = res.data.deptno
-            app.globalData.defaultDeptName = res.data.deptName
-            app.globalData.defaultCompany = res.data.company
-            app.globalData.defaultCompanyName = res.data.companyName
-          } else {
-            app.globalData.authorized = false
-          }
-          this.setData!({
-            canSubmit: false
-          })
-          wx.setStorageSync('wechatUser', this.data.wechatUser)
-          wx.showModal({
-            title: '系统消息',
-            content: res.data.msg,
-            showCancel: false,
-            success(res) {
-              if (app.globalData.authorized) {
-                wx.switchTab({
-                  url: '/pages/index/index'
-                })
-              }
-            }
-          })
-        },
-        fail: fail => {
-          console.log(fail.errMsg)
-        }
-      })
-    } else {
-      wx.showModal({
-        title: '系统提示',
-        content: errmsg,
-        showCancel: false
-      })
-    }
-  },
+  })
+},
   formReset() {
     console.log('form发生了reset事件');
   }

@@ -14,6 +14,8 @@ Page({
     sqrqDate: d.toISOString().substring(0, 10),
     clxz: '1',
     clxzDesc: '1-公务车',
+    departure:'1',
+    departureDesc:'1-枫泾厂出发',
     privatedriver: '',
     privatecarno: '',
     telcontact: '',
@@ -134,6 +136,26 @@ Page({
             that.setData!({
               clxz: res.k,
               clxzDesc: res.k + '-' + res.v
+            })
+          }
+        }
+      },
+      success(res) {
+        console.log(res)
+      }
+    })
+  },
+  bindDeparture(e) {
+    let that = this
+    wx.navigateTo({
+      url: './startaddress',
+      events: {
+        returnStartAddressSelect: function (res) {
+          if (res) {
+            console.info("res=="+JSON.stringify(res))
+            that.setData!({
+              departure: res.k,
+              departureDesc: res.k + '-' + res.v
             })
           }
         }
@@ -425,7 +447,7 @@ Page({
             console.log(_this.data)
             console.log(e)
             wx.request({
-              url: app.globalData.restAdd + '/Hanbell-JRS/api/efgp/hkgl037/wechat?' + app.globalData.restAuth,
+              url:  app.globalData.restAdd+'/Hanbell-JRS/api/efgp/hkgl037/wechat?' + app.globalData.restAuth,
               data: {
                 employeeId: _this.data.employeeId,
                 employeeName: _this.data.employeeName,
@@ -442,7 +464,8 @@ Page({
                 hmark1: _this.data.hmark1,
                 detailList: _this.data.detailList,
                 mksystem: _this.data.mksystemKey,
-                hdnDept:  _this.data.hdnDept
+                hdnDept:  _this.data.hdnDept,
+                departure: _this.data.departure
               },
               header: {
                 'content-type': 'application/json'

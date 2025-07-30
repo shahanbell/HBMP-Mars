@@ -32,8 +32,8 @@ Page({
     showRowDate2: new Date().getTime(),
     showRowDate3: new Date().getTime(),
     conpomentid: '',
-    isBusinesstripRequired:false,
-    isTrafficRequired:false,
+    isBusinesstripRequired: false,
+    isTrafficRequired: false,
     formatter(type, value) {
       if (type === 'year') {
         return `${value}年`;
@@ -44,8 +44,15 @@ Page({
       }
       return value;
     },
-    country:'',
-    safeplace: false
+    country: '',
+    safeplace: false,
+    useCar: false,
+    carResult: {},
+    isShowCarResult: false,
+    carList: [],
+         uploaderList: [],
+        showUpload: true,
+        hzgl004Files: []
   },
   onLoad() {
     wx.showLoading({
@@ -115,6 +122,11 @@ Page({
       safeplace: e.detail
     })
   },
+  bindUseCarChange(e) {
+    this.setData!({
+      useCar: e.detail
+    })
+  },
   bindBusinessProperty(e) {
     let that = this
     wx.navigateTo({
@@ -122,14 +134,14 @@ Page({
       events: {
         returnBusinessPropertySelect: function (res) {
           if (res) {
-        if(res.k=='5'){
+            if (res.k == '5') {
               that.setData!({
-                isBusinesstripRequired:true
+                isBusinesstripRequired: true
               })
-            }else{
-          that.setData!({
-            isBusinesstripRequired: false
-          })
+            } else {
+              that.setData!({
+                isBusinesstripRequired: false
+              })
             }
             that.setData!({
               businessProperty: res.k,
@@ -150,14 +162,14 @@ Page({
       events: {
         returnVehicleSelect: function (res) {
           if (res) {
-            if(res.k=='6'){
+            if (res.k == '6') {
               that.setData!({
-                isTrafficRequired:true
+                isTrafficRequired: true
               })
-            }else{
+            } else {
               that.setData!({
                 isTrafficRequired: false
-              }) 
+              })
             }
             that.setData!({
               vehicle: res.k,
@@ -216,14 +228,12 @@ Page({
       daysTotal: e.detail
     })
   },
-
   bindAddDetailTap(e) {
     let _this = this
     wx.navigateTo({
       url: './businesstripdetail',
       events: {
         returnDetail: function (res) {
-          //console.log(_this.data.detailList);
           let details = _this.data.detailList
           details.push(res.data)
           details.forEach((o, i) => {
@@ -294,7 +304,133 @@ Page({
       detailList: details
     })
   },
+  bindAddCarapp(e) {
+    let _this = this
+    wx.navigateTo({
+      url: './carapp',
+      events: {
+        returnDetail: function (res) {
+          _this.setData({
+            carResult: res.data,
+            isShowCarResult: true
+          })
+        }
+      },
+      success(res) {
+        res.eventChannel.emit('openDetail', {
+          data:
+          {
+            bizEmployee: _this.data.employeeId,
+            bizEmployeeName: _this.data.employeeName
+          },
+          isNew: true
+        })
+      }
+    })
+  },
+  bindEditCarResultTap(e) {
+    let _this = this
+    wx.navigateTo({
+      url: './carapp',
+      events: {
+        returnDetail: function (res) {
+          _this.setData({
+            carResult: res.data,
+            isShowCarResult: true
+          })
+        }
+      },
+      success(res) {
+        res.eventChannel.emit('openDetail', {
+          data: _this.data.carResult,
+          isNew: false
+        })
+      }
+    })
+  },
+  bindRemoveCarResultTap(e) {
+    var _this = this;
+    _this.setData({
+      isShowCarResult: false,
+      carResult: {}
+    })
+  },
+  bindAddCarDetailTap(e) {
+    let _this = this
+    wx.navigateTo({
+      url: './carappdetail',
+      events: {
+        returnDetail: function (res) {
+          let details = _this.data.carList
+          details.push(res.data)
+          details.forEach((o, i) => {
+            o.seq = i + 1
+          })
+          _this.setData({
+            carList: details,
+            canSubmit: true
+          })
+        }
+      },
+      success(res) {
+        res.eventChannel.emit('openDetail', {
+          data:
+            {}, isNew: true
+        })
+      }
+    })
+  },
+  bindEditCarDetailTap(e) {
+    let _this = this
+    let carindex = e.currentTarget.dataset.index
+    wx.navigateTo({
+      url: './carappdetail',
+      events: {
+        returnDetail: function (res) {
+          let details = _this.data.carList
+          details[carindex] = res.data;
 
+          _this.setData!({
+            carList: details
+          })
+        }
+      },
+      success(res) {
+        let currentObject = _this.data.carList[carindex]
+        res.eventChannel.emit('openDetail', {
+          data:
+          {
+            employeeId: currentObject.employeeId,
+            employeeName: currentObject.employeeName,
+            deptId: currentObject.deptId,
+            deptName: currentObject.deptName,
+            ycrq: currentObject.ycrq,
+            kr: currentObject.kr,
+            contact: currentObject.contact,
+            cfsf: currentObject.cfsf,
+            cfcs: currentObject.cfcs,
+            address1: currentObject.address1,
+            mdsf: currentObject.mdsf,
+            mdcs: currentObject.mdcs,
+            address2: currentObject.address2,
+            sy: currentObject.sy,
+            company: currentObject.company
+          }, isNew: false
+        })
+      }
+    })
+  },
+  bindRemoveCarDetailTap(e) {
+    let details = this.data.carList
+    let index = e.currentTarget.dataset.index
+    details.splice(index, 1)
+    details.forEach((o, i) => {
+      o.seq = i + 1
+    })
+    this.setData!({
+      carList: details
+    })
+  },
   bindReasonChange(e) {
     this.setData!({
       reason: e.detail
@@ -407,6 +543,79 @@ Page({
     return date.getTime();
   },
 
+  
+  // 删除图片
+  clearImg(e) {
+    var nowList = [];//新数据
+    var uploaderList = this.data.uploaderList;//原数据
+
+    for (let i = 0; i < uploaderList.length; i++) {
+      if (i == e.currentTarget.dataset.index) {
+        continue;
+      } else {
+        nowList.push(uploaderList[i])
+      }
+    }
+    this.setData({
+      uploaderNum: this.data.uploaderNum - 1,
+      uploaderList: nowList,
+      showUpload: true
+    })
+  },
+  //展示图片
+  showImg(e) {
+    var that = this;
+    wx.previewImage({
+      urls: that.data.uploaderList,
+      current: that.data.uploaderList[e.currentTarget.dataset.index]
+    })
+  },
+
+  //上传图片
+  upload(e) {
+    var that = this;
+    console.log("upload Test");
+    wx.chooseImage({
+      count: 3 - that.data.uploaderNum, // 默认9
+      sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+      success: function (res) {
+        //console.log(res)
+        //console.log(that.data.uploaderNum);
+        // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+        let tempFilePaths = res.tempFilePaths;
+        console.info('tempFilePaths==' + JSON.stringify(tempFilePaths))
+        let uploaderList = that.data.uploaderList.concat(tempFilePaths);
+        if (uploaderList.length == 3) {
+          that.setData({
+            showUpload: false
+          })
+        }
+        that.setData({
+          uploaderList: uploaderList,
+          uploaderNum: uploaderList.length,
+        })
+      }
+    })
+  },
+  initFile() {
+    console.info("1111");
+    var nowList = [];
+    var _this = this;
+    var FileSystemManager = wx.getFileSystemManager();
+    _this.data.uploaderList.forEach(function (o, i) {
+      console.info("222");
+      var baselib = FileSystemManager.readFileSync(_this.data.uploaderList[i], 'base64');
+      var imagePathTemp = _this.data.uploaderList[i].split('.');
+      var imageType = imagePathTemp[imagePathTemp.length - 1];
+      var obj = { data: baselib, imageType: imageType };
+      nowList.push(obj);
+    });
+
+    _this.setData({
+      hzgl004Files: nowList
+    })
+  },
   dateFormatForYYMMDD(date) {
     let dateTemp = new Date(date);
     let year = dateTemp.getFullYear();
@@ -458,8 +667,15 @@ Page({
       canSubmit = false
       errmsg += "目的地选择国外时，必须填写出差国家\r\n"
     }
+    if(this.data.useCar){
+      if(JSON.stringify(this.data.carResult)=='{}' || this.data.carList.length==0){
+        canSubmit = false
+        errmsg += "请填写派车单和派车明细\r\n"
+      }
+    }
     if (canSubmit) {
       let _this = this
+      this.initFile();
       wx.showModal({
         title: '系统提示',
         content: '确定提交吗',
@@ -468,28 +684,33 @@ Page({
             wx.showLoading({
               title: 'Sending'
             })
+            var data ={
+              company: _this.data.company,
+              applyUser: _this.data.employeeId,
+              applyDate: _this.data.applyDate,
+              applyDept: _this.data.deptId,
+              formType: _this.data.businessProperty,
+              formTypeDesc: _this.data.businessPropertyDesc,
+              otherType: _this.data.otherType,
+              vehicle: _this.data.vehicle,
+              vehicleDesc: _this.data.vehicleDesc,
+              otherVehicle: _this.data.otherVehicle,
+              destination: _this.data.destination,
+              destinationDesc: _this.data.destinationDesc,
+              startDate: _this.data.dayBegin,
+              endDate: _this.data.dayEnd,
+              days: _this.data.daysTotal,
+              country: _this.data.country,
+              safeplace: _this.data.safeplace,
+              detailList: _this.data.detailList,
+              cardetailList:_this.data.carList,
+              useCar:_this.data.useCar ? 'Y' :'N',
+              hzgl004Files: _this.data.hzgl004Files,
+              ..._this.data.carResult
+            };
             wx.request({
-              url: app.globalData.restAdd + '/Hanbell-JRS/api/efgp/hzgl004/wechat?' + app.globalData.restAuth,
-              data: {
-                company: _this.data.company,
-                applyUser: _this.data.employeeId,
-                applyDate: _this.data.applyDate,
-                applyDept: _this.data.deptId,
-                formType: _this.data.businessProperty,
-                formTypeDesc: _this.data.businessPropertyDesc,
-                otherType: _this.data.otherType,
-                vehicle: _this.data.vehicle,
-                vehicleDesc: _this.data.vehicleDesc,
-                otherVehicle: _this.data.otherVehicle,
-                destination: _this.data.destination,
-                destinationDesc: _this.data.destinationDesc,
-                startDate: _this.data.dayBegin,
-                endDate: _this.data.dayEnd,
-                days: _this.data.daysTotal,
-                country: _this.data.country,
-                safeplace: _this.data.safeplace,
-                detailList: _this.data.detailList
-              },
+              url: app.globalData.restAdd+ '/Hanbell-JRS/api/efgp/hzgl004/wechat?' + app.globalData.restAuth,
+              data: data,
               header: {
                 'content-type': 'application/json'
               },

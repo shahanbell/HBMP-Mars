@@ -1,59 +1,30 @@
 <view>
   <view class="userinfo">
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo" type="primary">授权获取个人信息</button>
-    <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-    </block>
+    <button wx:if="{{isAuth && canIUse && !isShowInfo}}" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar" type="primary">授权获取个人信息</button>
+    <image wx:if="{{!isAuth}}" bindtap="bindViewTap" class="userinfo-avatar" src="data:image/png;base64,{{imgData}}" mode="cover"></image>
   </view>
 </view>
-<view class="page__bd" wx:if="{{hasUserInfo}}">
-  <van-divider
-  contentPosition="center"
-  customStyle="color: #1989fa; border-color: #0396FF; font-size: 12px;"
-  >
-  个人信息
+<view class="page__bd" wx:if="{{!isAuth && !isShowInfo}}">
+  <van-divider contentPosition="center" customStyle="color: #1989fa; border-color: #0396FF; font-size: 12px;">
+    个人信息
   </van-divider>
   <view class="weui-panel weui-panel_access">
     <form bindreset="formReset">
       <van-cell-group>
-        <van-field
-          label = "工号"
-          value="{{ wechatUser.employeeId }}"
-          placeholder="请输入工号"
-          bind:change="bindEmployeeIdChange"
-        />
+        <van-field label="手机号" value="{{ phone }}" placeholder="">
+          <van-button slot="button" size="small" type="primary" bindgetphonenumber="bindVailPhone" open-type="getPhoneNumber">手机号码验证</van-button>
+        </van-field>
       </van-cell-group>
-      <van-cell-group>
-        <van-field
-          label = "姓名"
-          value="{{ wechatUser.employeeName }}"
-          placeholder="请输入姓名"
-          bind:change="bindEmployeeNameChange"
-        />
-      </van-cell-group>
-      <van-cell-group>
-        <van-field
-          value="{{ wechatUser.mobile }}"
-          label="手机号"
-          placeholder="请输入手机号"
-          bind:change="bindMobileChange"
-        />
-      </van-cell-group>
-      <van-cell-group>
-      <van-field
-        value="{{ checkCode }}"
-        center
-        clearable
-        label="验证码"
-        placeholder="请输入短信验证码"
-        bind:change="bindCheckCodeChange"
-        use-button-slot
-      >
-      <van-button slot="button" size="small" type="primary" disabled="{{!canSendCode}}" bindtap="bindSendCodeTap">{{btnSendDisplay}}</van-button>
-      </van-field>
-    </van-cell-group>
-    <van-button custom-class="submitbtn" form-type="submit" type="primary" disabled="{{!canSubmit}}" bind:click="formSubmit">授权</van-button>
     </form>
   </view>
+</view>
+<view class="page__bd" wx:if="{{isShowInfo}}">
+  <form bindreset="formReset">
+    <van-field label="工号" value="{{ employeeid }}" size="small" readonly="true"></van-field>
+    <van-field label="名字" value="{{ employeename }}"  size="small" readonly="true"></van-field>
+    <van-field label="部门代号" value="{{ deptno }}"  size="small" readonly="true"></van-field>
+    <van-field label="部门名称" value="{{ deptname }}" size="small" readonly="true"></van-field>
+
+
+</form>
 </view>
