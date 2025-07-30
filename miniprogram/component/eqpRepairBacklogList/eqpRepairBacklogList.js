@@ -189,6 +189,8 @@ Component({
             return "经理审核";
         case "95":
             return "报修结案";
+            case "97":
+              return "报修暂结案";
         case "98":
             return "已作废";
         default:

@@ -21,7 +21,8 @@ Page({
             { id: 'menu09', name: '设备管理', imgUrl: '../../images/eqpManagement.png', url: '../../eam/pages/eqpManagement/eqpManageIndex', parentid: -1 },
             { id: 'menu10', name: '备件管理', imgUrl: '../../images/spareManagement.png', url: '../../eam/pages/spareManagement/spareManagementIndex', parentid: -1 },
             { id: 'menu11', name: '设备保全', imgUrl: '../../images/eqpMaintenance.png', url: '../../eam/pages/maintenanceManagement/eqpMaintainIndex', parentid: -1 },
-            { id: 'menu12', name: '扫码签到', imgUrl: '../../images/leanProduction.png', url: '../../pages/leanProductionScan/leanProductionScan', parentid: -1 }
+            { id: 'menu12', name: '扫码签到', imgUrl: '../../images/leanProduction.png', url: '../../pages/leanProductionScan/leanProductionScan', parentid: -1 },
+            { id: 'menu13', name: '研发工作汇报', imgUrl: '../../images/rdpmDailyReport.png', url: '../../efgp/pages/rdpm/rdpmDailyReport', parentid: -1 }
         ],
         indicatorDots: false,
         autoplay: true,

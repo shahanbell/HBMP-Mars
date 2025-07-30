@@ -1,0 +1,38 @@
+<!--miniprogram/eam/pages/maintenanceManagement/eqpMaintainStart.wxml-->
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+<van-tabs active="{{ tabActive }}" bind:change="onTabChange" z-index='100' sticky>
+<van-tab title="研发工作汇报日期:{{ReportingDate}}">
+					<view class="eqpListWrap">
+					</view>
+					<van-empty wx:if="{{eqpMaintainDetailList.length<1}}" image="/images/empty-image-search.png" description="无填写工作"/>
+					<my-noData wx:if="{{eqpMaintainDetailList.length<1&&!loading}}" nodata="{{nodataType}}"></my-noData>
+					<view class="spareList" wx:for="{{eqpMaintainDetailList}}" wx:key="index" data-item="{{item}}" bindtap='spareCardSelect' id='eqpMaintainDetailList{{index}}'>
+						<view class="shop">
+							<view class="shop_name">
+								研发专案号:{{item.subjectNo}}
+							</view>
+           
+						</view>
+
+            <view class="shop_name">
+								{{item.subjectName}}
+							</view>
+              <view class="shop_name" style=" display: flex;  ">
+								工作比例%：
+          
+                <input   class="spareInfo_text_acount"  data-name="eqpMaintainDetailList[{{index}}].subjectWorkPercent"  value="{{item.subjectWorkPercent}}" bindinput="onBlurResult" type="number"  style="text-align: right;"  disabled="{{item.subjectNo=='01'?true:false}}" />
+             
+							</view>
+       
+					</view>
+
+     
+  </van-tab>
+</van-tabs>
+<view class="submitWrap_fix">
+<van-button type="info" icon="passed"  style="width:100%;position:fixed;bottom:0px;z-index:2;" bind:click="saveReportFormSubmit" block>提交</van-button>
+</view>
+<van-dialog id="van-dialog" />
+
+
+</view>

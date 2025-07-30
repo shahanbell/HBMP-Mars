@@ -1,4 +1,7 @@
 <view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+  <van-tabs active="{{ auditTabActive }}" bind:change="onTabChange" z-index='100' sticky>
+  	<van-tab title="隐患详情">
+  
 <van-cell-group >
   
   <van-field   
@@ -90,15 +93,7 @@
     bindtap='bindSafetyOfficeSelect'
     readonly
   />
-  <!-- <van-field
-    label="整改人"
-    value="{{ rectifierParameterName }}"
-    data-name="rectifierParameterName"
-    bind:change="bindData"
-    right-icon="arrow-down"
-    bindtap='showRectifierSelectorPopup'
-    readonly
-  /> -->
+
   <view wx:if="{{showConfirm}}">
 
   <van-field
@@ -260,15 +255,42 @@
     </view>
 </van-cell-group>
 </view>
+
+<view class="submitWrap_fix" style="display: flex; gap: 1px; width:100%; position:sticky; bottom:0; z-index:2;">
+  <!-- 每个按钮添加 flex:1 属性 -->
+  <van-button 
+    wx:if="{{showSubBtn}}" 
+    style="flex:1" 
+    type="info" 
+    icon="passed" 
+    form-type="submit" 
+    bind:click="hiddenFormSubmit" 
+    block
+  >提交</van-button>
+  
+  <van-button 
+    wx:if="{{showReturn}}" 
+    style="flex:1" 
+    type="info" 
+    icon="close" 
+    form-type="submit" 
+    bind:click="returnSubmit" 
+    block
+  >退回</van-button>
+</view>
+
+<van-dialog id="van-dialog"/>
 </van-cell-group>
 
+
+
+</van-tab>
 
 <van-popup
     show="{{ show.hiddenMethodSelectorPopup }}"
     position="bottom"
     bind:close="closeHiddenSelectorPopup"
 >
-
   <van-picker
     show-toolbar
     title="隐患类型"
@@ -352,9 +374,83 @@
   />
 
 </van-popup>
-<view class="submitWrap_fix">
-<van-button  wx:if="{{showSubBtn}}" type="info" icon="passed" form-type="submit" style="width:100%;position:fixed;bottom:0px;z-index:2;" bind:click="hiddenFormSubmit" block>提交</van-button>
-</view>
-<van-dialog id="van-dialog"/>
+<!-- 弹出退回原因填写 -->
+<van-popup
+    show="{{ show.hiddenReturnReasonPopup }}"
+    position="bottom"
+    bind:close="closeReturnReasonPopup"
+>
+<van-cell-group>
+    <van-cell title="退回原因:" border="{{false}}" use-label-slot></van-cell>
+    <view class='textarea_pro' data-show="returnReason" bindtap="ifshowArea">
+        <textarea  
+        class='areaInput' bindblur="ifshowArea" data-show="returnReason" value="{{returnReason}}" 
+        maxlength="200" 
+        placeholder-style="color:#b3b3b3;font-size:14px;" 
+        auto-focus="true" 
+        bindinput="textAreaProInput"/>
+        <view  
+        class='areaTest' 
+        style='color:{{acceptanceOpinions==""?"#999":"#2b2b2b"}}; word-break:break-all; white-space:pre-line;'>
+      
+        </view>
+        <view class="textarea-counter">{{returnReason.length}}/200</view>
+    </view>
+    <view class="submitWrap_fix" style="display: flex; gap: 1px; width:100%; position:sticky; bottom:0; z-index:2;">
+  <!-- 每个按钮添加 flex:1 属性 -->
+  <van-button 
+  
+    style="flex:1" 
+    type="info" 
+    icon="passed" 
+    form-type="submit" 
+    bind:click="hiddenFormSubmit" 
+    block
+  >提交</van-button>
+  <van-button 
+    style="flex:1" 
+    type="info" 
+    icon="passed" 
+    form-type="submit" 
+    bind:click="closeReturnReasonPopup" 
+    block
+  >关闭</van-button>
+    </view>
+
+</van-cell-group>
+</van-popup>
+
+
+<van-tab title="退回明细" wx:if="{{showHis}}" >
+			<view class="eqpListWrap">
+					</view>
+					<van-empty wx:if="{{hisList.length<1}}" description="无审批流程"/>
+					<view class="hitchDutyList" wx:for="{{hisList}}" wx:key="index" data-item="{{item}}" bindtap='repairHisCardSelect' id='hisListIndex_{{index}}'>
+						<view class="shop">
+							<view class="shop_name">
+								审批人:{{item.userNo}}
+							</view>
+							<view class="shop_name">
+								审批时间:{{item.creDate}}
+							</view>
+						</view>
+						<view class="proInfo">
+							<view class="shop_name">
+								退回原因:{{item.note}}
+							</view>
+						</view>
+						<view class="auditContect">
+							<view></view>
+							<view class="shop_name">
+								审批结果:<text class="state_taobao">{{item.contenct}}</text>
+							</view>
+						</view>
+
+					</view>
+</van-tab>
+</van-tabs>
+
+
+
 
 </view>

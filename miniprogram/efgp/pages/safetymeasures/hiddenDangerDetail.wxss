@@ -1,8 +1,60 @@
 /* miniprogram/pages/eqpManagement/startEqpRepair.wxss */
 .submitWrap_fix{
   height:44px;
+  display: flex;           /* 启用 Flex 布局 */
+
+}
+/* 容器设置为 Flex 布局 */
+.button-container {
+  display: flex;           /* 启用 Flex 布局 */
+  flex-direction: row;     /* 水平排列 */
+  justify-content: space-between; /* 按钮两端对齐 */
+  align-items: center;     /* 垂直居中 */
+  position: fixed;          /* 保留底部固定 */
+  bottom: 0;
+  width: 100%;              /* 宽度铺满 */
+  z-index: 2;
+  padding: 10rpx 20rpx;    /* 内边距避免贴边 */
+  box-sizing: border-box;   /* 防止溢出 */
 }
 
+.shop,.proInfo,.orderNum{
+  display: flex;
+  justify-content: space-between;
+  }
+.eqpListWrap{
+  width: 100%;
+  height: 20rpx;
+}
+
+.auditContect{
+  display: flex;
+  justify-content: space-between;
+  font-size: 24rpx;
+  color: #333; 
+  line-height: 82rpx;
+  border-top: 2rpx solid #eee;
+  white-space: nowrap;
+  }
+.shop,.proInfo,.orderNum{
+  display: flex;
+  justify-content: space-between;
+  }
+.shop_name{
+  font-size: 26rpx;
+  color: #333;
+  }
+.hitchDutyList{
+  width: 95%;
+  height: 246rpx;
+  border-radius:16rpx;
+  background-color: rgb(255, 255, 255); 
+  margin-bottom: 20rpx;
+  margin-left:auto;
+  margin-right:auto;
+  padding: 30rpx 24rpx 0 24rpx;
+  box-sizing: border-box;
+  }
 .eqpSelectorButtonBlock{
   display: flex;
   justify-content: center;  

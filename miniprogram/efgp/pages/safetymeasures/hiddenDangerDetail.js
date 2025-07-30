@@ -32,6 +32,8 @@ Page({
     uploaderNum:0,
     uploaderList: [],
     uploaderRectificationNum:0,
+    auditTabActive: 0,
+    showHis:false,
     uploaderRectificationList: [],
     activeNames: [],
     infoCard: {
@@ -53,6 +55,7 @@ Page({
     eqpMaintainDetailList_dispatch: [],
     maintainResult: [],
     secureList:[],
+    hisList:[],
     presentingName: null,
     hiddenSource: null,
     createTime: null,
@@ -64,6 +67,7 @@ Page({
     checkName: null,
     area: null,
     hiddenType: null,
+    returnReason: '',
     rectificationType: null,
     rectificationDeadline: null,
     rectificationMeasures: null,
@@ -77,6 +81,7 @@ Page({
     rstatus: null,
     status: null,
     showConfirm: false,
+    showReturn: false,
     showRectification: false,
     showCheck: false,
     showSubBtn:true,
@@ -100,6 +105,7 @@ Page({
     uploaderList: [],
     rectificationUploaderList: [],
     show:{
+      hiddenReturnReasonPopup:false,
       hiddenMethodSelectorPopup:false,
       rectifierMethodSelectorPopup:false,
       areaMethodSelectorPopup:false,
@@ -221,6 +227,7 @@ Page({
         var dataLen = res.data[0].length;
         var imagePathArray = [];
         var imageRectificationPathArray = [];
+     
         for(var i = 0;i < dataLen;i++){
     
           if(res.data[0][i][1]=="隐患图片")
@@ -260,7 +267,7 @@ Page({
           _this.data.hiddenTypeList.push(newItem);
         }
       
-  
+     
         for(var i = 0;i < res.data[2].length; i++){
           let newItem = { rectificationParameterName: "" , rectificationParameterValue: ""};
           newItem.rectificationParameterName = res.data[2][i].parameterName;
@@ -307,6 +314,27 @@ Page({
         
           _this.data.areaList.push(newItem);
         }
+     
+        if(res.data[7].length > 0){
+          var hisListInfo = res.data[7];
+         
+          for(var i= 0;i<hisListInfo.length;i++){
+            let newItem = {pId:'', userNo: '', userName: '', creDate: '', contenct: '', note:''};
+            newItem.pId = hisListInfo[i].pid;
+            newItem.userNo = hisListInfo[i].userno;
+            newItem.userName = hisListInfo[i].username;
+            newItem.creDate = util.utcInit(hisListInfo[i].createTime);
+            newItem.contenct = hisListInfo[i].contenct;
+            newItem.note = hisListInfo[i].note;
+            _this.data.hisList.push(newItem);
+          }
+          console.log("RERERE")
+        console.log(_this.data.hisList)
+        _this.data.showHis=true;
+        }else{
+            _this.data.showHis=false;
+        }
+ 
         if(hiddenDocDta)
         {
           for(var i = 0;i < res.data[5].length; i++){//只要是对应的月安全课长就可以查看
@@ -315,6 +343,7 @@ Page({
                 if(hiddenDocDta.rstatus=='75')
                 {
                   _this.data.showSubBtn=true;
+                  _this.data.showReturn=true;
                   _this.data.chechkeOpinions=true;
                 }
               }
@@ -329,6 +358,8 @@ Page({
       }
         _this.setData({
           showSubBtn: _this.data.showSubBtn,
+          showReturn: _this.data.showReturn,
+          showHis:_this.data.showHis,
           hiddenParameterValue:_this.data.hiddenParameterValue,
           hiddenParameterName:_this.data.hiddenParameterName,
           rectifierParameterName:_this.data.rectifierParameterName,
@@ -341,6 +372,7 @@ Page({
           acceptedName:_this.data.acceptedName,
           acceptanceOpinions:_this.data.acceptanceOpinions,
           rectifierList:_this.data.rectifierList,
+          hisList: _this.data.hisList,
           rectificationTypeList:_this.data.rectificationTypeList,
           hiddenTypeList:_this.data.hiddenTypeList,
           areaList:_this.data.areaList,
@@ -353,7 +385,7 @@ Page({
           secureList:res.data[4]
           // troubleDetailInfo:res.data[0].filemark
         });
-
+      
         wx.hideLoading();
       },
       fail: function (fail) {
@@ -633,7 +665,12 @@ closeRectificationSelectorPopup: function(){
     show:{rectificationMethodSelectorPopup:false}
   });
 },
-
+closeReturnReasonPopup: function(){
+  this.setData({
+    show:{hiddenReturnReasonPopup:false},
+    returnReason:''
+  });
+},
 onRectificationPickerChange: function(event){
   //  console.log(event);
   const { picker, value, index } = event.detail;
@@ -837,6 +874,7 @@ dateFormatForFilter(date){
           if(hiddenDocDta.rstatus=="60"||hiddenDocDta.rstatus=="75"||hiddenDocDta.rstatus=="95")
           {
             _this.data.showSubBtn=false;
+
           }else{
             _this.data.showSubBtn=true;
           }
@@ -846,6 +884,7 @@ dateFormatForFilter(date){
         if(hiddenDocDta.rstatus == "45"){
           if(hiddenDocDta.acceptedId==app.globalData.employeeId)
           {
+            _this.data.showReturn=true;
             _this.data.showSubBtn=true;
           }else{
             _this.data.showSubBtn=false;
@@ -860,6 +899,7 @@ dateFormatForFilter(date){
             {
               _this.data.chechkeAccepted=true;
               _this.data.showSubBtn=true;
+              _this.data.showReturn=true;
             }else{
               _this.data.showSubBtn=false;
             }
@@ -869,6 +909,7 @@ dateFormatForFilter(date){
               if(hiddenDocDta.presentingId==app.globalData.employeeId)
               {
                 _this.data.showSubBtn=true;
+                _this.data.showReturn=true;
                 _this.data.chechkeAccepted=true;
               }else{
                 _this.data.chechkeAccepted=false;
@@ -915,6 +956,7 @@ dateFormatForFilter(date){
           showUpload:hiddenShow,
           showRectificationUpload:rectificationShow,
           showSubBtn: _this.data.showSubBtn,
+          showReturn: _this.data.showReturn,
           chechke1: _this.data.chechke1,
           chechkeRectDta: _this.data.chechkeRectDta,
           chechkeAccepted: _this.data.chechkeAccepted,
@@ -1056,6 +1098,14 @@ bindData(event){
    [name]:event.detail
   })
 },
+//弹出退回原因输入框
+returnSubmit:function(e){
+  this.setData({
+    show:{hiddenReturnReasonPopup:true}
+  });
+
+},
+
 
 hiddenFormSubmit: function(e){
   var that = this;
@@ -1099,7 +1149,7 @@ hiddenFormSubmit: function(e){
         });
         wx.request({
           //url: app.globalData.restAdd + '/Hanbell-JRS/api/shbeam/equipmentrepair/createEqpRepairHad?' + app.globalData.restAuth + "&assetCardId=" + that.data.assetCardId + "&openId=" + app.globalData.openId + "&sessionKey=" + app.globalData.sessionKey,
-          url: app.globalData.restAdd + '/Hanbell-JRS/api/shbedw/hiddendanger/submitHiddenDangerHad?' + app.globalData.restAuth +  "&openId=oJJhp5GvX45x3nZgoX9Ae9DyWak4" + "&sessionKey=ca80bf276a4948909ff4197095f1103a"+ "&docPid="+that.data.docPid,
+          url: app.globalData.restAdd + '/Hanbell-JRS/api/shbedw/hiddendanger/submitHiddenDangerHad?' + app.globalData.restAuth +  "&openId=oJJhp5GvX45x3nZgoX9Ae9DyWak4" + "&sessionKey=ca80bf276a4948909ff4197095f1103a"+ "&docPid="+that.data.docPid+"&returnReason="+that.data.returnReason,
           //url: 'http://325810l80q.qicp.vip' + '/Hanbell-JRS/api/shbeam/equipmentinventory/insertStockInfo4MicroApp?' + app.globalData.restAuth,
           data: {
           company: app.globalData.defaultCompany,
@@ -1136,7 +1186,8 @@ hiddenFormSubmit: function(e){
             if(res.statusCode == 200 && res.data.msg != null){
               resMsg = '提交成功';
               that.setData({
-                docId: res.data.msg
+                docId: res.data.msg,
+                show:{hiddenReturnReasonPopup:false}
               });
                that.fileUpLoadByQueue(FileSystemManager,0);
                that.fileUpLoadRectificationByQueue(FileSystemManager,0);
@@ -1177,7 +1228,8 @@ hiddenFormSubmit: function(e){
       .catch(() => {
         // on cancel
         this.setData({
-          textareaDisabled:false
+          textareaDisabled:false,
+          show:{hiddenReturnReasonPopup:false}
         });
       });
 
@@ -1220,7 +1272,20 @@ checkFormDtaBeforeSubmit: function(){
     }
 
   }
-
+  if(this.data.show.hiddenReturnReasonPopup){
+    if(this.data.returnReason==null||this.data.returnReason==''){
+    Dialog.alert({
+      title: '系统消息',
+      message: "请输入退回原因在提交。",
+      zIndex:1000,
+      }).then(() => {
+        this.setData({
+          textareaDisabled:false
+        });
+      });
+    return false;
+    }
+  }
   if(this.data.hiddenDescribe == null||this.data.hiddenDescribe == ""){
     Dialog.alert({
       title: '系统消息',

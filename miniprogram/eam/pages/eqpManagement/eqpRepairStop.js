@@ -43,6 +43,7 @@ Page({
     repairTimestamp:null,
     exceptTime:null,
     stopWorkTime:null,
+    reasonText: null,
     spareSelectPopup: null,
     textareaIsShow:false,
     textareaValue:"",
@@ -854,6 +855,10 @@ upload: function(e) {
     //var canSubmit = this.checkFormDtaBeforeSubmit();
     var canSubmit = true;
     var apiTemp = 'repairStop';
+    if(that.data.reasonText=='暂完成原因')
+    {
+      apiTemp = 'stopCompleted';
+    }
     if(e.currentTarget.dataset.btntype != null){
       apiTemp = apiTemp + '_' + e.currentTarget.dataset.btntype
     }
@@ -898,10 +903,10 @@ upload: function(e) {
               var resMsg = '';
               //console.log(res);
               if(res.statusCode == 200 && res.data.msg != null){
-                resMsg = '暂停成功';
+                resMsg = '提交成功';
               }
               else{
-                resMsg = '暂停失败';
+                resMsg = '提交失败';
               }
               Dialog.alert({
                 title: '系统消息',
@@ -1025,11 +1030,12 @@ upload: function(e) {
     // let heightTemp = app.globalData.windowHeight-that.data.searchBarHeight-that.data.topTabHeight;
 
 
-    //console.log(options);
-
+    console.log(options);
+   
     this.setData({
       docId: options.docId,
       docFormid: options.docFormid,
+      reasonText: options.reasonText,
       downTime:JSON.parse(options.eqpInfo).repairTime,
       repairTimestamp:JSON.parse(options.eqpInfo).repairTimestamp
     })
