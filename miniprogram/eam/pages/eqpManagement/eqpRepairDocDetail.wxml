@@ -217,6 +217,7 @@
     <van-button round wx:if="{{showBtn.detailCheckBtn}}" custom-class="repairDetailBtn" type="info" size="small" bind:click="onDetailBtnClick">维修详情</van-button>
     <van-button round wx:if="{{showBtn.arrivalCheckBtn}}" custom-class="repairDetailBtn" disabled="{{disableBtn.arrivalCheckBtn}}" type="info" size="small" bind:click="onCheckBtnClick">维修员到达</van-button>
     <van-button round wx:if="{{showBtn.finishCheckBtn}}" custom-class="repairDetailBtn" disabled="{{disableBtn.finishCheckBtn}}"  type="info" size="small" bind:click="onFinishBtnClick">确认维修完成</van-button>
+    <van-button round wx:if="{{showBtn.finishCheckBtn}}" custom-class="repairDetailBtn" disabled="{{disableBtn.finishCheckBtn}}"  type="info" size="small" data-id="btn1" bind:click="onStopComBtnClick">确认维修暂时完成</van-button>
     <van-button round wx:if="{{showBtn.changeServiceUserBtn}}" custom-class="repairDetailBtn" type="info" size="small" bind:click="onChangeServiceUserBtnClick">转派维修人</van-button>
     <van-button round wx:if="{{showBtn.startAuditBtn}}" custom-class="repairDetailBtn" type="info" size="small" bind:click="onAuditBtnClick">发起维修验收</van-button>
     <van-button round wx:if="{{showBtn.saveRepairInfoBtn}}" custom-class="repairDetailBtn" disabled="{{disableBtn.saveRepairInfoBtn}}"  type="info" size="small" bind:click="onAuditBtnClick">记录维修过程</van-button>

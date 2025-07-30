@@ -185,7 +185,7 @@
         </van-field>
 
         <van-cell-group>
-            <van-cell title="暂停原因" border="{{false}}" use-label-slot></van-cell>
+            <van-cell title="{{reasonText}}" border="{{false}}" use-label-slot></van-cell>
             <view class='textarea_pro' data-show="auditNote" bindtap="ifshowArea">
                 <textarea wx:if="{{showTextArea.auditNote}}" 
                 class='areaInput' bindblur="ifshowArea" data-show="auditNote" value="{{auditNote}}" 

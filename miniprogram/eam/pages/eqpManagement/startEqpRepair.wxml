@@ -224,7 +224,7 @@
     value="{{ itemdsc }}"
     data-name="itemdsc"
     bind:change="bindData"
-    readonly
+    readonly="{{checkDesc}}"
   />
 
   <van-field

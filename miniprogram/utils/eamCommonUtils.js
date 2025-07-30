@@ -213,7 +213,7 @@ export function getEqpMaintainFormType(formid){
  * @param {string} employeeId 部门代号
  */
 export function checkRepairDeptManger(employeeId){
-  if(employeeId.indexOf("C0235") >= 0 || employeeId.indexOf("H0092") >= 0 || employeeId.indexOf("H0692") >= 0){
+  if(employeeId.indexOf("C0235") >= 0 || employeeId.indexOf("C2079") >= 0|| employeeId.indexOf("H0092") >= 0 || employeeId.indexOf("H0692") >= 0){
     return true;
   }
   else

@@ -41,6 +41,7 @@ Page({
     searchBarDta:'',
     isShow:'none',
     showExSearchOverlay: false,
+    checkDesc: true,
     eqpIntoViewTest: null,
     eqpListScrollTop: 0,
     eqpListHeight: null,
@@ -542,13 +543,22 @@ upload: function(e) {
 
     eqpCardSelect:function(e){
       var eqpIndex = 0;
+      var checkDescItem=false;
       if(e.currentTarget.id.split('_').length > 1){
         eqpIndex = e.currentTarget.id.split('_')[1];
       }
       this.setEqpRepairArea(eqpListDta[eqpIndex].position2.position);
+      if(eqpListDta[eqpIndex].assetDesc=='其它设备')
+      {
+        eqpListDta[eqpIndex].assetDesc=null;
+        checkDescItem=false;
+      }else{
+        checkDescItem=true;
+      }
       this.setData({
         //repairUserName: eqpListDta[eqpIndex].username,
         assetno: eqpListDta[eqpIndex].formid,
+        checkDesc: checkDescItem,
         itemdsc: eqpListDta[eqpIndex].assetDesc,
         itemno: eqpListDta[eqpIndex].assetItem.itemno,
         serviceuser: eqpListDta[eqpIndex].repairuser == null ? this.data.serviceuser : eqpListDta[eqpIndex].repairuser,
@@ -1335,6 +1345,19 @@ onServiceUserPickerCancel: function(event){
       Dialog.alert({
         title: '系统消息',
         message: "请选择需要维修的设备",
+        zIndex:1000,
+        }).then(() => {
+          this.setData({
+            textareaDisabled:false
+          });
+        });
+      return false;
+    }
+    if(this.data.itemdsc == null||this.data.itemdsc == ''){
+console.log(this.data.itemdsc)
+      Dialog.alert({
+        title: '系统消息',
+        message: "请输入设备名称",
         zIndex:1000,
         }).then(() => {
           this.setData({

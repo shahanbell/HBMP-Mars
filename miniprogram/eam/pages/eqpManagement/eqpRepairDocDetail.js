@@ -37,6 +37,7 @@ Page({
       statusFilterPopup: false,
       dateSelector: false,
       queryInfo: false,
+      hiddenReturnReasonPopup : false,
     },
     showBtn:{
       deleteBtn:false,
@@ -886,14 +887,26 @@ upload: function(e) {
 
   onStopBtnClick: function(e){
     let that = this;
-    //console.log(e);
+    console.log("AAD");
+    const buttonId = e.currentTarget.dataset.id; // 获取 data-id 值
+ 
+    console.log(buttonId);
     var eqpInfo = { formId: that.data.docFormidId,displayType: "品名", assetDesc: that.data.itemdsc, productcount: 1, assetFormId: that.data.assetno, repairUserName: that.data.repairUserName,creDate: that.data.formdate,serviceUserName: that.data.serviceusername,serviceArriveTime:that.data.serviceArriveTime,completeTime:that.data.completeTime,contactTime:that.data.contactTime,repairTime:that.data.repairTime,repairTimestamp:that.data.repairTimestamp };
     var eqpInfoObj = JSON.stringify(eqpInfo);
     wx.navigateTo({
-      url: '../eqpManagement/eqpRepairStop?eqpInfo=' + eqpInfoObj + '&docFormid=' + that.data.docFormidId + '&docId=' + that.data.docId
+      url: '../eqpManagement/eqpRepairStop?eqpInfo=' + eqpInfoObj + '&docFormid=' + that.data.docFormidId + '&docId=' + that.data.docId+ '&reasonText=暂停原因' 
     });
   },
 
+//确认维修暂时完成
+  onStopComBtnClick: function(e){
+    let that = this;
+    var eqpInfo = { formId: that.data.docFormidId,displayType: "品名", assetDesc: that.data.itemdsc, productcount: 1, assetFormId: that.data.assetno, repairUserName: that.data.repairUserName,creDate: that.data.formdate,serviceUserName: that.data.serviceusername,serviceArriveTime:that.data.serviceArriveTime,completeTime:that.data.completeTime,contactTime:that.data.contactTime,repairTime:that.data.repairTime,repairTimestamp:that.data.repairTimestamp };
+    var eqpInfoObj = JSON.stringify(eqpInfo);
+    wx.navigateTo({
+      url: '../eqpManagement/eqpRepairStop?eqpInfo=' + eqpInfoObj + '&docFormid=' + that.data.docFormidId + '&docId=' + that.data.docId+ '&reasonText=暂完成原因' 
+    });
+  },
   onStartBtnClick: function(e){
     let that = this;
     //console.log(this.data.uploaderList);
