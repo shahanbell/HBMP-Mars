@@ -82,6 +82,7 @@
       "root": "efgp",
       "pages": [
         "pages/leave/leave",
+       
         "pages/overtime/overtime",
         "pages/overtime/overdetail",
         "pages/businesstrip/businesstrip",
@@ -107,8 +108,8 @@
         "pages/safetymeasures/safetyManagement",
         "pages/safetymeasures/safemanagerselect",
          "pages/rdpm/rdpmDailyReport",
-        "pages/carapp/startaddress"
-
+        "pages/carapp/startaddress",
+        "pages/leave/leaveKindSelect"
       ]
     },
     {
