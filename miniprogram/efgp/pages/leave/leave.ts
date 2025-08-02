@@ -14,9 +14,12 @@ Page({
     showRowDate1: null,
     showRowDate2: null,
     showRowTime: null,
+    showRowSameDate: null,
     date1: null,
     date2: null,
+    sameDate:null,
     yearDays:0,
+    sameDays:0,
     time1: "08:00",
     time2: "17:10",
     formType: '1',
@@ -31,9 +34,10 @@ Page({
     reason: '',
     checked: false,
     showTime1: false,
-    showTime1: false,
+    showTime2: false,
     showDate1: false,
     showDate2: false,
+    showSameDate: false,
     formatter(type, value) {
       if (type === 'year') {
         return `${value}年`;
@@ -59,7 +63,6 @@ Page({
       },
       method: 'GET',
       success: res => {
-        console.info("剩余年休假="+JSON.stringify(res))
         wx.showLoading({
           title: 'Loading',
         })
@@ -132,6 +135,7 @@ Page({
   },
   bindLeaveKindSelect(e) {
     let that = this
+    console.info("13123123")
     wx.navigateTo({
       url: './leaveKindSelect',
       events: {
@@ -280,6 +284,7 @@ Page({
       showDate1: false
     })
   },
+
   //截止时间的日期组件回调
   bindPickerDate2(e) {
     this.setData!({
@@ -313,7 +318,51 @@ Page({
     })
   },
 
+
+  //同假别的日期组件回调
+  bindPickerSameDate(e) {
+    console.info("123123")
+    let a= this.dateFormatForYYMMDD(new Date().getTime());
+    let b=  this.formatYYMMDDToDate(a);
+    this.setData!({
+      showRowSameDate: b
+    })
+    this.openPickerSameDate();
+  },
+  bindCloseSameDate(e) {
+    this.closePickerSameDate();
+  },
+
+  bindSameDateCancel(e) {
+    this.closePickerSameDate();
+  },
+  bindSameDateConfirm(e) {
+    if (e.detail != 1262275200000) {
+      this.setData!({
+        sameDate: this.dateFormatForYYMMDD(e.detail)
+      })
+    }
+    this.closePickerSameDate();
+  },
+  openPickerSameDate() {
+    this.setData!({
+      showSameDate: true
+    })
+  },
+  closePickerSameDate() {
+    this.setData!({
+      showSameDate: false
+    })
+  },
+
+  bindSameDaysChange(e) {
+    this.setData!({
+      sameDays: e.detail
+    })
+  },
+
   formatYYMMDDToDate(value) {
+    console.info("value"+value)
     var str = value.replace(/-/g, '/');
     var date = new Date(str)
     return date.getTime();
@@ -421,6 +470,16 @@ Page({
       canSubmit = false
       errmsg += "请填写请假原因\r\n"
     }
+    if (this.data.formKind=='3' || this.data.formKind=='10' ) {
+      if(this.data.sameDate==null || this.data.sameDate==''){
+        canSubmit = false
+        errmsg += "请填写同假别首次请假日期\r\n"
+      }
+      if(this.data.sameDays==0 ){
+        canSubmit = false
+        errmsg += "请填写同假别累计天数\r\n"
+      }
+    }
     let t = this.data.leaveDay + this.data.leaveHour + this.data.leaveMinute
     if (t < 1) {
       canSubmit = false
@@ -438,6 +497,7 @@ Page({
             })
             wx.request({
               url: app.globalData.restAdd+ '/Hanbell-JRS/api/efgp/hkgl004/wechat?' + app.globalData.restAuth,
+              //url:  'http://localhost:8480/Hanbell-JRS/api/efgp/hkgl004/wechat?' + app.globalData.restAuth,
               data: {
                 employee: _this.data.employeeId,
                 formType: _this.data.formType,
@@ -450,6 +510,8 @@ Page({
                 time1: _this.data.time1,
                 date2: _this.data.date2,
                 time2: _this.data.time2,
+                sameDate: _this.data.sameDate,
+                sameDays: _this.data.sameDays,
                 leaveDay: _this.data.leaveDay,
                 leaveHour: _this.data.leaveHour,
                 leaveMinute: _this.data.leaveMinute,
