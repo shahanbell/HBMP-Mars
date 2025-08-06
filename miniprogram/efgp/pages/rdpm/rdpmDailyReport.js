@@ -1,11 +1,15 @@
 import Dialog from '../../../component/vant/dialog/dialog';
 var app = getApp();
 var util = require("../../../utils/eamCommonUtils.js");
-
+const date = new Date()
+const years = []
+const months = []
+const days = []
 var detailTotalCount = 0;
 var detailDoneCount = 0;
 var progressTagType = 'warning';
 var analysisUserSelectIndex = -1;
+var dateTemp = null;
 Page({
 
   /**
@@ -30,6 +34,7 @@ Page({
     detailListViewHeight: '0',
     expandFlag: true,
     tabActive: 0,
+    reportPopup:false,
     suppleStartDateObj: {},
     suppleCompleteDateObj: {},
     analysisUserList: [],
@@ -38,11 +43,19 @@ Page({
     eqpMaintainDetailList_dispatch: [],
     maintainResult: [],
     patrolId : null,
+    currentDate: new Date().getTime(), // 当前选中日期（时间戳）
+    disabledDays: [ // 允许选择的日期列表（格式：YYYY-MM-DD）
+      "2025-08-01", 
+      "2025-08-15", 
+      "2025-08-20"
+    ],
+    minDate: null,
+    maxDate: null,
     presentingName : null,
     patrolPost : null,
     patrolDeptName : null,
     patrolType : null,
-    
+    boolRdpm :true,
     progressInfo: {
       doneCount: '0',
       totalCount: '0',
@@ -65,13 +78,17 @@ Page({
       type:'info',
       name:'提交'
     },
+   
   },
 
+    
  
+
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+
     console.log(options)
     var windowHeight = 0;
     wx.getSystemInfo({
@@ -85,9 +102,12 @@ Page({
     let heightTemp = app.globalData.screenHeight - 90 - app.globalData.statusBarHeight;
     heightTemp = heightTemp * 0.95 - 64;
     this.getRdpmSubjectUserReportsModel(ReportingDateItem);
+    
     this.setData({
       detailListViewHeight: windowHeight - 10 - 44 - 44,
       userListHeight: heightTemp,
+      currentDate:new Date().getTime(),
+      minDate: new Date(2025,7,1).getTime(),
      ReportingDate:ReportingDateItem,
       progressInfo: {
         doneCount: detailDoneCount,
@@ -97,31 +117,64 @@ Page({
     });
   },
 
-  onCollapseCellClick(event) {
-    // console.log(event);
-    var index = event.currentTarget.dataset.selector;
-    var eqpMaintainDetailList = this.data.eqpMaintainDetailList;
-    var nowList = [];//新数据
 
-    console.log(this.data.expandFlag)
-    var expandFlag = true;
-    if (event.detail.length == 0) {
-      expandFlag = false;
-    }
-
-    var activeNamesTemp = "activeNames[" + index + "]";
-    var expandFlagTemp = "expandFlag[" + index + "]";
-    //this.updateDetailDataStartDate(index);
+  closeSelectorPopup: function(event){
     this.setData({
-      [activeNamesTemp]: event.detail,
-      eqpMaintainDetailList:eqpMaintainDetailList,
-      [expandFlagTemp]: expandFlag,
-      suppleStartDateObj: {},
-      suppleCompleteDateObj: {},
-      activeDateTemp: util.getNowDateStr()
+      reportPopup:false
+    });
+  },
+  showSelectorPopup: function(event){
+    this.setData({
+      reportPopup:true
     });
   },
 
+ 
+  dateFormatForFilter(date){
+    let dateTemp = new Date(date);
+    let year = dateTemp.getFullYear();
+    let month = dateTemp.getMonth() + 1;
+    let day = dateTemp.getDate();
+
+    if(month < '10'){
+      month = "0" + month;
+    }
+  
+    if(day < '10'){
+      day = "0" + day;
+    }
+  
+  
+
+    let dayTemp = year + "-" + month + "-" + day ;
+    return dayTemp;
+  },
+  onDatePickerConfirm: function(event){
+    var _this = this;
+    let dateTemp = _this.dateFormatForFilter(event.detail);
+    _this.getRdpmSubjectUserReportsChangesModel(dateTemp, function(err, result) {;
+    console.log(dateTemp)
+    console.log(_this.data.boolRdpm)
+   if(_this.data.boolRdpm){
+    _this.setData({
+      ReportingDate: dateTemp
+    });
+   }else{
+    Dialog.alert({
+      title: '系统消息',
+      message: "选择的日期已进行汇报过，不能修改",
+    })
+    _this.getRdpmSubjectUserReportsModel(_this.data.ReportingDate);
+   }
+   _this.closeSelectorPopup(event);
+  })
+  },
+
+
+
+
+
+   
   onBlurResult: function (e) {
    console.log("AAAA")
    
@@ -184,8 +237,9 @@ Page({
       console.log(element.subjectNo)
      if(element.subjectNo=='01')
       {
-        if(parseInt(element.subjectWorkPercent) >10)
+        if(parseInt(element.subjectWorkPercent) >0)
         {
+          console.log("sdfadfasd")
           bol=true;
         }
       }
@@ -193,7 +247,7 @@ Page({
     if(bol){
       Dialog.alert({
         title: '系统消息',
-        message: "非研发工作比例不能超过10%",
+        message: "非研发工作比例只能是0%",
         }).then(() => {
           // on close
         });
@@ -441,6 +495,7 @@ Page({
 
   getRdpmSubjectUserReportsModel: function (docId) {
     var _this = this;
+    _this.data.eqpMaintainDetailList_dispatch=[]
     var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbedw/rdpm/getRdpmSubjectUserReportsModel';
     restUrl += '/f;pid=' + docId + '/s';
     restUrl += '/' + 0 + '/' + 20;
@@ -477,7 +532,26 @@ Page({
           console.log(maintainDetailListTemp);
           var autoMaintainFlag =true;
           var expandFlag = true;
+          var boolRdpmTemp=true;
           for (var i = 0; i < maintainDetailListTemp.length; i++) {
+            if(maintainDetailListTemp[i].subjectNo=='01'&&parseInt(maintainDetailListTemp[i].subjectWorkPercent)!=100)
+            {
+              boolRdpmTemp=false;
+              _this.setData({
+                boolRdpm: boolRdpmTemp
+              });
+              console.log("AAAAAAAAA")
+              console.log(_this.data.boolRdpm)
+            
+            }else if(maintainDetailListTemp[i].subjectNo=='01'&&parseInt(maintainDetailListTemp[i].subjectWorkPercent)==100){
+              boolRdpmTemp=true;
+              _this.setData({
+                boolRdpm: boolRdpmTemp
+              });
+              console.log("BBBBBBBBB")
+              console.log(_this.data.boolRdpm)
+            
+            }
             var activeNamesTemp = "activeNames[" + i + "]";
             var expandFlagTemp = "expandFlag[" + i + "]";
             let newItem = {
@@ -506,11 +580,14 @@ Page({
           }
           _this.setData({
             eqpMaintainDetailList: _this.data.eqpMaintainDetailList_dispatch,
+            eqpMaintainDetailList_dispatch:[],
             maintainResult: _this.data.maintainResult,
             showItem: _this.data.showItem,
+            boolRdpm: boolRdpmTemp
           });
-          console.log(_this.data.infoCard)
+          console.log(_this.data.eqpMaintainDetailList)
         }
+        console.log(_this.data.eqpMaintainDetailList)
         wx.hideLoading();
       },
       fail: function (fail) {
@@ -526,6 +603,120 @@ Page({
       }
     });
   },
+
+
+  getRdpmSubjectUserReportsChangesModel: function (docId, callback) {
+    var _this = this;
+    _this.data.eqpMaintainDetailList_dispatch=[]
+    var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbedw/rdpm/getRdpmSubjectUserReportsModel';
+    restUrl += '/f;pid=' + docId + '/s';
+    restUrl += '/' + 0 + '/' + 20;
+    // console.log("aaaaaa"+restUrl);
+    wx.showLoading({
+      title: '获取中...',
+      mask: true
+    });
+    wx.request({
+      url: restUrl,
+      data: {
+        appid: app.globalData.restId,
+        token: app.globalData.restToken,
+        rDate :docId,
+        userId: app.globalData.employeeId
+      },
+      header: {
+        'content-type': 'application/json'
+      },
+      method: 'GET',
+      success: function (res) {
+      
+        if (res.data == "" || res.statusCode != 200) {
+          //console.log("no Data");
+          wx.hideLoading();
+          return;
+        }
+        console.log("res.data ")
+        console.log(res.data )
+        if (res.data.length > 1) {
+          var maintainInfoTemp = res.data;
+          var maintainDetailListTemp = res.data;
+          console.log("res.data111 ")
+          console.log(maintainDetailListTemp);
+          var autoMaintainFlag =true;
+          var expandFlag = true;
+          var boolRdpmTemp=true;
+          for (var i = 0; i < maintainDetailListTemp.length; i++) {
+            if(maintainDetailListTemp[i].subjectNo=='01'&&parseInt(maintainDetailListTemp[i].subjectWorkPercent)!=100)
+            {
+              boolRdpmTemp=false;
+              _this.setData({
+                boolRdpm: boolRdpmTemp
+              });
+              console.log("AAAAAAAAA")
+              console.log(_this.data.boolRdpm)
+            
+            }else if(maintainDetailListTemp[i].subjectNo=='01'&&parseInt(maintainDetailListTemp[i].subjectWorkPercent)==100){
+              boolRdpmTemp=true;
+              _this.setData({
+                boolRdpm: boolRdpmTemp
+              });
+              console.log("BBBBBBBBB")
+              console.log(_this.data.boolRdpm)
+            
+            }
+            var activeNamesTemp = "activeNames[" + i + "]";
+            var expandFlagTemp = "expandFlag[" + i + "]";
+            let newItem = {
+              id: '',
+              subjectNo: '',
+              subjectName: '',
+              subjectUserNo: '',
+              subjectUserName: '',
+              uType: '',
+              subjectWorkPercent: '',
+              subjectWorkDateTime:''
+            };
+            newItem.subjectWorkDateTime = maintainDetailListTemp[i].subjectWorkDateTime;
+            newItem.id = maintainDetailListTemp[i].id;
+            newItem.subjectNo = maintainDetailListTemp[i].subjectNo;
+            newItem.subjectName = maintainDetailListTemp[i].subjectName;
+            newItem.subjectUserNo = maintainDetailListTemp[i].subjectUserNo;
+            newItem.subjectUserName = maintainDetailListTemp[i].subjectUserName;
+            newItem.uType = maintainDetailListTemp[i].uType;
+            newItem.subjectWorkPercent = maintainDetailListTemp[i].subjectWorkPercent;
+            _this.data.eqpMaintainDetailList_dispatch.push(newItem)
+            _this.setData({
+              [activeNamesTemp]: [i],
+              [expandFlagTemp]: expandFlag,
+            })
+          }
+          _this.setData({
+            eqpMaintainDetailList: _this.data.eqpMaintainDetailList_dispatch,
+            eqpMaintainDetailList_dispatch:[],
+            maintainResult: _this.data.maintainResult,
+            showItem: _this.data.showItem,
+            boolRdpm: boolRdpmTemp
+          });callback(null, res.data);
+          console.log(_this.data.eqpMaintainDetailList)
+        }
+        console.log(_this.data.eqpMaintainDetailList)
+        wx.hideLoading();
+      },
+      fail: function (fail) {
+        callback(fail); 
+        wx.hideLoading();
+        //console.log(fail.data);
+        Dialog.alert({
+          title: '系统消息',
+          message: fail.data + "-" + fail.statusCode + "-" + fail.header + "-" + fail.cookies,
+        }).then(() => {
+          // on close
+          //initProInfo(_this);
+        });
+      }
+    });
+  },
+
 
   analysisUserCardSelect:function(event){
     // console.log(event);

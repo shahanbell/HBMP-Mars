@@ -185,6 +185,11 @@ page {
 
     height:10px;
     }
+    /* 禁用日期的样式 */
+.van-picker-column__item--disabled {
+  opacity: 0.3;
+  text-decoration: line-through;
+}
   .proInfo_text_acount text{
   font-size: 32rpx;
   color: #000; 
