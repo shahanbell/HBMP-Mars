@@ -107,7 +107,7 @@ Page({
       detailListViewHeight: windowHeight - 10 - 44 - 44,
       userListHeight: heightTemp,
       currentDate:new Date().getTime(),
-      minDate: new Date(2025,7,1).getTime(),
+      minDate: new Date(2025,6,21).getTime(),
      ReportingDate:ReportingDateItem,
       progressInfo: {
         doneCount: detailDoneCount,
