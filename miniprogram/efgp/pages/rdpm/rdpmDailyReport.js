@@ -562,7 +562,10 @@ Page({
               subjectUserName: '',
               uType: '',
               subjectWorkPercent: '',
-              subjectWorkDateTime:''
+           
+              subjectWorkDateTime:'',
+              subjectSeq: '',
+              subjectSeqName: ''
             };
             newItem.subjectWorkDateTime = maintainDetailListTemp[i].subjectWorkDateTime;
             newItem.id = maintainDetailListTemp[i].id;
@@ -571,7 +574,9 @@ Page({
             newItem.subjectUserNo = maintainDetailListTemp[i].subjectUserNo;
             newItem.subjectUserName = maintainDetailListTemp[i].subjectUserName;
             newItem.uType = maintainDetailListTemp[i].uType;
-            newItem.subjectWorkPercent = maintainDetailListTemp[i].subjectWorkPercent;
+            newItem.subjectSeq = maintainDetailListTemp[i].subjectSeq;
+            newItem.subjectSeqName = maintainDetailListTemp[i].subjectSeqName;
+            newItem.subjectWorkPercent = maintainDetailListTemp[i].subjectWorkPercent*100;
             _this.data.eqpMaintainDetailList_dispatch.push(newItem)
             _this.setData({
               [activeNamesTemp]: [i],
@@ -674,7 +679,9 @@ Page({
               subjectUserName: '',
               uType: '',
               subjectWorkPercent: '',
-              subjectWorkDateTime:''
+              subjectWorkDateTime:'',
+              subjectSeq: '',
+              subjectSeqName: ''
             };
             newItem.subjectWorkDateTime = maintainDetailListTemp[i].subjectWorkDateTime;
             newItem.id = maintainDetailListTemp[i].id;
@@ -683,6 +690,8 @@ Page({
             newItem.subjectUserNo = maintainDetailListTemp[i].subjectUserNo;
             newItem.subjectUserName = maintainDetailListTemp[i].subjectUserName;
             newItem.uType = maintainDetailListTemp[i].uType;
+            newItem.subjectSeq = maintainDetailListTemp[i].subjectSeq;
+            newItem.subjectSeqName = maintainDetailListTemp[i].subjectSeqName;
             newItem.subjectWorkPercent = maintainDetailListTemp[i].subjectWorkPercent;
             _this.data.eqpMaintainDetailList_dispatch.push(newItem)
             _this.setData({

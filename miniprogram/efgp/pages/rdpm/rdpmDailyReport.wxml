@@ -17,12 +17,13 @@
 						<view class="shop">
 							<view class="shop_name">
 								研发专案号:{{item.subjectNo}}
+                <!-- {{item.subjectName}}:	{{item.subjectNo}} -->
 							</view>
            
 						</view>
 
             <view class="shop_name">
-								{{item.subjectName}}
+								{{item.subjectSeqName}}
 							</view>
               <view class="shop_name" style=" display: flex;  ">
 								工作比例%：
