@@ -151,23 +151,109 @@ Page({
   },
   onDatePickerConfirm: function(event){
     var _this = this;
-    let dateTemp = _this.dateFormatForFilter(event.detail);
-    _this.getRdpmSubjectUserReportsChangesModel(dateTemp, function(err, result) {;
-    console.log(dateTemp)
-    console.log(_this.data.boolRdpm)
-   if(_this.data.boolRdpm){
-    _this.setData({
-      ReportingDate: dateTemp
+    let docId = _this.dateFormatForFilter(event.detail);
+    _this.data.eqpMaintainDetailList_dispatch=[]
+    var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbedw/rdpm/getRdpmSubjectUserReportsModel';
+    restUrl += '/f;pid=' + docId + '/s';
+    restUrl += '/' + 0 + '/' + 20;
+    // console.log("aaaaaa"+restUrl);
+    wx.showLoading({
+      title: '获取中...',
+      mask: true
     });
-   }else{
-    Dialog.alert({
-      title: '系统消息',
-      message: "选择的日期已进行汇报过，不能修改",
-    })
-    _this.getRdpmSubjectUserReportsModel(_this.data.ReportingDate);
-   }
-   _this.closeSelectorPopup(event);
-  })
+    wx.request({
+      url: restUrl,
+      data: {
+        appid: app.globalData.restId,
+        token: app.globalData.restToken,
+        rDate :docId,
+        userId: app.globalData.employeeId
+      },
+      header: {
+        'content-type': 'application/json'
+      },
+      method: 'GET',
+      success: function (res) {
+      
+        if (res.data == "" || res.statusCode != 200) {
+          //console.log("no Data");
+          wx.hideLoading();
+          return;
+        }
+        console.log("res.data ")
+        console.log(res.data )
+        if (res.data.length > 1) {
+          var maintainInfoTemp = res.data;
+          var maintainDetailListTemp = res.data;
+          var autoMaintainFlag =true;
+          var expandFlag = true;
+          var boolRdpmTemp=true;
+          for (var i = 0; i < maintainDetailListTemp.length; i++) {
+            if(maintainDetailListTemp[i].subjectNo=='01'&&parseInt(maintainDetailListTemp[i].subjectWorkPercent)!=1)
+            {
+              Dialog.alert({
+                title: '系统消息',
+                message: "选择的日期已进行汇报过，不能修改",
+              })
+              wx.hideLoading();
+              _this.closeSelectorPopup(event);
+              return;
+            }
+            var activeNamesTemp = "activeNames[" + i + "]";
+            var expandFlagTemp = "expandFlag[" + i + "]";
+            let newItem = {
+              id: '',
+              subjectNo: '',
+              subjectName: '',
+              subjectUserNo: '',
+              subjectUserName: '',
+              uType: '',
+              subjectWorkPercent: '',
+              subjectWorkDateTime:'',
+              subjectSeq: '',
+              subjectSeqName: ''
+            };
+            newItem.subjectWorkDateTime = maintainDetailListTemp[i].subjectWorkDateTime;
+            newItem.id = maintainDetailListTemp[i].id;
+            newItem.subjectNo = maintainDetailListTemp[i].subjectNo;
+            newItem.subjectName = maintainDetailListTemp[i].subjectName;
+            newItem.subjectUserNo = maintainDetailListTemp[i].subjectUserNo;
+            newItem.subjectUserName = maintainDetailListTemp[i].subjectUserName;
+            newItem.uType = maintainDetailListTemp[i].uType;
+            newItem.subjectSeq = maintainDetailListTemp[i].subjectSeq;
+            newItem.subjectSeqName = maintainDetailListTemp[i].subjectSeqName;
+            newItem.subjectWorkPercent = maintainDetailListTemp[i].subjectWorkPercent*100;
+            _this.data.eqpMaintainDetailList_dispatch.push(newItem)
+            _this.setData({
+              [activeNamesTemp]: [i],
+              [expandFlagTemp]: expandFlag,
+            })
+          }
+          _this.setData({
+            eqpMaintainDetailList: _this.data.eqpMaintainDetailList_dispatch,
+            eqpMaintainDetailList_dispatch:[],
+            maintainResult: _this.data.maintainResult,
+            showItem: _this.data.showItem,
+            ReportingDate: docId,
+            boolRdpm: boolRdpmTemp
+          });
+        }
+        _this.closeSelectorPopup(event);
+        wx.hideLoading();
+      },
+      fail: function (fail) {
+        callback(fail); 
+        wx.hideLoading();
+        //console.log(fail.data);
+        Dialog.alert({
+          title: '系统消息',
+          message: fail.data + "-" + fail.statusCode + "-" + fail.header + "-" + fail.cookies,
+        }).then(() => {
+          // on close
+          //initProInfo(_this);
+        });
+      }
+    });
   },
 
 
@@ -596,123 +682,6 @@ Page({
         wx.hideLoading();
       },
       fail: function (fail) {
-        wx.hideLoading();
-        //console.log(fail.data);
-        Dialog.alert({
-          title: '系统消息',
-          message: fail.data + "-" + fail.statusCode + "-" + fail.header + "-" + fail.cookies,
-        }).then(() => {
-          // on close
-          //initProInfo(_this);
-        });
-      }
-    });
-  },
-
-
-  getRdpmSubjectUserReportsChangesModel: function (docId, callback) {
-    var _this = this;
-    _this.data.eqpMaintainDetailList_dispatch=[]
-    var restUrl = app.globalData.restAdd + '/Hanbell-JRS/api/shbedw/rdpm/getRdpmSubjectUserReportsModel';
-    restUrl += '/f;pid=' + docId + '/s';
-    restUrl += '/' + 0 + '/' + 20;
-    // console.log("aaaaaa"+restUrl);
-    wx.showLoading({
-      title: '获取中...',
-      mask: true
-    });
-    wx.request({
-      url: restUrl,
-      data: {
-        appid: app.globalData.restId,
-        token: app.globalData.restToken,
-        rDate :docId,
-        userId: app.globalData.employeeId
-      },
-      header: {
-        'content-type': 'application/json'
-      },
-      method: 'GET',
-      success: function (res) {
-      
-        if (res.data == "" || res.statusCode != 200) {
-          //console.log("no Data");
-          wx.hideLoading();
-          return;
-        }
-        console.log("res.data ")
-        console.log(res.data )
-        if (res.data.length > 1) {
-          var maintainInfoTemp = res.data;
-          var maintainDetailListTemp = res.data;
-          console.log("res.data111 ")
-          console.log(maintainDetailListTemp);
-          var autoMaintainFlag =true;
-          var expandFlag = true;
-          var boolRdpmTemp=true;
-          for (var i = 0; i < maintainDetailListTemp.length; i++) {
-            if(maintainDetailListTemp[i].subjectNo=='01'&&parseInt(maintainDetailListTemp[i].subjectWorkPercent)!=100)
-            {
-              boolRdpmTemp=false;
-              _this.setData({
-                boolRdpm: boolRdpmTemp
-              });
-              console.log("AAAAAAAAA")
-              console.log(_this.data.boolRdpm)
-            
-            }else if(maintainDetailListTemp[i].subjectNo=='01'&&parseInt(maintainDetailListTemp[i].subjectWorkPercent)==100){
-              boolRdpmTemp=true;
-              _this.setData({
-                boolRdpm: boolRdpmTemp
-              });
-              console.log("BBBBBBBBB")
-              console.log(_this.data.boolRdpm)
-            
-            }
-            var activeNamesTemp = "activeNames[" + i + "]";
-            var expandFlagTemp = "expandFlag[" + i + "]";
-            let newItem = {
-              id: '',
-              subjectNo: '',
-              subjectName: '',
-              subjectUserNo: '',
-              subjectUserName: '',
-              uType: '',
-              subjectWorkPercent: '',
-              subjectWorkDateTime:'',
-              subjectSeq: '',
-              subjectSeqName: ''
-            };
-            newItem.subjectWorkDateTime = maintainDetailListTemp[i].subjectWorkDateTime;
-            newItem.id = maintainDetailListTemp[i].id;
-            newItem.subjectNo = maintainDetailListTemp[i].subjectNo;
-            newItem.subjectName = maintainDetailListTemp[i].subjectName;
-            newItem.subjectUserNo = maintainDetailListTemp[i].subjectUserNo;
-            newItem.subjectUserName = maintainDetailListTemp[i].subjectUserName;
-            newItem.uType = maintainDetailListTemp[i].uType;
-            newItem.subjectSeq = maintainDetailListTemp[i].subjectSeq;
-            newItem.subjectSeqName = maintainDetailListTemp[i].subjectSeqName;
-            newItem.subjectWorkPercent = maintainDetailListTemp[i].subjectWorkPercent;
-            _this.data.eqpMaintainDetailList_dispatch.push(newItem)
-            _this.setData({
-              [activeNamesTemp]: [i],
-              [expandFlagTemp]: expandFlag,
-            })
-          }
-          _this.setData({
-            eqpMaintainDetailList: _this.data.eqpMaintainDetailList_dispatch,
-            eqpMaintainDetailList_dispatch:[],
-            maintainResult: _this.data.maintainResult,
-            showItem: _this.data.showItem,
-            boolRdpm: boolRdpmTemp
-          });callback(null, res.data);
-          console.log(_this.data.eqpMaintainDetailList)
-        }
-        console.log(_this.data.eqpMaintainDetailList)
-        wx.hideLoading();
-      },
-      fail: function (fail) {
-        callback(fail); 
         wx.hideLoading();
         //console.log(fail.data);
         Dialog.alert({
