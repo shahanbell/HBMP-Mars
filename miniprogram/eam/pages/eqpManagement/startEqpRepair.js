@@ -1354,7 +1354,7 @@ onServiceUserPickerCancel: function(event){
       return false;
     }
     if(this.data.itemdsc == null||this.data.itemdsc == ''){
-console.log(this.data.itemdsc)
+
       Dialog.alert({
         title: '系统消息',
         message: "请输入设备名称",
@@ -1366,8 +1366,9 @@ console.log(this.data.itemdsc)
         });
       return false;
     }
+   
     console.log(this.data.serviceuser);
-    if(this.data.troubleFrom == null || this.data.formdateTS == null || (this.data.serviceuser == null && !this.data.disableServiceUser) || this.data.troubleDetailInfo == null || this.data.uploaderList.length < 1 || this.data.repairAreaObj.repairAreaValue == '-1' || this.data.hitchUrgencyId == "-1" ){
+    if(this.data.troubleFrom == null || this.data.formdateTS == null || ((this.data.serviceuser == null||this.data.serviceuser == '') && !this.data.disableServiceUser) || this.data.troubleDetailInfo == null || this.data.uploaderList.length < 1 || this.data.repairAreaObj.repairAreaValue == '-1' || this.data.hitchUrgencyId == "-1" ){
       Dialog.alert({
         title: '系统消息',
         message: "请将信息填写完整",
