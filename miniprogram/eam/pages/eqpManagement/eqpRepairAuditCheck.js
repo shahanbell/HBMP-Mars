@@ -1732,6 +1732,7 @@ upload: function(e) {
 
           for(var i = 0; i<res.data[1].length;i++){
             var itemTemp = {troubleId:res.data[1][i].troubleid,troubleName:res.data[1][i].troublename};
+       
             if(dataFindFlag == 0){
               if(eqpRepairInfo.hitchsort1 == itemTemp.troubleId){
                 hitchSort01ObjTemp = itemTemp;
@@ -1740,9 +1741,9 @@ upload: function(e) {
             }
             _this.data.hitchSort01List.push(itemTemp);
           }
-          if(hitchSort01ObjTemp == null && dataFindFlag == 0){
-            hitchSort01ObjTemp = _this.data.hitchSort01List[0];
-          }
+          // if(hitchSort01ObjTemp == null && dataFindFlag == 0){
+          //   hitchSort01ObjTemp = _this.data.hitchSort01List[0];
+          // }
           dataFindFlag = 0;
 
           for(var i = 0; i<res.data[2].length;i++){
@@ -1756,9 +1757,9 @@ upload: function(e) {
             _this.data.hitchTypeList.push(itemTemp);
           }
 
-          if(hitchTypeObjTemp == null && dataFindFlag == 0){
-            hitchTypeObjTemp = _this.data.hitchTypeList[0];
-          }
+          // if(hitchTypeObjTemp == null && dataFindFlag == 0){
+          //   hitchTypeObjTemp = _this.data.hitchTypeList[0];
+          // }
 
 
           var dataLen = res.data[3].length;
@@ -1988,7 +1989,37 @@ upload: function(e) {
     this.setData({
       textareaDisabled:true
     });
-
+    console.log(opedesc)
+    console.log(this.data.eqpRepairInfoList)
+    if(opedesc == "暂存"){
+      console.log(this.data)
+      if(this.data.hitchTypeObj==null)
+      {
+        Dialog.alert({
+          title: '系统消息',
+          message: "请选择紧急程度!",
+          zIndex:1000,
+          }).then(() => {
+            this.setData({
+              textareaDisabled:false
+            });
+          });
+        return false;
+      }
+      if(this.data.hitchSort01Obj==null)
+      {
+        Dialog.alert({
+          title: '系统消息',
+          message: "请选择故障类型!",
+          zIndex:1000,
+          }).then(() => {
+            this.setData({
+              textareaDisabled:false
+            });
+          });
+        return false;
+      }
+    }
     if(opedesc == "提交" && this.data.eqpRepairInfoList.length > 0 && this.data.arrivalDelayReason == '' && this.data.eqpRepairInfoList[0].contactTime > 1)
     {
       Dialog.alert({

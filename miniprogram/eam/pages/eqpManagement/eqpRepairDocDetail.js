@@ -741,9 +741,26 @@ upload: function(e) {
         // on cancel
       });
   },
-
+  isNotNullAndEmpty: function(field) {
+    return field == null || field == undefined || field?.trim()== "";
+},
   onFinishBtnClick: function(e){
+   
     let that = this;
+    console.log("CCCC")
+    console.log(repairDocDta)
+    if(repairDocDta.repairmethodtype=="2"){
+      if(that.isNotNullAndEmpty(repairDocDta.hitchalarm)||that.isNotNullAndEmpty(repairDocDta.hitchreason)||that.isNotNullAndEmpty(repairDocDta.hitchurgency)||that.isNotNullAndEmpty(repairDocDta.measure)||that.isNotNullAndEmpty(repairDocDta.repairprocess))
+      {
+        Dialog.alert({
+          title: '系统消息',
+          message: "请先填写完全记录维修过程，在点击维修完成!",
+          zIndex:1000,
+          })
+        return ;
+      }
+      
+    }
     //console.log(this.data.uploaderList);
     const FileSystemManager = wx.getFileSystemManager();
     //console.log(this.data);
@@ -1297,6 +1314,8 @@ upload: function(e) {
         }
 
         repairDocDta = res.data[0];
+        console.log("repairDocDta")
+        console.log(repairDocDta)
         repairManagerInfo = res.data[1];
         repairUserInfo = null;
         serviceUserInfo = null;
