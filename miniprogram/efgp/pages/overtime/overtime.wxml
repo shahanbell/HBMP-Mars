@@ -18,6 +18,16 @@
           </van-cell>
         </van-cell-group>
       </van-radio-group>
+      <view class="weui-cells__title">是否逾期</view>
+      <van-radio-group value="{{ formType }}" bind:change="onChange">
+        <van-cell-group>
+          <van-cell-group>
+            <van-cell title="是否逾期" required>
+              <van-switch checked="{{ isOverdue }}" bind:change="bindIsOverdueChange" size="20px" />
+            </van-cell>
+          </van-cell-group>
+        </van-cell-group>
+      </van-radio-group>
       <view class="weui-cells__title">加班明细</view>
       <view class="weui-panel weui-panel_access" wx:for="{{detailList}}" wx:key="seq" wx:for-item="detail">
         <view class="weui-panel__hd">

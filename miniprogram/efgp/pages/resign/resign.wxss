@@ -1,0 +1,30 @@
+/* miniprogram/efgp/pages/resign/resign.wxss */
+
+.resigndateDescClass {
+  width: 120px  !important;
+  max-width: 120px  !important;
+
+}
+
+.weui-cells__title{
+  color: #646566 !important;
+}
+
+/* 组件样式，使用隔离模式避免影响其他样式 */
+.notice-container {
+  padding: 20rpx 24rpx;
+  background-color: #fff8e6;
+  border-radius: 8rpx;
+  /* margin: 20rpx; */
+}
+
+.notice-content {
+  font-size: 26rpx;
+  line-height: 1.6;
+  color: #666;
+}
+
+.notice-text {
+  word-break: break-all;
+  white-space: pre-wrap;
+}
