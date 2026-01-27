@@ -38,6 +38,7 @@ Page({
     showDate1: false,
     showDate2: false,
     showSameDate: false,
+    isOverdue:false,
     formatter(type, value) {
       if (type === 'year') {
         return `${value}年`;
@@ -132,6 +133,12 @@ Page({
         checked: false
       })
     }
+  },
+
+  bindIsOverdueChange(e) {
+    this.setData({
+      isOverdue: e.detail
+    })
   },
   bindLeaveKindSelect(e) {
     let that = this
@@ -496,8 +503,8 @@ Page({
               title: 'Sending'
             })
             wx.request({
-              url: app.globalData.restAdd+ '/Hanbell-JRS/api/efgp/hkgl004/wechat?' + app.globalData.restAuth,
               //url:  'http://localhost:8480/Hanbell-JRS/api/efgp/hkgl004/wechat?' + app.globalData.restAuth,
+              url: app.globalData.restAdd+ '/Hanbell-JRS/api/efgp/hkgl004/wechat?' + app.globalData.restAuth,
               data: {
                 employee: _this.data.employeeId,
                 formType: _this.data.formType,
@@ -516,6 +523,7 @@ Page({
                 leaveHour: _this.data.leaveHour,
                 leaveMinute: _this.data.leaveMinute,
                 reason: _this.data.reason,
+                overdue:_this.data.isOverdue ? "Y":"N",
                 hkgl004Files: _this.data.hkgl004Files
               },
               header: {

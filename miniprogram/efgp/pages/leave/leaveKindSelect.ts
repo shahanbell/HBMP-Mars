@@ -8,7 +8,7 @@ Page({
     offset: 0 as number,
     pageSize: 20 as number,
     dataList: [],
-    selectedKey: null,
+    selectedKey: '',
     selectedObject: {}
   },
   onLoad(option) {

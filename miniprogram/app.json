@@ -18,6 +18,8 @@
     "van-tabbar": "component/vant/tabbar/index",
     "van-tabbar-item": "component/vant/tabbar-item/index",
     "van-grid": "component/vant/grid/index",
+    "van-skeleton ": "component/vant/skeleton/index",
+    "van-action-sheet": "component/vant/action-sheet/index",
     "van-grid-item": "component/vant/grid-item/index",
     "van-search": "component/vant/search/index",
     "van-calendar": "component/vant/calendar/index",
@@ -39,7 +41,8 @@
     "van-checkbox": "component/vant/checkbox/index",
     "van-checkbox-group": "component/vant/checkbox-group/index",
     "van-toast": "component/vant/toast/index",
-    "van-panel": "component/vant/panel/index"
+    "van-panel": "component/vant/panel/index",
+    "van-notice-bar": "component/vant/notice-bar/index"
   },
   "pages": [
     "pages/index/index",
@@ -82,7 +85,6 @@
       "root": "efgp",
       "pages": [
         "pages/leave/leave",
-       
         "pages/overtime/overtime",
         "pages/overtime/overdetail",
         "pages/businesstrip/businesstrip",
@@ -104,12 +106,13 @@
         "pages/safetymeasures/hiddenDangerDetail",
         "pages/safetymeasures/postSecureInspect",
         "pages/safetymeasures/postSecureInspectDetail",
-
         "pages/safetymeasures/safetyManagement",
         "pages/safetymeasures/safemanagerselect",
-         "pages/rdpm/rdpmDailyReport",
+        "pages/rdpm/rdpmDailyReport",
         "pages/carapp/startaddress",
-        "pages/leave/leaveKindSelect"
+        "pages/leave/leaveKindSelect",
+        "pages/resign/resign",
+        "pages/Issue/Issue"
       ]
     },
     {

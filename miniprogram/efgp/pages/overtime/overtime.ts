@@ -1,4 +1,3 @@
-//overtime.ts
 import { IMyApp } from '../../../app'
 
 const app = getApp<IMyApp>()
@@ -23,7 +22,8 @@ Page({
     deptId: null,
     deptName: null,
     canSubmit: false,
-    employees:''
+    employees:'',
+    isOverdue:false,
   },
   onLoad() {
     wx.showLoading({
@@ -168,6 +168,12 @@ Page({
       detailList: this.data.detailList
     });
   },
+  bindIsOverdueChange(e) {
+    this.setData({
+      isOverdue: e.detail
+    })
+  },
+
   formSubmit(e) {
     let canSubmit = true
     let errmsg = ''
@@ -213,6 +219,7 @@ Page({
                 employee: _this.data.employeeId,
                 formType: _this.data.formType,
                 formTypeDesc: _this.data.formTypeDesc,
+                overdue:_this.data.isOverdue ? "Y":"N",
                 detailList: detailDatas
               },
               header: {
