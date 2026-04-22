@@ -131,6 +131,7 @@ Page({
     serviceuserPickerIndex: null,
     reRepairFlag: false,
     supplementFlag: false,
+    showComplete: true,
     activeNames: [],
     disableServiceUser: false,
     autonoRepairFlag: false,
@@ -1521,6 +1522,7 @@ onServiceUserPickerCancel: function(event){
    * 选择弹出层开启Pro
    */
   showSelectorPopup: function(event){
+    
     var selectorTemp = {};
     selectorTemp[event.currentTarget.dataset.selector + "SelectorPopup"] = true;
     this.setData({
@@ -1595,8 +1597,17 @@ onServiceUserPickerCancel: function(event){
     console.log("TTTTT")
     const { picker, value, index } = event.detail;
     var selectorName = event.currentTarget.dataset.selector + "Obj";
+    var showCompaleteText=false;
+    console.log(value.repairMethodValue)
+    if(value.repairMethodValue=="2"){
+      console.log("CCCC")
+      showCompaleteText=false
+    }else{
+      showCompaleteText=true
+    }
     this.setData({
-      [selectorName]:value
+      [selectorName]:value,
+      showComplete:showCompaleteText
     });
     this.closeSelectorPopup(event);
   },

@@ -67,6 +67,7 @@ Page({
     hitchSort01List:[],
     hitchTypeCode:null,
     hitchTypeName:null,
+
     refreshTrigger: false,
     currentTab: 0,     //当前显示tab的下标
     navTab: ['全部', '处理中', '已完成'],
@@ -74,12 +75,18 @@ Page({
     images: [],
     uploaderList: [],
     uploaderNum:0,
+    pauseCategory:null,
+    pause:null,
+    isDownList:[{isDownDesc:'请选择',isDownValue:'-1'},
+    {isDownDesc:'停线维修暂停',isDownValue:'Y'},
+    {isDownDesc:'不停线维修暂停',isDownValue:'N'}],
     showUpload:false,
     showDelete:false,
     showSpareEditBtn: false,
     troubleTypeCol: ['操作员点检','设备突发故障','维修员点检'],
     show:{
       eqpSelectorPopup: false,
+      contenctSelectorPopup: false,
       hitchDutySelectorPopup: false,
       hitchSort01SelectorPopup: false,
       contenctSelectorPopup:false,
@@ -823,7 +830,16 @@ upload: function(e) {
       show: {dateFilterPopup: false}
     });
   },
-
+  /**
+  * 故障来源选择弹出层关闭
+  */
+ closeSelectorPopup: function(event){
+  var selectorTemp = {};
+  selectorTemp[event.currentTarget.dataset.selector + "SelectorPopup"] = false;
+  this.setData({
+    show:selectorTemp
+  });
+},
   onDateFilterCancel: function(){
     this.setData({
       show:{dateFilterPopup : false},
@@ -846,6 +862,48 @@ upload: function(e) {
     });
   },
 
+  onPickerConfirm: function(event){
+    console.log("TTTTT")
+    const { picker, value, index } = event.detail;
+    var selectorName = event.currentTarget.dataset.selector + "Obj";
+    this.setData({
+      pauseCategory:value.isDownDesc,
+      pause:value.isDownValue
+    });
+    this.closeSelectorPopup(event);
+  },
+
+  /**
+  * 故障来源选择器事件
+  */
+ onPickerChange: function(event){
+  const { picker, value, index } = event.detail;
+  console.log(event)
+  var selectorName = event.currentTarget.dataset.selector + "Obj";
+  this.setData({
+    [selectorName]:value
+  });
+},
+onPickerCancel: function(event){
+  this.closeSelectorPopup(event);
+},
+onPickerChange: function(event){
+  const { picker, value, index } = event.detail;
+  var selectorName = event.currentTarget.dataset.selector + "Obj";
+
+  this.setData({
+    [selectorName]:value
+  });
+},
+
+showSelectorPopup: function(event){
+    
+  var selectorTemp = {};
+  selectorTemp[event.currentTarget.dataset.selector + "SelectorPopup"] = true;
+  this.setData({
+    show:selectorTemp
+  });
+},
   repairStopFormSubmit: function(e){
     var that = this;
     //console.log(e);
@@ -855,9 +913,25 @@ upload: function(e) {
     //var canSubmit = this.checkFormDtaBeforeSubmit();
     var canSubmit = true;
     var apiTemp = 'repairStop';
+  
     if(that.data.reasonText=='暂完成原因')
     {
       apiTemp = 'stopCompleted';
+    }else{
+      if(that.data.pause==null||that.data.pause=='-1')
+      {
+        Dialog.alert({
+          title: '系统消息',
+          message: "请选择暂停类别",
+          zIndex:1000,
+          }).then(() => {
+            this.setData({
+              textareaDisabled:false
+            });
+          });
+        return false;
+      }
+
     }
     if(e.currentTarget.dataset.btntype != null){
       apiTemp = apiTemp + '_' + e.currentTarget.dataset.btntype
@@ -893,6 +967,7 @@ upload: function(e) {
               userno:app.globalData.employeeId,
               contenct:that.data.auditContenctType,
               note:that.data.auditNote,
+              pause:that.data.pause,
             },
             header: {
               'content-type': 'application/json'
@@ -1028,8 +1103,6 @@ upload: function(e) {
    */
   onLoad: function (options) {
     // let heightTemp = app.globalData.windowHeight-that.data.searchBarHeight-that.data.topTabHeight;
-
-
     console.log(options);
    
     this.setData({
@@ -1037,6 +1110,8 @@ upload: function(e) {
       docFormid: options.docFormid,
       reasonText: options.reasonText,
       downTime:JSON.parse(options.eqpInfo).repairTime,
+      pauseCategory:this.data.isDownList[0].isDownDesc,
+      pause:this.data.isDownList[0].isDownValue,
       repairTimestamp:JSON.parse(options.eqpInfo).repairTimestamp
     })
 

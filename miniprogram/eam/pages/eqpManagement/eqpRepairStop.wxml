@@ -184,6 +184,9 @@
 				<van-field label="维修人" value="{{ approveUserName }}" data-name="approveUserName" use-button-slot readonly >
         </van-field>
 
+        <van-field     wx:if="{{ reasonText=='暂停原因' }}"  label="暂停类别"value="{{pauseCategory}}" right-icon="arrow-down"
+    data-selector="repairArea"bindtap='showSelectorPopup' readonly/>
+
         <van-cell-group>
             <van-cell title="{{reasonText}}" border="{{false}}" use-label-slot></van-cell>
             <view class='textarea_pro' data-show="auditNote" bindtap="ifshowArea">
@@ -254,13 +257,11 @@
 
 </van-tabs>
 
-
 <van-popup
     show="{{ show.contenctSelectorPopup }}"
     position="bottom"
     bind:close="closeContenctSelectorPopup"
 >
-
   <van-picker
     show-toolbar
     title="审批结果"
@@ -270,8 +271,46 @@
     bind:confirm="onContenctPickerConfirm"
     bind:cancel="onContenctPickerCancel"
   />
+</van-popup>
+
+
+
+<van-popup
+    show="{{ show.repairAreaSelectorPopup }}"
+    position="bottom"
+    data-selector="isDownValue"
+    bind:close="closeSelectorPopup"
+>
+<van-picker
+    show-toolbar
+    title="暂停类别"
+    columns="{{ isDownList }}"
+    value-key="isDownDesc"
+    data-selector="isDownValue"
+    bind:change="onPickerChange"
+    bind:confirm="onPickerConfirm"
+    bind:cancel="onPickerCancel"
+  />
 
 </van-popup>
+
+
+<van-popup
+    show="{{ show.contenctSelectorPopup }}"
+    position="bottom"
+    bind:close="closeContenctSelectorPopup"
+>
+  <van-picker
+      show-toolbar
+      title="暂停类别"
+      columns="{{ isDownList }}"
+      value-key="repairAreaDesc"
+      data-selector="repairArea"
+      bind:change="onPickerChange"
+      bind:confirm="onPickerConfirm"
+      bind:cancel="onPickerCancel"
+    />
+  </van-popup>
 
 <van-popup
     show="{{ show.hitchSort01SelectorPopup }}"
