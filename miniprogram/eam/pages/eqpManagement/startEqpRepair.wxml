@@ -344,6 +344,7 @@
         readonly
       />
       <van-field
+      wx:if="{{ showComplete }}"
         label="完成时间"
         value="{{ suppleCompleteDateObj.dateFormatStr }}"
         right-icon="arrow-down"
